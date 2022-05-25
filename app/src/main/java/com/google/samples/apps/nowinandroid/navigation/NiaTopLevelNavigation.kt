@@ -17,10 +17,8 @@
 package com.google.samples.apps.nowinandroid.navigation
 
 import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.filled.Grid3x3
-import androidx.compose.material.icons.filled.Upcoming
-import androidx.compose.material.icons.outlined.Grid3x3
-import androidx.compose.material.icons.outlined.Upcoming
+import androidx.compose.material.icons.filled.*
+import androidx.compose.material.icons.outlined.*
 import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.navigation.NavGraph.Companion.findStartDestination
 import androidx.navigation.NavHostController
@@ -75,6 +73,24 @@ val TOP_LEVEL_DESTINATIONS = listOf(
         route = InterestsDestination.route,
         selectedIcon = Icons.Filled.Grid3x3,
         unselectedIcon = Icons.Outlined.Grid3x3,
+        iconTextId = interests
+    ),
+    TopLevelDestination(
+        route = ForYouDestination.route,
+        selectedIcon = Icons.Filled.UTurnLeft,
+        unselectedIcon = Icons.Outlined.UTurnLeft,
+        iconTextId = for_you
+    ),
+    TopLevelDestination(
+        route = InterestsDestination.route,
+        selectedIcon = Icons.Filled.Gamepad,
+        unselectedIcon = Icons.Outlined.Gamepad,
+        iconTextId = interests
+    ),
+    TopLevelDestination(
+        route = InterestsDestination.route,
+        selectedIcon = Icons.Filled.GTranslate,
+        unselectedIcon = Icons.Outlined.GTranslate,
         iconTextId = interests
     )
 )
