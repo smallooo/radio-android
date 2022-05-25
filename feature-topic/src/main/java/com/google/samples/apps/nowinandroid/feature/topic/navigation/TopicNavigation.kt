@@ -33,7 +33,7 @@ fun NavGraphBuilder.topicGraph(
     onBackClick: () -> Unit
 ) {
     composable(
-        route = "${TopicDestination.route}/{${TopicDestination.topicIdArg}}",
+        route = TopicDestination.route + "/{topicId}",
         arguments = listOf(
             navArgument(TopicDestination.topicIdArg) {
                 type = NavType.StringType

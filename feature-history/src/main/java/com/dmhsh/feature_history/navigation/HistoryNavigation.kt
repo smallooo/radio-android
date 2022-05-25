@@ -18,12 +18,12 @@ fun NavGraphBuilder.historyGraph(
     onBackClick: () -> Unit
 ) {
     composable(
-        route = "${HistoryDestination.route}/{${HistoryDestination.historyIdArg}}",
-        arguments = listOf(
-            navArgument(HistoryDestination.historyIdArg) {
-                type = NavType.StringType
-            }
-        )
+        route = HistoryDestination.route
+//        arguments = listOf(
+//            navArgument(HistoryDestination.historyIdArg) {
+//                type = NavType.StringType
+//            }
+//        )
     ) {
         HistoryRoute(onBackClick = onBackClick)
     }

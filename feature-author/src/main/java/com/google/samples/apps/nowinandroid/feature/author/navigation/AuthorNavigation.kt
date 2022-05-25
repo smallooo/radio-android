@@ -33,7 +33,7 @@ fun NavGraphBuilder.authorGraph(
     onBackClick: () -> Unit
 ) {
     composable(
-        route = "${AuthorDestination.route}/{${AuthorDestination.authorIdArg}}",
+        route = AuthorDestination.route + "/{authorId}",
         arguments = listOf(
             navArgument(AuthorDestination.authorIdArg) {
                 type = NavType.StringType

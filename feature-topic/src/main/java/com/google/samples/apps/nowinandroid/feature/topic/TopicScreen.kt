@@ -102,7 +102,7 @@ internal fun TopicScreen(
                     contentDesc = stringResource(id = string.topic_loading),
                 )
             }
-            TopicUiState.Error -> TODO()
+            //TopicUiState.Error -> TODO()
             is TopicUiState.Success -> {
                 item {
                     TopicToolbar(

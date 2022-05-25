@@ -85,13 +85,13 @@ val TOP_LEVEL_DESTINATIONS = listOf(
         iconTextId = for_you
     ),
     TopLevelDestination(
-        route = AuthorDestination.route,
+        route = TopicDestination.route + "/1",
         selectedIcon = Icons.Filled.Gamepad,
         unselectedIcon = Icons.Outlined.Gamepad,
         iconTextId = interests
     ),
     TopLevelDestination(
-        route = TopicDestination.route,
+        route = AuthorDestination.route + "/2",
         selectedIcon = Icons.Filled.GTranslate,
         unselectedIcon = Icons.Outlined.GTranslate,
         iconTextId = interests
