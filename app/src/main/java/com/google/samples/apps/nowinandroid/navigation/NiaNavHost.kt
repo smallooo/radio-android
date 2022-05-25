@@ -22,6 +22,7 @@ import androidx.compose.ui.Modifier
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.rememberNavController
+import com.dmhsh.feature_history.navigation.historyGraph
 import com.google.samples.apps.nowinandroid.feature.author.navigation.AuthorDestination
 import com.google.samples.apps.nowinandroid.feature.author.navigation.authorGraph
 import com.google.samples.apps.nowinandroid.feature.foryou.navigation.ForYouDestination
@@ -55,6 +56,9 @@ fun NiaNavHost(
         interestsGraph(
             navigateToTopic = { navController.navigate("${TopicDestination.route}/$it") },
             navigateToAuthor = { navController.navigate("${AuthorDestination.route}/$it") }
+        )
+        historyGraph(
+            onBackClick = { navController.popBackStack() }
         )
         topicGraph(
             onBackClick = { navController.popBackStack() }

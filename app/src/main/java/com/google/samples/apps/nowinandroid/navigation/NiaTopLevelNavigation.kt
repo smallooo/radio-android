@@ -22,10 +22,13 @@ import androidx.compose.material.icons.outlined.*
 import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.navigation.NavGraph.Companion.findStartDestination
 import androidx.navigation.NavHostController
+import com.dmhsh.feature_history.navigation.HistoryDestination
+import com.google.samples.apps.nowinandroid.feature.author.navigation.AuthorDestination
 import com.google.samples.apps.nowinandroid.feature.foryou.R.string.for_you
 import com.google.samples.apps.nowinandroid.feature.foryou.navigation.ForYouDestination
 import com.google.samples.apps.nowinandroid.feature.interests.R.string.interests
 import com.google.samples.apps.nowinandroid.feature.interests.navigation.InterestsDestination
+import com.google.samples.apps.nowinandroid.feature.topic.navigation.TopicDestination
 
 /**
  * Routes for the different top level destinations in the application. Each of these destinations
@@ -76,19 +79,19 @@ val TOP_LEVEL_DESTINATIONS = listOf(
         iconTextId = interests
     ),
     TopLevelDestination(
-        route = ForYouDestination.route,
+        route = HistoryDestination.route,
         selectedIcon = Icons.Filled.UTurnLeft,
         unselectedIcon = Icons.Outlined.UTurnLeft,
         iconTextId = for_you
     ),
     TopLevelDestination(
-        route = InterestsDestination.route,
+        route = AuthorDestination.route,
         selectedIcon = Icons.Filled.Gamepad,
         unselectedIcon = Icons.Outlined.Gamepad,
         iconTextId = interests
     ),
     TopLevelDestination(
-        route = InterestsDestination.route,
+        route = TopicDestination.route,
         selectedIcon = Icons.Filled.GTranslate,
         unselectedIcon = Icons.Outlined.GTranslate,
         iconTextId = interests
