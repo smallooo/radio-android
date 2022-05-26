@@ -80,9 +80,6 @@ fun NiaApp(windowSizeClass: WindowSizeClass) {
                                     .zIndex(2f)
                             )
 
-//                            Row(modifier = Modifier.height(39.dp)) {
-//
-//                            }
                             NiABottomBar(
                                 onNavigateToTopLevelDestination = niaTopLevelNavigation::navigateTo,
                                 currentDestination = currentDestination

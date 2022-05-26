@@ -117,6 +117,8 @@ dependencies {
 
     implementation("androidx.lifecycle:lifecycle-runtime-ktx:2.5.0-rc01")
 
+    //implementation("androidx.paging:paging-compose:1.0.0-alpha14")
+
 
 
     // androidx.test is forcing JUnit, 4.12. This forces it to use 4.13
