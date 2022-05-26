@@ -21,6 +21,8 @@ plugins {
     id("jacoco")
     id("dagger.hilt.android.plugin")
     id("nowinandroid.spotless")
+    id("kotlin-parcelize")
+    id("kotlinx-serialization")
 }
 
 android {
@@ -94,12 +96,28 @@ dependencies {
     implementation(libs.material3)
     implementation(libs.androidx.profileinstaller)
 
+    implementation(libs.accompanist.navigation.animation)
+
     implementation(libs.coil.kt)
     implementation(libs.coil.kt.svg)
 
     implementation(libs.hilt.android)
     kapt(libs.hilt.compiler)
     kaptAndroidTest(libs.hilt.compiler)
+
+    implementation("org.jetbrains.kotlinx:kotlinx-serialization-json:1.3.3")
+    implementation("androidx.compose.material:material:1.1.1")
+
+    implementation(libs.accompanist.systemuicontroller)
+
+
+    implementation("androidx.media3:media3-exoplayer:1.0.0-alpha03")
+    implementation("androidx.media3:media3-ui:1.0.0-alpha03")
+    implementation("androidx.media3:media3-exoplayer-dash:1.0.0-alpha03")
+
+    implementation("androidx.lifecycle:lifecycle-runtime-ktx:2.5.0-rc01")
+
+
 
     // androidx.test is forcing JUnit, 4.12. This forces it to use 4.13
     configurations.configureEach {
@@ -109,4 +127,5 @@ dependencies {
             force("org.objenesis:objenesis:2.6")
         }
     }
+
 }

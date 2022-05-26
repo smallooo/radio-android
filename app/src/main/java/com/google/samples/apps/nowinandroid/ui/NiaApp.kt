@@ -16,17 +16,8 @@
 
 package com.google.samples.apps.nowinandroid.ui
 
-import androidx.compose.foundation.layout.ExperimentalLayoutApi
-import androidx.compose.foundation.layout.Row
-import androidx.compose.foundation.layout.WindowInsets
-import androidx.compose.foundation.layout.WindowInsetsSides
-import androidx.compose.foundation.layout.consumedWindowInsets
-import androidx.compose.foundation.layout.fillMaxSize
-import androidx.compose.foundation.layout.only
-import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.layout.safeDrawing
-import androidx.compose.foundation.layout.safeDrawingPadding
-import androidx.compose.foundation.layout.windowInsetsPadding
+import androidx.compose.foundation.background
+import androidx.compose.foundation.layout.*
 import androidx.compose.material.ripple.LocalRippleTheme
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Icon
@@ -46,8 +37,10 @@ import androidx.compose.runtime.getValue
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.graphics.graphicsLayer
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
+import androidx.compose.ui.zIndex
 import androidx.navigation.NavDestination
 import androidx.navigation.NavDestination.Companion.hierarchy
 import androidx.navigation.compose.currentBackStackEntryAsState
@@ -59,6 +52,7 @@ import com.google.samples.apps.nowinandroid.navigation.NiaNavHost
 import com.google.samples.apps.nowinandroid.navigation.NiaTopLevelNavigation
 import com.google.samples.apps.nowinandroid.navigation.TOP_LEVEL_DESTINATIONS
 import com.google.samples.apps.nowinandroid.navigation.TopLevelDestination
+import com.google.samples.apps.nowinandroid.playback.PlaybackMiniControls
 
 @OptIn(ExperimentalMaterial3Api::class, ExperimentalLayoutApi::class)
 @Composable
@@ -79,10 +73,21 @@ fun NiaApp(windowSizeClass: WindowSizeClass) {
                 contentColor = MaterialTheme.colorScheme.onBackground,
                 bottomBar = {
                     if (windowSizeClass.widthSizeClass == WindowWidthSizeClass.Compact) {
-                        NiABottomBar(
-                            onNavigateToTopLevelDestination = niaTopLevelNavigation::navigateTo,
-                            currentDestination = currentDestination
-                        )
+                        Column {
+                            PlaybackMiniControls(
+                                modifier = Modifier
+                                    .graphicsLayer(translationY = 8.0F)
+                                    .zIndex(2f)
+                            )
+
+//                            Row(modifier = Modifier.height(39.dp)) {
+//
+//                            }
+                            NiABottomBar(
+                                onNavigateToTopLevelDestination = niaTopLevelNavigation::navigateTo,
+                                currentDestination = currentDestination
+                            )
+                        }
                     }
                 }
             ) { padding ->
@@ -102,6 +107,7 @@ fun NiaApp(windowSizeClass: WindowSizeClass) {
                             modifier = Modifier.safeDrawingPadding()
                         )
                     }
+
 
                     NiaNavHost(
                         windowSizeClass = windowSizeClass,

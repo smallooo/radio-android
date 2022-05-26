@@ -23,6 +23,7 @@ plugins {
 dependencies {
     implementation(libs.kotlinx.coroutines.android)
     implementation(libs.hilt.android)
+    implementation("androidx.compose.material:material:1.1.1")
     kapt(libs.hilt.compiler)
 
     testImplementation(project(":core-testing"))
