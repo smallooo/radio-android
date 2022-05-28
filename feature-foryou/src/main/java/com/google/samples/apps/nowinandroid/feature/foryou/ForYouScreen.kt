@@ -42,33 +42,20 @@ import com.google.samples.apps.nowinandroid.core.ui.component.NiaTopAppBar
 fun ForYouRoute(
     windowSizeClass: WindowSizeClass,
     modifier: Modifier = Modifier,
-    viewModel: ForYouViewModel = hiltViewModel()
+    viewModel: FoodCategoriesViewModel = hiltViewModel()
 ) {
-    val interestsSelectionState by viewModel.interestsSelectionState.collectAsState()
-    val feedState by viewModel.feedState.collectAsState()
+
     ForYouScreen(
-        windowSizeClass = windowSizeClass,
-        modifier = modifier,
-        interestsSelectionState = interestsSelectionState,
-        feedState = feedState,
-        onTopicCheckedChanged = viewModel::updateTopicSelection,
-        onAuthorCheckedChanged = viewModel::updateAuthorSelection,
-        saveFollowedTopics = viewModel::saveFollowedInterests,
-        onNewsResourcesCheckedChanged = viewModel::updateNewsResourceSaved
+        //onAuthorCheckedChanged = viewModel::updateAuthorSelection,
+    state = viewModel.state
     )
 }
 
 @OptIn(ExperimentalMaterial3Api::class, ExperimentalLayoutApi::class)
 @Composable
 fun ForYouScreen(
-    windowSizeClass: WindowSizeClass,
-    interestsSelectionState: ForYouInterestsSelectionUiState,
-    feedState: ForYouFeedUiState,
-    onTopicCheckedChanged: (String, Boolean) -> Unit,
-    onAuthorCheckedChanged: (String, Boolean) -> Unit,
-    saveFollowedTopics: () -> Unit,
-    onNewsResourcesCheckedChanged: (String, Boolean) -> Unit,
-    modifier: Modifier = Modifier,
+    //onAuthorCheckedChanged: (String, Boolean) -> Unit,
+    state: FoodCategoriesContract.State,
 ) {
     val tabs = listOf("Shimmers", "Animated Lists", "Swipeable Lists","Shimmers", "Animated Lists", "Swipeable Lists")
 
@@ -83,6 +70,13 @@ fun ForYouScreen(
 
         Column {
             Spacer(modifier = Modifier.height(88.dp))
+
+            if(state.isLoading){
+                Text("Loading")
+            }else if(state.categories.size > 0){
+
+                Text(state.categories.get(0).description)
+            }
             ScrollableTabRow(
                 selectedTabIndex = selectedIndex,
                 edgePadding = 12.dp
