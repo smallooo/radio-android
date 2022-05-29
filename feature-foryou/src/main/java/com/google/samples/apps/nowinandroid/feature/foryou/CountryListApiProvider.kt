@@ -1,7 +1,8 @@
 package com.google.samples.apps.nowinandroid.feature.foryou
 
 
-import com.google.samples.apps.nowinandroid.feature.foryou.FoodMenuApi.Companion.API_URL
+
+import com.google.samples.apps.nowinandroid.feature.foryou.CountryListApi.Companion.API_URL
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
@@ -13,7 +14,7 @@ import javax.inject.Singleton
 
 @InstallIn(SingletonComponent::class)
 @Module
-class FoodMenuApiProvider {
+class CountryListApiProvider {
 
     @Provides
     @Singleton
@@ -38,10 +39,10 @@ class FoodMenuApiProvider {
 
     @Provides
     @Singleton
-    fun provideFoodMenuApiService(
+    fun provideCountryListApiService(
         retrofit: Retrofit
-    ): FoodMenuApi.Service {
-        return retrofit.create(FoodMenuApi.Service::class.java)
+    ): CountryListApi.Service {
+        return retrofit.create(CountryListApi.Service::class.java)
     }
 
 }

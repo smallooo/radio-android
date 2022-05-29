@@ -10,7 +10,6 @@ import com.google.samples.apps.nowinandroid.core.model.data.Country
     tableName = "country",
 )
 data class CountryEntity (@PrimaryKey
-                          val id: String,
                           val name: String,
                           val iso_3166_1: String,
                           @ColumnInfo(defaultValue = "")
@@ -18,7 +17,7 @@ data class CountryEntity (@PrimaryKey
 )
 
 fun CountryEntity.asExternalModel() = Country(
-    id = id,
+
     name = name,
     iso_3166_1 = iso_3166_1,
     stationcount = stationcount

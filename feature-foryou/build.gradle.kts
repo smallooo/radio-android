@@ -55,12 +55,12 @@ dependencies {
     implementation(libs.hilt.android)
     kapt(libs.hilt.compiler)
 
-    implementation("com.google.code.gson:gson:2.9.0")
 
     implementation(libs.retrofit.core)
 
+    implementation(libs.retrofit.converter)
 
-    implementation("com.squareup.retrofit2:converter-gson:2.9.0")
+    implementation(libs.google.gson)
 
     // TODO : Remove this dependency once we upgrade to Android Studio Dolphin b/228889042
     // These dependencies are currently necessary to render Compose previews

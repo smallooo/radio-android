@@ -37,27 +37,23 @@ import com.google.samples.apps.nowinandroid.core.ui.LoadingWheel
 import com.google.samples.apps.nowinandroid.core.ui.component.NiaGradientBackground
 import com.google.samples.apps.nowinandroid.core.ui.component.NiaTopAppBar
 
-
 @Composable
 fun ForYouRoute(
     windowSizeClass: WindowSizeClass,
     modifier: Modifier = Modifier,
-    viewModel: FoodCategoriesViewModel = hiltViewModel()
-) {
+    viewModel: CountryViewModel = hiltViewModel(),
 
-    ForYouScreen(
-        //onAuthorCheckedChanged = viewModel::updateAuthorSelection,
-    state = viewModel.state
-    )
+) {
+    ForYouScreen(state = viewModel.state)
+
 }
 
 @OptIn(ExperimentalMaterial3Api::class, ExperimentalLayoutApi::class)
 @Composable
 fun ForYouScreen(
-    //onAuthorCheckedChanged: (String, Boolean) -> Unit,
     state: FoodCategoriesContract.State,
 ) {
-    val tabs = listOf("Shimmers", "Animated Lists", "Swipeable Lists","Shimmers", "Animated Lists", "Swipeable Lists")
+    val tabs = listOf("本地电台", "访问排行", "投票排行","最近更新", "正在播放", "标签", "国家", "语言", "搜索")
 
     @Composable
     fun AdvanceListContent() {
@@ -70,18 +66,11 @@ fun ForYouScreen(
 
         Column {
             Spacer(modifier = Modifier.height(88.dp))
-
-            if(state.isLoading){
-                Text("Loading")
-            }else if(state.categories.size > 0){
-
-                Text(state.categories.get(0).description)
-            }
             ScrollableTabRow(
                 selectedTabIndex = selectedIndex,
                 edgePadding = 12.dp
             ) {
-                tabs.forEachIndexed { index, title ->
+                tabs.forEachIndexed      { index, title ->
                     Tab(
                         selected = index == selectedIndex,
                         onClick = {
@@ -95,12 +84,21 @@ fun ForYouScreen(
             Pager(state = pagerState, modifier = Modifier.weight(1f)) {
                 selectedIndex = pagerState.currentPage
                 when (commingPage) {
-                    0 -> ShimmerList()
-                    1 -> ShimmerList()
-                    2 -> ShimmerList()
-                    3 -> ShimmerList()
-                    4 -> ShimmerList()
-                    5 -> ShimmerList()
+                    0 -> ShimmerList(state)
+                    1 -> ShimmerList(state)
+                    2 -> ShimmerList(state)
+                    3 -> ShimmerList(state)
+                    4 -> ShimmerList(state)
+                    5 -> ShimmerList(state)
+                    6 -> LocalRadioList(state)
+                    7 -> ShimmerList(state)
+                    8 -> ShimmerList(state)
+                    9 -> ShimmerList(state)
+                    10 -> ShimmerList(state)
+                    11 -> ShimmerList(state)
+                    12 -> ShimmerList(state)
+                    13 -> ShimmerList(state)
+                    14 -> ShimmerList(state)
                 }
             }
         }
@@ -135,14 +133,6 @@ fun ForYouScreen(
     }
 }
 
-/**
- * An extension on [LazyListScope] defining the feed portion of the for you screen.
- * Depending on the [feedState], this might emit no items.
- *
- * @param showLoadingUIIfLoading if true, show a visual indication of loading if the
- * [feedState] is loading. This is controllable to permit du-duplicating loading
- * states.
- */
 private fun LazyListScope.Feed(
     feedState: ForYouFeedUiState,
     showLoadingUIIfLoading: Boolean,

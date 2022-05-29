@@ -13,7 +13,7 @@ import kotlinx.coroutines.launch
 import javax.inject.Inject
 
 @HiltViewModel
-class FoodCategoriesViewModel @Inject constructor(private val remoteSource: FoodMenuRemoteSource) :
+class CountryViewModel @Inject constructor(private val remoteSource: FoodMenuRemoteSource) :
     ViewModel() {
 
     var state by mutableStateOf(
@@ -28,16 +28,19 @@ class FoodCategoriesViewModel @Inject constructor(private val remoteSource: Food
         private set
 
     init {
-        viewModelScope.launch { getFoodCategories() }
+        viewModelScope.launch { getCountriesList() }
     }
 
-    private suspend fun getFoodCategories() {
-       // val categories = remoteSource.getFoodCategories()
+    private suspend fun getCountriesList() {
+        val categories = remoteSource.getCountryList()
         viewModelScope.launch {
-           // state = state.copy(categories = categories, isLoading = false)
+            state = categories?.let { state.copy(categories = it, isLoading = false) }!!
             effects.send(FoodCategoriesContract.Effect.DataWasLoaded)
         }
+
+
     }
+
 }
 
 

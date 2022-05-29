@@ -7,43 +7,23 @@ import javax.inject.Inject
 import javax.inject.Singleton
 
 @Singleton
-class FoodMenuRemoteSource @Inject constructor(private val foodMenuApi: FoodMenuApi) {
+class FoodMenuRemoteSource @Inject constructor(private val countryApi: CountryListApi) {
 
     private var cachedCategories: List<FoodItem>? = null
+    private var _countryList: ArrayList<Country>? = null
 
-    suspend fun getFoodCategories(): List<FoodItem> = withContext(Dispatchers.IO) {
-        var cachedCategories = cachedCategories
-        if (cachedCategories == null) {
-            cachedCategories = foodMenuApi.getFoodCategories().mapCategoriesToItems()
-            this@FoodMenuRemoteSource.cachedCategories = cachedCategories
+
+
+
+
+    suspend fun getCountryList() = withContext(Dispatchers.IO){
+        if(_countryList == null){
+            _countryList = countryApi.getCountryList()
         }
-        return@withContext cachedCategories
+        return@withContext _countryList
     }
 
-    suspend fun getMealsByCategory(categoryId: String) = withContext(Dispatchers.IO) {
-        val categoryName = getFoodCategories().first { it.id == categoryId }.name
-        return@withContext foodMenuApi.getMealsByCategory(categoryName).mapMealsToItems()
+    private fun CountryListResponse.mapCountriesToItems(): Any {
+        return this.countries
     }
-
-    private fun FoodCategoriesResponse.mapCategoriesToItems(): List<FoodItem> {
-        return this.categories.map { category ->
-            FoodItem(
-                id = category.id,
-                name = category.name,
-                description = category.description,
-                thumbnailUrl = category.thumbnailUrl
-            )
-        }
-    }
-
-    private fun MealsResponse.mapMealsToItems(): List<FoodItem> {
-        return this.meals.map { category ->
-            FoodItem(
-                id = category.id,
-                name = category.name,
-                thumbnailUrl = category.thumbnailUrl
-            )
-        }
-    }
-
 }

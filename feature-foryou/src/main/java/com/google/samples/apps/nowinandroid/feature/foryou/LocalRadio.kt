@@ -2,27 +2,19 @@ package com.google.samples.apps.nowinandroid.feature.foryou
 
 import androidx.compose.animation.animateColor
 import androidx.compose.animation.core.*
-import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.verticalScroll
-import androidx.compose.material3.Button
 import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.*
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.graphics.Brush
 import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 
-enum class ShimmerAnimationType {
-    FADE, TRANSLATE, FADETRANSLATE, VERTICAL
-}
-
 @Composable
-fun ShimmerList(state: FoodCategoriesContract.State) {
+fun LocalRadioList(state: FoodCategoriesContract.State) {
     var shimmerAnimationType by remember { mutableStateOf(ShimmerAnimationType.FADE) }
 
     val transition = rememberInfiniteTransition()
@@ -74,41 +66,18 @@ fun ShimmerList(state: FoodCategoriesContract.State) {
             ShimmerItem(list, dpValue.value, shimmerAnimationType == ShimmerAnimationType.VERTICAL)
             ShimmerItem(list, dpValue.value, shimmerAnimationType == ShimmerAnimationType.VERTICAL)
         }
+    }else{
+        RadioItem(state.categories)
+
     }
 }
 
 @Composable
-fun ShimmerItem(lists: List<Color>, floatAnim: Float = 0f, isVertical: Boolean) {
-    val brush = if (isVertical) Brush.verticalGradient(lists, 0f, floatAnim) else
-        Brush.horizontalGradient(lists, 0f, floatAnim)
-    Row(modifier = Modifier.padding(16.dp)) {
-        Spacer(
-            modifier = Modifier
-                .size(100.dp)
-                .background(brush = brush)
-        )
-        Column(modifier = Modifier.padding(8.dp)) {
-            Spacer(
-                modifier = Modifier
-                    .fillMaxWidth()
-                    .height(30.dp)
-                    .padding(8.dp)
-                    .background(brush = brush)
-            )
-            Spacer(
-                modifier = Modifier
-                    .fillMaxWidth()
-                    .height(30.dp)
-                    .padding(8.dp)
-                    .background(brush = brush)
-            )
-            Spacer(
-                modifier = Modifier
-                    .fillMaxWidth()
-                    .height(30.dp)
-                    .padding(8.dp)
-                    .background(brush = brush)
-            )
-        }
+fun RadioItem(stateCategories : List<Country>){
+
+    stateCategories.forEach{
+        Text(text = it.name)
     }
+
+    Text(text = stateCategories.get(0).name)
 }
