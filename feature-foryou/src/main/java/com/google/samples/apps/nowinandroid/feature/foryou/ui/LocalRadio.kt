@@ -2,27 +2,35 @@ package com.google.samples.apps.nowinandroid.feature.foryou
 
 import androidx.compose.animation.animateColor
 import androidx.compose.animation.core.*
-import androidx.compose.foundation.background
+import androidx.compose.foundation.Image
 import androidx.compose.foundation.layout.*
+import androidx.compose.foundation.lazy.LazyColumn
+import androidx.compose.foundation.lazy.items
+import androidx.compose.foundation.lazy.itemsIndexed
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.verticalScroll
-import androidx.compose.material3.Button
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.MoreVert
 import androidx.compose.material3.ButtonDefaults
+import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.MaterialTheme.typography
 import androidx.compose.material3.Text
 import androidx.compose.runtime.*
+import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.graphics.Brush
+import androidx.compose.ui.draw.alpha
 import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.tooling.preview.Preview
+import androidx.compose.ui.graphics.graphicsLayer
+import androidx.compose.ui.layout.ContentScale
+import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
-
-enum class ShimmerAnimationType {
-    FADE, TRANSLATE, FADETRANSLATE, VERTICAL
-}
+import androidx.compose.ui.unit.sp
+import coil.compose.rememberImagePainter
+import com.google.samples.apps.nowinandroid.feature.foryou.ui.ShimmerAnimationType
 
 @Composable
-fun ShimmerList(state: FoodCategoriesContract.State) {
+fun LocalRadioList(state: FoodCategoriesContract.State) {
     var shimmerAnimationType by remember { mutableStateOf(ShimmerAnimationType.FADE) }
 
     val transition = rememberInfiniteTransition()
@@ -74,41 +82,64 @@ fun ShimmerList(state: FoodCategoriesContract.State) {
             ShimmerItem(list, dpValue.value, shimmerAnimationType == ShimmerAnimationType.VERTICAL)
             ShimmerItem(list, dpValue.value, shimmerAnimationType == ShimmerAnimationType.VERTICAL)
         }
+    }else{
+        RadioItem(state.categories)
     }
 }
 
 @Composable
-fun ShimmerItem(lists: List<Color>, floatAnim: Float = 0f, isVertical: Boolean) {
-    val brush = if (isVertical) Brush.verticalGradient(lists, 0f, floatAnim) else
-        Brush.horizontalGradient(lists, 0f, floatAnim)
-    Row(modifier = Modifier.padding(16.dp)) {
-        Spacer(
-            modifier = Modifier
-                .size(100.dp)
-                .background(brush = brush)
+fun RadioItem(stateCategories : List<Country>){
+    LazyColumn {
+        itemsIndexed(
+            items = stateCategories,
+            itemContent = {index, item ->
+                AnimatedListItem(tweet = item, index)
+            }
         )
-        Column(modifier = Modifier.padding(8.dp)) {
-            Spacer(
-                modifier = Modifier
-                    .fillMaxWidth()
-                    .height(30.dp)
-                    .padding(8.dp)
-                    .background(brush = brush)
+    }
+}
+
+
+@Composable
+fun AnimatedListItem(tweet: Country, itemIndex: Int) {
+    Row(
+        verticalAlignment = Alignment.CenterVertically,
+    ) {
+        Image(
+            painter = rememberImagePainter(
+                data = "https://picsum.photos/id/${
+                    itemIndex +
+                            1
+                }/200/200"
+            ),
+            contentDescription = null,
+            contentScale = ContentScale.Crop,
+            modifier = Modifier
+                .size(55.dp)
+                .padding(4.dp)
+        )
+        Column(
+            modifier = Modifier
+                .padding(horizontal = 4.dp)
+                .weight(1f)
+        ) {
+            Text(
+                text = tweet.name,
+               // style = typography.h6.copy(fontSize = 16.sp),
+                color = MaterialTheme.colorScheme.onSurface
             )
-            Spacer(
-                modifier = Modifier
-                    .fillMaxWidth()
-                    .height(30.dp)
-                    .padding(8.dp)
-                    .background(brush = brush)
-            )
-            Spacer(
-                modifier = Modifier
-                    .fillMaxWidth()
-                    .height(30.dp)
-                    .padding(8.dp)
-                    .background(brush = brush)
+            Text(
+                text = tweet.stationcount,
+               // style = typography.subtitle2,
+                maxLines = 1,
+                overflow = TextOverflow.Ellipsis
             )
         }
+        Icon(
+            imageVector = Icons.Default.MoreVert,
+            contentDescription = null,
+            tint = Color.LightGray,
+            modifier = Modifier.padding(4.dp)
+        )
     }
 }

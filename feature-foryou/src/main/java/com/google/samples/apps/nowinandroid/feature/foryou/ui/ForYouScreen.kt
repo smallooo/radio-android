@@ -36,6 +36,7 @@ import com.google.samples.apps.nowinandroid.components.PagerState
 import com.google.samples.apps.nowinandroid.core.ui.LoadingWheel
 import com.google.samples.apps.nowinandroid.core.ui.component.NiaGradientBackground
 import com.google.samples.apps.nowinandroid.core.ui.component.NiaTopAppBar
+import com.google.samples.apps.nowinandroid.feature.foryou.ui.ShimmerList
 
 @Composable
 fun ForYouRoute(
@@ -133,47 +134,4 @@ fun ForYouScreen(
     }
 }
 
-private fun LazyListScope.Feed(
-    feedState: ForYouFeedUiState,
-    showLoadingUIIfLoading: Boolean,
-    @IntRange(from = 1) numberOfColumns: Int,
-    onNewsResourcesCheckedChanged: (String, Boolean) -> Unit
-) {
-    when (feedState) {
-        ForYouFeedUiState.Loading -> {
-            if (showLoadingUIIfLoading) {
-                item {
-                    LoadingWheel(
-                        modifier = Modifier
-                            .fillMaxWidth()
-                            .wrapContentSize(),
-                        contentDesc = stringResource(id = R.string.for_you_loading),
-                    )
-                }
-            }
-        }
-        is ForYouFeedUiState.Success -> {
-            items(
-                feedState.feed.chunked(numberOfColumns)
-            ) { saveableNewsResources ->
-                Row(
-                    modifier = Modifier.padding(
-                        top = 32.dp,
-                        start = 16.dp,
-                        end = 16.dp
-                    ),
-                    horizontalArrangement = Arrangement.spacedBy(32.dp)
-                ) {
-                    repeat(numberOfColumns) { index ->
-                        Box(
-                            modifier = Modifier.weight(1f)
-                        ) {
-                            Text(text = "hello")
-                        }
-                    }
-                }
-            }
-        }
-    }
-}
 

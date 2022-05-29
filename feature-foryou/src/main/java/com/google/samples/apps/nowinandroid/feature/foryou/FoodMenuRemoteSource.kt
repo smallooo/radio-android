@@ -8,13 +8,7 @@ import javax.inject.Singleton
 
 @Singleton
 class FoodMenuRemoteSource @Inject constructor(private val countryApi: CountryListApi) {
-
-    private var cachedCategories: List<FoodItem>? = null
     private var _countryList: ArrayList<Country>? = null
-
-
-
-
 
     suspend fun getCountryList() = withContext(Dispatchers.IO){
         if(_countryList == null){
