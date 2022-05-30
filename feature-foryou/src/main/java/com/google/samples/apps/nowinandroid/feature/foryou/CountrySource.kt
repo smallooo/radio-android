@@ -7,7 +7,7 @@ import javax.inject.Inject
 import javax.inject.Singleton
 
 @Singleton
-class CountrySource @Inject constructor(private val countryApi: CountryListApi) {
+class CountrySource @Inject constructor(private val countryApi: RadioListApi) {
     private var _countryList: ArrayList<Country>? = null
 
     suspend fun getCountryList() = withContext(Dispatchers.IO){

@@ -1,8 +1,11 @@
 package com.google.samples.apps.nowinandroid.feature.foryou
 
+import android.util.Log
+import android.widget.Toast
 import androidx.compose.animation.animateColor
 import androidx.compose.animation.core.*
 import androidx.compose.foundation.Image
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.itemsIndexed
@@ -19,6 +22,7 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.layout.ContentScale
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
@@ -26,7 +30,7 @@ import coil.compose.rememberImagePainter
 import com.google.samples.apps.nowinandroid.feature.foryou.ui.ShimmerAnimationType
 
 @Composable
-fun LocalRadioList(viewModel: CountryViewModel = hiltViewModel()) {
+fun LocalRadioList(viewModel: LocalRadioListViewModel = hiltViewModel()) {
     val state = viewModel.state
     val shimmerAnimationType by remember { mutableStateOf(ShimmerAnimationType.FADE) }
 
@@ -80,26 +84,27 @@ fun LocalRadioList(viewModel: CountryViewModel = hiltViewModel()) {
             ShimmerItem(list, dpValue.value, shimmerAnimationType == ShimmerAnimationType.VERTICAL)
         }
     }else{
-        RadioItem(state.categories)
+        RadioItem(state.localStations)
     }
 }
 
 @Composable
-fun RadioItem(stateCategories : List<Country>){
+fun RadioItem(stateCategories : List<Station>){
     LazyColumn {
         itemsIndexed(
             items = stateCategories,
             itemContent = {index, item ->
-                AnimatedListItem(tweet = item, index)
+                AnimatedListItem(station = item, index)
             }
         )
     }
 }
 
 @Composable
-fun AnimatedListItem(tweet: Country, itemIndex: Int) {
+fun AnimatedListItem(station: Station, itemIndex: Int) {
     Row(
         verticalAlignment = Alignment.CenterVertically,
+        modifier = Modifier.clickable {  }
     ) {
         Image(
             painter = rememberImagePainter(
@@ -120,12 +125,12 @@ fun AnimatedListItem(tweet: Country, itemIndex: Int) {
                 .weight(1f)
         ) {
             Text(
-                text = tweet.name,
+                text = station.name,
                // style = typography.h6.copy(fontSize = 16.sp),
                 color = MaterialTheme.colorScheme.onSurface
             )
             Text(
-                text = tweet.stationcount,
+                text = station.bitrate + "kbps",
                // style = typography.subtitle2,
                 maxLines = 1,
                 overflow = TextOverflow.Ellipsis
@@ -139,3 +144,5 @@ fun AnimatedListItem(tweet: Country, itemIndex: Int) {
         )
     }
 }
+
+

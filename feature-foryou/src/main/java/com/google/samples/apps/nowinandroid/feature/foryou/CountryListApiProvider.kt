@@ -1,6 +1,6 @@
 package com.google.samples.apps.nowinandroid.feature.foryou
 
-import com.google.samples.apps.nowinandroid.feature.foryou.CountryListApi.Companion.API_URL
+import com.google.samples.apps.nowinandroid.feature.foryou.RadioListApi.Companion.API_URL
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
@@ -39,8 +39,8 @@ class CountryListApiProvider {
     @Singleton
     fun provideCountryListApiService(
         retrofit: Retrofit
-    ): CountryListApi.Service {
-        return retrofit.create(CountryListApi.Service::class.java)
+    ): RadioListApi.Service {
+        return retrofit.create(RadioListApi.Service::class.java)
     }
 
 }

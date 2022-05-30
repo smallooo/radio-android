@@ -13,12 +13,12 @@ import kotlinx.coroutines.launch
 import javax.inject.Inject
 
 @HiltViewModel
-class LocalRadioListViewModel @Inject constructor(private val remoteSource: CountrySource) :
+class LocalRadioListViewModel @Inject constructor(private val localStationsSource: LocalStationsSource) :
 
     ViewModel() {
     var state by mutableStateOf(
-        CountryCategoriesContract.State(
-            categories = listOf(),
+        LocalStationsContract.State(
+            localStations = listOf(),
             isLoading = true
         )
     )
@@ -27,13 +27,13 @@ class LocalRadioListViewModel @Inject constructor(private val remoteSource: Coun
         private set
 
     init {
-        viewModelScope.launch { getCountriesList() }
+        viewModelScope.launch { getLocalStationsList() }
     }
 
-    private suspend fun getCountriesList() {
-        val categories = remoteSource.getCountryList()
+    private suspend fun getLocalStationsList() {
+        val categories = localStationsSource.getLocalStationsList()
         viewModelScope.launch {
-            state = categories?.let { state.copy(categories = it, isLoading = false) }!!
+            state = categories?.let { state.copy(localStations = it, isLoading = false) }!!
             effects.send(CountryCategoriesContract.Effect.DataWasLoaded)
         }
     }
