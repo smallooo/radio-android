@@ -11,7 +11,6 @@ import androidx.compose.runtime.*
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.unit.dp
-import com.google.samples.apps.nowinandroid.feature.foryou.FoodCategoriesContract
 import com.google.samples.apps.nowinandroid.feature.foryou.ShimmerItem
 
 enum class ShimmerAnimationType {
@@ -19,7 +18,7 @@ enum class ShimmerAnimationType {
 }
 
 @Composable
-fun ShimmerList(state: FoodCategoriesContract.State) {
+fun ShimmerList() {
     var shimmerAnimationType by remember { mutableStateOf(ShimmerAnimationType.FADE) }
 
     val transition = rememberInfiniteTransition()
@@ -59,7 +58,7 @@ fun ShimmerList(state: FoodCategoriesContract.State) {
             MaterialTheme.colorScheme.primary else Color.LightGray
     )
 
-    if(state.isLoading) {
+    if(true) {
         Column(
             modifier = Modifier
                 .fillMaxSize()

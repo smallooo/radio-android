@@ -13,9 +13,9 @@ import kotlinx.coroutines.launch
 import javax.inject.Inject
 
 @HiltViewModel
-class CountryViewModel @Inject constructor(private val remoteSource: CountrySource) :
-    ViewModel() {
+class LocalRadioListViewModel @Inject constructor(private val remoteSource: CountrySource) :
 
+    ViewModel() {
     var state by mutableStateOf(
         CountryCategoriesContract.State(
             categories = listOf(),

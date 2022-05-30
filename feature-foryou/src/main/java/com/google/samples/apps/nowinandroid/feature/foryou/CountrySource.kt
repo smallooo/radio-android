@@ -7,7 +7,7 @@ import javax.inject.Inject
 import javax.inject.Singleton
 
 @Singleton
-class FoodMenuRemoteSource @Inject constructor(private val countryApi: CountryListApi) {
+class CountrySource @Inject constructor(private val countryApi: CountryListApi) {
     private var _countryList: ArrayList<Country>? = null
 
     suspend fun getCountryList() = withContext(Dispatchers.IO){

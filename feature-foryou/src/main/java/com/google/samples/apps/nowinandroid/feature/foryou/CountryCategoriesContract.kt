@@ -1,7 +1,7 @@
 package com.google.samples.apps.nowinandroid.feature.foryou
 
 
-class FoodCategoriesContract {
+class CountryCategoriesContract {
 
     data class State(
         val categories: List<Country> = listOf(),

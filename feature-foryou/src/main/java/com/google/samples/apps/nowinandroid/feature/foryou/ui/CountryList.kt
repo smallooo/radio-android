@@ -26,7 +26,7 @@ import coil.compose.rememberImagePainter
 import com.google.samples.apps.nowinandroid.feature.foryou.ui.ShimmerAnimationType
 
 @Composable
-fun LocalRadioList(viewModel: CountryViewModel = hiltViewModel()) {
+fun CountryList(viewModel: CountryViewModel = hiltViewModel()) {
     val state = viewModel.state
     val shimmerAnimationType by remember { mutableStateOf(ShimmerAnimationType.FADE) }
 
@@ -80,24 +80,24 @@ fun LocalRadioList(viewModel: CountryViewModel = hiltViewModel()) {
             ShimmerItem(list, dpValue.value, shimmerAnimationType == ShimmerAnimationType.VERTICAL)
         }
     }else{
-        RadioItem(state.categories)
+        CountryItem(state.categories)
     }
 }
 
 @Composable
-fun RadioItem(stateCategories : List<Country>){
+fun CountryItem(stateCategories : List<Country>){
     LazyColumn {
         itemsIndexed(
             items = stateCategories,
             itemContent = {index, item ->
-                AnimatedListItem(tweet = item, index)
+                AnimatedCountryListItem(tweet = item, index)
             }
         )
     }
 }
 
 @Composable
-fun AnimatedListItem(tweet: Country, itemIndex: Int) {
+fun AnimatedCountryListItem(tweet: Country, itemIndex: Int) {
     Row(
         verticalAlignment = Alignment.CenterVertically,
     ) {

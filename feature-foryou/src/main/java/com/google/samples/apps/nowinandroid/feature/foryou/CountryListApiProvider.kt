@@ -1,7 +1,5 @@
 package com.google.samples.apps.nowinandroid.feature.foryou
 
-
-
 import com.google.samples.apps.nowinandroid.feature.foryou.CountryListApi.Companion.API_URL
 import dagger.Module
 import dagger.Provides
