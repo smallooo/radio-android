@@ -56,11 +56,7 @@ dependencies {
     kapt(libs.hilt.compiler)
 
 
-    implementation(libs.retrofit.core)
 
-    implementation(libs.retrofit.converter)
-
-    implementation(libs.google.gson)
 
 
     val media3_version = "1.0.0-alpha03"

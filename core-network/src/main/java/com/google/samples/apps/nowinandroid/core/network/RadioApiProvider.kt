@@ -1,6 +1,8 @@
-package com.google.samples.apps.nowinandroid.feature.foryou
+package com.google.samples.apps.nowinandroid.core.network
 
-import com.google.samples.apps.nowinandroid.feature.foryou.RadioListApi.Companion.API_URL
+
+import com.google.samples.apps.nowinandroid.core.network.retrofit.RadioListApi
+import com.google.samples.apps.nowinandroid.core.network.retrofit.RadioListApi.Companion.API_URL
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn

@@ -1,4 +1,4 @@
-package com.google.samples.apps.nowinandroid.feature.foryou
+package com.google.samples.apps.nowinandroid.core.network.retrofit
 
 import com.google.samples.apps.nowinandroid.core.model.data.Country
 import com.google.samples.apps.nowinandroid.core.model.data.Station
