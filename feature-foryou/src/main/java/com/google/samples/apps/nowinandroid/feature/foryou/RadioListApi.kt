@@ -22,7 +22,7 @@ class RadioListApi @Inject constructor(private val service: Service) {
         @GET("/json/stations/bycountry/japan")
          本地电台            "/json/stations/bycountry/japan"
          访问排行            "json/stations/topclick/100";
-         投票排行            "json/stations/topvote/100";
+         投票排行            "json/stations/topclick/100";
          最近更新            "json/stations/lastchange/100";
          正在播放            "json/stations/lastclick/100";
          标签

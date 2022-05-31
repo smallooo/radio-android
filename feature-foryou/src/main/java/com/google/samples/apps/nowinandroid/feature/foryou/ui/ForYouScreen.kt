@@ -77,11 +77,11 @@ fun ForYouScreen() {
             Pager(state = pagerState, modifier = Modifier.weight(1f)) {
                 selectedIndex = pagerState.currentPage
                 when (commingPage) {
-                    0 -> LocalRadioList(PageType.LOCAL, player)
-                    1 -> LocalRadioList(PageType.MOSTVISIT, player)
-                    2 -> LocalRadioList(PageType.TOPVOTE, player)
-                    3 -> LocalRadioList(PageType.LATESTUPDATE, player)
-                    4 -> LocalRadioList(PageType.LOCAL, player)
+                    0 -> LocalRadioList(PageType.bycountry, "japan",player)
+                    1 -> LocalRadioList(PageType.topclick, "100", player)
+                    2 -> LocalRadioList(PageType.topvote, "100", player)
+                    3 -> LocalRadioList(PageType.lastchange, "100", player)
+                    4 -> LocalRadioList(PageType.lastclick, "100", player)
                     5 -> ShimmerList()
                     6 -> CountryList()
                     7 -> ShimmerList()

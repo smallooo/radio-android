@@ -13,9 +13,9 @@ import kotlinx.coroutines.launch
 import javax.inject.Inject
 
 @HiltViewModel
-class LocalRadioListViewModel @Inject constructor(private val localStationsSource: LocalStationsSource) :
-
-    ViewModel() { var state by mutableStateOf(
+class LocalRadioListViewModel @Inject constructor( private val localStationsSource: LocalStationsSource)
+    : ViewModel() {
+    var state by mutableStateOf(
         LocalStationsContract.State(
             localStations = listOf(),
             isLoading = true
@@ -25,12 +25,16 @@ class LocalRadioListViewModel @Inject constructor(private val localStationsSourc
     var effects = Channel<CountryCategoriesContract.Effect>(UNLIMITED)
         private set
 
-    init {
-        viewModelScope.launch { getLocalStationsList() }
+
+    fun callInit(type:String, param: String){
+        viewModelScope.launch {
+            getLocalStationsList(type, param)
+        }
     }
 
-    private suspend fun getLocalStationsList() {
-        val categories = localStationsSource.getLocalStationsList("bycountry", "china")
+
+     suspend fun getLocalStationsList(type:String, param: String) {
+        val categories = localStationsSource.getLocalStationsList(type, param)
         viewModelScope.launch {
             state = categories?.let { state.copy(localStations = it, isLoading = false) }!!
             effects.send(CountryCategoriesContract.Effect.DataWasLoaded)
