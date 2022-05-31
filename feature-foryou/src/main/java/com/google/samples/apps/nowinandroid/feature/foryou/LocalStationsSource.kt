@@ -1,5 +1,6 @@
 package com.google.samples.apps.nowinandroid.feature.foryou
 
+import com.google.samples.apps.nowinandroid.core.model.data.Station
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
 import javax.inject.Inject

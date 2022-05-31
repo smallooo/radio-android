@@ -1,5 +1,7 @@
 package com.google.samples.apps.nowinandroid.feature.foryou
 
+import com.google.samples.apps.nowinandroid.core.model.data.Country
+import com.google.samples.apps.nowinandroid.core.model.data.Station
 import retrofit2.http.GET
 import retrofit2.http.Path
 import javax.inject.Inject

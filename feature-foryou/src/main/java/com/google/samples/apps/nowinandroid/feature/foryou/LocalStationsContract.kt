@@ -1,5 +1,7 @@
 package com.google.samples.apps.nowinandroid.feature.foryou
 
+import com.google.samples.apps.nowinandroid.core.model.data.Station
+
 
 class LocalStationsContract {
 

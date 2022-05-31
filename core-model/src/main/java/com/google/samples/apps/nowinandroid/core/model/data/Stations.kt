@@ -1,8 +1,4 @@
-package com.google.samples.apps.nowinandroid.feature.foryou
-
-import com.google.gson.annotations.SerializedName
-
-data class StationsListResponse(val countries: Any)
+package com.google.samples.apps.nowinandroid.core.model.data
 
 data class Station(
     val changeuuid: String,

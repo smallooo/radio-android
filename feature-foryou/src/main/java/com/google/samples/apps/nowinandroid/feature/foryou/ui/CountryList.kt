@@ -23,6 +23,7 @@ import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import coil.compose.rememberImagePainter
+import com.google.samples.apps.nowinandroid.core.model.data.Country
 import com.google.samples.apps.nowinandroid.feature.foryou.ui.ShimmerAnimationType
 
 @Composable
