@@ -1,7 +1,6 @@
 package com.google.samples.apps.nowinandroid.feature.foryou
 
-import android.util.Log
-import android.widget.Toast
+
 import androidx.compose.animation.animateColor
 import androidx.compose.animation.core.*
 import androidx.compose.foundation.Image
@@ -22,15 +21,16 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.layout.ContentScale
-import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
+import androidx.media3.common.MediaItem
+import androidx.media3.exoplayer.ExoPlayer
 import coil.compose.rememberImagePainter
 import com.google.samples.apps.nowinandroid.feature.foryou.ui.ShimmerAnimationType
 
 @Composable
-fun LocalRadioList(viewModel: LocalRadioListViewModel = hiltViewModel()) {
+fun LocalRadioList(pageType:PageType, player: ExoPlayer, viewModel: LocalRadioListViewModel = hiltViewModel()) {
     val state = viewModel.state
     val shimmerAnimationType by remember { mutableStateOf(ShimmerAnimationType.FADE) }
 
@@ -65,6 +65,9 @@ fun LocalRadioList(viewModel: LocalRadioListViewModel = hiltViewModel()) {
         2000.dp
     }
 
+
+
+
     @Composable
     fun buttonColors(type: ShimmerAnimationType) = ButtonDefaults.buttonColors(
         containerColor = if (shimmerAnimationType == type)
@@ -84,34 +87,36 @@ fun LocalRadioList(viewModel: LocalRadioListViewModel = hiltViewModel()) {
             ShimmerItem(list, dpValue.value, shimmerAnimationType == ShimmerAnimationType.VERTICAL)
         }
     }else{
-        RadioItem(state.localStations)
+        RadioItem(player, state.localStations)
     }
 }
 
 @Composable
-fun RadioItem(stateCategories : List<Station>){
+fun RadioItem(player: ExoPlayer, stateCategories : List<Station>){
     LazyColumn {
         itemsIndexed(
             items = stateCategories,
             itemContent = {index, item ->
-                AnimatedListItem(station = item, index)
+                AnimatedListItem(player, station = item, index)
             }
         )
     }
 }
 
 @Composable
-fun AnimatedListItem(station: Station, itemIndex: Int) {
+fun AnimatedListItem(player: ExoPlayer, station: Station, itemIndex: Int) {
     Row(
         verticalAlignment = Alignment.CenterVertically,
-        modifier = Modifier.clickable {  }
+        modifier = Modifier.clickable {
+            val mediaItem = MediaItem.fromUri(station.url_resolved)
+            player.setMediaItem(mediaItem)
+            player.playWhenReady = true
+            player.prepare()
+        }
     ) {
         Image(
             painter = rememberImagePainter(
-                data = "https://picsum.photos/id/${
-                    itemIndex +
-                            1
-                }/200/200"
+                data = station.favicon
             ),
             contentDescription = null,
             contentScale = ContentScale.Crop,
@@ -144,5 +149,3 @@ fun AnimatedListItem(station: Station, itemIndex: Int) {
         )
     }
 }
-
-

@@ -15,8 +15,7 @@ import javax.inject.Inject
 @HiltViewModel
 class LocalRadioListViewModel @Inject constructor(private val localStationsSource: LocalStationsSource) :
 
-    ViewModel() {
-    var state by mutableStateOf(
+    ViewModel() { var state by mutableStateOf(
         LocalStationsContract.State(
             localStations = listOf(),
             isLoading = true
@@ -31,7 +30,7 @@ class LocalRadioListViewModel @Inject constructor(private val localStationsSourc
     }
 
     private suspend fun getLocalStationsList() {
-        val categories = localStationsSource.getLocalStationsList()
+        val categories = localStationsSource.getLocalStationsList("bycountry", "china")
         viewModelScope.launch {
             state = categories?.let { state.copy(localStations = it, isLoading = false) }!!
             effects.send(CountryCategoriesContract.Effect.DataWasLoaded)

@@ -29,7 +29,6 @@ class CountryViewModel @Inject constructor(private val remoteSource: CountrySour
     init {
         viewModelScope.launch {
             getCountriesList()
-            getLocalStationsList()
         }
     }
 
@@ -39,10 +38,6 @@ class CountryViewModel @Inject constructor(private val remoteSource: CountrySour
             state = categories?.let { state.copy(categories = it, isLoading = false) }!!
             effects.send(CountryCategoriesContract.Effect.DataWasLoaded)
         }
-    }
-
-    private suspend fun getLocalStationsList(){
-        val localStationsList = remoteSource.getCountryList()
     }
 }
 

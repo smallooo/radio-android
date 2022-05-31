@@ -9,9 +9,9 @@ import javax.inject.Singleton
 class LocalStationsSource @Inject constructor(private val radioListApi: RadioListApi) {
     private var _localRadioList: ArrayList<Station>? = null
 
-    suspend fun getLocalStationsList() = withContext(Dispatchers.IO){
+    suspend fun getLocalStationsList(type: String, param : String) = withContext(Dispatchers.IO){
         if(_localRadioList == null){
-            _localRadioList = radioListApi.getListByCountry()
+            _localRadioList = radioListApi.getListByCountry(type, param)
         }
         return@withContext _localRadioList
     }

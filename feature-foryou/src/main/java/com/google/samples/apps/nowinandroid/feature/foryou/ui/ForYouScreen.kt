@@ -25,8 +25,10 @@ import androidx.compose.material3.windowsizeclass.WindowSizeClass
 import androidx.compose.runtime.*
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
+import androidx.media3.exoplayer.ExoPlayer
 import com.google.samples.apps.nowinandroid.components.Pager
 import com.google.samples.apps.nowinandroid.components.PagerState
 import com.google.samples.apps.nowinandroid.core.ui.component.NiaGradientBackground
@@ -42,6 +44,9 @@ fun ForYouRoute(windowSizeClass: WindowSizeClass) {
 @Composable
 fun ForYouScreen() {
     val tabs = listOf("本地电台", "访问排行", "投票排行","最近更新", "正在播放", "标签", "国家", "语言", "搜索")
+
+    val player = ExoPlayer.Builder(LocalContext.current).build()
+
 
     @Composable
     fun AdvanceListContent() {
@@ -72,11 +77,11 @@ fun ForYouScreen() {
             Pager(state = pagerState, modifier = Modifier.weight(1f)) {
                 selectedIndex = pagerState.currentPage
                 when (commingPage) {
-                    0 -> LocalRadioList()
-                    1 -> ShimmerList()
-                    2 -> ShimmerList()
-                    3 -> ShimmerList()
-                    4 -> ShimmerList()
+                    0 -> LocalRadioList(PageType.LOCAL, player)
+                    1 -> LocalRadioList(PageType.MOSTVISIT, player)
+                    2 -> LocalRadioList(PageType.TOPVOTE, player)
+                    3 -> LocalRadioList(PageType.LATESTUPDATE, player)
+                    4 -> LocalRadioList(PageType.LOCAL, player)
                     5 -> ShimmerList()
                     6 -> CountryList()
                     7 -> ShimmerList()
