@@ -13,10 +13,8 @@ class RadioListApi @Inject constructor(private val service: Service) {
         @GET("json/countries")
         suspend fun getCountryList(): ArrayList<Country>
 
-
         @GET("/json/stations/{type}/{param}")
         suspend fun getListByCountry(@Path("type")type: String, @Path("param") param: String): ArrayList<Station>
-
 
         /*
         @GET("/json/stations/bycountry/japan")
@@ -30,7 +28,7 @@ class RadioListApi @Inject constructor(private val service: Service) {
          语言
          搜索
 
-         private String itsAdressWWWLocal = "json/stations/bycountryexact/internet?order=clickcount&reverse=true";
+        private String itsAdressWWWLocal = "json/stations/bycountryexact/internet?order=clickcount&reverse=true";
         private String itsAdressWWWTopClick = "json/stations/topclick/100";
         private String itsAdressWWWTopVote = "json/stations/topvote/100";
         private String itsAdressWWWChangedLately = "json/stations/lastchange/100";
@@ -38,7 +36,6 @@ class RadioListApi @Inject constructor(private val service: Service) {
         private String itsAdressWWWTags = "json/tags";
         private String itsAdressWWWCountries = "json/countrycodes";
         private String itsAdressWWWLanguages = "json/languages";
-
          */
 
     }
