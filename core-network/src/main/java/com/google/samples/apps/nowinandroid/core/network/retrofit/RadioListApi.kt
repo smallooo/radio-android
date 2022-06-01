@@ -10,7 +10,7 @@ import javax.inject.Singleton
 @Singleton
 class RadioListApi @Inject constructor(private val service: Service) {
     suspend fun getCountryList(): ArrayList<Country> = service.getCountryList()
-    suspend fun getListByCountry(type: String, param: String): ArrayList<Station> = service.getListByCountry(type, param)
+    suspend fun getListByCountry(type: String, param: String): List<Station> = service.getListByCountry(type, param)
     interface Service {
         @GET("json/countries")
         suspend fun getCountryList(): ArrayList<Country>
@@ -43,7 +43,7 @@ class RadioListApi @Inject constructor(private val service: Service) {
     }
 
     companion object {
-        const val API_URL = "http://de1.api.radio-browser.info/"
+        const val API_URL = "http://at1.api.radio-browser.info/"
     }
 }
 

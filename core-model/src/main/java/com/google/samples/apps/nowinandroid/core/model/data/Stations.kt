@@ -3,7 +3,7 @@ package com.google.samples.apps.nowinandroid.core.model.data
 data class Station(
     val changeuuid: String,
     val stationuuid: String,
-    val serveruuid: String,
+    val serveruuid: String = "",
     val name: String,
     val url: String,
     val url_resolved: String,

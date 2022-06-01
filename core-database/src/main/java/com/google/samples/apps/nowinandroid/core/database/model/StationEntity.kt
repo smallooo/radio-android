@@ -3,6 +3,7 @@ package com.google.samples.apps.nowinandroid.core.database.model
 import androidx.room.Entity
 import androidx.room.PrimaryKey
 import com.google.samples.apps.nowinandroid.core.model.data.Station
+import javax.annotation.Nullable
 
 @Entity(tableName = "stations",)
 data class StationEntity(
@@ -10,6 +11,7 @@ data class StationEntity(
     val changeuuid: String,
     @PrimaryKey
     val stationuuid: String,
+    @Nullable
     val serveruuid: String,
     val name: String,
     val url: String,

@@ -13,7 +13,7 @@ class LocalStationsSource @Inject constructor(private val radioListApi: RadioLis
 
     suspend fun getLocalStationsList(type: String, param : String) = withContext(Dispatchers.IO){
         if(_localRadioList == null){
-            _localRadioList = radioListApi.getListByCountry(type, param)
+            _localRadioList = radioListApi.getListByCountry(type, param) as ArrayList<Station>
         }
         return@withContext _localRadioList
     }
