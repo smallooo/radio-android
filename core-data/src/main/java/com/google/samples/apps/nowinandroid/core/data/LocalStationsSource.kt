@@ -15,7 +15,7 @@ class LocalStationsSource @Inject constructor(private val stationDao: StationDao
 
     suspend fun getLocalStationsList(type: String, param : String) = withContext(Dispatchers.IO){
 
-        _localRadioList = stationDao.getStationsStream()
+        //_localRadioList = stationDao.getStationsStream()
 
 
         if(_localRadioList == null){

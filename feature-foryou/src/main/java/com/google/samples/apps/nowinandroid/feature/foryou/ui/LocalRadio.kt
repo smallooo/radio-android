@@ -21,6 +21,7 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.layout.ContentScale
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
@@ -28,12 +29,16 @@ import androidx.media3.common.MediaItem
 import androidx.media3.exoplayer.ExoPlayer
 import coil.compose.rememberImagePainter
 import com.google.samples.apps.nowinandroid.core.model.data.Station
+import com.google.samples.apps.nowinandroid.core.ui.LoadingWheel
 import com.google.samples.apps.nowinandroid.feature.foryou.ui.ShimmerAnimationType
 
 @Composable
 fun LocalRadioList(pageType:PageType, param: String, player: ExoPlayer, viewModel: LocalRadioListViewModel = hiltViewModel()) {
-    viewModel.callInit(pageType.name, param)
-    val state = viewModel.state
+    //viewModel.callInit(pageType.name, param)
+    //val state = viewModel.state
+
+    val uiState by viewModel.uiState.collectAsState()
+
     val shimmerAnimationType by remember { mutableStateOf(ShimmerAnimationType.FADE) }
 
     val transition = rememberInfiniteTransition()
@@ -73,21 +78,32 @@ fun LocalRadioList(pageType:PageType, param: String, player: ExoPlayer, viewMode
             MaterialTheme.colorScheme.primary else Color.LightGray
     )
 
-    if(state.isLoading) {
-        Column(
-            modifier = Modifier
-                .fillMaxSize()
-                .verticalScroll(rememberScrollState())
-        ) {
+
+    when (uiState) {
+        StationsUiState.Loading ->
             ShimmerItem(list, dpValue.value, shimmerAnimationType == ShimmerAnimationType.VERTICAL)
-            ShimmerItem(list, dpValue.value, shimmerAnimationType == ShimmerAnimationType.VERTICAL)
-            ShimmerItem(list, dpValue.value, shimmerAnimationType == ShimmerAnimationType.VERTICAL)
-            ShimmerItem(list, dpValue.value, shimmerAnimationType == ShimmerAnimationType.VERTICAL)
-            ShimmerItem(list, dpValue.value, shimmerAnimationType == ShimmerAnimationType.VERTICAL)
-        }
-    }else{
-        RadioItem(player, state.localStations)
+        is StationsUiState.Stations ->
+        Text(text = "Hello")
+        //RadioItem(player, listOf((uiState as StationsUiState.Stations).stations.get(0).station))
+        is StationsUiState.Empty -> ShimmerItem(list, dpValue.value, shimmerAnimationType == ShimmerAnimationType.VERTICAL)
     }
+
+
+//    if(uiState.value) {
+//        Column(
+//            modifier = Modifier
+//                .fillMaxSize()
+//                .verticalScroll(rememberScrollState())
+//        ) {
+//            ShimmerItem(list, dpValue.value, shimmerAnimationType == ShimmerAnimationType.VERTICAL)
+//            ShimmerItem(list, dpValue.value, shimmerAnimationType == ShimmerAnimationType.VERTICAL)
+//            ShimmerItem(list, dpValue.value, shimmerAnimationType == ShimmerAnimationType.VERTICAL)
+//            ShimmerItem(list, dpValue.value, shimmerAnimationType == ShimmerAnimationType.VERTICAL)
+//            ShimmerItem(list, dpValue.value, shimmerAnimationType == ShimmerAnimationType.VERTICAL)
+//        }
+//    }else{
+//        RadioItem(player, state.localStations)
+//    }
 }
 
 @Composable

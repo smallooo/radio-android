@@ -59,9 +59,8 @@ class OfflineFirstStationsRepository @Inject constructor(
         TODO("Not yet implemented")
     }
 
-    override fun getFollowedStationIdsStream(): Flow<Set<String>> {
-        TODO("Not yet implemented")
-    }
+    override fun getFollowedStationIdsStream(): Flow<Set<String>> =
+        niaPreferences.followedAuthorIds
 
     override suspend fun syncWith(synchronizer: Synchronizer): Boolean {
         TODO("Not yet implemented")

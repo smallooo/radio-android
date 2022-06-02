@@ -26,6 +26,7 @@ import androidx.work.WorkerParameters
 import com.google.samples.apps.nowinandroid.core.data.Synchronizer
 import com.google.samples.apps.nowinandroid.core.data.repository.AuthorsRepository
 import com.google.samples.apps.nowinandroid.core.data.repository.NewsRepository
+import com.google.samples.apps.nowinandroid.core.data.repository.StationsRepository
 import com.google.samples.apps.nowinandroid.core.data.repository.TopicsRepository
 import com.google.samples.apps.nowinandroid.core.datastore.ChangeListVersions
 import com.google.samples.apps.nowinandroid.core.datastore.NiaPreferences
@@ -52,6 +53,7 @@ class SyncWorker @AssistedInject constructor(
     private val topicRepository: TopicsRepository,
     private val newsRepository: NewsRepository,
     private val authorsRepository: AuthorsRepository,
+    private val stationsepository: StationsRepository,
     @Dispatcher(IO) private val ioDispatcher: CoroutineDispatcher,
 ) : CoroutineWorker(appContext, workerParams), Synchronizer {
 
