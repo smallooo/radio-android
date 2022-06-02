@@ -28,7 +28,6 @@ import androidx.media3.common.MediaItem
 import androidx.media3.exoplayer.ExoPlayer
 import coil.compose.rememberImagePainter
 import com.google.samples.apps.nowinandroid.core.model.data.Station
-
 import com.google.samples.apps.nowinandroid.feature.foryou.ui.ShimmerAnimationType
 
 @Composable
@@ -67,9 +66,6 @@ fun LocalRadioList(pageType:PageType, param: String, player: ExoPlayer, viewMode
     } else {
         2000.dp
     }
-
-
-
 
     @Composable
     fun buttonColors(type: ShimmerAnimationType) = ButtonDefaults.buttonColors(

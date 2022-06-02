@@ -19,7 +19,9 @@ package com.google.samples.apps.nowinandroid.core.data.repository
 import com.google.samples.apps.nowinandroid.core.data.Synchronizer
 import com.google.samples.apps.nowinandroid.core.data.changeListSync
 import com.google.samples.apps.nowinandroid.core.data.model.asEntity
+import com.google.samples.apps.nowinandroid.core.database.dao.StationDao
 import com.google.samples.apps.nowinandroid.core.database.dao.TopicDao
+import com.google.samples.apps.nowinandroid.core.database.model.StationEntity
 import com.google.samples.apps.nowinandroid.core.database.model.TopicEntity
 import com.google.samples.apps.nowinandroid.core.database.model.asExternalModel
 import com.google.samples.apps.nowinandroid.core.datastore.ChangeListVersions
@@ -37,13 +39,13 @@ import kotlinx.coroutines.flow.map
  * Reads are exclusively from local storage to support offline access.
  */
 class OfflineFirstStationsRepository @Inject constructor(
-    private val topicDao: StationsRepository,
+    private val sationDao: StationDao,
     private val network: NiANetwork,
     private val niaPreferences: NiaPreferences,
 ) : StationsRepository {
-    override fun getStationsStream(): Flow<List<Station>> {
-        TODO("Not yet implemented")
-    }
+    override fun getStationsStream(): Flow<List<Station>> =
+       sationDao.getStationEntitiesStream().map { it.map(StationEntity::asExternalModel) }
+
 
     override fun getStation(id: String): Flow<Station> {
         TODO("Not yet implemented")
