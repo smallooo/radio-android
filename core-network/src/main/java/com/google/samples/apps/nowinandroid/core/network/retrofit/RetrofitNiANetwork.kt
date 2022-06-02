@@ -44,6 +44,9 @@ private interface RetrofitNiANetworkApi {
     @GET(value = "/json/stations/bycountry/japan")
     suspend fun getStations(): NetworkResponse<List<NetworkStation>>
 
+    @GET(value = "json/countries")
+    suspend fun getCountries(): NetworkResponse<List<NetworkCountry>>
+
     @GET(value = "authors")
     suspend fun getAuthors(
         @Query("id") ids: List<String>?,
@@ -110,6 +113,9 @@ class RetrofitNiANetwork @Inject constructor(
 
     override suspend fun getStations(): List<NetworkStation> =
         networkApi.getStations().data
+
+    override suspend fun getCountries(): List<NetworkCountry> =
+        networkApi.getCountries().data
 
     override suspend fun getAuthors(ids: List<String>?): List<NetworkAuthor> =
         networkApi.getAuthors(ids = ids).data

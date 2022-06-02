@@ -26,6 +26,8 @@ interface NiANetwork {
 
     suspend fun getStations(): List<NetworkStation>
 
+    suspend fun getCountries(): List<NetworkCountry>
+
     suspend fun getAuthors(ids: List<String>? = null): List<NetworkAuthor>
 
     suspend fun getNewsResources(ids: List<String>? = null): List<NetworkNewsResource>

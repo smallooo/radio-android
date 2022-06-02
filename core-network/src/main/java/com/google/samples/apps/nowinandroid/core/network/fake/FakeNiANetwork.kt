@@ -42,6 +42,10 @@ class FakeNiANetwork @Inject constructor(
         TODO("Not yet implemented")
     }
 
+    override suspend fun getCountries(): List<NetworkCountry> {
+        TODO("Not yet implemented")
+    }
+
     override suspend fun getNewsResources(ids: List<String>?): List<NetworkNewsResource> =
         withContext(ioDispatcher) {
             networkJson.decodeFromString(FakeDataSource.data)
