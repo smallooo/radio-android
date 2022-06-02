@@ -19,10 +19,7 @@ package com.google.samples.apps.nowinandroid.core.network.fake
 import com.google.samples.apps.nowinandroid.core.network.Dispatcher
 import com.google.samples.apps.nowinandroid.core.network.NiANetwork
 import com.google.samples.apps.nowinandroid.core.network.NiaDispatchers.IO
-import com.google.samples.apps.nowinandroid.core.network.model.NetworkAuthor
-import com.google.samples.apps.nowinandroid.core.network.model.NetworkChangeList
-import com.google.samples.apps.nowinandroid.core.network.model.NetworkNewsResource
-import com.google.samples.apps.nowinandroid.core.network.model.NetworkTopic
+import com.google.samples.apps.nowinandroid.core.network.model.*
 import javax.inject.Inject
 import kotlinx.coroutines.CoroutineDispatcher
 import kotlinx.coroutines.withContext
@@ -40,6 +37,10 @@ class FakeNiANetwork @Inject constructor(
         withContext(ioDispatcher) {
             networkJson.decodeFromString(FakeDataSource.topicsData)
         }
+
+    override suspend fun getStations(): List<NetworkStation> {
+        TODO("Not yet implemented")
+    }
 
     override suspend fun getNewsResources(ids: List<String>?): List<NetworkNewsResource> =
         withContext(ioDispatcher) {

@@ -2,7 +2,9 @@ package com.google.samples.apps.nowinandroid.core.network.retrofit
 
 import com.google.samples.apps.nowinandroid.core.model.data.Country
 import com.google.samples.apps.nowinandroid.core.model.data.Station
+import com.google.samples.apps.nowinandroid.core.network.model.NetworkStation
 import retrofit2.http.GET
+
 import retrofit2.http.Path
 import javax.inject.Inject
 import javax.inject.Singleton

@@ -1,9 +1,9 @@
 package com.google.samples.apps.nowinandroid.core.data.model
 
 import com.google.samples.apps.nowinandroid.core.database.model.StationEntity
-import com.google.samples.apps.nowinandroid.core.model.data.Station
+import com.google.samples.apps.nowinandroid.core.network.model.NetworkStation
 
-fun Station.asEntity() = StationEntity(
+fun NetworkStation.asEntity() = StationEntity(
     changeuuid = changeuuid,
     stationuuid = stationuuid,
     serveruuid = serveruuid?:"",

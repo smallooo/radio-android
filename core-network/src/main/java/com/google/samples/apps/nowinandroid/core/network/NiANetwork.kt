@@ -16,16 +16,15 @@
 
 package com.google.samples.apps.nowinandroid.core.network
 
-import com.google.samples.apps.nowinandroid.core.network.model.NetworkAuthor
-import com.google.samples.apps.nowinandroid.core.network.model.NetworkChangeList
-import com.google.samples.apps.nowinandroid.core.network.model.NetworkNewsResource
-import com.google.samples.apps.nowinandroid.core.network.model.NetworkTopic
+import com.google.samples.apps.nowinandroid.core.network.model.*
 
 /**
  * Interface representing network calls to the NIA backend
  */
 interface NiANetwork {
     suspend fun getTopics(ids: List<String>? = null): List<NetworkTopic>
+
+    suspend fun getStations(): List<NetworkStation>
 
     suspend fun getAuthors(ids: List<String>? = null): List<NetworkAuthor>
 

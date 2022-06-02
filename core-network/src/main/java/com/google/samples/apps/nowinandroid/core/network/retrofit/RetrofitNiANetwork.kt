@@ -18,10 +18,7 @@ package com.google.samples.apps.nowinandroid.core.network.retrofit
 
 import com.google.samples.apps.nowinandroid.core.network.BuildConfig
 import com.google.samples.apps.nowinandroid.core.network.NiANetwork
-import com.google.samples.apps.nowinandroid.core.network.model.NetworkAuthor
-import com.google.samples.apps.nowinandroid.core.network.model.NetworkChangeList
-import com.google.samples.apps.nowinandroid.core.network.model.NetworkNewsResource
-import com.google.samples.apps.nowinandroid.core.network.model.NetworkTopic
+import com.google.samples.apps.nowinandroid.core.network.model.*
 import com.jakewharton.retrofit2.converter.kotlinx.serialization.asConverterFactory
 import javax.inject.Inject
 import javax.inject.Singleton
@@ -42,6 +39,10 @@ private interface RetrofitNiANetworkApi {
     suspend fun getTopics(
         @Query("id") ids: List<String>?,
     ): NetworkResponse<List<NetworkTopic>>
+
+
+    @GET(value = "/json/stations/bycountry/japan")
+    suspend fun getStations(): NetworkResponse<List<NetworkStation>>
 
     @GET(value = "authors")
     suspend fun getAuthors(
@@ -67,6 +68,7 @@ private interface RetrofitNiANetworkApi {
     suspend fun getNewsResourcesChangeList(
         @Query("after") after: Int?,
     ): List<NetworkChangeList>
+
 }
 
 private const val NiABaseUrl = BuildConfig.BACKEND_URL
@@ -105,6 +107,9 @@ class RetrofitNiANetwork @Inject constructor(
 
     override suspend fun getTopics(ids: List<String>?): List<NetworkTopic> =
         networkApi.getTopics(ids = ids).data
+
+    override suspend fun getStations(): List<NetworkStation> =
+        networkApi.getStations().data
 
     override suspend fun getAuthors(ids: List<String>?): List<NetworkAuthor> =
         networkApi.getAuthors(ids = ids).data
