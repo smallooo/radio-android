@@ -15,6 +15,7 @@ import androidx.compose.material.icons.filled.MoreVert
 import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.MaterialTheme.typography
 import androidx.compose.material3.Text
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
@@ -28,19 +29,15 @@ import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.media3.common.MediaItem
 import androidx.media3.exoplayer.ExoPlayer
 import coil.compose.rememberImagePainter
+import com.google.samples.apps.nowinandroid.core.model.data.FollowableStation
 import com.google.samples.apps.nowinandroid.core.model.data.Station
 import com.google.samples.apps.nowinandroid.core.ui.LoadingWheel
 import com.google.samples.apps.nowinandroid.feature.foryou.ui.ShimmerAnimationType
 
 @Composable
 fun LocalRadioList(pageType:PageType, param: String, player: ExoPlayer, viewModel: LocalRadioListViewModel = hiltViewModel()) {
-    //viewModel.callInit(pageType.name, param)
-    //val state = viewModel.state
-
     val uiState by viewModel.uiState.collectAsState()
-
     val shimmerAnimationType by remember { mutableStateOf(ShimmerAnimationType.FADE) }
-
     val transition = rememberInfiniteTransition()
     val translateAnim by transition.animateFloat(
         initialValue = 100f,
@@ -81,36 +78,18 @@ fun LocalRadioList(pageType:PageType, param: String, player: ExoPlayer, viewMode
 
     when (uiState) {
         StationsUiState.Loading ->
-            ShimmerItem(list, dpValue.value, shimmerAnimationType == ShimmerAnimationType.VERTICAL)
+            for(i in 1..5) ShimmerItem(list, dpValue.value, shimmerAnimationType == ShimmerAnimationType.VERTICAL)
         is StationsUiState.Stations ->
-        Text(text = "Hello")
-        //RadioItem(player, listOf((uiState as StationsUiState.Stations).stations.get(0).station))
+            RadioItem(player, listOf((uiState as StationsUiState.Stations).stations))
         is StationsUiState.Empty -> ShimmerItem(list, dpValue.value, shimmerAnimationType == ShimmerAnimationType.VERTICAL)
     }
-
-
-//    if(uiState.value) {
-//        Column(
-//            modifier = Modifier
-//                .fillMaxSize()
-//                .verticalScroll(rememberScrollState())
-//        ) {
-//            ShimmerItem(list, dpValue.value, shimmerAnimationType == ShimmerAnimationType.VERTICAL)
-//            ShimmerItem(list, dpValue.value, shimmerAnimationType == ShimmerAnimationType.VERTICAL)
-//            ShimmerItem(list, dpValue.value, shimmerAnimationType == ShimmerAnimationType.VERTICAL)
-//            ShimmerItem(list, dpValue.value, shimmerAnimationType == ShimmerAnimationType.VERTICAL)
-//            ShimmerItem(list, dpValue.value, shimmerAnimationType == ShimmerAnimationType.VERTICAL)
-//        }
-//    }else{
-//        RadioItem(player, state.localStations)
-//    }
 }
 
 @Composable
-fun RadioItem(player: ExoPlayer, stateCategories : List<Station>){
+fun RadioItem(player: ExoPlayer, stateCategories : List<List<FollowableStation>>){
     LazyColumn {
         itemsIndexed(
-            items = stateCategories,
+            items = stateCategories.get(0),
             itemContent = {index, item ->
                 AnimatedListItem(player, station = item, index)
             }
@@ -119,11 +98,11 @@ fun RadioItem(player: ExoPlayer, stateCategories : List<Station>){
 }
 
 @Composable
-fun AnimatedListItem(player: ExoPlayer, station: Station, itemIndex: Int) {
+fun AnimatedListItem(player: ExoPlayer, station: FollowableStation, itemIndex: Int) {
     Row(
         verticalAlignment = Alignment.CenterVertically,
         modifier = Modifier.clickable {
-            val mediaItem = MediaItem.fromUri(station.url_resolved)
+            val mediaItem = MediaItem.fromUri(station.station.url_resolved)
             player.setMediaItem(mediaItem)
             player.playWhenReady = true
             player.prepare()
@@ -131,7 +110,7 @@ fun AnimatedListItem(player: ExoPlayer, station: Station, itemIndex: Int) {
     ) {
         Image(
             painter = rememberImagePainter(
-                data = station.favicon
+                data = station.station.favicon
             ),
             contentDescription = null,
             contentScale = ContentScale.Crop,
@@ -145,13 +124,13 @@ fun AnimatedListItem(player: ExoPlayer, station: Station, itemIndex: Int) {
                 .weight(1f)
         ) {
             Text(
-                text = station.name,
-               // style = typography.h6.copy(fontSize = 16.sp),
+                text = station.station.name,
+                style = MaterialTheme.typography.bodyLarge,
                 color = MaterialTheme.colorScheme.onSurface
             )
             Text(
-                text = station.bitrate + "kbps",
-               // style = typography.subtitle2,
+                text = station.station.bitrate + "kbps",
+                style = MaterialTheme.typography.bodyLarge,
                 maxLines = 1,
                 overflow = TextOverflow.Ellipsis
             )
