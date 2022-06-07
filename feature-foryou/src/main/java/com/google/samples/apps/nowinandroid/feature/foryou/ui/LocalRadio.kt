@@ -26,8 +26,7 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
-import androidx.media3.common.MediaItem
-import androidx.media3.exoplayer.ExoPlayer
+
 import coil.compose.rememberImagePainter
 import com.google.samples.apps.nowinandroid.core.model.data.FollowableStation
 import com.google.samples.apps.nowinandroid.core.model.data.Station

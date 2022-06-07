@@ -28,7 +28,7 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
-import androidx.media3.exoplayer.ExoPlayer
+
 import com.google.samples.apps.nowinandroid.components.Pager
 import com.google.samples.apps.nowinandroid.components.PagerState
 import com.google.samples.apps.nowinandroid.core.ui.component.NiaGradientBackground

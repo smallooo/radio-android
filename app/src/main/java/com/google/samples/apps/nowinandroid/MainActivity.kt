@@ -31,6 +31,7 @@ class MainActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
+
         // Turn off the decor fitting system windows, which allows us to handle insets,
         // including IME animations
         WindowCompat.setDecorFitsSystemWindows(window, false)

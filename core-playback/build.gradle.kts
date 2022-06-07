@@ -8,6 +8,26 @@ plugins {
     id("com.google.android.libraries.mapsplatform.secrets-gradle-plugin")
 }
 
+android {
+    buildTypes {
+        val staging by creating {
+            initWith(getByName("debug"))
+            matchingFallbacks.add("debug")
+        }
+    }
+    // Force the staging variant to use the release source directory. This is necessary so that the
+    // staging variant uses the remote network.
+    sourceSets {
+        getByName("staging") {
+            java.srcDir("src/release/java")
+        }
+    }
+}
+
+secrets {
+    defaultPropertiesFileName = "secrets.defaults.properties"
+}
+
 
 dependencies {
     implementation(project(":core-common"))
@@ -25,4 +45,12 @@ dependencies {
     kapt(libs.hilt.compiler)
     implementation(libs.retrofit.converter)
     implementation(libs.google.gson)
+
+
+    implementation(libs.androidx.media)
+    implementation(libs.google.exoPlayer)
+    implementation(libs.google.exoPlayer.okhttp)
+    implementation(libs.google.exoPlayer.flac)
+
+    //implementation("androidx.media:media:1.6.0")
 }

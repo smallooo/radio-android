@@ -111,13 +111,18 @@ dependencies {
     implementation(libs.accompanist.systemuicontroller)
 
 
-    implementation("androidx.media3:media3-exoplayer:1.0.0-alpha03")
-    implementation("androidx.media3:media3-ui:1.0.0-alpha03")
-    implementation("androidx.media3:media3-exoplayer-dash:1.0.0-alpha03")
+//    implementation("androidx.media3:media3-exoplayer:1.0.0-alpha03")
+//    implementation("androidx.media3:media3-ui:1.0.0-alpha03")
+//    implementation("androidx.media3:media3-exoplayer-dash:1.0.0-alpha03")
 
     implementation("androidx.lifecycle:lifecycle-runtime-ktx:2.5.0-rc01")
 
     //implementation("androidx.paging:paging-compose:1.0.0-alpha14")
+
+    implementation(libs.androidx.media)
+    implementation(libs.google.exoPlayer)
+    implementation(libs.google.exoPlayer.okhttp)
+    implementation(libs.google.exoPlayer.flac)
 
 
 
