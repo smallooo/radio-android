@@ -8,7 +8,6 @@ plugins {
     id("com.google.android.libraries.mapsplatform.secrets-gradle-plugin")
 }
 
-
 dependencies {
     implementation(project(":core-common"))
     implementation(project(":core-model"))
@@ -25,4 +24,5 @@ dependencies {
     kapt(libs.hilt.compiler)
     implementation(libs.retrofit.converter)
     implementation(libs.google.gson)
+
 }
