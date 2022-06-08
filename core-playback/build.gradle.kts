@@ -48,12 +48,23 @@ dependencies {
 
     implementation(libs.androidx.core.ktx)
 
+    implementation(libs.androidx.lifecycle.compiler)
+    implementation(libs.androidx.lifecycle.runtime)
+    implementation(libs.androidx.lifecycle.runtimeKtx)
+    implementation(libs.androidx.lifecycle.viewModelCompose)
+    implementation(libs.androidx.lifecycle.viewmodelKtx)
+    implementation(libs.androidx.lifecycle.viewmodelSavedstate)
+
+    implementation(libs.androidx.lifecycle.extensions)
+
+
     implementation(libs.androidx.media)
     implementation(libs.google.exoPlayer)
     implementation(libs.google.exoPlayer.okhttp)
 //    implementation(libs.google.exoPlayer.flac)
 
     implementation(libs.timber)
+
 
     //implementation("androidx.media:media:1.6.0")
 }

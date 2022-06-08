@@ -124,6 +124,8 @@ dependencies {
     implementation(libs.google.exoPlayer.okhttp)
 //    implementation(libs.google.exoPlayer.flac)
 
+    implementation(libs.accompanist.insets)
+
 
 
     // androidx.test is forcing JUnit, 4.12. This forces it to use 4.13

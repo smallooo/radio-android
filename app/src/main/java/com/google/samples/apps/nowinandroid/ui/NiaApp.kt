@@ -18,6 +18,8 @@ package com.google.samples.apps.nowinandroid.ui
 
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.*
+import androidx.compose.material.ScaffoldState
+import androidx.compose.material.rememberScaffoldState
 import androidx.compose.material.ripple.LocalRippleTheme
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Icon
@@ -41,10 +43,14 @@ import androidx.compose.ui.graphics.graphicsLayer
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.zIndex
+import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavDestination
 import androidx.navigation.NavDestination.Companion.hierarchy
+import androidx.navigation.NavHostController
 import androidx.navigation.compose.currentBackStackEntryAsState
 import androidx.navigation.compose.rememberNavController
+import com.google.accompanist.insets.ProvideWindowInsets
+import com.google.accompanist.navigation.animation.rememberAnimatedNavController
 import com.google.samples.apps.nowinandroid.core.ui.ClearRippleTheme
 import com.google.samples.apps.nowinandroid.core.ui.component.NiaBackground
 import com.google.samples.apps.nowinandroid.core.ui.theme.NiaTheme
@@ -52,72 +58,108 @@ import com.google.samples.apps.nowinandroid.navigation.NiaNavHost
 import com.google.samples.apps.nowinandroid.navigation.NiaTopLevelNavigation
 import com.google.samples.apps.nowinandroid.navigation.TOP_LEVEL_DESTINATIONS
 import com.google.samples.apps.nowinandroid.navigation.TopLevelDestination
+import com.google.samples.apps.nowinandroid.playback.LocalScaffoldState
 import com.google.samples.apps.nowinandroid.playback.PlaybackMiniControls
+import com.google.samples.apps.nowinandroid.playback.rememberFlowWithLifecycle
 
 @OptIn(ExperimentalMaterial3Api::class, ExperimentalLayoutApi::class)
 @Composable
-fun NiaApp(windowSizeClass: WindowSizeClass) {
-    NiaTheme {
-        val navController = rememberNavController()
-        val niaTopLevelNavigation = remember(navController) {
-            NiaTopLevelNavigation(navController)
-        }
+fun NiaApp(
+    windowSizeClass: WindowSizeClass,
+    scaffoldState: ScaffoldState = rememberScaffoldState()
+    //navController: NavHostController = rememberAnimatedNavController(),
 
-        val navBackStackEntry by navController.currentBackStackEntryAsState()
-        val currentDestination = navBackStackEntry?.destination
-
-        NiaBackground {
-            Scaffold(
-                modifier = Modifier,
-                containerColor = Color.Transparent,
-                contentColor = MaterialTheme.colorScheme.onBackground,
-                bottomBar = {
-                    if (windowSizeClass.widthSizeClass == WindowWidthSizeClass.Compact) {
-                        Column {
-                            PlaybackMiniControls(
-                                modifier = Modifier
-                                    .graphicsLayer(translationY = 8.0F)
-                                    .zIndex(2f)
-                            )
-
-                            NiABottomBar(
-                                onNavigateToTopLevelDestination = niaTopLevelNavigation::navigateTo,
-                                currentDestination = currentDestination
-                            )
-                        }
-                    }
-                }
-            ) { padding ->
-                Row(
-                    Modifier
-                        .fillMaxSize()
-                        .windowInsetsPadding(
-                            WindowInsets.safeDrawing.only(
-                                WindowInsetsSides.Horizontal
-                            )
-                        )
-                ) {
-                    if (windowSizeClass.widthSizeClass != WindowWidthSizeClass.Compact) {
-                        NiANavRail(
-                            onNavigateToTopLevelDestination = niaTopLevelNavigation::navigateTo,
-                            currentDestination = currentDestination,
-                            modifier = Modifier.safeDrawingPadding()
-                        )
-                    }
-
-
-                    NiaNavHost(
-                        windowSizeClass = windowSizeClass,
-                        navController = navController,
-                        modifier = Modifier
-                            .padding(padding)
-                            .consumedWindowInsets(padding)
-                    )
-                }
-            }
+) {
+    CompositionLocalProvider(
+        LocalScaffoldState provides scaffoldState,
+       // LocalAnalytics provides analytics,
+        //LocalAppVersion provides BuildConfig.VERSION_NAME
+    ) {
+        ProvideWindowInsets(consumeWindowInsets = false) {
+//            NiaTheme {
+//                val navController = rememberNavController()
+//                val niaTopLevelNavigation = remember(navController) {
+//                    NiaTopLevelNavigation(navController)
+//                }
+//
+//                val navBackStackEntry by navController.currentBackStackEntryAsState()
+//                val currentDestination = navBackStackEntry?.destination
+//
+//                NiaBackground {
+//                    Scaffold(
+//                        modifier = Modifier,
+//                        containerColor = Color.Transparent,
+//                        contentColor = MaterialTheme.colorScheme.onBackground,
+//                        bottomBar = {
+//                            if (windowSizeClass.widthSizeClass == WindowWidthSizeClass.Compact) {
+//                                Column {
+//                                    PlaybackMiniControls(
+//                                        modifier = Modifier
+//                                            .graphicsLayer(translationY = 8.0F)
+//                                            .zIndex(2f)
+//                                    )
+//
+//                                    NiABottomBar(
+//                                        onNavigateToTopLevelDestination = niaTopLevelNavigation::navigateTo,
+//                                        currentDestination = currentDestination
+//                                    )
+//                                }
+//                            }
+//                        }
+//                    ) { padding ->
+//                        Row(
+//                            Modifier
+//                                .fillMaxSize()
+//                                .windowInsetsPadding(
+//                                    WindowInsets.safeDrawing.only(
+//                                        WindowInsetsSides.Horizontal
+//                                    )
+//                                )
+//                        ) {
+//                            if (windowSizeClass.widthSizeClass != WindowWidthSizeClass.Compact) {
+//                                NiANavRail(
+//                                    onNavigateToTopLevelDestination = niaTopLevelNavigation::navigateTo,
+//                                    currentDestination = currentDestination,
+//                                    modifier = Modifier.safeDrawingPadding()
+//                                )
+//                            }
+//
+//
+//                            NiaNavHost(
+//                                windowSizeClass = windowSizeClass,
+//                                navController = navController,
+//                                modifier = Modifier
+//                                    .padding(padding)
+//                                    .consumedWindowInsets(padding)
+//                            )
+//                        }
+//                    }
+//                }
+//            }
         }
     }
 }
+
+@Composable
+private fun RadioCore(
+    //themeViewModel: ThemeViewModel = hiltViewModel(),
+    content: @Composable () -> Unit
+) {
+   // SnackbarMessagesListener()
+   // val themeState by rememberFlowWithLifecycle(themeViewModel.themeState)
+    NiaTheme {
+       // NavigatorHost {
+          //  DownloaderHost {
+                //PlaybackHost {
+                 //   DatmusicActionHandlers {
+                 //       content()
+               //     }
+             //   }
+          //  }
+       // }
+    }
+}
+
 
 @Composable
 private fun NiANavRail(

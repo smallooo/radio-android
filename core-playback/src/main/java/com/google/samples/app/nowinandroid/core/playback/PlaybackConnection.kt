@@ -7,6 +7,10 @@ package com.google.samples.apps.nowinandroid.playback
 import android.content.ComponentName
 import android.content.Context
 import android.media.session.PlaybackState
+import android.support.v4.media.session.PlaybackStateCompat
+import androidx.lifecycle.ProcessLifecycleOwner
+import androidx.lifecycle.lifecycleScope
+import com.google.samples.app.nowinandroid.core.playback.NONE_PLAYBACK_STATE
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
@@ -17,7 +21,7 @@ const val PLAYBACK_PROGRESS_INTERVAL = 1000L
 
 interface PlaybackConnection {
 //    val isConnected: StateFlow<Boolean>
-        val playbackState: StateFlow<PlaybackState>
+        val playbackState: StateFlow<PlaybackStateCompat>
 //    val nowPlaying: StateFlow<MediaMetadataCompat>
 //
 //    val playbackQueue: StateFlow<PlaybackQueue>
@@ -52,8 +56,8 @@ class PlaybackConnectionImpl(
 //    private val audiosRepo: AudiosRepo,
 //    private val audioPlayer: AudioPlayer,
 //    private val downloader: Downloader
-   // coroutineScope: CoroutineScope = ProcessLifecycleOwner.get().lifecycleScope,
-) : PlaybackConnection {
+    coroutineScope: CoroutineScope = ProcessLifecycleOwner.get().lifecycleScope,
+) : PlaybackConnection, CoroutineScope by coroutineScope {
 
     //    override val isConnected = MutableStateFlow(false)
     override val playbackState = MutableStateFlow(NONE_PLAYBACK_STATE)
