@@ -46,11 +46,14 @@ dependencies {
     implementation(libs.retrofit.converter)
     implementation(libs.google.gson)
 
+    implementation(libs.androidx.core.ktx)
 
     implementation(libs.androidx.media)
     implementation(libs.google.exoPlayer)
     implementation(libs.google.exoPlayer.okhttp)
-    implementation(libs.google.exoPlayer.flac)
+//    implementation(libs.google.exoPlayer.flac)
+
+    implementation(libs.timber)
 
     //implementation("androidx.media:media:1.6.0")
 }

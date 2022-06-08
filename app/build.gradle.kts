@@ -122,7 +122,7 @@ dependencies {
     implementation(libs.androidx.media)
     implementation(libs.google.exoPlayer)
     implementation(libs.google.exoPlayer.okhttp)
-    implementation(libs.google.exoPlayer.flac)
+//    implementation(libs.google.exoPlayer.flac)
 
 
 

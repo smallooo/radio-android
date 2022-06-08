@@ -45,7 +45,7 @@ fun ForYouRoute(windowSizeClass: WindowSizeClass) {
 fun ForYouScreen() {
     val tabs = listOf("本地电台", "访问排行", "投票排行","最近更新", "正在播放", "标签", "国家", "语言", "搜索")
 
-    val player = ExoPlayer.Builder(LocalContext.current).build()
+   // val player = ExoPlayer.Builder(LocalContext.current).build()
 
 
     @Composable
@@ -77,7 +77,7 @@ fun ForYouScreen() {
             Pager(state = pagerState, modifier = Modifier.weight(1f)) {
                 selectedIndex = pagerState.currentPage
                 when (commingPage) {
-                    0 -> LocalRadioList(PageType.bycountry, "japan",player)
+                    0 -> LocalRadioList(PageType.bycountry, "japan")
 //                    1 -> LocalRadioList(PageType.topclick, "100", player)
 //                    2 -> LocalRadioList(PageType.topvote, "100", player)
 //                    3 -> LocalRadioList(PageType.lastchange, "100", player)

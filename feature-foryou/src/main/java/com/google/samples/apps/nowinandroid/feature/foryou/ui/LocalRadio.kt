@@ -34,7 +34,7 @@ import com.google.samples.apps.nowinandroid.core.ui.LoadingWheel
 import com.google.samples.apps.nowinandroid.feature.foryou.ui.ShimmerAnimationType
 
 @Composable
-fun LocalRadioList(pageType:PageType, param: String, player: ExoPlayer, viewModel: LocalRadioListViewModel = hiltViewModel()) {
+fun LocalRadioList(pageType:PageType, param: String,  viewModel: LocalRadioListViewModel = hiltViewModel()) {
     val uiState by viewModel.uiState.collectAsState()
     val shimmerAnimationType by remember { mutableStateOf(ShimmerAnimationType.FADE) }
     val transition = rememberInfiniteTransition()
@@ -79,32 +79,32 @@ fun LocalRadioList(pageType:PageType, param: String, player: ExoPlayer, viewMode
         StationsUiState.Loading ->
             for(i in 1..5) ShimmerItem(list, dpValue.value, shimmerAnimationType == ShimmerAnimationType.VERTICAL)
         is StationsUiState.Stations ->
-            RadioItem(player, listOf((uiState as StationsUiState.Stations).stations))
+            RadioItem(listOf((uiState as StationsUiState.Stations).stations))
         is StationsUiState.Empty -> ShimmerItem(list, dpValue.value, shimmerAnimationType == ShimmerAnimationType.VERTICAL)
     }
 }
 
 @Composable
-fun RadioItem(player: ExoPlayer, stateCategories : List<List<FollowableStation>>){
+fun RadioItem(stateCategories : List<List<FollowableStation>>){
     LazyColumn {
         itemsIndexed(
             items = stateCategories.get(0),
             itemContent = {index, item ->
-                AnimatedListItem(player, station = item, index)
+                AnimatedListItem(station = item, index)
             }
         )
     }
 }
 
 @Composable
-fun AnimatedListItem(player: ExoPlayer, station: FollowableStation, itemIndex: Int) {
+fun AnimatedListItem(station: FollowableStation, itemIndex: Int) {
     Row(
         verticalAlignment = Alignment.CenterVertically,
         modifier = Modifier.clickable {
-            val mediaItem = MediaItem.fromUri(station.station.url_resolved)
-            player.setMediaItem(mediaItem)
-            player.playWhenReady = true
-            player.prepare()
+//            val mediaItem = MediaItem.fromUri(station.station.url_resolved)
+//            player.setMediaItem(mediaItem)
+//            player.playWhenReady = true
+//            player.prepare()
         }
     ) {
         Image(

@@ -26,5 +26,7 @@ dependencies {
     implementation("androidx.compose.material:material:1.1.1")
     kapt(libs.hilt.compiler)
 
+    implementation(libs.timber)
+
     testImplementation(project(":core-testing"))
 }
