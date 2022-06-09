@@ -7,22 +7,30 @@ package com.google.samples.apps.nowinandroid.playback
 import android.content.ComponentName
 import android.content.Context
 import android.media.session.PlaybackState
+import android.os.Bundle
+import android.support.v4.media.session.MediaControllerCompat
 import android.support.v4.media.session.PlaybackStateCompat
 import androidx.lifecycle.ProcessLifecycleOwner
 import androidx.lifecycle.lifecycleScope
 import com.google.samples.app.nowinandroid.core.playback.NONE_PLAYBACK_STATE
+import com.google.samples.app.nowinandroid.core.playback.models.MEDIA_TYPE_AUDIO
+import com.google.samples.app.nowinandroid.core.playback.models.MediaId
+import com.google.samples.app.nowinandroid.core.playback.players.AudioPlayer
+import com.google.samples.app.nowinandroid.core.playback.players.QUEUE_LIST_KEY
+import com.google.samples.app.nowinandroid.core.playback.players.QUEUE_TITLE_KEY
+import com.google.samples.apps.nowinandroid.core.model.data.Station
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 
 
-
 const val PLAYBACK_PROGRESS_INTERVAL = 1000L
 
 interface PlaybackConnection {
-//    val isConnected: StateFlow<Boolean>
-        val playbackState: StateFlow<PlaybackStateCompat>
-//    val nowPlaying: StateFlow<MediaMetadataCompat>
+    val isConnected: StateFlow<Boolean>
+    val playbackState: StateFlow<PlaybackStateCompat>
+
+    //    val nowPlaying: StateFlow<MediaMetadataCompat>
 //
 //    val playbackQueue: StateFlow<PlaybackQueue>
 //    val nowPlayingAudio: StateFlow<PlaybackQueue.NowPlayingAudio?>
@@ -30,10 +38,10 @@ interface PlaybackConnection {
 //    val playbackProgress: StateFlow<PlaybackProgressState>
 //    val playbackMode: StateFlow<PlaybackModeState>
 //
-//    var mediaController: MediaControllerCompat?
-//    val transportControls: MediaControllerCompat.TransportControls?
+    var mediaController: MediaControllerCompat?
+    val transportControls: MediaControllerCompat.TransportControls?
 //
-//    fun playAudio(audio: Audio, title: QueueTitle = QueueTitle())
+    fun playAudio(station: Station)
 //    fun playNextAudio(audio: Audio)
 //    fun playAudios(audios: List<Audio>, index: Int = 0, title: QueueTitle = QueueTitle())
 //    fun playArtist(artistId: ArtistId, index: Int = 0)
@@ -49,19 +57,21 @@ interface PlaybackConnection {
 //    fun removeByPosition(position: Int)
 //    fun removeById(id: String)
 }
+
 //
 class PlaybackConnectionImpl(
     context: Context,
     serviceComponent: ComponentName,
 //    private val audiosRepo: AudiosRepo,
-//    private val audioPlayer: AudioPlayer,
+    private val audioPlayer: AudioPlayer,
 //    private val downloader: Downloader
     coroutineScope: CoroutineScope = ProcessLifecycleOwner.get().lifecycleScope,
 ) : PlaybackConnection, CoroutineScope by coroutineScope {
 
-    //    override val isConnected = MutableStateFlow(false)
+    override val isConnected = MutableStateFlow(false)
     override val playbackState = MutableStateFlow(NONE_PLAYBACK_STATE)
-//    override val nowPlaying = MutableStateFlow(NONE_PLAYING)
+
+    //    override val nowPlaying = MutableStateFlow(NONE_PLAYING)
 //
 //    private val playbackQueueState = MutableStateFlow(PlaybackQueue())
 //
@@ -85,8 +95,8 @@ class PlaybackConnectionImpl(
 //
 //    override val playbackMode = MutableStateFlow(PlaybackModeState())
 //
-//    override var mediaController: MediaControllerCompat? = null
-//    override val transportControls get() = mediaController?.transportControls
+        override var mediaController: MediaControllerCompat? = null
+        override val transportControls get() = mediaController?.transportControls
 //    private val mediaBrowserConnectionCallback = MediaBrowserConnectionCallback(context)
 //    private val mediaBrowser = MediaBrowserCompat(context, serviceComponent, mediaBrowserConnectionCallback, null).apply { connect() }
 //
@@ -154,7 +164,15 @@ class PlaybackConnectionImpl(
 //        }
 //    }
 //
-//    override fun playAudio(audio: Audio, title: QueueTitle) = playAudios(audios = listOf(audio), index = 0, title = title)
+    override fun playAudio(station: Station) {
+        transportControls?.playFromMediaId(
+            MediaId(MEDIA_TYPE_AUDIO, station.url_resolved).toString(),
+            Bundle().apply {
+               // putStringArray(QUEUE_LIST_KEY, audiosIds)
+                putString(QUEUE_TITLE_KEY, "play audio")
+            }
+        )
+    }
 //
 //    override fun playAudios(audios: List<Audio>, index: Int, title: QueueTitle) {
 //        val audiosIds = audios.map { it.id }.toTypedArray()

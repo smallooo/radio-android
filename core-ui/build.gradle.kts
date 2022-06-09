@@ -21,7 +21,10 @@ plugins {
 }
 
 dependencies {
+    implementation(project(":core-common"))
+    implementation(project(":core-compose"))
     implementation(project(":core-model"))
+    implementation(project(":core-playback"))
 
     implementation(libs.androidx.core.ktx)
     implementation(libs.coil.kt)

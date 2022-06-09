@@ -21,6 +21,7 @@ plugins {
 }
 
 dependencies {
+    //implementation(project(":core-playback"))
     implementation(libs.kotlinx.coroutines.android)
     implementation(libs.hilt.android)
     implementation("androidx.compose.material:material:1.1.1")

@@ -7,25 +7,30 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.CompositionLocalProvider
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.remember
+import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.compose.currentBackStackEntryAsState
 import androidx.navigation.compose.rememberNavController
+import com.google.samples.apps.nowinandroid.core.compose.LocalPlaybackConnection
+import com.google.samples.apps.nowinandroid.core.compose.LocalScaffoldState
 import com.google.samples.apps.nowinandroid.core.ui.component.NiaBackground
+import com.google.samples.apps.nowinandroid.core.ui.media.radioStations.LocalAudioActionHandler
+import com.google.samples.apps.nowinandroid.core.ui.media.radioStations.audioActionHandler
+
 import com.google.samples.apps.nowinandroid.core.ui.theme.NiaTheme
 import com.google.samples.apps.nowinandroid.navigation.NiaTopLevelNavigation
-import com.google.samples.apps.nowinandroid.playback.LocalScaffoldState
+import com.hdmsh.core_ui_playback.PlaybackConnectionViewModel
+
 
 @Composable
 fun RadioApp(
     windowSizeClass: WindowSizeClass,
-    scaffoldState: ScaffoldState = rememberScaffoldState()
 ) {
     val navController = rememberNavController()
-    val niaTopLevelNavigation =
-        remember(navController) { NiaTopLevelNavigation(navController) }
+    val niaTopLevelNavigation = remember(navController) { NiaTopLevelNavigation(navController) }
     val navBackStackEntry by navController.currentBackStackEntryAsState()
     val currentDestination = navBackStackEntry?.destination
 
-    RadioCore(scaffoldState, windowSizeClass) {
+    RadioCore( windowSizeClass) {
         NiaAppContent(
             windowSizeClass,
             niaTopLevelNavigation,
@@ -37,16 +42,32 @@ fun RadioApp(
 
 @Composable
 private fun RadioCore(
-    scaffoldState: ScaffoldState,
     windowSizeClass: WindowSizeClass,
+    scaffoldState: ScaffoldState = rememberScaffoldState(),
     content: @Composable () -> Unit
 ) {
-    CompositionLocalProvider(LocalScaffoldState provides scaffoldState) {
-        NiaTheme {
-            NiaBackground {
-                content()
+    val viewModel: PlaybackConnectionViewModel = hiltViewModel()
+    CompositionLocalProvider(LocalPlaybackConnection provides viewModel.playbackConnection,) {
+        CompositionLocalProvider(LocalScaffoldState provides scaffoldState) {
+            NiaTheme {
+                NiaBackground {
+                    RadioActionHandlers {
+                        content()
+                    }
+                }
             }
         }
     }
 }
+
+@Composable
+private fun RadioActionHandlers(content: @Composable () -> Unit) {
+    val audioActionHandler = audioActionHandler()
+        CompositionLocalProvider(
+            LocalAudioActionHandler provides audioActionHandler,
+        ) {
+            content()
+        }
+    }
+
 

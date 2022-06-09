@@ -62,8 +62,11 @@ android {
     packagingOptions {
         resources {
             excludes.add("/META-INF/{AL2.0,LGPL2.1}")
+            excludes.add("META-INF/gradle/incremental.annotation.processors")
         }
     }
+
+
     testOptions {
         unitTests {
             isIncludeAndroidResources = true
@@ -78,8 +81,13 @@ dependencies {
     implementation(project(":feature-foryou"))
     implementation(project(":feature-topic"))
 
+    implementation(project(":core-common"))
+    implementation(project(":core-compose"))
     implementation(project(":core-ui"))
+    implementation(project(":core-ui-playback"))
     implementation(project(":core-navigation"))
+    implementation(project(":core-playback"))
+
 
     implementation(project(":sync"))
 
@@ -108,6 +116,7 @@ dependencies {
     implementation("org.jetbrains.kotlinx:kotlinx-serialization-json:1.3.3")
     implementation("androidx.compose.material:material:1.1.1")
 
+    implementation(libs.androidx.compose.runtime)
     implementation(libs.accompanist.systemuicontroller)
 
 
@@ -125,6 +134,10 @@ dependencies {
 //    implementation(libs.google.exoPlayer.flac)
 
     implementation(libs.accompanist.insets)
+
+    implementation(libs.okhttp.logging)
+    implementation(libs.retrofit.core)
+    implementation(libs.retrofit.kotlin.serialization)
 
 
 

@@ -27,18 +27,18 @@ class RadioApiProvider {
             .build()
     }
 
-    @Provides
-    @Singleton
-    fun provideRetrofit(
-        okHttpClient: OkHttpClient
-    ): Retrofit {
-        return Retrofit
-            .Builder()
-            .client(okHttpClient)
-            .addConverterFactory(GsonConverterFactory.create())
-            .baseUrl(API_URL)
-            .build()
-    }
+//    @Provides
+//    @Singleton
+//    fun provideRetrofit(
+//        okHttpClient: OkHttpClient
+//    ): Retrofit {
+//        return Retrofit
+//            .Builder()
+//            .client(okHttpClient)
+//            .addConverterFactory(GsonConverterFactory.create())
+//            .baseUrl(API_URL)
+//            .build()
+//    }
 
     @Provides
     @Singleton

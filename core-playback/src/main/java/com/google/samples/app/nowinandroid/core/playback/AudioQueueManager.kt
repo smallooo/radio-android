@@ -42,7 +42,7 @@ interface AudioQueueManager {
 
 class AudioQueueManagerImpl @Inject constructor(
    // private val audiosRepo: AudiosRepo,
-    private val downloader: Downloader,
+   // private val downloader: Downloader,
     private val dispatchers: CoroutineDispatchers,
 ) : AudioQueueManager, CoroutineScope by MainScope() {
 

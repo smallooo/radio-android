@@ -6,6 +6,7 @@ package com.google.samples.apps.nowinandroid.core.compose
 
 import androidx.compose.material.ScaffoldState
 import androidx.compose.runtime.staticCompositionLocalOf
+import com.google.samples.apps.nowinandroid.playback.PlaybackConnection
 
 val LocalScaffoldState = staticCompositionLocalOf<ScaffoldState> { error("No LocalScaffoldState provided") }
 
@@ -13,6 +14,6 @@ val LocalScaffoldState = staticCompositionLocalOf<ScaffoldState> { error("No Loc
 //    error("No LocalAnalytics provided")
 //}
 //
-//val LocalPlaybackConnection = staticCompositionLocalOf<PlaybackConnection> {
-//    error("No LocalPlaybackConnection provided")
-//}
+val LocalPlaybackConnection = staticCompositionLocalOf<PlaybackConnection> {
+    error("No LocalPlaybackConnection provided")
+}

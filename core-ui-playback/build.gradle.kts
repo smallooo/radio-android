@@ -11,6 +11,7 @@ plugins {
 dependencies {
     implementation(project(":core-common"))
     implementation(project(":core-model"))
+    implementation(project(":core-playback"))
 
     testImplementation(project(":core-testing"))
 
@@ -21,12 +22,16 @@ dependencies {
     implementation(libs.retrofit.core)
     implementation(libs.retrofit.kotlin.serialization)
     implementation(libs.hilt.android)
+    implementation(libs.hilt.compiler)
     kapt(libs.hilt.compiler)
     implementation(libs.retrofit.converter)
     implementation(libs.google.gson)
 
 
+
     implementation(libs.androidx.media)
+    implementation(libs.androidx.lifecycle.runtime)
+    implementation(libs.androidx.lifecycle.viewModelCompose)
     implementation(libs.google.exoPlayer)
     implementation(libs.google.exoPlayer.okhttp)
 //    implementation(libs.google.exoPlayer.flac)

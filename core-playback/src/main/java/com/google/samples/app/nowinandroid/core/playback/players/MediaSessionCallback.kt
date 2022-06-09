@@ -9,10 +9,12 @@ import android.os.Bundle
 import android.support.v4.media.session.MediaSessionCompat
 import android.support.v4.media.session.PlaybackStateCompat.*
 import androidx.core.os.bundleOf
-import com.google.samples.app.nowinandroid.core.playback.AudioFocusHelper
+import com.google.samples.app.nowinandroid.core.playback.*
+import com.google.samples.apps.nowinandroid.core.util.extensions.readable
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.MainScope
 import kotlinx.coroutines.launch
+import timber.log.Timber
 
 const val SEEK_TO = "action_seek_to"
 
@@ -33,7 +35,7 @@ class MediaSessionCallback(
         audioFocusHelper.onAudioFocusGain {
             //Timber.d("GAIN")
             if (isAudioFocusGranted && !datmusicPlayer.getSession().isPlaying()) {
-                datmusicPlayer.playAudio()
+              //  datmusicPlayer.playAudio("",0)
             } else audioFocusHelper.setVolume(AudioManager.ADJUST_RAISE)
             isAudioFocusGranted = false
         }
@@ -82,22 +84,22 @@ class MediaSessionCallback(
 
     override fun onFastForward() {
         Timber.d("onFastForward")
-        datmusicPlayer.fastForward()
+       // datmusicPlayer.fastForward()
     }
 
     override fun onRewind() {
         Timber.d("onRewind")
-        datmusicPlayer.rewind()
+       // datmusicPlayer.rewind()
     }
 
     override fun onPlayFromMediaId(mediaId: String, extras: Bundle?) {
         Timber.d("onPlayFromMediaId, $mediaId, ${extras?.readable()}")
-        launch { datmusicPlayer.setDataFromMediaId(mediaId, extras ?: bundleOf()) }
+        //launch { datmusicPlayer.setDataFromMediaId(mediaId, extras ?: bundleOf()) }
     }
 
     override fun onSeekTo(position: Long) {
         Timber.d("onSeekTo: position=$position")
-        datmusicPlayer.seekTo(position)
+     //   datmusicPlayer.seekTo(position)
     }
 
     override fun onSkipToNext() {
@@ -107,12 +109,12 @@ class MediaSessionCallback(
 
     override fun onSkipToPrevious() {
         Timber.d("onSkipToPrevious()")
-        launch { datmusicPlayer.previousAudio() }
+    //    launch { datmusicPlayer.previousAudio() }
     }
 
     override fun onSkipToQueueItem(id: Long) {
         Timber.d("onSkipToQueueItem: $id")
-        launch { datmusicPlayer.skipTo(id.toInt()) }
+      //  launch { datmusicPlayer.skipTo(id.toInt()) }
     }
 
     override fun onStop() {
@@ -135,19 +137,19 @@ class MediaSessionCallback(
 
     override fun onSetShuffleMode(shuffleMode: Int) {
         super.onSetShuffleMode(shuffleMode)
-        datmusicPlayer.setShuffleMode(shuffleMode)
+      //  datmusicPlayer.setShuffleMode(shuffleMode)
     }
 
     override fun onCustomAction(action: String?, extras: Bundle?) {
         when (action) {
             SET_MEDIA_STATE -> launch { setSavedMediaSessionState() }
-            REPEAT_ONE -> launch { datmusicPlayer.repeatAudio() }
-            REPEAT_ALL -> launch { datmusicPlayer.repeatQueue() }
+            //REPEAT_ONE -> launch { datmusicPlayer.repeatAudio() }
+           // REPEAT_ALL -> launch { datmusicPlayer.repeatQueue() }
             PAUSE_ACTION -> datmusicPlayer.pause(extras ?: bundleOf(BY_UI_KEY to true))
             PLAY_ACTION -> playOnFocus(extras ?: bundleOf(BY_UI_KEY to true))
-            PLAY_NEXT -> datmusicPlayer.playNext(extras?.getString(QUEUE_MEDIA_ID_KEY) ?: return)
-            REMOVE_QUEUE_ITEM_BY_POSITION -> datmusicPlayer.removeFromQueue(extras?.getInt(QUEUE_FROM_POSITION_KEY) ?: return)
-            REMOVE_QUEUE_ITEM_BY_ID -> datmusicPlayer.removeFromQueue(extras?.getString(QUEUE_MEDIA_ID_KEY) ?: return)
+           // PLAY_NEXT -> datmusicPlayer.playNext(extras?.getString(QUEUE_MEDIA_ID_KEY) ?: return)
+           // REMOVE_QUEUE_ITEM_BY_POSITION -> datmusicPlayer.removeFromQueue(extras?.getInt(QUEUE_FROM_POSITION_KEY) ?: return)
+           // REMOVE_QUEUE_ITEM_BY_ID -> datmusicPlayer.removeFromQueue(extras?.getString(QUEUE_MEDIA_ID_KEY) ?: return)
             UPDATE_QUEUE -> {
                 extras ?: return
 
@@ -176,7 +178,7 @@ class MediaSessionCallback(
                 val from = extras.getInt(QUEUE_FROM_POSITION_KEY)
                 val to = extras.getInt(QUEUE_TO_POSITION_KEY)
 
-                datmusicPlayer.swapQueueAudios(from, to)
+              //  datmusicPlayer.swapQueueAudios(from, to)
             }
         }
     }
@@ -185,7 +187,7 @@ class MediaSessionCallback(
         val controller = mediaSession.controller ?: return
         Timber.d(controller.playbackState.toString())
         if (controller.playbackState == null || controller.playbackState.state == STATE_NONE) {
-            datmusicPlayer.restoreQueueState()
+           // datmusicPlayer.restoreQueueState()
         } else {
             restoreMediaSession()
         }
@@ -195,13 +197,13 @@ class MediaSessionCallback(
         mediaSession.setMetadata(mediaSession.controller.metadata)
         datmusicPlayer.setPlaybackState(mediaSession.controller.playbackState)
         datmusicPlayer.setData(
-            mediaSession.controller?.queue.toMediaIdList().map { it.value },
-            mediaSession.controller?.queueTitle.toString()
+         //   mediaSession.controller?.queue.toMediaIdList().map { it.value },
+         //   mediaSession.controller?.queueTitle.toString()
         )
     }
 
     private fun playOnFocus(extras: Bundle = bundleOf(BY_UI_KEY to true)) {
-        if (audioFocusHelper.requestPlayback())
-            datmusicPlayer.playAudio(extras)
+        //if (audioFocusHelper.requestPlayback())
+          //  datmusicPlayer.playAudio(extras)
     }
 }
