@@ -24,6 +24,7 @@ import okhttp3.MediaType.Companion.toMediaType
 import okhttp3.OkHttpClient
 import okhttp3.logging.HttpLoggingInterceptor
 import retrofit2.Retrofit
+import retrofit2.converter.gson.GsonConverterFactory
 
 
 @InstallIn(SingletonComponent::class)
@@ -106,19 +107,19 @@ class NetworkModule {
     @Singleton
     @ExperimentalSerializationApi
     fun retrofit(client: OkHttpClient, json: Json): Retrofit =
-//        Retrofit.Builder()
-//            .baseUrl(Config.API_BASE_URL)
-//           // .addConverterFactory(json.asConverterFactory("application/json".toMediaType()))
-//           // .addCallAdapterFactory(RxJava2CallAdapterFactory.create())
-//            .client(client)
-//            .build()
-    Retrofit.Builder()
-        .baseUrl("http://at1.api.radio-browser.info/")
-        .client(
-            OkHttpClient.Builder().addInterceptor(
-                    HttpLoggingInterceptor().apply {
-                        setLevel(HttpLoggingInterceptor.Level.BODY)
-                    }
-                ).build())
-                .build()
+        Retrofit.Builder()
+            .baseUrl("http://at1.api.radio-browser.info/")
+            .addConverterFactory(GsonConverterFactory.create())
+            //.addCallAdapterFactory(RxJava2CallAdapterFactory.create())
+            .client(client)
+            .build()
+//    Retrofit.Builder()
+//        .baseUrl("http://at1.api.radio-browser.info/")
+//        .client(
+//            OkHttpClient.Builder().addInterceptor(
+//                    HttpLoggingInterceptor().apply {
+//                        setLevel(HttpLoggingInterceptor.Level.BODY)
+//                    }
+//                ).build())
+//                .build()
 }

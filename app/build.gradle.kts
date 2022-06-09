@@ -139,6 +139,8 @@ dependencies {
     implementation(libs.retrofit.core)
     implementation(libs.retrofit.kotlin.serialization)
 
+    implementation(libs.retrofit.converter)
+
 
 
     // androidx.test is forcing JUnit, 4.12. This forces it to use 4.13
