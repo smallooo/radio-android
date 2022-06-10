@@ -46,17 +46,30 @@ private fun RadioCore(
     scaffoldState: ScaffoldState = rememberScaffoldState(),
     content: @Composable () -> Unit
 ) {
-    val viewModel: PlaybackConnectionViewModel = hiltViewModel()
-    CompositionLocalProvider(LocalPlaybackConnection provides viewModel.playbackConnection,) {
-        CompositionLocalProvider(LocalScaffoldState provides scaffoldState) {
+
+    CompositionLocalProvider(LocalScaffoldState provides scaffoldState) {
             NiaTheme {
-                NiaBackground {
-                    RadioActionHandlers {
-                        content()
+               NiaBackground {
+                    PlaybackHost {
+                        RadioActionHandlers {
+                            content()
+                        }
                     }
                 }
             }
-        }
+
+    }
+}
+
+@Composable
+fun PlaybackHost(
+    viewModel: PlaybackConnectionViewModel = hiltViewModel(),
+    content: @Composable () -> Unit
+) {
+    CompositionLocalProvider(
+        LocalPlaybackConnection provides viewModel.playbackConnection,
+    ) {
+        content()
     }
 }
 

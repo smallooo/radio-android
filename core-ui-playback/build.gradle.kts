@@ -11,6 +11,7 @@ plugins {
 dependencies {
     implementation(project(":core-common"))
     implementation(project(":core-model"))
+    implementation(project(":core-compose"))
     implementation(project(":core-playback"))
 
     testImplementation(project(":core-testing"))
@@ -27,13 +28,13 @@ dependencies {
     implementation(libs.retrofit.converter)
     implementation(libs.google.gson)
 
+    implementation(libs.androidx.hilt.navigation.compose)
 
 
-    implementation(libs.androidx.media)
-    implementation(libs.androidx.lifecycle.runtime)
-    implementation(libs.androidx.lifecycle.viewModelCompose)
-    implementation(libs.google.exoPlayer)
-    implementation(libs.google.exoPlayer.okhttp)
-//    implementation(libs.google.exoPlayer.flac)
+//    implementation(libs.hilt.compiler)
+//    implementation(libs.hilt.android)
+//    implementation(libs.hilt.ext.compiler)
+//    implementation(libs.hilt.ext.work)
+
 
 }

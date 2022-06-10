@@ -24,16 +24,5 @@ class PlaybackModule {
 
     @Provides
     @Singleton
-    fun playbackConnection(
-        @ApplicationContext context: Context,
-        //audiosRepo: AudiosRepo,
-        audioPlayer: AudioPlayerImpl,
-       // downloader: Downloader,
-    ): PlaybackConnection = PlaybackConnectionImpl(
-        context = context,
-        serviceComponent = ComponentName(context, PlayerService::class.java),
-       // audiosRepo = audiosRepo,
-        audioPlayer = audioPlayer,
-       // downloader = downloader,
-    )
+    fun playbackConnection(): PlaybackConnection = PlaybackConnectionImpl()
 }
