@@ -195,47 +195,47 @@ class DatmusicPlayerImpl @Inject constructor(
     }
 
     override suspend fun nextAudio(): String? {
-        TODO("Not yet implemented")
+        return ""
     }
 
     override fun stop(byUser: Boolean) {
-        TODO("Not yet implemented")
+
     }
 
     override fun release() {
-        TODO("Not yet implemented")
+
     }
 
     override fun onPrepared(prepared: OnPrepared<DatmusicPlayer>) {
-        TODO("Not yet implemented")
+
     }
 
     override fun onError(error: OnError<DatmusicPlayer>) {
-        TODO("Not yet implemented")
+
     }
 
     override fun onCompletion(completion: OnCompletion<DatmusicPlayer>) {
-        TODO("Not yet implemented")
+
     }
 
     override fun onMetaDataChanged(metaDataChanged: OnMetaDataChanged) {
-        TODO("Not yet implemented")
+
     }
 
     override fun updateData(list: List<String>, title: String?) {
-        TODO("Not yet implemented")
+
     }
 
     override fun setData(list: List<String>, title: String?) {
-        TODO("Not yet implemented")
+
     }
 
     override fun clearRandomAudioPlayed() {
-        TODO("Not yet implemented")
+
     }
 
     override fun updatePlaybackState(applier: PlaybackStateCompat.Builder.() -> Unit) {
-        TODO("Not yet implemented")
+
     }
 
     override fun setPlaybackState(state: PlaybackStateCompat) {

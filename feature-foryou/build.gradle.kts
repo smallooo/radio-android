@@ -34,7 +34,8 @@ dependencies {
     implementation(project(":core-ui"))
     implementation(project(":core-data"))
     implementation(project(":core-navigation"))
-
+    implementation(project(":core-playback"))
+    implementation(project(":core-compose"))
     //implementation("androidx.paging:paging-common-ktx:3.1.1")
 
     testImplementation(project(":core-testing"))

@@ -1,6 +1,8 @@
 package com.google.samples.apps.nowinandroid.feature.foryou
 
 
+import android.annotation.SuppressLint
+import android.widget.TextView
 import androidx.compose.animation.animateColor
 import androidx.compose.animation.core.*
 import androidx.compose.foundation.Image
@@ -12,11 +14,8 @@ import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.MoreVert
-import androidx.compose.material3.ButtonDefaults
-import androidx.compose.material3.Icon
-import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.*
 import androidx.compose.material3.MaterialTheme.typography
-import androidx.compose.material3.Text
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -28,13 +27,20 @@ import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 
 import coil.compose.rememberImagePainter
+import com.google.samples.apps.nowinandroid.core.compose.LocalPlaybackConnection
 import com.google.samples.apps.nowinandroid.core.model.data.FollowableStation
 import com.google.samples.apps.nowinandroid.core.model.data.Station
 import com.google.samples.apps.nowinandroid.core.ui.LoadingWheel
 import com.google.samples.apps.nowinandroid.feature.foryou.ui.ShimmerAnimationType
+import com.google.samples.apps.nowinandroid.playback.PlaybackConnection
 
+@SuppressLint("StateFlowValueCalledInComposition")
 @Composable
-fun LocalRadioList(pageType:PageType, param: String,  viewModel: LocalRadioListViewModel = hiltViewModel()) {
+fun LocalRadioList(
+    pageType:PageType, param: String,
+    viewModel: LocalRadioListViewModel = hiltViewModel(),
+    playbackConnection: PlaybackConnection = LocalPlaybackConnection.current,
+) {
     val uiState by viewModel.uiState.collectAsState()
     val shimmerAnimationType by remember { mutableStateOf(ShimmerAnimationType.FADE) }
     val transition = rememberInfiniteTransition()
@@ -56,6 +62,18 @@ fun LocalRadioList(pageType:PageType, param: String,  viewModel: LocalRadioListV
         )
     )
 
+    if(playbackConnection.isConnected.value) {
+        Text("hello1")
+    }else{
+        Text("hello2")
+    }
+
+    Button(
+        onClick = { playbackConnection.playAudio()}
+    ) {
+        Text("Play")
+    }
+    
     val list = if (shimmerAnimationType != ShimmerAnimationType.TRANSLATE) {
         listOf(colorAnim, colorAnim.copy(alpha = 0.5f))
     } else {
@@ -97,7 +115,7 @@ fun RadioItem(stateCategories : List<List<FollowableStation>>){
 }
 
 @Composable
-fun AnimatedListItem(station: FollowableStation, itemIndex: Int) {
+fun AnimatedListItem(station: FollowableStation, itemIndex: Int, playbackConnection: PlaybackConnection = LocalPlaybackConnection.current,) {
     Row(
         verticalAlignment = Alignment.CenterVertically,
         modifier = Modifier.clickable {
@@ -105,6 +123,7 @@ fun AnimatedListItem(station: FollowableStation, itemIndex: Int) {
 //            player.setMediaItem(mediaItem)
 //            player.playWhenReady = true
 //            player.prepare()
+            playbackConnection.playAudio()
         }
     ) {
         Image(
