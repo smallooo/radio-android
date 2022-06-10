@@ -74,18 +74,11 @@ class AudioPlayerImpl @Inject constructor(
     private var onCompletion: OnCompletion<AudioPlayer> = {}
 
     override fun play(startAtPosition: Long?) {
-//        if (startAtPosition == null) {
-//            player.playWhenReady = true
-//            return
-//        }
-//        player.seekTo(startAtPosition)
-        val mediaItem = MediaItem.fromUri("https://antares.dribbcast.com/proxy/jpop?mp=/s")
-            player.setMediaItem(mediaItem)
+        if (startAtPosition == null) {
             player.playWhenReady = true
-            player.prepare()
-
-        player.play()
-
+            return
+        }
+        player.seekTo(startAtPosition)
     }
 
     override fun setSource(uri: Uri, local: Boolean): Boolean {

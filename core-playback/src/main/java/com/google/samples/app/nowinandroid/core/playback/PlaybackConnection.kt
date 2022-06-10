@@ -8,7 +8,6 @@ package com.google.samples.apps.nowinandroid.playback
 import android.content.ComponentName
 import android.content.Context
 import android.os.Bundle
-import android.provider.Settings.Global.putString
 import android.support.v4.media.MediaBrowserCompat
 import android.support.v4.media.MediaMetadataCompat
 import android.support.v4.media.session.MediaControllerCompat
@@ -19,12 +18,9 @@ import androidx.lifecycle.ProcessLifecycleOwner
 import androidx.lifecycle.lifecycleScope
 import com.google.android.exoplayer2.MediaItem
 import com.google.samples.app.nowinandroid.core.playback.*
-import com.google.samples.app.nowinandroid.core.playback.models.MEDIA_TYPE_AUDIO
-import com.google.samples.app.nowinandroid.core.playback.models.MediaId
 import com.google.samples.app.nowinandroid.core.playback.models.PlaybackProgressState
 import com.google.samples.app.nowinandroid.core.playback.players.AudioPlayer
 import com.google.samples.app.nowinandroid.core.playback.players.QUEUE_TITLE_KEY
-import com.google.samples.apps.nowinandroid.core.model.data.Station
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Job
 import kotlinx.coroutines.delay
@@ -45,7 +41,6 @@ interface PlaybackConnection {
     fun playAudio()
 }
 
-
 class PlaybackConnectionImpl(
     val context: Context,
     serviceComponent: ComponentName,
@@ -56,30 +51,21 @@ class PlaybackConnectionImpl(
     override val playbackState = MutableStateFlow(NONE_PLAYBACK_STATE)
     override val nowPlaying = MutableStateFlow(NONE_PLAYING)
     override var mediaController: MediaControllerCompat? = null
-
     private var playbackProgressInterval: Job = Job()
-
     override val transportControls get() = mediaController?.transportControls
     override val playbackProgress  = MutableStateFlow(PlaybackProgressState())
 
-    //
     override fun playAudio() {
-//        mediaController = MediaControllerCompat(context, mediaBrowser.sessionToken).apply {
-//            registerCallback(MediaControllerCallback())
-//        }
-//
-//        transportControls?.playFromUri(
-//            "https://bbnjapanese-lh.akamaihd.net/i/BibleBroadcasting_Japaneseios@87760/master.m3u8".toUri(),
-//            Bundle().apply {
-//                putString(QUEUE_TITLE_KEY, "play audio")
-//            }
-//        )
-        val mediaItem = MediaItem.fromUri("https://bbnjapanese-lh.akamaihd.net/i/BibleBroadcasting_Japaneseios@87760/master.m3u8")
-//            audioPlayer.setMediaItem(mediaItem)
-//            audioPlayer.playWhenReady = true
-        audioPlayer.prepare()
-        audioPlayer.setSource("https://antares.dribbcast.com/proxy/jpop?mp=/s".toUri())
-        audioPlayer.play()
+        mediaController = MediaControllerCompat(context, mediaBrowser.sessionToken).apply {
+            registerCallback(MediaControllerCallback())
+        }
+
+        transportControls?.playFromUri(
+            "https://antares.dribbcast.com/proxy/jpop?mp=/s".toUri(),
+            Bundle().apply {
+                putString(QUEUE_TITLE_KEY, "play audio")
+            }
+        )
     }
 
     private val mediaBrowserConnectionCallback = MediaBrowserConnectionCallback(context)
@@ -89,6 +75,8 @@ class PlaybackConnectionImpl(
         mediaBrowserConnectionCallback,
         null
     ).apply { connect() }
+
+
 
     init {
         startPlaybackProgress()

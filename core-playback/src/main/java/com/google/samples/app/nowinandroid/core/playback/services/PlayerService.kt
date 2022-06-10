@@ -25,6 +25,10 @@ import kotlinx.coroutines.withContext
 @AndroidEntryPoint
 class PlayerService : MediaBrowserServiceCompat(), CoroutineScope by MainScope() {
 
+    companion object {
+        var IS_FOREGROUND = false
+    }
+
     @Inject
     protected lateinit var dispatchers: CoroutineDispatchers
 
