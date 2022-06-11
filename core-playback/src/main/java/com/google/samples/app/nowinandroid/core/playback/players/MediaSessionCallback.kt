@@ -104,7 +104,7 @@ class MediaSessionCallback(
 
     override fun onSkipToNext() {
         Timber.d("onSkipToNext()")
-        launch { datmusicPlayer.nextAudio() }
+        //launch { datmusicPlayer.nextAudio() }
     }
 
     override fun onSkipToPrevious() {
@@ -125,14 +125,14 @@ class MediaSessionCallback(
     override fun onSetRepeatMode(repeatMode: Int) {
         super.onSetRepeatMode(repeatMode)
         val bundle = mediaSession.controller.playbackState.extras ?: Bundle()
-        datmusicPlayer.setPlaybackState(
-            Builder(mediaSession.controller.playbackState)
-                .setExtras(
-                    bundle.apply {
-                        putInt(REPEAT_MODE, repeatMode)
-                    }
-                ).build()
-        )
+//        datmusicPlayer.setPlaybackState(
+//            Builder(mediaSession.controller.playbackState)
+//                .setExtras(
+//                    bundle.apply {
+//                        putInt(REPEAT_MODE, repeatMode)
+//                    }
+//                ).build()
+//        )
     }
 
     override fun onSetShuffleMode(shuffleMode: Int) {
@@ -156,7 +156,7 @@ class MediaSessionCallback(
                 val queue = extras.getStringArray(QUEUE_LIST_KEY)?.toList() ?: emptyList()
                 val queueTitle = extras.getString(QUEUE_TITLE_KEY)
 
-                datmusicPlayer.updateData(queue, queueTitle)
+              //  datmusicPlayer.updateData(queue, queueTitle)
             }
             PLAY_ALL_SHUFFLED -> {
                 extras ?: return
@@ -170,7 +170,7 @@ class MediaSessionCallback(
                 controller.transportControls.setShuffleMode(SHUFFLE_MODE_ALL)
 
                 launch {
-                    datmusicPlayer.nextAudio()
+                    //datmusicPlayer.nextAudio()
                 }
             }
             SWAP_ACTION -> {
@@ -195,7 +195,7 @@ class MediaSessionCallback(
 
     private fun restoreMediaSession() {
         mediaSession.setMetadata(mediaSession.controller.metadata)
-        datmusicPlayer.setPlaybackState(mediaSession.controller.playbackState)
+        //datmusicPlayer.setPlaybackState(mediaSession.controller.playbackState)
         datmusicPlayer.setData(
          //   mediaSession.controller?.queue.toMediaIdList().map { it.value },
          //   mediaSession.controller?.queueTitle.toString()
@@ -203,7 +203,7 @@ class MediaSessionCallback(
     }
 
     private fun playOnFocus(extras: Bundle = bundleOf(BY_UI_KEY to true)) {
-        //if (audioFocusHelper.requestPlayback())
-          //  datmusicPlayer.playAudio(extras)
+        if (audioFocusHelper.requestPlayback())
+            datmusicPlayer.playAudio(extras)
     }
 }
