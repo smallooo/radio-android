@@ -42,6 +42,7 @@ interface DatmusicPlayer {
     suspend fun nextAudio(): String?
     fun stop(byUser: Boolean)
     fun release()
+    fun onPlayingState(playing: OnIsPlaying<DatmusicPlayer>)
     fun onPrepared(prepared: OnPrepared<DatmusicPlayer>)
     fun onError(error: OnError<DatmusicPlayer>)
     fun onCompletion(completion: OnCompletion<DatmusicPlayer>)
@@ -204,6 +205,10 @@ class DatmusicPlayerImpl @Inject constructor(
 
     override fun release() {
 
+    }
+
+    override fun onPlayingState(playing: OnIsPlaying<DatmusicPlayer>) {
+        this.isPlayingCallback = playing
     }
 
     override fun onPrepared(prepared: OnPrepared<DatmusicPlayer>) {

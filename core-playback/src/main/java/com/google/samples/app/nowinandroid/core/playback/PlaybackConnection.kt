@@ -60,12 +60,31 @@ class PlaybackConnectionImpl(
             registerCallback(MediaControllerCallback())
         }
 
-        transportControls?.playFromUri(
-            "https://antares.dribbcast.com/proxy/jpop?mp=/s".toUri(),
-            Bundle().apply {
-                putString(QUEUE_TITLE_KEY, "play audio")
-            }
-        )
+
+
+//        transportControls?.playFromUri(
+//            "https://antares.dribbcast.com/proxy/jpop?mp=/s".toUri(),
+//            Bundle().apply {
+//                putString(QUEUE_TITLE_KEY, "play audio")
+//            }
+//        )
+
+       // mediaController?.transportControls?.prepare()
+
+//        mediaController?.transportControls?.prepareFromUri(
+//            "https://antares.dribbcast.com/proxy/jpop?mp=/s".toUri(),
+//            Bundle().apply {
+//                putString(QUEUE_TITLE_KEY, "play audio")
+//            }
+//        )
+//
+//        mediaController?.transportControls?.play()
+//        mediaController?.transportControls?.play()
+        audioPlayer.setSource("https://antares.dribbcast.com/proxy/jpop?mp=/s".toUri(), false)
+        audioPlayer.prepare()
+
+        audioPlayer.play(0)
+
     }
 
     private val mediaBrowserConnectionCallback = MediaBrowserConnectionCallback(context)
