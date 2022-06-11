@@ -20,12 +20,11 @@ import com.google.android.exoplayer2.MediaItem
 import com.google.samples.app.nowinandroid.core.playback.*
 import com.google.samples.app.nowinandroid.core.playback.models.PlaybackProgressState
 import com.google.samples.app.nowinandroid.core.playback.players.AudioPlayer
+import com.google.samples.app.nowinandroid.core.playback.players.DatmusicPlayer
+import com.google.samples.app.nowinandroid.core.playback.players.QUEUE_LIST_KEY
 import com.google.samples.app.nowinandroid.core.playback.players.QUEUE_TITLE_KEY
-import kotlinx.coroutines.CoroutineScope
-import kotlinx.coroutines.Job
-import kotlinx.coroutines.delay
+import kotlinx.coroutines.*
 import kotlinx.coroutines.flow.*
-import kotlinx.coroutines.launch
 import timber.log.Timber
 import java.util.concurrent.TimeUnit
 
@@ -45,6 +44,7 @@ class PlaybackConnectionImpl(
     val context: Context,
     serviceComponent: ComponentName,
     private val audioPlayer: AudioPlayer,
+    private val radioPlayer: DatmusicPlayer,
     coroutineScope: CoroutineScope = ProcessLifecycleOwner.get().lifecycleScope,
 ) : PlaybackConnection, CoroutineScope by coroutineScope {
     override val isConnected = MutableStateFlow(false)
@@ -56,35 +56,18 @@ class PlaybackConnectionImpl(
     override val playbackProgress  = MutableStateFlow(PlaybackProgressState())
 
     override fun playAudio() {
-        mediaController = MediaControllerCompat(context, mediaBrowser.sessionToken).apply {
-            registerCallback(MediaControllerCallback())
+        transportControls?.playFromUri(
+            "https://antares.dribbcast.com/proxy/jpop?mp=/s".toUri(),
+            Bundle().apply {
+                //putStringArray(QUEUE_LIST_KEY, ["1","2"])
+                putString(QUEUE_TITLE_KEY, "Audio".toString())
+            }
+        )
+
+
+        launch {
+            radioPlayer.playRadio("https://antares.dribbcast.com/proxy/jpop?mp=/s".toUri())
         }
-
-
-
-//        transportControls?.playFromUri(
-//            "https://antares.dribbcast.com/proxy/jpop?mp=/s".toUri(),
-//            Bundle().apply {
-//                putString(QUEUE_TITLE_KEY, "play audio")
-//            }
-//        )
-
-       // mediaController?.transportControls?.prepare()
-
-//        mediaController?.transportControls?.prepareFromUri(
-//            "https://antares.dribbcast.com/proxy/jpop?mp=/s".toUri(),
-//            Bundle().apply {
-//                putString(QUEUE_TITLE_KEY, "play audio")
-//            }
-//        )
-//
-//        mediaController?.transportControls?.play()
-//        mediaController?.transportControls?.play()
-        audioPlayer.setSource("https://antares.dribbcast.com/proxy/jpop?mp=/s".toUri(), false)
-        audioPlayer.prepare()
-
-        audioPlayer.play(0)
-
     }
 
     private val mediaBrowserConnectionCallback = MediaBrowserConnectionCallback(context)

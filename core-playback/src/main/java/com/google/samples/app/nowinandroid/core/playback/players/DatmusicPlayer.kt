@@ -4,6 +4,7 @@ import android.app.PendingIntent
 import android.content.Context
 import android.content.Intent
 import android.media.session.PlaybackState
+import android.net.Uri
 import android.os.Bundle
 import android.support.v4.media.MediaMetadataCompat
 import android.support.v4.media.session.MediaSessionCompat
@@ -13,6 +14,7 @@ import androidx.core.os.bundleOf
 import com.google.samples.app.nowinandroid.core.playback.*
 import com.google.samples.apps.nowinandroid.core.model.data.Station
 import com.google.samples.apps.nowinandroid.core.playback.R
+import com.google.samples.apps.nowinandroid.core.util.extensions.plus
 import dagger.hilt.android.qualifiers.ApplicationContext
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.MainScope
@@ -41,9 +43,9 @@ const val DEFAULT_FORWARD_REWIND = 10 * 1000
 
 interface DatmusicPlayer {
     fun getSession(): MediaSessionCompat
-    fun playAudio(extras: Bundle = bundleOf(BY_UI_KEY to true))
+    fun playAudio()
     //suspend fun playAudio(id: String, index: Int? = null)
-    suspend fun playRadio(station: Station, index: Int? = null)
+    suspend fun playRadio(url: Uri)
     //fun seekTo(position: Long)
     //fun fastForward()
    // fun rewind()
@@ -65,7 +67,7 @@ interface DatmusicPlayer {
     fun onCompletion(completion: OnCompletion<DatmusicPlayer>)
     fun onMetaDataChanged(metaDataChanged: OnMetaDataChanged)
     fun updatePlaybackState(applier: PlaybackStateCompat.Builder.() -> Unit = {})
-   // fun setPlaybackState(state: PlaybackStateCompat)
+    fun setPlaybackState(state: PlaybackStateCompat)
 //    fun setShuffleMode(shuffleMode: Int)
 //    fun updateData(list: List<String> = emptyList(), title: String? = null)
     fun setData(list: List<String> = emptyList(), title: String? = null)
@@ -108,7 +110,7 @@ class DatmusicPlayerImpl @Inject constructor(
         PendingIntent.FLAG_IMMUTABLE
     )
 
-    private val mediaSession = MediaSessionCompat(context, "APP name", null, pendingIntent).apply {
+    private val mediaSession = MediaSessionCompat(context, "APP", null, pendingIntent).apply {
         setCallback(
             MediaSessionCallback(this, this@DatmusicPlayerImpl, audioFocusHelper)
         )
@@ -197,13 +199,13 @@ class DatmusicPlayerImpl @Inject constructor(
         }
     }
 
-    override fun playAudio(extras: Bundle) {
+    override fun playAudio() {
         if (isInitialized) {
             audioPlayer.play()
             return
         }
 
-        val isSourceSet = true
+
 //        val isSourceSet = when (val audio = queueManager.currentAudio) {
 //            is Audio -> {
 //                when (val downloadItem = audio.audioDownloadItem) {
@@ -219,12 +221,12 @@ class DatmusicPlayerImpl @Inject constructor(
 //            else -> false
 //        }
 
-        if (isSourceSet) {
-            isInitialized = true
-            audioPlayer.prepare()
-        } else {
-            Timber.e("Couldn't set new source")
-        }
+//        if (isSourceSet) {
+//            isInitialized = true
+//            audioPlayer.prepare()
+//        } else {
+//            Timber.e("Couldn't set new source")
+//        }
     }
 
 //    override suspend fun playAudio(id: String, index: Int?) {
@@ -240,16 +242,36 @@ class DatmusicPlayerImpl @Inject constructor(
 //        }
 //    }
 
-    override suspend fun playRadio(audio: Station, index: Int?) {
+    override suspend fun playRadio(uri:Uri) {
         //setCurrentAudioId(audio.id, index)
         //val refreshedAudio = queueManager.refreshCurrentAudio()
+        audioFocusHelper.requestPlayback()
         isInitialized = false
 
+//        updatePlaybackState {
+//            setExtras(bundleOf(SHUFFLE_MODE to PlaybackStateCompat.SHUFFLE_MODE_NONE))
+//        }
+
+
         updatePlaybackState {
-            setState(mediaSession.controller.playbackState.state, 0, 1F)
+           // setState(mediaSession.controller.playbackState.state, 0, 1F)
+            setState(PlaybackStateCompat.STATE_PLAYING, mediaSession.position(), 1F)
         }
         //setMetaData(refreshedAudio ?: audio)
-        playAudio()
+   //     playAudio()
+
+
+        isInitialized = true
+        audioPlayer.setSource(uri, false)
+        audioPlayer.prepare()
+
+        updatePlaybackState {
+            setState(
+                mediaSession.controller.playbackState.state,
+                1,
+                1F
+            )
+        }
     }
 
 //    override suspend fun skipTo(position: Int) {
@@ -409,23 +431,23 @@ class DatmusicPlayerImpl @Inject constructor(
 
     override fun updatePlaybackState(applier: PlaybackStateCompat.Builder.() -> Unit) {
         applier(stateBuilder)
-       // stateBuilder.setExtras(
-//            stateBuilder.build().extras + bundleOf(
-//                QUEUE_CURRENT_INDEX to queueManager.currentAudioIndex,
-//                QUEUE_HAS_PREVIOUS to (queueManager.previousAudioIndex != null),
-//                QUEUE_HAS_NEXT to (queueManager.nextAudioIndex != null),
-//            )
- //       )
-        //setPlaybackState(stateBuilder.build())
+        stateBuilder.setExtras(
+            stateBuilder.build().extras + bundleOf(
+                QUEUE_CURRENT_INDEX to queueManager.currentAudioIndex,
+                QUEUE_HAS_PREVIOUS to (queueManager.previousAudioIndex != null),
+                QUEUE_HAS_NEXT to (queueManager.nextAudioIndex != null),
+            )
+        )
+        setPlaybackState(stateBuilder.build())
     }
 
-//    override fun setPlaybackState(state: PlaybackStateCompat) {
-//        mediaSession.setPlaybackState(state)
-//        state.extras?.let { bundle ->
-//            mediaSession.setRepeatMode(bundle.getInt(REPEAT_MODE))
-//            mediaSession.setShuffleMode(bundle.getInt(SHUFFLE_MODE))
-//        }
-//    }
+    override fun setPlaybackState(state: PlaybackStateCompat) {
+        mediaSession.setPlaybackState(state)
+        state.extras?.let { bundle ->
+            mediaSession.setRepeatMode(bundle.getInt(REPEAT_MODE))
+            mediaSession.setShuffleMode(bundle.getInt(SHUFFLE_MODE))
+        }
+    }
 
 //    override fun setShuffleMode(shuffleMode: Int) {
 //        val bundle = mediaSession.controller.playbackState.extras ?: Bundle()

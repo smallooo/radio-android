@@ -35,7 +35,7 @@ class MediaSessionCallback(
         audioFocusHelper.onAudioFocusGain {
             //Timber.d("GAIN")
             if (isAudioFocusGranted && !datmusicPlayer.getSession().isPlaying()) {
-              //  datmusicPlayer.playAudio("",0)
+               datmusicPlayer.playAudio()
             } else audioFocusHelper.setVolume(AudioManager.ADJUST_RAISE)
             isAudioFocusGranted = false
         }
@@ -204,6 +204,6 @@ class MediaSessionCallback(
 
     private fun playOnFocus(extras: Bundle = bundleOf(BY_UI_KEY to true)) {
         if (audioFocusHelper.requestPlayback())
-            datmusicPlayer.playAudio(extras)
+            datmusicPlayer.playAudio()
     }
 }

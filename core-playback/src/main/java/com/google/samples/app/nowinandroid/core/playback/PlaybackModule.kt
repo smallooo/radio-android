@@ -7,6 +7,8 @@ package com.google.samples.app.nowinandroid.core.playback
 import android.content.ComponentName
 import android.content.Context
 import com.google.samples.app.nowinandroid.core.playback.players.AudioPlayerImpl
+import com.google.samples.app.nowinandroid.core.playback.players.DatmusicPlayer
+import com.google.samples.app.nowinandroid.core.playback.players.DatmusicPlayerImpl
 import com.google.samples.app.nowinandroid.core.playback.services.PlayerService
 import com.google.samples.apps.nowinandroid.playback.PlaybackConnection
 import com.google.samples.apps.nowinandroid.playback.PlaybackConnectionImpl
@@ -26,9 +28,10 @@ class PlaybackModule {
     @Singleton
     fun playbackConnection(
         @ApplicationContext context: Context,
-        audioPlayer: AudioPlayerImpl
+        audioPlayer: AudioPlayerImpl,
+        radioPlayer: DatmusicPlayerImpl
     ): PlaybackConnection = PlaybackConnectionImpl(
         context = context,
         serviceComponent = ComponentName(context, PlayerService::class.java),
-        audioPlayer = audioPlayer)
+        audioPlayer = audioPlayer, radioPlayer = radioPlayer)
 }

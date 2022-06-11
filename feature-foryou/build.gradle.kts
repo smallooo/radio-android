@@ -36,7 +36,6 @@ dependencies {
     implementation(project(":core-navigation"))
     implementation(project(":core-playback"))
     implementation(project(":core-compose"))
-    //implementation("androidx.paging:paging-common-ktx:3.1.1")
 
     testImplementation(project(":core-testing"))
     androidTestImplementation(project(":core-testing"))
@@ -57,7 +56,12 @@ dependencies {
     kapt(libs.hilt.compiler)
 
 
+    implementation(libs.androidx.lifecycle.compiler)
+    implementation(libs.androidx.lifecycle.extensions)
+    implementation(libs.androidx.lifecycle.runtime)
+    implementation(libs.androidx.lifecycle.runtimeKtx)
 
+    implementation(libs.androidx.media)
 
 
 //    val media3_version = "1.0.0-alpha03"

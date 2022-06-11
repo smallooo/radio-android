@@ -2,7 +2,6 @@ package com.google.samples.apps.nowinandroid.feature.foryou
 
 
 import android.annotation.SuppressLint
-import android.widget.TextView
 import androidx.compose.animation.animateColor
 import androidx.compose.animation.core.*
 import androidx.compose.foundation.Image
@@ -10,29 +9,28 @@ import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.itemsIndexed
-import androidx.compose.foundation.rememberScrollState
-import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.MoreVert
 import androidx.compose.material3.*
-import androidx.compose.material3.MaterialTheme.typography
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.layout.ContentScale
-import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.platform.LocalLifecycleOwner
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
-
+import androidx.lifecycle.Lifecycle
+import androidx.lifecycle.flowWithLifecycle
 import coil.compose.rememberImagePainter
+import com.google.samples.app.nowinandroid.core.playback.isActive
 import com.google.samples.apps.nowinandroid.core.compose.LocalPlaybackConnection
 import com.google.samples.apps.nowinandroid.core.model.data.FollowableStation
-import com.google.samples.apps.nowinandroid.core.model.data.Station
-import com.google.samples.apps.nowinandroid.core.ui.LoadingWheel
 import com.google.samples.apps.nowinandroid.feature.foryou.ui.ShimmerAnimationType
 import com.google.samples.apps.nowinandroid.playback.PlaybackConnection
+import kotlinx.coroutines.flow.Flow
+import kotlinx.coroutines.flow.StateFlow
 
 @SuppressLint("StateFlowValueCalledInComposition")
 @Composable
@@ -44,6 +42,10 @@ fun LocalRadioList(
     val uiState by viewModel.uiState.collectAsState()
     val shimmerAnimationType by remember { mutableStateOf(ShimmerAnimationType.FADE) }
     val transition = rememberInfiniteTransition()
+    val playbackState by rememberFlowWithLifecycle(playbackConnection.playbackState)
+    val nowPlaying by rememberFlowWithLifecycle(playbackConnection.nowPlaying)
+    val isPlayerActive = (playbackState to nowPlaying).isActive
+
     val translateAnim by transition.animateFloat(
         initialValue = 100f,
         targetValue = 600f,
@@ -62,10 +64,10 @@ fun LocalRadioList(
         )
     )
 
-    if(playbackConnection.isConnected.value) {
-        Text("hello1")
+    if(isPlayerActive) {
+        Text("PlayerActive" )
     }else{
-        Text("hello2")
+        Text("PlayerNotActive" + playbackState.state.toString())
     }
 
     Button(
@@ -161,3 +163,27 @@ fun AnimatedListItem(station: FollowableStation, itemIndex: Int, playbackConnect
         )
     }
 }
+
+@Composable
+fun <T> rememberFlowWithLifecycle(
+    flow: Flow<T>,
+    lifecycle: Lifecycle = LocalLifecycleOwner.current.lifecycle,
+    minActiveState: Lifecycle.State = Lifecycle.State.STARTED
+): Flow<T> = remember(flow, lifecycle) {
+    flow.flowWithLifecycle(
+        lifecycle = lifecycle,
+        minActiveState = minActiveState
+    )
+}
+
+@SuppressLint("StateFlowValueCalledInComposition") // only used as initial value
+@Composable
+fun <T> rememberFlowWithLifecycle(
+    stateFlow: StateFlow<T>,
+    lifecycle: Lifecycle = LocalLifecycleOwner.current.lifecycle,
+    minActiveState: Lifecycle.State = Lifecycle.State.STARTED
+): State<T> = rememberFlowWithLifecycle(
+    flow = stateFlow,
+    lifecycle = lifecycle,
+    minActiveState = minActiveState
+).collectAsState(initial = stateFlow.value)

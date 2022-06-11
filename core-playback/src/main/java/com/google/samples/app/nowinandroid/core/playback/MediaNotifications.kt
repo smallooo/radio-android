@@ -168,7 +168,7 @@ class MediaNotificationsImpl @Inject constructor(
         createNotificationChannel()
         return NotificationCompat.Builder(context, CHANNEL_ID).apply {
             setSmallIcon(R.drawable.ic_nia_notification)
-            setContentTitle("App name")
+            setContentTitle("App")
             setColorized(true)
             setShowWhen(false)
             setVisibility(NotificationCompat.VISIBILITY_PUBLIC)
@@ -177,7 +177,7 @@ class MediaNotificationsImpl @Inject constructor(
 
     private fun createNotificationChannel() {
         if (!isOreo()) return
-        val name = "App name"
+        val name = "App"
         val channel = NotificationChannel(CHANNEL_ID, name, IMPORTANCE_LOW).apply {
             description = name
             setShowBadge(false)
