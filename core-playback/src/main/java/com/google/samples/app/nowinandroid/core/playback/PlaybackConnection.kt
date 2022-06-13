@@ -37,7 +37,7 @@ interface PlaybackConnection {
     var mediaController: MediaControllerCompat?
     val transportControls: MediaControllerCompat.TransportControls?
     val playbackProgress: StateFlow<PlaybackProgressState>
-    fun playAudio()
+    fun playAudio(url : String)
 }
 
 class PlaybackConnectionImpl(
@@ -55,18 +55,16 @@ class PlaybackConnectionImpl(
     override val transportControls get() = mediaController?.transportControls
     override val playbackProgress  = MutableStateFlow(PlaybackProgressState())
 
-    override fun playAudio() {
-        transportControls?.playFromUri(
-            "https://antares.dribbcast.com/proxy/jpop?mp=/s".toUri(),
+    override fun playAudio(url : String) {
+        transportControls?.playFromUri(url.toUri(),
             Bundle().apply {
                 //putStringArray(QUEUE_LIST_KEY, ["1","2"])
                 putString(QUEUE_TITLE_KEY, "Audio".toString())
             }
         )
 
-
         launch {
-            radioPlayer.playRadio("https://antares.dribbcast.com/proxy/jpop?mp=/s".toUri())
+            radioPlayer.playRadio(url.toUri())
         }
     }
 

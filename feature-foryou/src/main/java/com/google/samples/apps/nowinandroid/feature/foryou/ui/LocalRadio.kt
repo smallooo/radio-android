@@ -124,7 +124,7 @@ fun AnimatedListItem(station: FollowableStation, itemIndex: Int, playbackConnect
 //            player.setMediaItem(mediaItem)
 //            player.playWhenReady = true
 //            player.prepare()
-            playbackConnection.playAudio()
+            playbackConnection.playAudio(station.station.url_resolved)
         }
     ) {
         Image(
