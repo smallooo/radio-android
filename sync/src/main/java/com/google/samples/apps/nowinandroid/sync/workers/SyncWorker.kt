@@ -53,7 +53,7 @@ class SyncWorker @AssistedInject constructor(
     private val topicRepository: TopicsRepository,
     private val newsRepository: NewsRepository,
     private val authorsRepository: AuthorsRepository,
-    private val stationsepository: StationsRepository,
+    private val stationsRepository: StationsRepository,
     @Dispatcher(IO) private val ioDispatcher: CoroutineDispatcher,
 ) : CoroutineWorker(appContext, workerParams), Synchronizer {
 
@@ -66,6 +66,7 @@ class SyncWorker @AssistedInject constructor(
             async { topicRepository.sync() },
             async { authorsRepository.sync() },
             async { newsRepository.sync() },
+            async { stationsRepository.sync() },
         ).all { it }
 
         if (syncedSuccessfully) Result.success()

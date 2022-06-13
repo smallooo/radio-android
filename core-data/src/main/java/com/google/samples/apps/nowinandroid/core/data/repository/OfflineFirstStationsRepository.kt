@@ -16,20 +16,22 @@
 
 package com.google.samples.apps.nowinandroid.core.data.repository
 
+import android.util.Log
+import com.google.samples.apps.nowinandroid.core.data.LocalStationsSource
 import com.google.samples.apps.nowinandroid.core.data.Synchronizer
 import com.google.samples.apps.nowinandroid.core.data.changeListSync
+import com.google.samples.apps.nowinandroid.core.data.changeStationSync
 import com.google.samples.apps.nowinandroid.core.data.model.asEntity
 import com.google.samples.apps.nowinandroid.core.database.dao.StationDao
-import com.google.samples.apps.nowinandroid.core.database.dao.TopicDao
 import com.google.samples.apps.nowinandroid.core.database.model.StationEntity
-import com.google.samples.apps.nowinandroid.core.database.model.TopicEntity
 import com.google.samples.apps.nowinandroid.core.database.model.asExternalModel
 import com.google.samples.apps.nowinandroid.core.datastore.ChangeListVersions
 import com.google.samples.apps.nowinandroid.core.datastore.NiaPreferences
 import com.google.samples.apps.nowinandroid.core.model.data.Station
-import com.google.samples.apps.nowinandroid.core.model.data.Topic
 import com.google.samples.apps.nowinandroid.core.network.NiANetwork
+import com.google.samples.apps.nowinandroid.core.network.model.NetworkStation
 import com.google.samples.apps.nowinandroid.core.network.model.NetworkTopic
+
 import javax.inject.Inject
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.map
@@ -42,60 +44,34 @@ class OfflineFirstStationsRepository @Inject constructor(
     private val sationDao: StationDao,
     private val network: NiANetwork,
     private val niaPreferences: NiaPreferences,
+    private val localStationsSource: LocalStationsSource,
 ) : StationsRepository {
     override fun getStationsStream(): Flow<List<Station>> =
        sationDao.getStationEntitiesStream().map { it.map(StationEntity::asExternalModel) }
 
-
-    override fun getStation(id: String): Flow<Station> {
-        TODO("Not yet implemented")
-    }
-
-    override suspend fun setFollowedStationIds(followedTopicIds: Set<String>) {
-        TODO("Not yet implemented")
-    }
-
-    override suspend fun toggleFollowedStationId(followedTopicId: String, followed: Boolean) {
-        TODO("Not yet implemented")
-    }
-
     override fun getFollowedStationIdsStream(): Flow<Set<String>> =
         niaPreferences.followedAuthorIds
 
-    override suspend fun syncWith(synchronizer: Synchronizer): Boolean {
-        TODO("Not yet implemented")
-    }
+    override suspend fun syncWith(synchronizer: Synchronizer): Boolean =
+        synchronizer.changeStationSync(
+            versionReader = ChangeListVersions::stationVersion,
+            changeListFetcher = { currentVersion ->
+                network.getTopicChangeList(after = currentVersion)
+            },
+            versionUpdater = { latestVersion ->
+                copy(topicVersion = latestVersion)
+            },
+            modelDeleter = sationDao::deleteStations,
+            modelUpdater = { changedIds ->
+                Log.e("aaa", "bbb")
+                val networkStations =  localStationsSource.getLocalStationsList("topclick", "100")
+                if (networkStations != null) {
+                    Log.e("aaa", networkStations.size.toString())
+//                    sationDao.upsertStations(
+//                        entities = networkStations.map(Station::asEntity)
+//                    )
+                }
+            }
+        )
 
-    //    override fun getTopicsStream(): Flow<List<Topic>> =
-//        topicDao.getTopicEntitiesStream()
-//            .map { it.map(TopicEntity::asExternalModel) }
-//
-//    override fun getTopic(id: String): Flow<Topic> =
-//        topicDao.getTopicEntity(id).map { it.asExternalModel() }
-//
-//    override suspend fun setFollowedTopicIds(followedTopicIds: Set<String>) =
-//        niaPreferences.setFollowedTopicIds(followedTopicIds)
-//
-//    override suspend fun toggleFollowedTopicId(followedTopicId: String, followed: Boolean) =
-//        niaPreferences.toggleFollowedTopicId(followedTopicId, followed)
-//
-//    override fun getFollowedTopicIdsStream() = niaPreferences.followedTopicIds
-//
-//    override suspend fun syncWith(synchronizer: Synchronizer): Boolean =
-//        synchronizer.changeListSync(
-//            versionReader = ChangeListVersions::topicVersion,
-//            changeListFetcher = { currentVersion ->
-//                network.getTopicChangeList(after = currentVersion)
-//            },
-//            versionUpdater = { latestVersion ->
-//                copy(topicVersion = latestVersion)
-//            },
-//            modelDeleter = topicDao::deleteTopics,
-//            modelUpdater = { changedIds ->
-//                val networkTopics = network.getTopics(ids = changedIds)
-//                topicDao.upsertTopics(
-//                    entities = networkTopics.map(NetworkTopic::asEntity)
-//                )
-//            }
-//        )
 }

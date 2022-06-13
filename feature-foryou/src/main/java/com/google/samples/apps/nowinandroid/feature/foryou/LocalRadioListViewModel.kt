@@ -57,33 +57,6 @@ class LocalRadioListViewModel @Inject constructor(
             started = SharingStarted.WhileSubscribed(5_000),
             initialValue = StationsUiState.Loading
         )
-
-
-//    var state by mutableStateOf(
-//        LocalStationsContract.State(
-//            localStations = listOf(),
-//            isLoading = true
-//        )
-//    )
-//
-//    var effects = Channel<CountryCategoriesContract.Effect>(UNLIMITED)
-//        private set
-//
-//
-//    fun callInit(type:String, param: String){
-//        viewModelScope.launch {
-//            getLocalStationsList(type, param)
-//        }
-//    }
-//
-//
-//     suspend fun getLocalStationsList(type:String, param: String) {
-//        val categories = localStationsSource.getLocalStationsList(type, param)
-//        viewModelScope.launch {
-//            state = categories?.let { state.copy(localStations = it, isLoading = false) }!!
-//            effects.send(CountryCategoriesContract.Effect.DataWasLoaded)
-//        }
-//    }
 }
 
 

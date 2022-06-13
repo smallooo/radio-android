@@ -27,20 +27,20 @@ interface StationsRepository : Syncable {
      */
     fun getStationsStream(): Flow<List<Station>>
 
-    /**
-     * Gets data for a specific topic
-     */
-    fun getStation(id: String): Flow<Station>
-
-    /**
-     * Sets the user's currently followed topics
-     */
-    suspend fun setFollowedStationIds(followedTopicIds: Set<String>)
-
-    /**
-     * Toggles the user's newly followed/unfollowed topic
-     */
-    suspend fun toggleFollowedStationId(followedTopicId: String, followed: Boolean)
+//    /**
+//     * Gets data for a specific topic
+//     */
+//    fun getStation(id: String): Flow<Station>
+//
+//    /**
+//     * Sets the user's currently followed topics
+//     */
+//    suspend fun setFollowedStationIds(followedTopicIds: Set<String>)
+//
+//    /**
+//     * Toggles the user's newly followed/unfollowed topic
+//     */
+//    suspend fun toggleFollowedStationId(followedTopicId: String, followed: Boolean)
 
     /**
      * Returns the users currently followed topics

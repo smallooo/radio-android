@@ -1,6 +1,5 @@
 package com.google.samples.apps.nowinandroid.feature.foryou
 
-
 import android.annotation.SuppressLint
 import androidx.compose.animation.animateColor
 import androidx.compose.animation.core.*
@@ -64,17 +63,17 @@ fun LocalRadioList(
         )
     )
 
-    if(isPlayerActive) {
-        Text("PlayerActive" )
-    }else{
-        Text("PlayerNotActive" + playbackState.state.toString())
-    }
-
-    Button(
-        onClick = { playbackConnection.playAudio()}
-    ) {
-        Text("Play")
-    }
+//    if(playbackState.state ==3 || playbackState.state == 6) {
+//        Text("PlayerActive" )
+//    }else{
+//        Text("PlayerNotActive" + playbackState.state)
+//    }
+//
+//    Button(
+//        onClick = { playbackConnection.playAudio()}
+//    ) {
+//        Text("Play")
+//    }
     
     val list = if (shimmerAnimationType != ShimmerAnimationType.TRANSLATE) {
         listOf(colorAnim, colorAnim.copy(alpha = 0.5f))
@@ -88,11 +87,11 @@ fun LocalRadioList(
         2000.dp
     }
 
-    @Composable
-    fun buttonColors(type: ShimmerAnimationType) = ButtonDefaults.buttonColors(
-        containerColor = if (shimmerAnimationType == type)
-            MaterialTheme.colorScheme.primary else Color.LightGray
-    )
+//    @Composable
+//    fun buttonColors(type: ShimmerAnimationType) = ButtonDefaults.buttonColors(
+//        containerColor = if (shimmerAnimationType == type)
+//            MaterialTheme.colorScheme.primary else Color.LightGray
+//    )
 
 
     when (uiState) {
