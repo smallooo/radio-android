@@ -11,16 +11,10 @@ import javax.inject.Singleton
 
 @Singleton
 class LocalStationsSource @Inject constructor(private val stationDao: StationDao, private val radioListApi: RadioListApi) {
-    private var _localRadioList: List<Station>? = null
+    private var _localRadioList: List<NetworkStation>? = null
 
     suspend fun getLocalStationsList(type: String, param : String) = withContext(Dispatchers.IO){
-
-        //_localRadioList = stationDao.getStationsStream()
-
-
-        if(_localRadioList == null){
-            _localRadioList = radioListApi.getListByCountry(type, param)
-        }
+        if(_localRadioList == null){ _localRadioList = radioListApi.getListByCountry(type, param) }
         return@withContext _localRadioList
     }
 }

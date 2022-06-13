@@ -94,11 +94,14 @@ fun LocalRadioList(
 //    )
 
 
+
     when (uiState) {
         StationsUiState.Loading ->
             for(i in 1..5) ShimmerItem(list, dpValue.value, shimmerAnimationType == ShimmerAnimationType.VERTICAL)
-        is StationsUiState.Stations ->
+        is StationsUiState.Stations -> {
+            Text(text = ((uiState as StationsUiState.Stations).stations.size.toString() + " Stations"))
             RadioItem(listOf((uiState as StationsUiState.Stations).stations))
+        }
         is StationsUiState.Empty -> ShimmerItem(list, dpValue.value, shimmerAnimationType == ShimmerAnimationType.VERTICAL)
     }
 }
@@ -119,18 +122,10 @@ fun RadioItem(stateCategories : List<List<FollowableStation>>){
 fun AnimatedListItem(station: FollowableStation, itemIndex: Int, playbackConnection: PlaybackConnection = LocalPlaybackConnection.current,) {
     Row(
         verticalAlignment = Alignment.CenterVertically,
-        modifier = Modifier.clickable {
-//            val mediaItem = MediaItem.fromUri(station.station.url_resolved)
-//            player.setMediaItem(mediaItem)
-//            player.playWhenReady = true
-//            player.prepare()
-            playbackConnection.playAudio(station.station.url_resolved)
-        }
+        modifier = Modifier.clickable { playbackConnection.playAudio(station.station.url_resolved) }
     ) {
         Image(
-            painter = rememberImagePainter(
-                data = station.station.favicon
-            ),
+            painter = rememberImagePainter(data = station.station.favicon),
             contentDescription = null,
             contentScale = ContentScale.Crop,
             modifier = Modifier

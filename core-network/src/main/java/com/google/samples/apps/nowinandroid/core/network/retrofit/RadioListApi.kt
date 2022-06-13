@@ -12,13 +12,37 @@ import javax.inject.Singleton
 @Singleton
 class RadioListApi @Inject constructor(private val service: Service) {
     suspend fun getCountryList(): ArrayList<Country> = service.getCountryList()
-    suspend fun getListByCountry(type: String, param: String): List<Station> = service.getListByCountry(type, param)
+    suspend fun getListByCountry(type: String, param: String): List<NetworkStation> = service.getListByCountry()
     interface Service {
-        @GET("json/countries")
+        @GET("json/stations/lastchange/100")
         suspend fun getCountryList(): ArrayList<Country>
 
         @GET("/json/stations/{type}/{param}")
-        suspend fun getListByCountry(@Path("type")type: String, @Path("param") param: String): ArrayList<Station>
+        suspend fun getListByCountryDemo(@Path("type")type: String, @Path("param") param: String): ArrayList<Station>
+
+        @GET("/json/stations/topvote/100")
+        suspend fun getListByCountry(): ArrayList<NetworkStation>
+
+        @GET("/json/stations")
+        suspend fun getStationsByLocation(): ArrayList<NetworkStation>
+
+        @GET("/json/stations")
+        suspend fun geStationsByCountry(): ArrayList<NetworkStation>
+
+        @GET("/json/stations")
+        suspend fun getStationsByVisit(): ArrayList<NetworkStation>
+
+        @GET("/json/stations")
+        suspend fun getStationByVote(): ArrayList<NetworkStation>
+
+        @GET("/json/stations")
+        suspend fun getStationsByUpdate(): ArrayList<NetworkStation>
+
+        @GET("/json/stations")
+        suspend fun getStationsByNowPlaying(): ArrayList<NetworkStation>
+
+        @GET("/json/stations")
+        suspend fun getStationsByLabel(): ArrayList<NetworkStation>
 
         /*
         @GET("/json/stations/bycountry/japan")
@@ -41,12 +65,9 @@ class RadioListApi @Inject constructor(private val service: Service) {
         private String itsAdressWWWCountries = "json/countrycodes";
         private String itsAdressWWWLanguages = "json/languages";
          */
-
     }
 
-    companion object {
-        const val API_URL = "http://at1.api.radio-browser.info/"
-    }
+    companion object { const val API_URL = "http://at1.api.radio-browser.info/" }
 }
 
 

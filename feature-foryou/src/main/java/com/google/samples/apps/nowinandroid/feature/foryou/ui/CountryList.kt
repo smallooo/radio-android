@@ -121,12 +121,12 @@ fun AnimatedCountryListItem(tweet: Country, itemIndex: Int) {
                 .weight(1f)
         ) {
             Text(
-                text = tweet.name,
+                text = tweet.name?:"",
                // style = typography.h6.copy(fontSize = 16.sp),
                 color = MaterialTheme.colorScheme.onSurface
             )
             Text(
-                text = tweet.stationcount,
+                text = tweet.stationcount?:"",
                // style = typography.subtitle2,
                 maxLines = 1,
                 overflow = TextOverflow.Ellipsis

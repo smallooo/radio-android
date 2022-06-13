@@ -14,10 +14,10 @@ interface StationDao {
         WHERE stationuuid = :stationId
     """
     )
-    fun getStationEntity(stationId: String): Flow<StationEntity>
+    fun getStationEntityByUUID(stationId: String): Flow<StationEntity>
 
     @Query(value = "SELECT * FROM stations")
-    fun getStationEntitiesStream(): Flow<List<StationEntity>>
+    fun getAllStationEntitiesStream(): Flow<List<StationEntity>>
 
     @Query(
         value = """
@@ -25,7 +25,41 @@ interface StationDao {
         WHERE stationuuid IN (:ids)
     """
     )
-    fun getStationEntitiesStream(ids: Set<String>): Flow<List<StationEntity>>
+    fun getStationbyIdsEntitiesStream(ids: Set<String>): Flow<List<StationEntity>>
+
+
+    @Query(
+        value = """
+        SELECT * FROM stations
+        WHERE stationuuid IN (:ids)
+    """
+    )
+    fun getStationbyCountryEntitiesStream(ids: Set<String>): Flow<List<StationEntity>>
+
+
+    @Query(
+        value = """
+        SELECT * FROM stations
+        WHERE stationuuid IN (:ids)
+    """
+    )
+    fun getStationbyLanguagesEntitiesStream(ids: Set<String>): Flow<List<StationEntity>>
+
+    @Query(
+        value = """
+        SELECT * FROM stations
+        WHERE stationuuid IN (:ids)
+    """
+    )
+    fun getStationbyVoteEntitiesStream(ids: Set<String>): Flow<List<StationEntity>>
+
+    @Query(
+        value = """
+        SELECT * FROM stations
+        WHERE stationuuid IN (:ids)
+    """
+    )
+    fun getStationbyViewsEntitiesbyIdsStream(ids: Set<String>): Flow<List<StationEntity>>
 
     /**
      * Inserts [stationEntities] into the db if they don't exist, and ignores those that do
