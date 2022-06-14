@@ -68,7 +68,8 @@ class MediaNotificationsImpl @Inject constructor(
     override fun updateNotification(mediaSession: MediaSessionCompat) {
         if (!PlayerService.IS_FOREGROUND) return
         GlobalScope.launch {
-            notificationManager.notify(NOTIFICATION_ID, buildNotification(mediaSession))
+            //todo
+          //  notificationManager.notify(NOTIFICATION_ID, buildNotification(mediaSession))
         }
     }
 

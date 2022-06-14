@@ -63,18 +63,6 @@ fun LocalRadioList(
         )
     )
 
-//    if(playbackState.state ==3 || playbackState.state == 6) {
-//        Text("PlayerActive" )
-//    }else{
-//        Text("PlayerNotActive" + playbackState.state)
-//    }
-//
-//    Button(
-//        onClick = { playbackConnection.playAudio()}
-//    ) {
-//        Text("Play")
-//    }
-    
     val list = if (shimmerAnimationType != ShimmerAnimationType.TRANSLATE) {
         listOf(colorAnim, colorAnim.copy(alpha = 0.5f))
     } else {
@@ -87,22 +75,13 @@ fun LocalRadioList(
         2000.dp
     }
 
-//    @Composable
-//    fun buttonColors(type: ShimmerAnimationType) = ButtonDefaults.buttonColors(
-//        containerColor = if (shimmerAnimationType == type)
-//            MaterialTheme.colorScheme.primary else Color.LightGray
-//    )
-
-
-
     when (uiState) {
         StationsUiState.Loading ->
             for(i in 1..5) ShimmerItem(list, dpValue.value, shimmerAnimationType == ShimmerAnimationType.VERTICAL)
         is StationsUiState.Stations -> {
-            Text(text = ((uiState as StationsUiState.Stations).stations.size.toString() + " Stations"))
             RadioItem(listOf((uiState as StationsUiState.Stations).stations))
         }
-        is StationsUiState.Empty -> ShimmerItem(list, dpValue.value, shimmerAnimationType == ShimmerAnimationType.VERTICAL)
+        is StationsUiState.Empty  -> ShimmerItem(list, dpValue.value, shimmerAnimationType == ShimmerAnimationType.VERTICAL)
     }
 }
 

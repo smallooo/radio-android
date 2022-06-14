@@ -1,7 +1,3 @@
-/*
- * Copyright (C) 2021, Alashov Berkeli
- * All rights reserved.
- */
 package com.hdmsh.core_compose
 
 import android.annotation.SuppressLint

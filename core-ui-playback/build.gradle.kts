@@ -30,6 +30,10 @@ dependencies {
 
     implementation(libs.androidx.hilt.navigation.compose)
 
+    implementation(libs.androidx.media)
+    implementation(libs.google.exoPlayer)
+    implementation(libs.google.exoPlayer.okhttp)
+
 
 //    implementation(libs.hilt.compiler)
 //    implementation(libs.hilt.android)

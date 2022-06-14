@@ -12,6 +12,7 @@ import android.support.v4.media.session.PlaybackStateCompat
 import androidx.core.net.toUri
 import androidx.core.os.bundleOf
 import com.google.samples.app.nowinandroid.core.playback.*
+import com.google.samples.app.nowinandroid.core.playback.models.toMediaMetadata
 import com.google.samples.apps.nowinandroid.core.model.data.Station
 import com.google.samples.apps.nowinandroid.core.playback.R
 import com.google.samples.apps.nowinandroid.core.util.extensions.plus
@@ -260,6 +261,8 @@ class DatmusicPlayerImpl @Inject constructor(
         //setMetaData(refreshedAudio ?: audio)
    //     playAudio()
 
+
+        setMetaData()
 
         isInitialized = true
         audioPlayer.setSource(uri, false)
@@ -611,25 +614,26 @@ class DatmusicPlayerImpl @Inject constructor(
         }
     }
 
-//    private fun setMetaData(audio: Audio) {
-//        val player = this
-//        launch {
-//            val mediaMetadata = audio.toMediaMetadata(metadataBuilder).apply {
-//                val artworkFromFile = audio.artworkFromFile(context)
-//                if (artworkFromFile != null) {
-//                    putBitmap(MediaMetadataCompat.METADATA_KEY_ALBUM_ART, artworkFromFile)
-//                }
-//            }
-//            mediaSession.setMetadata(mediaMetadata.build())
-//            metaDataChangedCallback(player)
-//
-//            // cover image is applied separately to avoid delaying metadata setting while fetching bitmap from network
-//            val smallCoverBitmap = context.getBitmap(audio.coverUri(CoverImageSize.SMALL), CoverImageSize.SMALL.maxSize)
-//            val updatedMetadata = mediaMetadata.apply { putBitmap(MediaMetadataCompat.METADATA_KEY_ALBUM_ART, smallCoverBitmap) }.build()
-//            mediaSession.setMetadata(updatedMetadata)
-//            metaDataChangedCallback(player)
-//        }
-//    }
+    private fun setMetaData() {
+        val player = this
+        val station:Station = Station("1","","","","","1","","","","","1","","","","","1","","","","","1","","","","","1","","","","","1","","","","","1")
+        launch {
+            val mediaMetadata = station.toMediaMetadata(metadataBuilder).apply {
+                val artworkFromFile = station.url
+                if (artworkFromFile != null) {
+                   // putBitmap(MediaMetadataCompat.METADATA_KEY_ALBUM_ART, artworkFromFile)
+                }
+            }
+            mediaSession.setMetadata(mediaMetadata.build())
+            metaDataChangedCallback(player)
+
+            // cover image is applied separately to avoid delaying metadata setting while fetching bitmap from network
+            //val smallCoverBitmap = context.getBitmap(station.coverUri(CoverImageSize.SMALL), CoverImageSize.SMALL.maxSize)
+            val updatedMetadata = mediaMetadata.build()
+            mediaSession.setMetadata(updatedMetadata)
+            metaDataChangedCallback(player)
+        }
+    }
 
    // private fun logEvent(event: String, mediaId: String = queueManager.currentAudioId) = analytics.event("player.$event", mapOf("mediaId" to mediaId))
 }
