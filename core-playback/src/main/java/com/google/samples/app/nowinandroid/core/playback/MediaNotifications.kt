@@ -21,6 +21,7 @@ import android.support.v4.media.session.PlaybackStateCompat.ACTION_STOP
 import androidx.annotation.DrawableRes
 import androidx.core.app.NotificationCompat
 import androidx.media.session.MediaButtonReceiver.buildMediaButtonPendingIntent
+import androidx.palette.graphics.Palette
 import com.google.samples.app.nowinandroid.core.playback.services.PlayerService
 import com.google.samples.apps.nowinandroid.core.playback.R
 import com.google.samples.apps.nowinandroid.core.util.extensions.isOreo
@@ -31,6 +32,8 @@ import dagger.hilt.android.qualifiers.ApplicationContext
 import javax.inject.Inject
 import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.launch
+
+
 
 
 const val NOTIFICATION_ID = 2000
@@ -68,8 +71,7 @@ class MediaNotificationsImpl @Inject constructor(
     override fun updateNotification(mediaSession: MediaSessionCompat) {
         if (!PlayerService.IS_FOREGROUND) return
         GlobalScope.launch {
-            //todo
-          //  notificationManager.notify(NOTIFICATION_ID, buildNotification(mediaSession))
+          notificationManager.notify(NOTIFICATION_ID, buildNotification(mediaSession))
         }
     }
 
@@ -100,7 +102,7 @@ class MediaNotificationsImpl @Inject constructor(
 
         val builder = NotificationCompat.Builder(context, CHANNEL_ID).apply {
             setStyle(style)
-            //setSmallIcon(R.drawable.ic_launcher_foreground)
+            setSmallIcon(R.drawable.ic_launcher_foreground)
             setLargeIcon(artwork)
             setContentIntent(clickIntent)
             setContentTitle(trackName)
@@ -114,16 +116,16 @@ class MediaNotificationsImpl @Inject constructor(
             if (isBuffering)
                 addAction(getBufferingAction(context))
             else
-                addAction(getPlayPauseAction(context, if (isPlaying) R.drawable.ic_nia_notification else R.drawable.ic_nia_notification))
+                addAction(getPlayPauseAction(context, if (isPlaying) R.drawable.ic_pause else R.drawable.ic_play_arrow))
             addAction(getNextAction(context))
             addAction(getStopAction(context))
         }
 
-//        if (artwork != null) {
-//            builder.color = Palette.from(artwork)
-//                .generate()
-//                .getDominantColor(Color.parseColor("#16053D"))
-//        }
+        if (artwork != null) {
+            builder.color = Palette.from(artwork)
+                .generate()
+                .getDominantColor(Color.parseColor("#16053D"))
+        }
 
         return builder.build()
     }
@@ -133,19 +135,19 @@ class MediaNotificationsImpl @Inject constructor(
     }
 
     private fun getBufferingAction(context: Context): NotificationCompat.Action {
-        return NotificationCompat.Action(R.drawable.ic_nia_notification, "", null)
+        return NotificationCompat.Action(R.drawable.ic_hourglass_empty, "", null)
     }
 
     private fun getStopAction(context: Context): NotificationCompat.Action {
         val actionIntent = Intent(context, PlayerService::class.java).apply { action = STOP_PLAYBACK }
         val pendingIntent = PendingIntent.getService(context, 0, actionIntent, FLAG_IMMUTABLE)
-        return NotificationCompat.Action(R.drawable.ic_nia_notification, "", pendingIntent)
+        return NotificationCompat.Action(R.drawable.ic_stop, "", pendingIntent)
     }
 
     private fun getPreviousAction(context: Context): NotificationCompat.Action {
         val actionIntent = Intent(context, PlayerService::class.java).apply { action = PREVIOUS }
         val pendingIntent = PendingIntent.getService(context, 0, actionIntent, FLAG_IMMUTABLE)
-        return NotificationCompat.Action(R.drawable.ic_nia_notification, "", pendingIntent)
+        return NotificationCompat.Action(R.drawable.ic_skip_previous, "", pendingIntent)
     }
 
     private fun getPlayPauseAction(
@@ -162,13 +164,13 @@ class MediaNotificationsImpl @Inject constructor(
             action = NEXT
         }
         val pendingIntent = PendingIntent.getService(context, 0, actionIntent, FLAG_IMMUTABLE)
-        return NotificationCompat.Action(R.drawable.ic_nia_notification, "", pendingIntent)
+        return NotificationCompat.Action(R.drawable.ic_skip_next, "", pendingIntent)
     }
 
     private fun createEmptyNotification(): Notification {
         createNotificationChannel()
         return NotificationCompat.Builder(context, CHANNEL_ID).apply {
-            setSmallIcon(R.drawable.ic_nia_notification)
+            setSmallIcon(R.drawable.ic_launcher_foreground)
             setContentTitle("App")
             setColorized(true)
             setShowWhen(false)
