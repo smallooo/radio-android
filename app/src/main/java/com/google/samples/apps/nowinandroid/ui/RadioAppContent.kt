@@ -43,7 +43,8 @@ fun NiaAppContent(
                     PlaybackMiniControls(
                         modifier = Modifier
                             .graphicsLayer(translationY = 8.0F)
-                            .zIndex(2f)
+                            .zIndex(2f),
+                        onNavigateToTopLevelDestination = niaTopLevelNavigation::navigateTo,
                     )
 
                     NiABottomBar(

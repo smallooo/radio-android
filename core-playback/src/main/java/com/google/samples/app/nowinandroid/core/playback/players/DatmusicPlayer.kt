@@ -94,28 +94,19 @@ class DatmusicPlayerImpl @Inject constructor(
     //private val preferences: PreferencesStore,
     //private val analytics: FirebaseAnalytics,
 ) : DatmusicPlayer, CoroutineScope by MainScope() {
-
-    companion object {
-        private const val queueStateKey = "player_queue_state"
-    }
-
+    companion object { private const val queueStateKey = "player_queue_state" }
     private var isInitialized: Boolean = false
-
     private var isPlayingCallback: OnIsPlaying<DatmusicPlayer> = { _, _ -> }
     private var preparedCallback: OnPrepared<DatmusicPlayer> = {}
     private var errorCallback: OnError<DatmusicPlayer> = {}
     private var completionCallback: OnCompletion<DatmusicPlayer> = {}
     private var metaDataChangedCallback: OnMetaDataChanged = {}
-
     private val metadataBuilder = MediaMetadataCompat.Builder()
     private val stateBuilder = createDefaultPlaybackState()
-
     private val pendingIntent = PendingIntent.getBroadcast(context, 0, Intent(Intent.ACTION_MEDIA_BUTTON), FLAG_IMMUTABLE)
 
     private val mediaSession = MediaSessionCompat(context, "HiRadio", null, pendingIntent).apply {
-        setCallback(
-            MediaSessionCallback(this, this@DatmusicPlayerImpl, audioFocusHelper)
-        )
+        setCallback(MediaSessionCallback(this, this@DatmusicPlayerImpl, audioFocusHelper))
         setPlaybackState(stateBuilder.build())
         val sessionIntent = context.packageManager.getLaunchIntentForPackage(context.packageName)
         val sessionActivityPendingIntent = PendingIntent.getActivity(context, 0, sessionIntent, FLAG_IMMUTABLE)
@@ -286,29 +277,19 @@ class DatmusicPlayerImpl @Inject constructor(
         updatePlaybackState {
             setExtras(bundleOf(SHUFFLE_MODE to PlaybackStateCompat.SHUFFLE_MODE_NONE))
         }
-
         queueManager.queue = list
         queueManager.queueTitle = title ?: ""
     }
 
-    private fun goToStart() {
-        isInitialized = false
-        stop(byUser = false)
-        if (queueManager.queue.isEmpty()) return
-        launch {
-           // setCurrentAudioId(queueManager.queue.first())
-          //  queueManager.refreshCurrentAudio()?.apply { setMetaData(this) }
-        }
-    }
 
     private fun setMetaData(station : Station) {
         val player = this
         val station:Station = station
         launch {
             val mediaMetadata = station.toMediaMetadata(metadataBuilder).apply {
-                val artworkFromFile = station.favicon
+                val artworkFromFile = context.getBitmap(station.favicon, CoverImageSize.SMALL.maxSize)
                 if (artworkFromFile != null) {
-                   // putBitmap(MediaMetadataCompat.METADATA_KEY_ALBUM_ART, artworkFromFile)
+                   putBitmap(MediaMetadataCompat.METADATA_KEY_ALBUM_ART, artworkFromFile)
                 }
             }
             mediaSession.setMetadata(mediaMetadata.build())
