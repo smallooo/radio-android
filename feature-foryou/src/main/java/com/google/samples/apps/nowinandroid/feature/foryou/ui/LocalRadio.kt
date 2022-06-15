@@ -101,7 +101,7 @@ fun RadioItem(stateCategories : List<List<FollowableStation>>){
 fun AnimatedListItem(station: FollowableStation, itemIndex: Int, playbackConnection: PlaybackConnection = LocalPlaybackConnection.current,) {
     Row(
         verticalAlignment = Alignment.CenterVertically,
-        modifier = Modifier.clickable { playbackConnection.playAudio(station.station.url_resolved) }
+        modifier = Modifier.clickable { playbackConnection.playAudio(station.station) }
     ) {
         Image(
             painter = rememberImagePainter(data = station.station.favicon),

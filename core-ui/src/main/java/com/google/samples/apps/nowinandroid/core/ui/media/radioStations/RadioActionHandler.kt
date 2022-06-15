@@ -32,7 +32,7 @@ fun audioActionHandler(
 
     return { action ->
         when (action) {
-            is AudioItemAction.Play -> playbackConnection.playAudio("")
+            is AudioItemAction.Play -> playbackConnection.playAudio(action.station)
         }
     }
 }

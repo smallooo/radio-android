@@ -23,6 +23,7 @@ import com.google.samples.app.nowinandroid.core.playback.players.AudioPlayer
 import com.google.samples.app.nowinandroid.core.playback.players.DatmusicPlayer
 import com.google.samples.app.nowinandroid.core.playback.players.QUEUE_LIST_KEY
 import com.google.samples.app.nowinandroid.core.playback.players.QUEUE_TITLE_KEY
+import com.google.samples.apps.nowinandroid.core.model.data.Station
 import kotlinx.coroutines.*
 import kotlinx.coroutines.flow.*
 import timber.log.Timber
@@ -37,7 +38,7 @@ interface PlaybackConnection {
     var mediaController: MediaControllerCompat?
     val transportControls: MediaControllerCompat.TransportControls?
     val playbackProgress: StateFlow<PlaybackProgressState>
-    fun playAudio(url : String)
+    fun playAudio(station : Station)
 }
 
 class PlaybackConnectionImpl(
@@ -55,8 +56,8 @@ class PlaybackConnectionImpl(
     override val transportControls get() = mediaController?.transportControls
     override val playbackProgress  = MutableStateFlow(PlaybackProgressState())
 
-    override fun playAudio(url : String) {
-        transportControls?.playFromUri(url.toUri(),
+    override fun playAudio(station : Station) {
+        transportControls?.playFromUri(station.url_resolved.toUri(),
             Bundle().apply {
                 //putStringArray(QUEUE_LIST_KEY, ["1","2"])
                 putString(QUEUE_TITLE_KEY, "Audio".toString())
@@ -64,7 +65,7 @@ class PlaybackConnectionImpl(
         )
 
         launch {
-            radioPlayer.playRadio(url.toUri())
+            radioPlayer.playRadio(station)
         }
     }
 
@@ -75,8 +76,6 @@ class PlaybackConnectionImpl(
         mediaBrowserConnectionCallback,
         null
     ).apply { connect() }
-
-
 
     init {
         startPlaybackProgress()

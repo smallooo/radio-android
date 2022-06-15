@@ -29,5 +29,7 @@ dependencies {
 
     implementation(libs.timber)
 
+    implementation(libs.coil.kt)
+
     testImplementation(project(":core-testing"))
 }
