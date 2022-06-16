@@ -10,25 +10,26 @@ import androidx.compose.animation.slideInVertically
 import androidx.compose.animation.slideOutVertically
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.layout.*
-import androidx.compose.material.LinearProgressIndicator
-import androidx.compose.material.MaterialTheme
-import androidx.compose.material.ProgressIndicatorDefaults
+import androidx.compose.material.*
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.layout.onGloballyPositioned
 import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.text.font.FontWeight
+import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
+import com.google.accompanist.pager.ExperimentalPagerApi
 import com.google.samples.app.nowinandroid.core.playback.isBuffering
 import com.google.samples.app.nowinandroid.core.playback.playPause
 import com.google.samples.apps.nowinandroid.common.compose.LocalPlaybackConnection
-
-
 import com.google.samples.apps.nowinandroid.playback.PLAYBACK_PROGRESS_INTERVAL
 import com.google.samples.apps.nowinandroid.playback.PlaybackConnection
 import com.hdmsh.common_compose.rememberFlowWithLifecycle
+import com.hdmsh.core_ui_playback.components.PlaybackPager
+
 
 object PlaybackMiniControlsDefaults { val height = 56.dp }
 
@@ -122,7 +123,7 @@ fun PlaybackMiniControls(
                 .padding(if (controlsVisible) contentPadding else PaddingValues())
         ) {
 
-                PlaybackNowPlaying( coverOnly = !nowPlayingVisible)
+                PlaybackNowPlaying( coverOnly = !nowPlayingVisible, nowPlaying)
         }
 
             PlaybackProgress(
@@ -173,16 +174,47 @@ internal fun animatePlaybackProgress(
     ),
 )
 
+@OptIn(ExperimentalPagerApi::class)
 @Composable
 private fun RowScope.PlaybackNowPlaying(
-    modifier: Modifier = Modifier,
     coverOnly: Boolean = false,
+    nowPlaying: MediaMetadataCompat,
+    maxHeight: Dp = 200.dp,
+    modifier: Modifier = Modifier,
 ) {
     Row(
         verticalAlignment = Alignment.CenterVertically,
         modifier = modifier.weight(if (coverOnly) 3f else 7f),
     ) {
         Image(painter = painterResource(id = R.drawable.ic_hourglass_empty), contentDescription = "")
+        PlaybackPager(nowPlaying = nowPlaying) {
+            PlaybackNowPlaying()
+        }
+    }
+}
+
+@Composable
+private fun PlaybackNowPlaying(modifier: Modifier = Modifier) {
+    Column(
+        modifier = Modifier
+            .padding(vertical = 8.dp)
+            .fillMaxWidth()
+            .then(modifier)
+    ) {
+        Text(
+            "audio.title.orNA()",
+            maxLines = 1,
+            overflow = TextOverflow.Ellipsis,
+            style = MaterialTheme.typography.body2.copy(fontWeight = FontWeight.Bold)
+        )
+        CompositionLocalProvider(LocalContentAlpha provides ContentAlpha.medium) {
+            Text(
+                "audio.artist.orNA()",
+                maxLines = 1,
+                overflow = TextOverflow.Ellipsis,
+                style = MaterialTheme.typography.body2
+            )
+        }
     }
 }
 

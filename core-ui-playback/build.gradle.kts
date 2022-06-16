@@ -1,3 +1,5 @@
+import org.jetbrains.dokka.utilities.cast
+
 plugins {
     id("nowinandroid.android.library")
     id("nowinandroid.android.library.jacoco")
@@ -22,29 +24,24 @@ android {
 
 dependencies {
     implementation(project(":core-playback"))
+    implementation(project(":core-model"))
     implementation(project(":common-compose"))
-
     testImplementation(project(":core-testing"))
 
-//    implementation(libs.kotlinx.coroutines.android)
-//    implementation(libs.kotlinx.serialization.json)
-//    implementation(libs.kotlinx.datetime)
-//    implementation(libs.okhttp.logging)
-//    implementation(libs.retrofit.core)
-//    implementation(libs.retrofit.kotlin.serialization)
     implementation(libs.hilt.android)
     implementation(libs.hilt.compiler)
     kapt(libs.hilt.compiler)
-    //implementation(libs.androidx.compose.ui.util)
+
+    implementation(libs.androidx.hilt.navigation.compose)
+
+    implementation(libs.androidx.compose.material.iconsExtended)
+
     implementation(libs.androidx.compose.ui.tooling)
     implementation(libs.androidx.compose.material.material)
     implementation(libs.androidx.lifecycle.viewmodelKtx)
-//    implementation(libs.retrofit.converter)
-//    implementation(libs.google.gson)
-//
-//    implementation(libs.androidx.hilt.navigation.compose)
-//
+
     implementation(libs.androidx.media)
-//    implementation(libs.google.exoPlayer)
-//    implementation(libs.google.exoPlayer.okhttp)
+
+    implementation(libs.accompanist.pager)
+    implementation(libs.androidx.compose.ui.util)
 }
