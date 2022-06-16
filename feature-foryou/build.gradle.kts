@@ -34,8 +34,8 @@ dependencies {
     implementation(project(":core-ui"))
     implementation(project(":core-data"))
     implementation(project(":core-navigation"))
-    implementation(project(":core-playback"))
-    implementation(project(":core-compose"))
+
+   
 
     testImplementation(project(":core-testing"))
     androidTestImplementation(project(":core-testing"))
