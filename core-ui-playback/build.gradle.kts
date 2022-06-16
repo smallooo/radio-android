@@ -9,11 +9,7 @@ plugins {
 }
 
 dependencies {
-    implementation(project(":core-common"))
-    implementation(project(":core-model"))
-    implementation(project(":core-compose"))
     implementation(project(":core-playback"))
-
     testImplementation(project(":core-testing"))
 
     implementation(libs.kotlinx.coroutines.android)
@@ -33,12 +29,4 @@ dependencies {
     implementation(libs.androidx.media)
     implementation(libs.google.exoPlayer)
     implementation(libs.google.exoPlayer.okhttp)
-
-
-//    implementation(libs.hilt.compiler)
-//    implementation(libs.hilt.android)
-//    implementation(libs.hilt.ext.compiler)
-//    implementation(libs.hilt.ext.work)
-
-
 }
