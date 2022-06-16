@@ -8,7 +8,6 @@ plugins {
 
 
 dependencies {
-
     implementation(project(":core-playback"))
 
 

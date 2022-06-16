@@ -10,8 +10,9 @@ import androidx.compose.runtime.remember
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.compose.currentBackStackEntryAsState
 import androidx.navigation.compose.rememberNavController
-import com.google.samples.apps.nowinandroid.core.compose.LocalPlaybackConnection
-import com.google.samples.apps.nowinandroid.core.compose.LocalScaffoldState
+import com.google.samples.apps.nowinandroid.common.compose.LocalPlaybackConnection
+import com.google.samples.apps.nowinandroid.common.compose.LocalScaffoldState
+
 import com.google.samples.apps.nowinandroid.core.ui.component.NiaBackground
 import com.google.samples.apps.nowinandroid.core.ui.media.radioStations.LocalAudioActionHandler
 import com.google.samples.apps.nowinandroid.core.ui.media.radioStations.audioActionHandler

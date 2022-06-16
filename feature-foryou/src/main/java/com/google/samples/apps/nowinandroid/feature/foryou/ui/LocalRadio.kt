@@ -24,7 +24,8 @@ import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.flowWithLifecycle
 import coil.compose.rememberImagePainter
 import com.google.samples.app.nowinandroid.core.playback.isActive
-import com.google.samples.apps.nowinandroid.core.compose.LocalPlaybackConnection
+import com.google.samples.apps.nowinandroid.common.compose.LocalPlaybackConnection
+
 import com.google.samples.apps.nowinandroid.core.model.data.FollowableStation
 import com.google.samples.apps.nowinandroid.feature.foryou.ui.ShimmerAnimationType
 import com.google.samples.apps.nowinandroid.playback.PlaybackConnection

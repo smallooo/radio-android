@@ -22,7 +22,7 @@ plugins {
 
 dependencies {
     implementation(project(":core-common"))
-    implementation(project(":core-compose"))
+    implementation(project(":common-compose"))
     implementation(project(":core-model"))
     implementation(project(":core-playback"))
 

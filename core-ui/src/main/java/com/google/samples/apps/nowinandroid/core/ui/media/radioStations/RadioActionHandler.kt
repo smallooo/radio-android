@@ -10,8 +10,8 @@ import androidx.compose.runtime.staticCompositionLocalOf
 import androidx.compose.ui.platform.ClipboardManager
 import androidx.compose.ui.platform.LocalClipboardManager
 import androidx.compose.ui.platform.LocalContext
-import androidx.compose.ui.text.AnnotatedString
-import com.google.samples.apps.nowinandroid.core.compose.LocalPlaybackConnection
+import com.google.samples.apps.nowinandroid.common.compose.LocalPlaybackConnection
+
 import com.google.samples.apps.nowinandroid.playback.PlaybackConnection
 import kotlinx.coroutines.launch
 

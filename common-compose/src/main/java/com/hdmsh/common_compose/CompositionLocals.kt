@@ -2,7 +2,7 @@
  * Copyright (C) 2021, Alashov Berkeli
  * All rights reserved.
  */
-package com.google.samples.apps.nowinandroid.core.compose
+package com.google.samples.apps.nowinandroid.common.compose
 
 import androidx.compose.material.ScaffoldState
 import androidx.compose.runtime.staticCompositionLocalOf

@@ -15,11 +15,11 @@ import androidx.compose.ui.graphics.graphicsLayer
 import androidx.compose.ui.zIndex
 import androidx.navigation.NavDestination
 import androidx.navigation.NavHostController
-import com.google.samples.apps.nowinandroid.core.compose.LocalPlaybackConnection
+import com.google.samples.apps.nowinandroid.common.compose.LocalPlaybackConnection
 import com.google.samples.apps.nowinandroid.navigation.NiaNavHost
 import com.google.samples.apps.nowinandroid.navigation.NiaTopLevelNavigation
 import com.google.samples.apps.nowinandroid.playback.PlaybackConnection
-import com.google.samples.apps.nowinandroid.playback.PlaybackMiniControls
+import com.hdmsh.core_ui_playback.PlaybackMiniControls
 
 @SuppressLint("StateFlowValueCalledInComposition")
 @OptIn(ExperimentalMaterial3Api::class, ExperimentalLayoutApi::class)
@@ -44,7 +44,7 @@ fun NiaAppContent(
                         modifier = Modifier
                             .graphicsLayer(translationY = 8.0F)
                             .zIndex(2f),
-                        onNavigateToTopLevelDestination = niaTopLevelNavigation::navigateTo,
+//                        onNavigateToTopLevelDestination = niaTopLevelNavigation::navigateTo,
                     )
 
                     NiABottomBar(
