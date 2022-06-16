@@ -28,6 +28,7 @@ import com.google.samples.apps.nowinandroid.core.compose.LocalPlaybackConnection
 import com.google.samples.apps.nowinandroid.core.model.data.FollowableStation
 import com.google.samples.apps.nowinandroid.feature.foryou.ui.ShimmerAnimationType
 import com.google.samples.apps.nowinandroid.playback.PlaybackConnection
+import com.hdmsh.common_compose.rememberFlowWithLifecycle
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.StateFlow
 
@@ -136,27 +137,3 @@ fun AnimatedListItem(station: FollowableStation, itemIndex: Int, playbackConnect
         )
     }
 }
-
-@Composable
-fun <T> rememberFlowWithLifecycle(
-    flow: Flow<T>,
-    lifecycle: Lifecycle = LocalLifecycleOwner.current.lifecycle,
-    minActiveState: Lifecycle.State = Lifecycle.State.STARTED
-): Flow<T> = remember(flow, lifecycle) {
-    flow.flowWithLifecycle(
-        lifecycle = lifecycle,
-        minActiveState = minActiveState
-    )
-}
-
-@SuppressLint("StateFlowValueCalledInComposition") // only used as initial value
-@Composable
-fun <T> rememberFlowWithLifecycle(
-    stateFlow: StateFlow<T>,
-    lifecycle: Lifecycle = LocalLifecycleOwner.current.lifecycle,
-    minActiveState: Lifecycle.State = Lifecycle.State.STARTED
-): State<T> = rememberFlowWithLifecycle(
-    flow = stateFlow,
-    lifecycle = lifecycle,
-    minActiveState = minActiveState
-).collectAsState(initial = stateFlow.value)

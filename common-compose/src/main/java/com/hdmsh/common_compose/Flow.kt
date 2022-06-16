@@ -1,8 +1,4 @@
-/*
- * Copyright (C) 2021, Alashov Berkeli
- * All rights reserved.
- */
-package com.google.samples.apps.nowinandroid.playback
+package com.hdmsh.common_compose
 
 import android.annotation.SuppressLint
 import androidx.compose.runtime.*

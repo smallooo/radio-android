@@ -88,6 +88,7 @@ dependencies {
     implementation(project(":core-navigation"))
     implementation(project(":core-playback"))
 
+    implementation(project(":common-compose"))
 
     implementation(project(":sync"))
 
