@@ -80,17 +80,15 @@ dependencies {
     implementation(project(":feature-history"))
     implementation(project(":feature-foryou"))
     implementation(project(":feature-topic"))
+    implementation(project(":core-navigation"))
+    implementation(project(":sync"))
 
     implementation(project(":core-common"))
-    implementation(project(":core-compose"))
     implementation(project(":core-ui"))
-    implementation(project(":core-ui-playback"))
-    implementation(project(":core-navigation"))
     implementation(project(":core-playback"))
-
+    implementation(project(":core-ui-playback"))
     implementation(project(":common-compose"))
 
-    implementation(project(":sync"))
 
     androidTestImplementation(project(":core-testing"))
     androidTestImplementation(project(":core-datastore-test"))
@@ -125,16 +123,11 @@ dependencies {
     implementation(libs.androidx.media)
     implementation(libs.google.exoPlayer)
     implementation(libs.google.exoPlayer.okhttp)
-
     implementation(libs.accompanist.insets)
-
     implementation(libs.okhttp.logging)
     implementation(libs.retrofit.core)
     implementation(libs.retrofit.kotlin.serialization)
-
     implementation(libs.retrofit.converter)
-
-
 
     // androidx.test is forcing JUnit, 4.12. This forces it to use 4.13
     configurations.configureEach {
@@ -144,5 +137,4 @@ dependencies {
             force("org.objenesis:objenesis:2.6")
         }
     }
-
 }

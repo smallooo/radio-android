@@ -36,7 +36,7 @@ dependencies {
     implementation(project(":core-navigation"))
     implementation(project(":common-compose"))
 
-    implementation(project(":core-compose"))
+
     implementation(project(":core-playback"))
     implementation(project(":core-ui-playback"))
 
