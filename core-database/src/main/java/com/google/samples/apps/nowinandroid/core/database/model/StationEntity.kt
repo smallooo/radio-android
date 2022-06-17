@@ -5,6 +5,17 @@ import androidx.room.PrimaryKey
 import com.google.samples.apps.nowinandroid.core.model.data.Station
 import javax.annotation.Nullable
 
+
+
+private val MULTIPLE_ARTIST_SPLIT_REGEX = Regex("((,)|(feat\\.)|(ft\\.))")
+fun String.artists() = split(MULTIPLE_ARTIST_SPLIT_REGEX, 10).map { it.trim() }
+fun String.mainArtist() = split(MULTIPLE_ARTIST_SPLIT_REGEX, 10).first().trim()
+
+typealias StationId = String
+typealias StationIds = List<StationId>
+typealias Stations = List<StationEntity>
+
+
 @Entity(tableName = "stations",)
 data class StationEntity(
 

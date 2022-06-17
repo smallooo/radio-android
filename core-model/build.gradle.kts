@@ -21,6 +21,8 @@ plugins {
     id("kotlinx-serialization")
     alias(libs.plugins.ksp)
     id("nowinandroid.spotless")
+    id("kotlin-parcelize")
+
 }
 
 dependencies {

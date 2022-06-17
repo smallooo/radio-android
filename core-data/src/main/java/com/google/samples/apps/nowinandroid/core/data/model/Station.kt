@@ -3,6 +3,7 @@ package com.google.samples.apps.nowinandroid.core.data.model
 import com.google.samples.apps.nowinandroid.core.database.model.StationEntity
 import com.google.samples.apps.nowinandroid.core.network.model.NetworkStation
 
+
 fun NetworkStation.asEntity() = StationEntity(
     changeuuid = changeuuid,
     stationuuid = stationuuid,

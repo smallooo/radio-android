@@ -6,6 +6,7 @@ package com.hdmsh.core_ui_playback.components
 
 import android.support.v4.media.MediaMetadataCompat
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.getValue
 
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.graphicsLayer
@@ -17,6 +18,7 @@ import com.google.accompanist.pager.calculateCurrentOffsetForPage
 import com.google.accompanist.pager.rememberPagerState
 import com.google.samples.apps.nowinandroid.common.compose.LocalPlaybackConnection
 import com.google.samples.apps.nowinandroid.playback.PlaybackConnection
+import com.hdmsh.common_compose.rememberFlowWithLifecycle
 import kotlin.math.absoluteValue
 
 
@@ -24,12 +26,12 @@ import kotlin.math.absoluteValue
 @Composable
 internal fun PlaybackPager(
     nowPlaying: MediaMetadataCompat,
-    //modifier: Modifier = Modifier,
+    modifier: Modifier = Modifier,
     pagerState: PagerState = rememberPagerState(),
     playbackConnection: PlaybackConnection = LocalPlaybackConnection.current,
     content: @Composable () -> Unit,
 ) {
-   // val playbackQueue by rememberFlowWithLifecycle(playbackConnection.playbackQueue)
+    val playbackQueue by rememberFlowWithLifecycle(playbackConnection.nowPlaying)
    // val playbackCurrentIndex = playbackQueue.currentIndex
 //    var lastRequestedPage by remember(playbackQueue, nowPlaying) {
 //        mutableStateOf<Int?>(
@@ -58,35 +60,35 @@ internal fun PlaybackPager(
 //                }
 //            }
 //    }
-    HorizontalPager(
-        count = 1, //playbackQueue.size,
-        modifier = Modifier,
-        state = pagerState,
-        key = { },//{ playbackQueue.audios.getOrNull(it) ?: it },
-    ) { page ->
-        //val currentAudio = playbackQueue.audios.getOrNull(page) ?: Audio()
-
-//        val pagerMod = Modifier.graphicsLayer {
-//            val pageOffset = calculateCurrentOffsetForPage(page).absoluteValue
-//            // TODO: report to upstream if can be reproduced in isolation
-//            if (pageOffset.isNaN()) {
-//                return@graphicsLayer
-//            }
+//    HorizontalPager(
+//        count = 1, //playbackQueue.size,
+//        modifier = Modifier,
+//        state = pagerState,
+//        key = { playbackConnection.playingStation },//{ playbackQueue.audios.getOrNull(it) ?: it },
+//    ) { page ->
+//    //    val currentStation = playbackConnection.playingStation
 //
-//            lerp(
-//                start = 0.85f,
-//                stop = 1f,
-//                fraction = 1f - pageOffset.coerceIn(0f, 1f)
-//            ).also { scale ->
-//                scaleX = scale
-//                scaleY = scale
-//            }
-//            alpha = lerp(
-//                start = 0.5f,
-//                stop = 1f,
-//                fraction = 1f - pageOffset.coerceIn(0f, 1f)
-//            )
-//        }
-        content( )
-    }
+////        val pagerMod = Modifier.graphicsLayer {
+////            val pageOffset = calculateCurrentOffsetForPage(page).absoluteValue
+////            // TODO: report to upstream if can be reproduced in isolation
+////            if (pageOffset.isNaN()) {
+////                return@graphicsLayer
+////            }
+////
+////            lerp(
+////                start = 0.85f,
+////                stop = 1f,
+////                fraction = 1f - pageOffset.coerceIn(0f, 1f)
+////            ).also { scale ->
+////                scaleX = scale
+////                scaleY = scale
+////            }
+////            alpha = lerp(
+////                start = 0.5f,
+////                stop = 1f,
+////                fraction = 1f - pageOffset.coerceIn(0f, 1f)
+////            )
+////        }
+//        content( )
+//    }
 }

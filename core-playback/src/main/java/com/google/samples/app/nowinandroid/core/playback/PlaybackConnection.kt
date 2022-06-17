@@ -4,7 +4,6 @@
  */
 package com.google.samples.apps.nowinandroid.playback
 
-
 import android.content.ComponentName
 import android.content.Context
 import android.os.Bundle
@@ -16,13 +15,12 @@ import android.support.v4.media.session.PlaybackStateCompat
 import androidx.core.net.toUri
 import androidx.lifecycle.ProcessLifecycleOwner
 import androidx.lifecycle.lifecycleScope
-import com.google.android.exoplayer2.MediaItem
 import com.google.samples.app.nowinandroid.core.playback.*
 import com.google.samples.app.nowinandroid.core.playback.models.PlaybackProgressState
 import com.google.samples.app.nowinandroid.core.playback.players.AudioPlayer
 import com.google.samples.app.nowinandroid.core.playback.players.DatmusicPlayer
-import com.google.samples.app.nowinandroid.core.playback.players.QUEUE_LIST_KEY
 import com.google.samples.app.nowinandroid.core.playback.players.QUEUE_TITLE_KEY
+import com.google.samples.apps.nowinandroid.core.database.model.StationEntity
 import com.google.samples.apps.nowinandroid.core.model.data.Station
 import kotlinx.coroutines.*
 import kotlinx.coroutines.flow.*
@@ -35,9 +33,12 @@ interface PlaybackConnection {
     val isConnected: StateFlow<Boolean>
     val playbackState: StateFlow<PlaybackStateCompat>
     val nowPlaying: StateFlow<MediaMetadataCompat>
+    val playingStation: StateFlow<Station>
+
     var mediaController: MediaControllerCompat?
     val transportControls: MediaControllerCompat.TransportControls?
     val playbackProgress: StateFlow<PlaybackProgressState>
+
     fun playAudio(station : Station)
 }
 
@@ -51,35 +52,28 @@ class PlaybackConnectionImpl(
     override val isConnected = MutableStateFlow(false)
     override val playbackState = MutableStateFlow(NONE_PLAYBACK_STATE)
     override val nowPlaying = MutableStateFlow(NONE_PLAYING)
+    override val playingStation = MutableStateFlow(Station())
     override var mediaController: MediaControllerCompat? = null
     private var playbackProgressInterval: Job = Job()
     override val transportControls get() = mediaController?.transportControls
     override val playbackProgress  = MutableStateFlow(PlaybackProgressState())
 
+    init { startPlaybackProgress() }
+
     override fun playAudio(station : Station) {
+        playingStation.value = station
         transportControls?.playFromUri(station.url_resolved.toUri(),
             Bundle().apply {
                 //putStringArray(QUEUE_LIST_KEY, ["1","2"])
                 putString(QUEUE_TITLE_KEY, "Audio".toString())
             }
         )
-
-        launch {
-            radioPlayer.playRadio(station)
-        }
+        launch { radioPlayer.playRadio(station) }
     }
-
     private val mediaBrowserConnectionCallback = MediaBrowserConnectionCallback(context)
-    private val mediaBrowser = MediaBrowserCompat(
-        context,
-        serviceComponent,
-        mediaBrowserConnectionCallback,
-        null
-    ).apply { connect() }
 
-    init {
-        startPlaybackProgress()
-    }
+    private val mediaBrowser = MediaBrowserCompat(context, serviceComponent,
+        mediaBrowserConnectionCallback, null).apply { connect() }
 
     private fun startPlaybackProgress() = launch {
         combine(playbackState, nowPlaying, ::Pair).collectLatest { (state, current) ->
@@ -118,7 +112,6 @@ class PlaybackConnectionImpl(
             }
         }
     }
-
 
     private inner class MediaBrowserConnectionCallback(private val context: Context) :
         MediaBrowserCompat.ConnectionCallback() {

@@ -25,6 +25,7 @@ import com.google.accompanist.pager.ExperimentalPagerApi
 import com.google.samples.app.nowinandroid.core.playback.isBuffering
 import com.google.samples.app.nowinandroid.core.playback.playPause
 import com.google.samples.apps.nowinandroid.common.compose.LocalPlaybackConnection
+import com.google.samples.apps.nowinandroid.core.model.data.Station
 import com.google.samples.apps.nowinandroid.playback.PLAYBACK_PROGRESS_INTERVAL
 import com.google.samples.apps.nowinandroid.playback.PlaybackConnection
 import com.hdmsh.common_compose.rememberFlowWithLifecycle
@@ -42,6 +43,7 @@ fun PlaybackMiniControls(
 ) {
     val playbackState by rememberFlowWithLifecycle(playbackConnection.playbackState)
     val nowPlaying by rememberFlowWithLifecycle(playbackConnection.nowPlaying)
+    val playingStation by rememberFlowWithLifecycle(playbackConnection.playingStation)
 
     val visible = playbackState.state == 3 || playbackState.state == 6
 
@@ -56,7 +58,7 @@ fun PlaybackMiniControls(
             nowPlaying = nowPlaying,
             onPlayPause = { playbackConnection.mediaController?.playPause() },
            // onNavigateToTopLevelDestination,
-            playbackConnection,
+            playingStation,
             contentPadding = contentPadding)
     }
 }
@@ -67,12 +69,12 @@ fun PlaybackMiniControls(
     nowPlaying : MediaMetadataCompat,
     onPlayPause: () -> Unit,
    // onNavigateToTopLevelDestination: (TopLevelDestination) -> Unit,
-    playbackConnection: PlaybackConnection,
+    playingStation: Station,
     modifier: Modifier = Modifier,
     contentPadding: PaddingValues = PaddingValues(),
     height: Dp = PlaybackMiniControlsDefaults.height,
 
-) {
+    ) {
 
 //    Dismissable(onDismiss = { playbackConnection.transportControls?.stop() }) {
 //        var dragOffset by remember { mutableStateOf(0f) }
@@ -123,7 +125,7 @@ fun PlaybackMiniControls(
                 .padding(if (controlsVisible) contentPadding else PaddingValues())
         ) {
 
-                PlaybackNowPlaying( coverOnly = !nowPlayingVisible, nowPlaying)
+                PlaybackNowPlaying( coverOnly = !nowPlayingVisible, nowPlaying,playingStation)
         }
 
             PlaybackProgress(
@@ -179,6 +181,7 @@ internal fun animatePlaybackProgress(
 private fun RowScope.PlaybackNowPlaying(
     coverOnly: Boolean = false,
     nowPlaying: MediaMetadataCompat,
+    playingStation: Station,
     maxHeight: Dp = 200.dp,
     modifier: Modifier = Modifier,
 ) {
@@ -186,15 +189,20 @@ private fun RowScope.PlaybackNowPlaying(
         verticalAlignment = Alignment.CenterVertically,
         modifier = modifier.weight(if (coverOnly) 3f else 7f),
     ) {
+
+
         Image(painter = painterResource(id = R.drawable.ic_hourglass_empty), contentDescription = "")
-        PlaybackPager(nowPlaying = nowPlaying) {
-            PlaybackNowPlaying()
+
+        if(!coverOnly) {
+           // PlaybackPager(nowPlaying = nowPlaying) {
+                PlaybackNowPlaying(playingStation)
+           // }
         }
     }
 }
 
 @Composable
-private fun PlaybackNowPlaying(modifier: Modifier = Modifier) {
+private fun PlaybackNowPlaying(playingStation: Station, modifier: Modifier = Modifier) {
     Column(
         modifier = Modifier
             .padding(vertical = 8.dp)
@@ -202,7 +210,7 @@ private fun PlaybackNowPlaying(modifier: Modifier = Modifier) {
             .then(modifier)
     ) {
         Text(
-            "audio.title.orNA()",
+            playingStation.name,
             maxLines = 1,
             overflow = TextOverflow.Ellipsis,
             style = MaterialTheme.typography.body2.copy(fontWeight = FontWeight.Bold)
