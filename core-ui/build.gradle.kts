@@ -1,3 +1,5 @@
+import org.jetbrains.kotlin.kapt3.base.Kapt.kapt
+
 /*
  * Copyright 2022 The Android Open Source Project
  *
@@ -18,6 +20,9 @@ plugins {
     id("nowinandroid.android.library.compose")
     id("nowinandroid.android.library.jacoco")
     id("nowinandroid.spotless")
+    kotlin("kapt")
+    id("kotlin-parcelize")
+    id("kotlinx-serialization")
 }
 
 dependencies {
@@ -30,6 +35,8 @@ dependencies {
     implementation(libs.coil.kt)
     implementation(libs.coil.kt.compose)
     implementation(libs.kotlinx.datetime)
+    implementation(libs.hilt.android)
+    kapt(libs.hilt.compiler)
 
     // TODO : Remove these dependency once we upgrade to Android Studio Dolphin b/228889042
     // These dependencies are currently necessary to render Compose previews
@@ -48,4 +55,10 @@ dependencies {
     api(libs.androidx.compose.runtime)
     api(libs.androidx.compose.runtime.livedata)
 
+
+
+
+    implementation("org.jetbrains.kotlinx:kotlinx-serialization-json:1.3.3")
+
+    implementation(libs.accompanist.systemuicontroller)
 }

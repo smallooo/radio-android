@@ -158,7 +158,8 @@ fun NewsResourceAuthors(
         // Only display first author for now
         val author = authors[0]
         val authorNameFormatted =
-            author.name.uppercase(ConfigurationCompat.getLocales(LocalConfiguration.current).get(0))
+            ConfigurationCompat.getLocales(LocalConfiguration.current).get(0)
+                ?.let { author.name.uppercase(it) }
 
         val authorImageUrl = author.imageUrl
 
@@ -184,7 +185,9 @@ fun NewsResourceAuthors(
                 )
             }
             Spacer(modifier = Modifier.width(8.dp))
-            Text(authorNameFormatted, style = MaterialTheme.typography.labelSmall)
+            if (authorNameFormatted != null) {
+                Text(authorNameFormatted, style = MaterialTheme.typography.labelSmall)
+            }
         }
     }
 }

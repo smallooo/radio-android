@@ -16,9 +16,13 @@ import com.google.samples.apps.nowinandroid.common.compose.LocalScaffoldState
 import com.google.samples.apps.nowinandroid.core.ui.component.NiaBackground
 import com.google.samples.apps.nowinandroid.core.ui.media.radioStations.LocalAudioActionHandler
 import com.google.samples.apps.nowinandroid.core.ui.media.radioStations.audioActionHandler
+import com.google.samples.apps.nowinandroid.core.ui.theme.AppTheme
+import com.google.samples.apps.nowinandroid.core.ui.theme.DefaultTheme
 
 import com.google.samples.apps.nowinandroid.core.ui.theme.NiaTheme
+import com.google.samples.apps.nowinandroid.core.ui.theme.ThemeViewModel
 import com.google.samples.apps.nowinandroid.navigation.NiaTopLevelNavigation
+import com.hdmsh.common_compose.rememberFlowWithLifecycle
 import com.hdmsh.core_ui_playback.PlaybackConnectionViewModel
 
 
@@ -44,13 +48,15 @@ fun RadioApp(
 @Composable
 private fun RadioCore(
     windowSizeClass: WindowSizeClass,
+    themeViewModel: ThemeViewModel = hiltViewModel(),
     scaffoldState: ScaffoldState = rememberScaffoldState(),
     content: @Composable () -> Unit
 ) {
-
+    val themeState = DefaultTheme
     CompositionLocalProvider(LocalScaffoldState provides scaffoldState) {
             NiaTheme {
-               NiaBackground {
+                AppTheme(themeState) {}
+                NiaBackground {
                     PlaybackHost {
                         RadioActionHandlers {
                             content()
@@ -58,9 +64,10 @@ private fun RadioCore(
                     }
                 }
             }
+            }
 
     }
-}
+
 
 @Composable
 fun PlaybackHost(

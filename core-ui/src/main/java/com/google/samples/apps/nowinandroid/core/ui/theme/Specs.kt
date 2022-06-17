@@ -2,12 +2,13 @@
  * Copyright (C) 2021, Alashov Berkeli
  * All rights reserved.
  */
-package com.google.samples.apps.nowinandroid.theme
+package com.google.samples.apps.nowinandroid.core.ui.theme
 
 import androidx.compose.foundation.layout.PaddingValues
+import androidx.compose.runtime.Immutable
 import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
-import javax.annotation.concurrent.Immutable
+
 
 val ContentPaddingLarge = 28.dp
 val ContentPadding = 16.dp

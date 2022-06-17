@@ -2,7 +2,7 @@
  * Copyright (C) 2021, Alashov Berkeli
  * All rights reserved.
  */
-package com.google.samples.apps.nowinandroid.ui
+package com.google.samples.apps.nowinandroid.core.ui.theme
 
 import androidx.compose.foundation.text.selection.LocalTextSelectionColors
 import androidx.compose.foundation.text.selection.TextSelectionColors
@@ -17,8 +17,7 @@ import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.runtime.staticCompositionLocalOf
 import androidx.compose.ui.graphics.Color
-import com.google.samples.apps.nowinandroid.theme.DefaultSpecs
-import com.google.samples.apps.nowinandroid.theme.Specs
+
 
 val LocalThemeState = staticCompositionLocalOf<ThemeState> {
     error("No LocalThemeState provided")
@@ -26,23 +25,23 @@ val LocalThemeState = staticCompositionLocalOf<ThemeState> {
 private val LocalAppColors = staticCompositionLocalOf<AppColors> {
     error("No LocalAppColors provided")
 }
-private val LocalSpecs = staticCompositionLocalOf<Specs> {
-    error("No LocalSpecs provided")
-}
+//private val LocalSpecs = staticCompositionLocalOf<Specs> {
+//    error("No LocalSpecs provided")
+//}
 
-//object AppTheme {
-//    val state: ThemeState
-//        @Composable
-//        get() = LocalThemeState.current
-//
-//    val colors: AppColors
-//        @Composable
-//        get() = LocalAppColors.current
-//
+object AppTheme {
+    val state: ThemeState
+        @Composable
+        get() = LocalThemeState.current
+
+    val colors: AppColors
+        @Composable
+        get() = LocalAppColors.current
+
 //    val specs: Specs
 //        @Composable
 //        get() = LocalSpecs.current
-//}
+}
 
 @Composable
 fun ProvideAppTheme(
@@ -54,9 +53,9 @@ fun ProvideAppTheme(
     val appColors = remember { colors.copy() }.apply { update(colors) }
 
     CompositionLocalProvider(
-//        LocalThemeState provides theme,
-//        LocalAppColors provides appColors,
-//        LocalSpecs provides specs,
+        LocalThemeState provides theme,
+        LocalAppColors provides appColors,
+       // LocalSpecs provides specs,
         content = content
     )
 }

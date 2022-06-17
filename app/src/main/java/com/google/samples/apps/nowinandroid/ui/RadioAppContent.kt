@@ -12,10 +12,12 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.graphicsLayer
+import androidx.compose.ui.unit.dp
 import androidx.compose.ui.zIndex
 import androidx.navigation.NavDestination
 import androidx.navigation.NavHostController
 import com.google.samples.apps.nowinandroid.common.compose.LocalPlaybackConnection
+import com.google.samples.apps.nowinandroid.core.ui.theme.AppTheme
 import com.google.samples.apps.nowinandroid.navigation.NiaNavHost
 import com.google.samples.apps.nowinandroid.navigation.NiaTopLevelNavigation
 import com.google.samples.apps.nowinandroid.playback.PlaybackConnection
@@ -41,10 +43,8 @@ fun NiaAppContent(
             if (windowSizeClass.widthSizeClass == WindowWidthSizeClass.Compact) {
                 Column {
                     PlaybackMiniControls(
-                        modifier = Modifier
-                            .graphicsLayer(translationY = 8.0F)
-                            .zIndex(2f),
-//                        onNavigateToTopLevelDestination = niaTopLevelNavigation::navigateTo,
+                        modifier = Modifier.padding(bottom = 8.dp),
+                        contentPadding = PaddingValues(end = 16.dp),
                     )
 
                     NiABottomBar(

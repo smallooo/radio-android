@@ -2,7 +2,7 @@
  * Copyright (C) 2021, Alashov Berkeli
  * All rights reserved.
  */
-package com.google.samples.apps.nowinandroid.ui
+package com.google.samples.apps.nowinandroid.core.ui.theme
 
 import android.os.Parcelable
 import kotlinx.parcelize.Parcelize
