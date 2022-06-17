@@ -30,6 +30,7 @@ dependencies {
     implementation(project(":common-compose"))
     implementation(project(":core-model"))
     implementation(project(":core-playback"))
+    implementation(project(":core-datastore"))
 
     implementation(libs.androidx.core.ktx)
     implementation(libs.coil.kt)
@@ -37,6 +38,12 @@ dependencies {
     implementation(libs.kotlinx.datetime)
     implementation(libs.hilt.android)
     kapt(libs.hilt.compiler)
+
+    implementation(libs.coil.kt)
+    implementation(libs.coil.kt.compose)
+    implementation(libs.coil.kt.compose.base)
+    implementation(libs.accompanist.placeholder)
+
 
     // TODO : Remove these dependency once we upgrade to Android Studio Dolphin b/228889042
     // These dependencies are currently necessary to render Compose previews

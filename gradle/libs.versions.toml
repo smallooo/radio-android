@@ -22,7 +22,7 @@ androidxTest = "1.4.0"
 androidxTestExt = "1.1.2"
 androidxUiAutomator = "2.2.0"
 androidxWork = "2.7.1"
-coil = "2.0.0-rc01"
+coil = "2.0.0-alpha06"
 hilt = "2.41"
 hiltExt = "1.0.0"
 jacoco = "0.8.7"
@@ -60,6 +60,7 @@ accompanist-navigation-animation = { group = "com.google.accompanist", name = "a
 accompanist-systemuicontroller = { group = "com.google.accompanist", name = "accompanist-systemuicontroller", version.ref = "accompanist" }
 accompanist-insets = { group = "com.google.accompanist", name = "accompanist-insets", version.ref = "accompanist" }
 accompanist-pager = {group = "com.google.accompanist", name = "accompanist-pager", version.ref = "accompanist" }
+accompanist-placeholder = {group = "com.google.accompanist", name = "accompanist-placeholder-material", version.ref = "accompanist"}
 android-desugarJdkLibs = { group = "com.android.tools", name = "desugar_jdk_libs", version.ref = "androidDesugarJdkLibs" }
 android-gradlePlugin = { group = "com.android.tools.build", name = "gradle", version.ref = "androidGradlePlugin" }
 androidx-activity-compose = { group = "androidx.activity", name = "activity-compose", version.ref = "androidxActivity" }
@@ -107,6 +108,7 @@ androidx-test-uiautomator = { group = "androidx.test.uiautomator", name = "uiaut
 androidx-work-ktx = { group = "androidx.work", name = "work-runtime-ktx", version.ref = "androidxWork" }
 androidx-work-testing = { group = "androidx.work", name = "work-testing", version.ref = "androidxWork" }
 coil-kt = { group = "io.coil-kt", name = "coil", version.ref = "coil"}
+coil-kt-compose-base = { group = "io.coil-kt", name = "coil-compose-base", version.ref = "coil"}
 coil-kt-compose = { group = "io.coil-kt", name = "coil-compose", version.ref = "coil"}
 coil-kt-svg = { group = "io.coil-kt", name = "coil-svg", version.ref = "coil"}
 hilt-android = { group = "com.google.dagger", name = "hilt-android", version.ref = "hilt" }

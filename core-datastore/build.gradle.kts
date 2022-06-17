@@ -25,6 +25,8 @@ plugins {
     id("nowinandroid.android.library")
     id("nowinandroid.android.library.jacoco")
     kotlin("kapt")
+    id("kotlin-parcelize")
+    id("kotlinx-serialization")
     id("dagger.hilt.android.plugin")
     alias(libs.plugins.protobuf)
     id("nowinandroid.spotless")
@@ -64,6 +66,9 @@ dependencies {
 
     implementation(libs.androidx.dataStore.core)
     implementation(libs.protobuf.kotlin.lite)
+    implementation(libs.androidx.dataStore.preferences)
+    implementation(libs.kotlinx.serialization.json)
+    implementation(libs.timber)
 
     implementation(libs.hilt.android)
     kapt(libs.hilt.compiler)

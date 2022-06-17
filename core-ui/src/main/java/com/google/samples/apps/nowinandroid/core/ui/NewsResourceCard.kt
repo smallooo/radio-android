@@ -132,22 +132,22 @@ fun NewsResourceCardExpanded(
 fun NewsResourceHeaderImage(
     headerImageUrl: String?
 ) {
-    AsyncImage(
-        placeholder = if (LocalInspectionMode.current) {
-            painterResource(R.drawable.ic_placeholder_default)
-        } else {
-            // TODO b/228077205, show specific loading image visual
-            null
-        },
-        modifier = Modifier
-            .fillMaxWidth()
-            .clip(RoundedCornerShape(topEnd = 24.dp, topStart = 24.dp))
-            .height(180.dp),
-        contentScale = ContentScale.Crop,
-        model = headerImageUrl,
-        // TODO b/226661685: Investigate using alt text of  image to populate content description
-        contentDescription = null // decorative image
-    )
+//    AsyncImage(
+//        placeholder = if (LocalInspectionMode.current) {
+//            painterResource(R.drawable.ic_placeholder_default)
+//        } else {
+//            // TODO b/228077205, show specific loading image visual
+//            null
+//        },
+//        modifier = Modifier
+//            .fillMaxWidth()
+//            .clip(RoundedCornerShape(topEnd = 24.dp, topStart = 24.dp))
+//            .height(180.dp),
+//        contentScale = ContentScale.Crop,
+//        model = headerImageUrl,
+//        // TODO b/226661685: Investigate using alt text of  image to populate content description
+//        contentDescription = null // decorative image
+//    )
 }
 
 @Composable

@@ -38,10 +38,12 @@ import com.google.samples.app.nowinandroid.core.playback.*
 import com.google.samples.apps.nowinandroid.common.compose.LocalPlaybackConnection
 import com.google.samples.apps.nowinandroid.core.model.data.Station
 import com.google.samples.apps.nowinandroid.core.ui.Dismissable
+import com.google.samples.apps.nowinandroid.core.ui.component.CoverImage
 import com.google.samples.apps.nowinandroid.playback.PLAYBACK_PROGRESS_INTERVAL
 import com.google.samples.apps.nowinandroid.playback.PlaybackConnection
 import com.hdmsh.common_compose.rememberFlowWithLifecycle
 import  com.google.samples.apps.nowinandroid.core.ui.component.IconButton
+import com.google.samples.apps.nowinandroid.core.ui.theme.AppTheme
 
 object PlaybackMiniControlsDefaults { val height = 56.dp }
 
@@ -60,7 +62,7 @@ fun PlaybackMiniControls(
 
     AnimatedVisibility(
         visible = visible,
-        modifier = modifier,
+        modifier = modifier.padding(8.dp,0.dp,8.dp,0.dp),
         enter = slideInVertically(initialOffsetY = { it / 2 }),
         exit = slideOutVertically(targetOffsetY = { it / 2 })
     ) {
@@ -231,9 +233,10 @@ fun RowScope.PlaybackNowPlaying(
     ) {
 
 
-        Image(
-            painter = painterResource(id = R.drawable.ic_hourglass_empty),
-            contentDescription = ""
+        CoverImage(
+            data = nowPlaying.artwork ?: nowPlaying.artworkUri,
+            size = maxHeight - 16.dp,
+            modifier = Modifier.padding(8.dp)
         )
 
         if (!coverOnly) {

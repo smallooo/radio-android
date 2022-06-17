@@ -27,6 +27,8 @@ dependencies {
     implementation("androidx.compose.material:material:1.1.1")
     kapt(libs.hilt.compiler)
 
+    implementation(libs.kotlinx.serialization.json)
+
     implementation(libs.timber)
 
     implementation(libs.coil.kt)
