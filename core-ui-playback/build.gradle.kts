@@ -26,6 +26,7 @@ dependencies {
     implementation(project(":core-playback"))
     implementation(project(":core-model"))
     implementation(project(":common-compose"))
+    implementation(project(":core-ui"))
     testImplementation(project(":core-testing"))
 
     implementation(libs.hilt.android)
