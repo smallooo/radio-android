@@ -24,10 +24,22 @@ plugins {
     id("nowinandroid.spotless")
 }
 
+android {
+    buildFeatures {
+        compose = true
+    }
+
+    composeOptions {
+        kotlinCompilerExtensionVersion = "1.2.0-beta01"
+    }
+
+}
+
 dependencies {
     api(libs.androidx.hilt.navigation.compose)
     api(libs.androidx.navigation.compose)
 
     implementation(libs.hilt.android)
+    implementation(libs.accompanist.navigation.animation)
     kapt(libs.hilt.compiler)
 }

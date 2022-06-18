@@ -27,6 +27,7 @@ dependencies {
     implementation(project(":core-model"))
     implementation(project(":common-compose"))
     implementation(project(":core-ui"))
+    implementation(project(":core-navigation"))
     testImplementation(project(":core-testing"))
 
     implementation(libs.hilt.android)

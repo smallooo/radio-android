@@ -12,6 +12,7 @@ import androidx.navigation.compose.currentBackStackEntryAsState
 import androidx.navigation.compose.rememberNavController
 import com.google.samples.apps.nowinandroid.common.compose.LocalPlaybackConnection
 import com.google.samples.apps.nowinandroid.common.compose.LocalScaffoldState
+import com.google.samples.apps.nowinandroid.core.navigation.NavigatorHost
 
 import com.google.samples.apps.nowinandroid.core.ui.component.NiaBackground
 import com.google.samples.apps.nowinandroid.core.ui.media.radioStations.LocalAudioActionHandler
@@ -56,10 +57,12 @@ private fun RadioCore(
     CompositionLocalProvider(LocalScaffoldState provides scaffoldState) {
             NiaTheme {
                 AppTheme(themeState) {}
-                NiaBackground {
-                    PlaybackHost {
-                        RadioActionHandlers {
-                            content()
+                NavigatorHost {
+                    NiaBackground {
+                        PlaybackHost {
+                            RadioActionHandlers {
+                                content()
+                            }
                         }
                     }
                 }

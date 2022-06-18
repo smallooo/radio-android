@@ -45,6 +45,7 @@ fun NiaAppContent(
                     PlaybackMiniControls(
                         modifier = Modifier.padding(bottom = 8.dp),
                         contentPadding = PaddingValues(end = 16.dp),
+                        navController,
                     )
 
                     NiABottomBar(

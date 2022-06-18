@@ -33,10 +33,14 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
+import androidx.navigation.NavHostController
+import androidx.navigation.Navigator
 import com.google.accompanist.pager.ExperimentalPagerApi
 import com.google.samples.app.nowinandroid.core.playback.*
 import com.google.samples.apps.nowinandroid.common.compose.LocalPlaybackConnection
 import com.google.samples.apps.nowinandroid.core.model.data.Station
+import com.google.samples.apps.nowinandroid.core.navigation.Screens.LeafScreen
+
 import com.google.samples.apps.nowinandroid.core.ui.Dismissable
 import com.google.samples.apps.nowinandroid.core.ui.component.CoverImage
 import com.google.samples.apps.nowinandroid.playback.PLAYBACK_PROGRESS_INTERVAL
@@ -52,8 +56,10 @@ fun PlaybackMiniControls(
     modifier: Modifier = Modifier,
     contentPadding: PaddingValues = PaddingValues(),
     //onNavigateToTopLevelDestination: (TopLevelDestination) -> Unit,
-    playbackConnection: PlaybackConnection = LocalPlaybackConnection.current,
+    navController: NavHostController,
+    playbackConnection: PlaybackConnection = LocalPlaybackConnection.current
 ) {
+    val openPlaybackSheet = { navController.navigate(LeafScreen.PlaybackSheet().createRoute()) }
     val playbackState by rememberFlowWithLifecycle(playbackConnection.playbackState)
     val nowPlaying by rememberFlowWithLifecycle(playbackConnection.nowPlaying)
     val playingStation by rememberFlowWithLifecycle(playbackConnection.playingStation)

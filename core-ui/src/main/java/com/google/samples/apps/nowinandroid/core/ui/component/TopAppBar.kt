@@ -16,6 +16,7 @@
 
 package com.google.samples.apps.nowinandroid.core.ui.component
 
+import android.util.Log
 import androidx.annotation.StringRes
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.MoreVert
@@ -43,7 +44,9 @@ fun NiaTopAppBar(
     actionIconContentDescription: String?,
     modifier: Modifier = Modifier,
     colors: TopAppBarColors = TopAppBarDefaults.centerAlignedTopAppBarColors(),
-    onNavigationClick: () -> Unit = {},
+    onNavigationClick: () -> Unit = {
+
+    },
     onActionClick: () -> Unit = {}
 ) {
     CenterAlignedTopAppBar(
