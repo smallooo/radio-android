@@ -41,5 +41,7 @@ dependencies {
 
     implementation(libs.hilt.android)
     implementation(libs.accompanist.navigation.animation)
+    implementation(libs.accompanist.navigation.material)
+
     kapt(libs.hilt.compiler)
 }

@@ -6,6 +6,7 @@ package com.hdmsh.core_ui_playback
 
 
 import androidx.compose.foundation.lazy.rememberLazyListState
+import androidx.compose.material3.Text
 
 import androidx.compose.runtime.Composable
 
@@ -22,6 +23,8 @@ fun PlaybackSheet(
     val listState = rememberLazyListState()
     val queueListState = rememberLazyListState()
     val coroutine = rememberCoroutineScope()
+
+    Text(text = "hello world")
 
 //    val scrollToTop: Callback = {
 //        coroutine.launch {

@@ -7,6 +7,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.CompositionLocalProvider
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.remember
+import androidx.compose.ui.input.key.Key.Companion.Home
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.compose.currentBackStackEntryAsState
 import androidx.navigation.compose.rememberNavController
@@ -23,6 +24,7 @@ import com.google.samples.apps.nowinandroid.core.ui.theme.DefaultTheme
 import com.google.samples.apps.nowinandroid.core.ui.theme.NiaTheme
 import com.google.samples.apps.nowinandroid.core.ui.theme.ThemeViewModel
 import com.google.samples.apps.nowinandroid.navigation.NiaTopLevelNavigation
+import com.google.samples.apps.nowinandroid.ui.home.Home
 import com.hdmsh.common_compose.rememberFlowWithLifecycle
 import com.hdmsh.core_ui_playback.PlaybackConnectionViewModel
 
@@ -36,13 +38,13 @@ fun RadioApp(
     val navBackStackEntry by navController.currentBackStackEntryAsState()
     val currentDestination = navBackStackEntry?.destination
 
-    RadioCore( windowSizeClass) {
-        NiaAppContent(
-            windowSizeClass,
-            niaTopLevelNavigation,
-            currentDestination,
-            navController
-        )
+    CompositionLocalProvider() {
+        RadioCore(windowSizeClass) {
+
+
+            Home(windowSizeClass,niaTopLevelNavigation,currentDestination,navController)
+
+        }
     }
 }
 

@@ -34,7 +34,6 @@ fun NiaAppContent(
     playbackConnection: PlaybackConnection = LocalPlaybackConnection.current,
 ) {
 
-
     Scaffold(
         modifier = Modifier,
         containerColor = Color.Transparent,

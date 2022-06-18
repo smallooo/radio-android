@@ -15,6 +15,9 @@ import androidx.compose.ui.unit.dp
 
 import com.google.samples.apps.nowinandroid.components.Pager
 import com.google.samples.apps.nowinandroid.components.PagerState
+import com.google.samples.apps.nowinandroid.core.navigation.LocalNavigator
+import com.google.samples.apps.nowinandroid.core.navigation.Navigator
+import com.google.samples.apps.nowinandroid.core.navigation.Screens.LeafScreen
 import com.google.samples.apps.nowinandroid.core.ui.component.NiaGradientBackground
 import com.google.samples.apps.nowinandroid.core.ui.component.NiaTopAppBar
 import com.google.samples.apps.nowinandroid.feature.foryou.ui.ShimmerList
@@ -26,10 +29,14 @@ fun ForYouRoute(windowSizeClass: WindowSizeClass) {
 
 @OptIn(ExperimentalMaterial3Api::class, ExperimentalLayoutApi::class)
 @Composable
-fun ForYouScreen() {
+fun ForYouScreen(
+    navigation: Navigator = LocalNavigator.current
+) {
+
 
 
     NiaGradientBackground {
+
         Scaffold(
             topBar = {
                 NiaTopAppBar(
@@ -49,7 +56,7 @@ fun ForYouScreen() {
                         WindowInsets.safeDrawing.only(WindowInsetsSides.Top)
                     ),
                     onNavigationClick = {
-
+                        navigation.navigate(LeafScreen.Downloads().createRoute())
                     }
                 )
             },

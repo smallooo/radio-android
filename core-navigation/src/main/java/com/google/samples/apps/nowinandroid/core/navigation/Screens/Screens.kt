@@ -16,6 +16,8 @@ import androidx.navigation.NavType
 import androidx.navigation.navArgument
 import androidx.navigation.navDeepLink
 import com.google.accompanist.navigation.animation.composable
+import com.google.accompanist.navigation.material.ExperimentalMaterialNavigationApi
+import com.google.accompanist.navigation.material.bottomSheet
 
 
 const val QUERY_KEY = "query"
@@ -30,7 +32,8 @@ interface Screen {
     val route: String
 }
 
-val ROOT_SCREENS = listOf(RootScreen.Search, RootScreen.Downloads, RootScreen.Library, RootScreen.Settings)
+val ROOT_SCREENS =
+    listOf(RootScreen.Downloads, RootScreen.Library, RootScreen.Settings)
 
 sealed class RootScreen(
     override val route: String,
@@ -38,7 +41,7 @@ sealed class RootScreen(
     val arguments: List<NamedNavArgument> = emptyList(),
     val deepLinks: List<NavDeepLink> = emptyList(),
 ) : Screen {
-    object Search : RootScreen("search_root", LeafScreen.Search(rootRoute = "search_root"))
+   // object Search : RootScreen("search_root", LeafScreen.Search(rootRoute = "search_root"))
     object Downloads : RootScreen("downloads_root", LeafScreen.Downloads())
     object Library : RootScreen("library_root", LeafScreen.Library())
     object Settings : RootScreen("settings_root", LeafScreen.Settings(rootRoute = "settings_root"))
@@ -58,38 +61,38 @@ sealed class LeafScreen(
             else -> route
         }
 
-    data class Search(
-        override val route: String = "search/?$QUERY_KEY={$QUERY_KEY}&$SEARCH_BACKENDS_KEY={$SEARCH_BACKENDS_KEY}",
-        override val rootRoute: String = "search_root",
-    ) : LeafScreen(
-        route, rootRoute,
-        arguments = listOf(
-            navArgument(QUERY_KEY) {
-                type = NavType.StringType
-                nullable = true
-            },
-            navArgument(SEARCH_BACKENDS_KEY) {
-                type = NavType.StringType
-                nullable = true
-            }
-        ),
-//        deepLinks = listOf(
-//            navDeepLink {
-//                uriPattern = "${Config.BASE_URL}search?$QUERY_KEY={$QUERY_KEY}&$SEARCH_BACKENDS_KEY={$SEARCH_BACKENDS_KEY}"
+//    data class Search(
+//        override val route: String = "search/?$QUERY_KEY={$QUERY_KEY}&$SEARCH_BACKENDS_KEY={$SEARCH_BACKENDS_KEY}",
+//        override val rootRoute: String = "search_root",
+//    ) : LeafScreen(
+//        route, rootRoute,
+//        arguments = listOf(
+//            navArgument(QUERY_KEY) {
+//                type = NavType.StringType
+//                nullable = true
+//            },
+//            navArgument(SEARCH_BACKENDS_KEY) {
+//                type = NavType.StringType
+//                nullable = true
 //            }
-//        )
-    ) {
-//        companion object {
-//            fun buildRoute(
-//                query: String,
-//                vararg backends: DatmusicSearchParams.BackendType
-//            ) = "${RootScreen.Search.route}/search/?$QUERY_KEY=$query&$SEARCH_BACKENDS_KEY=${backends.toSet().toQueryParam()}"
-//
-//            fun buildUri(query: String) = "${Config.BASE_URL}search?q=$query".toUri()
-//        }
-    }
+//        ),
+////        deepLinks = listOf(
+////            navDeepLink {
+////                uriPattern = "${Config.BASE_URL}search?$QUERY_KEY={$QUERY_KEY}&$SEARCH_BACKENDS_KEY={$SEARCH_BACKENDS_KEY}"
+////            }
+////        )
+//    ) {
+////        companion object {
+////            fun buildRoute(
+////                query: String,
+////                vararg backends: DatmusicSearchParams.BackendType
+////            ) = "${RootScreen.Search.route}/search/?$QUERY_KEY=$query&$SEARCH_BACKENDS_KEY=${backends.toSet().toQueryParam()}"
+////
+////            fun buildUri(query: String) = "${Config.BASE_URL}search?q=$query".toUri()
+////        }
+//    }
 
-        data class Downloads(
+    data class Downloads(
         override val route: String = "downloads",
         override val rootRoute: String? = "downloads_root"
     ) : LeafScreen(route, rootRoute)
@@ -118,7 +121,7 @@ sealed class LeafScreen(
         ),
         deepLinks = listOf(
             navDeepLink {
-               // uriPattern = "${Config.BASE_URL}artists/{$PLAYLIST_ID_KEY}"
+                // uriPattern = "${Config.BASE_URL}artists/{$PLAYLIST_ID_KEY}"
             }
         )
     ) {
@@ -145,7 +148,7 @@ sealed class LeafScreen(
         ),
         deepLinks = listOf(
             navDeepLink {
-               // uriPattern = "${Config.BASE_URL}artists/{$ARTIST_ID_KEY}"
+                // uriPattern = "${Config.BASE_URL}artists/{$ARTIST_ID_KEY}"
             }
         )
     ) {
@@ -182,19 +185,26 @@ sealed class LeafScreen(
     }
 }
 
-    @OptIn(ExperimentalAnimationApi::class)
-    fun NavGraphBuilder.composableScreen(screen: LeafScreen, content: @Composable AnimatedVisibilityScope.(NavBackStackEntry) -> Unit) {
-        composable(screen.createRoute(), screen.arguments, screen.deepLinks, content = content)
-    }
+@OptIn(ExperimentalAnimationApi::class)
+fun NavGraphBuilder.composableScreen(
+    screen: LeafScreen,
+    content: @Composable AnimatedVisibilityScope.(NavBackStackEntry) -> Unit
+) {
+    composable(screen.createRoute(), screen.arguments, screen.deepLinks, content = content)
+}
+
 
 //@OptIn(ExperimentalMaterialNavigationApi::class)
-//fun NavGraphBuilder.bottomSheetScreen(screen: LeafScreen, content: @Composable ColumnScope.(NavBackStackEntry) -> Unit) =
+//fun NavGraphBuilder.bottomSheetScreen(
+//    screen: LeafScreen,
+//    content: @Composable ColumnScope.(NavBackStackEntry) -> Unit
+//) =
 //    bottomSheet(screen.createRoute(), screen.arguments, screen.deepLinks, content)
 
-   //  https://stackoverflow.com/a/64961032/2897341
-    @Composable
-    inline fun <reified VM : ViewModel> NavBackStackEntry.scopedViewModel(navController: NavController): VM {
-        val parentId = destination.parent!!.id
-        val parentBackStackEntry = navController.getBackStackEntry(parentId)
-        return hiltViewModel(parentBackStackEntry)
-    }
+//  https://stackoverflow.com/a/64961032/2897341
+@Composable
+inline fun <reified VM : ViewModel> NavBackStackEntry.scopedViewModel(navController: NavController): VM {
+    val parentId = destination.parent!!.id
+    val parentBackStackEntry = navController.getBackStackEntry(parentId)
+    return hiltViewModel(parentBackStackEntry)
+}
