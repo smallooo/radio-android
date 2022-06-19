@@ -40,10 +40,7 @@ fun RadioApp(
 
     CompositionLocalProvider() {
         RadioCore(windowSizeClass) {
-
-
-            Home(windowSizeClass,niaTopLevelNavigation,currentDestination,navController)
-
+            Home(windowSizeClass, niaTopLevelNavigation, currentDestination, navController)
         }
     }
 }
@@ -57,8 +54,8 @@ private fun RadioCore(
 ) {
     val themeState = DefaultTheme
     CompositionLocalProvider(LocalScaffoldState provides scaffoldState) {
-            NiaTheme {
-                AppTheme(themeState) {}
+        NiaTheme {
+           // AppTheme(themeState) {
                 NavigatorHost {
                     NiaBackground {
                         PlaybackHost {
@@ -68,10 +65,11 @@ private fun RadioCore(
                         }
                     }
                 }
-            }
-            }
-
+        //    }
+        }
     }
+
+}
 
 
 @Composable
@@ -89,11 +87,11 @@ fun PlaybackHost(
 @Composable
 private fun RadioActionHandlers(content: @Composable () -> Unit) {
     val audioActionHandler = audioActionHandler()
-        CompositionLocalProvider(
-            LocalAudioActionHandler provides audioActionHandler,
-        ) {
-            content()
-        }
+    CompositionLocalProvider(
+        LocalAudioActionHandler provides audioActionHandler,
+    ) {
+        content()
     }
+}
 
 

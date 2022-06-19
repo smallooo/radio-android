@@ -15,13 +15,17 @@ import androidx.compose.ui.Modifier
 import androidx.navigation.*
 import androidx.navigation.NavDestination.Companion.hierarchy
 import androidx.navigation.NavGraph.Companion.findStartDestination
+import androidx.navigation.compose.NavHost
+import androidx.navigation.compose.composable
 import com.google.accompanist.navigation.animation.AnimatedNavHost
 import com.google.accompanist.navigation.animation.navigation
+import com.google.samples.apps.nowinandroid.core.domain.None
 import com.google.samples.apps.nowinandroid.core.navigation.LocalNavigator
 import com.google.samples.apps.nowinandroid.core.navigation.NavigationEvent
 import com.google.samples.apps.nowinandroid.core.navigation.Navigator
 import com.google.samples.apps.nowinandroid.core.navigation.Screens.LeafScreen
 import com.google.samples.apps.nowinandroid.core.navigation.Screens.RootScreen
+
 
 import com.google.samples.apps.nowinandroid.core.navigation.Screens.composableScreen
 import com.hdmsh.common_compose.collectEvent
@@ -34,48 +38,50 @@ internal fun AppNavigation(
     navController: NavHostController,
     modifier: Modifier = Modifier,
     navigator: Navigator = LocalNavigator.current,
-   // analytics: FirebaseAnalytics = LocalAnalytics.current,
 ) {
-    collectEvent(navigator.queue) { event ->
-       // analytics.event("navigator.navigate", mapOf("route" to event.route))
-        when (event) {
-            is NavigationEvent.Destination -> {
-                // ugly fix: close playback before navigating away
-                // so it doesn't stay in the backstack when switching back to the same tab
-                if (navController.currentBackStackEntry?.destination?.route == LeafScreen.PlaybackSheet().route)
-                    navController.navigateUp()
-                // switch tabs first because of a bug in navigation that doesn't allow
-                // changing tabs when destination is opened from a different tab
-                event.root?.let {
-                    navController.navigate(it) {
-                        popUpTo(navController.graph.findStartDestination().id) {
-                            saveState = true
-                        }
-                        launchSingleTop = true
-                        restoreState = true
-                    }
-                }
-                navController.navigate(event.route)
-            }
-            is NavigationEvent.Back -> navController.navigateUp()
-            else -> Unit
-        }
-    }
-//    AnimatedNavHost(
-//        navController = navController,
-//        startDestination = LeafScreen.Downloads().createRoute(),
-//        modifier = modifier,
+//    collectEvent(navigator.queue) { event ->
+//       // analytics.event("navigator.navigate", mapOf("route" to event.route))
+//        when (event) {
+//            is NavigationEvent.Destination -> {
+//                // ugly fix: close playback before navigating away
+//                // so it doesn't stay in the backstack when switching back to the same tab
+//                if (navController.currentBackStackEntry?.destination?.route == LeafScreen.PlaybackSheet().route)
+//                    navController.navigateUp()
+//                // switch tabs first because of a bug in navigation that doesn't allow
+//                // changing tabs when destination is opened from a different tab
+//                event.root?.let {
+//                    navController.navigate(it) {
+//                        popUpTo(navController.graph.findStartDestination().id) {
+//                            saveState = true
+//                        }
+//                        launchSingleTop = true
+//                        restoreState = true
+//                    }
+//                }
+//                navController.navigate(event.route)
+//            }
+//            is NavigationEvent.Back -> navController.navigateUp()
+//            else -> None
+//        }
+//    }
+    NavHost(
+        navController = navController,
+        startDestination = "aaa",
+        modifier = modifier,
 //        enterTransition = { defaultEnterTransition(initialState, targetState) },
 //        exitTransition = { defaultExitTransition(initialState, targetState) },
 //        popEnterTransition = { defaultPopEnterTransition() },
 //        popExitTransition = { defaultPopExitTransition() },
-//    ) {
-//       // addSearchRoot()
-//       // addDownloadsRoot()
-//       // addLibraryRoot()
-//       // addSettingsRoot()
-//       // addPlaybackSheet()
-//    }
+    ) {
+       // addSearchRoot()
+       // addDownloadsRoot()
+       // addLibraryRoot()
+       // addSettingsRoot()
+        //addPlaybackSheet()
+        composable("aaa") {
+            PlaybackSheet()
+        }
+    }
 }
 
 //@ExperimentalAnimationApi

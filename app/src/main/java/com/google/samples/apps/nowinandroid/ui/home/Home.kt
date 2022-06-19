@@ -23,9 +23,11 @@ import androidx.navigation.NavDestination
 import androidx.navigation.NavGraph.Companion.findStartDestination
 import androidx.navigation.NavHostController
 import com.google.accompanist.insets.navigationBarsPadding
+import com.google.samples.apps.nowinandroid.core.navigation.Screens.RootScreen
 import com.google.samples.apps.nowinandroid.navigation.NiaTopLevelNavigation
 import com.google.samples.apps.nowinandroid.ui.AppNavigation
 import com.google.samples.apps.nowinandroid.ui.NiABottomBar
+import com.google.samples.apps.nowinandroid.ui.hostNavGraph
 import com.hdmsh.core_ui_playback.PlaybackMiniControls
 
 
@@ -40,10 +42,8 @@ internal fun Home(
 ) {
 
     BoxWithConstraints {
-
         val maxWidth = maxWidth
         Row(Modifier.fillMaxSize()) {
-
             Scaffold(
                 modifier = Modifier,
                 backgroundColor = Color.Transparent,
@@ -72,22 +72,22 @@ internal fun Home(
     }
 }
 
-//internal fun NavController.selectRootScreen(tab: RootScreen) {
-//    navigate(tab.route) {
-//        popUpTo(graph.findStartDestination().id) {
-//            saveState = true
-//        }
-//        launchSingleTop = true
-//        restoreState = true
-//
-//        val currentEntry = currentBackStackEntry
-//        val currentDestination = currentEntry?.destination
-//        val hostGraphRoute = currentDestination?.hostNavGraph?.route
-//        val isReselected = hostGraphRoute == tab.route
-//        val isRootReselected = currentDestination?.route == tab.startScreen.createRoute()
-//
-//        if (isReselected && !isRootReselected) {
-//            navigateUp()
-//        }
-//    }
-//}
+internal fun NavController.selectRootScreen(tab: RootScreen) {
+    navigate(tab.route) {
+        popUpTo(graph.findStartDestination().id) {
+            saveState = true
+        }
+        launchSingleTop = true
+        restoreState = true
+
+        val currentEntry = currentBackStackEntry
+        val currentDestination = currentEntry?.destination
+        val hostGraphRoute = currentDestination?.hostNavGraph?.route
+        val isReselected = hostGraphRoute == tab.route
+        val isRootReselected = currentDestination?.route == tab.startScreen.createRoute()
+
+        if (isReselected && !isRootReselected) {
+            navigateUp()
+        }
+    }
+}
