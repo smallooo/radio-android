@@ -1,6 +1,7 @@
 package com.google.samples.apps.nowinandroid.feature.foryou
 
 
+import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.*
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Search
@@ -15,7 +16,7 @@ import androidx.compose.ui.unit.dp
 
 import com.google.samples.apps.nowinandroid.components.Pager
 import com.google.samples.apps.nowinandroid.components.PagerState
-import com.google.samples.apps.nowinandroid.core.navigation.LocalNavigator
+
 import com.google.samples.apps.nowinandroid.core.navigation.Navigator
 import com.google.samples.apps.nowinandroid.core.navigation.Screens.LeafScreen
 import com.google.samples.apps.nowinandroid.core.ui.component.NiaGradientBackground
@@ -23,49 +24,55 @@ import com.google.samples.apps.nowinandroid.core.ui.component.NiaTopAppBar
 import com.google.samples.apps.nowinandroid.feature.foryou.ui.ShimmerList
 
 @Composable
-fun ForYouRoute(windowSizeClass: WindowSizeClass) {
+fun ForYouRoute() {
     ForYouScreen()
 }
 
 @OptIn(ExperimentalMaterial3Api::class, ExperimentalLayoutApi::class)
 @Composable
 fun ForYouScreen(
-    navigation: Navigator = LocalNavigator.current
+    //navigation: Navigator = LocalNavigator.current
 ) {
 
-
-
-    NiaGradientBackground {
-
-        Scaffold(
-            topBar = {
-                NiaTopAppBar(
-                    titleRes = R.string.app_name,
-                    navigationIcon = Icons.Filled.Search,
-                    navigationIconContentDescription = stringResource(
-                        id = R.string.top_app_bar_navigation_button_content_desc
-                    ),
-                    actionIcon = Icons.Outlined.Timer,
-                    actionIconContentDescription = stringResource(
-                        id = R.string.settings_alarm_sleep_timer
-                    ),
-                    colors = TopAppBarDefaults.centerAlignedTopAppBarColors(
-                        containerColor = Color.Transparent
-                    ),
-                    modifier = Modifier.windowInsetsPadding(
-                        WindowInsets.safeDrawing.only(WindowInsetsSides.Top)
-                    ),
-                    onNavigationClick = {
-                        navigation.navigate(LeafScreen.Downloads().createRoute())
-                    }
-                )
-            },
-            containerColor = Color.Transparent
-        ) { innerPadding ->
-            innerPadding
-            AdvanceListContent()
-        }
-    }
+    
+    Text(text = "hello")
+    
+    Box(modifier = Modifier
+        .fillMaxHeight()
+        .fillMaxWidth()
+        .background(Color.Red))
+    Text("for you screen")
+//    NiaGradientBackground {
+//
+//        Scaffold(
+//            topBar = {
+//                NiaTopAppBar(
+//                    titleRes = R.string.app_name,
+//                    navigationIcon = Icons.Filled.Search,
+//                    navigationIconContentDescription = stringResource(
+//                        id = R.string.top_app_bar_navigation_button_content_desc
+//                    ),
+//                    actionIcon = Icons.Outlined.Timer,
+//                    actionIconContentDescription = stringResource(
+//                        id = R.string.settings_alarm_sleep_timer
+//                    ),
+//                    colors = TopAppBarDefaults.centerAlignedTopAppBarColors(
+//                        containerColor = Color.Transparent
+//                    ),
+//                    modifier = Modifier.windowInsetsPadding(
+//                        WindowInsets.safeDrawing.only(WindowInsetsSides.Top)
+//                    ),
+//                    onNavigationClick = {
+//                       // navigation.navigate(LeafScreen.Downloads().createRoute())
+//                    }
+//                )
+//            },
+//            containerColor = Color.Transparent
+//        ) { innerPadding ->
+//            val padding = innerPadding
+//            AdvanceListContent()
+//        }
+//    }
 }
 
 
@@ -85,6 +92,8 @@ fun AdvanceListContent() {
             selectedTabIndex = selectedIndex,
             edgePadding = 12.dp
         ) {
+
+            Text("For you")
             tabs.forEachIndexed      { index, title ->
                 Tab(
                     selected = index == selectedIndex,

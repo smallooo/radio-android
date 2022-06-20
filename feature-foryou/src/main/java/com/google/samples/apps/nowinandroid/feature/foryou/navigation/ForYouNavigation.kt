@@ -31,6 +31,6 @@ fun NavGraphBuilder.forYouGraph(
     windowSizeClass: WindowSizeClass
 ) {
     composable(route = ForYouDestination.route) {
-        ForYouRoute(windowSizeClass)
+        ForYouRoute()
     }
 }

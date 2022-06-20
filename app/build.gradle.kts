@@ -117,6 +117,8 @@ dependencies {
 
     implementation(libs.androidx.compose.runtime)
     implementation(libs.accompanist.systemuicontroller)
+    implementation(libs.accompanist.navigation.material)
+
 
     implementation("androidx.lifecycle:lifecycle-runtime-ktx:2.5.0-rc01")
 

@@ -1,5 +1,6 @@
 package com.google.samples.apps.nowinandroid.ui
 
+import androidx.compose.material.ExperimentalMaterialApi
 import androidx.compose.material.ScaffoldState
 import androidx.compose.material.rememberScaffoldState
 import androidx.compose.material3.windowsizeclass.WindowSizeClass
@@ -11,9 +12,12 @@ import androidx.compose.ui.input.key.Key.Companion.Home
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.compose.currentBackStackEntryAsState
 import androidx.navigation.compose.rememberNavController
+import androidx.navigation.plusAssign
+import com.google.accompanist.navigation.material.ExperimentalMaterialNavigationApi
 import com.google.samples.apps.nowinandroid.common.compose.LocalPlaybackConnection
 import com.google.samples.apps.nowinandroid.common.compose.LocalScaffoldState
 import com.google.samples.apps.nowinandroid.core.navigation.NavigatorHost
+import com.google.samples.apps.nowinandroid.core.navigation.rememberBottomSheetNavigator
 
 import com.google.samples.apps.nowinandroid.core.ui.component.NiaBackground
 import com.google.samples.apps.nowinandroid.core.ui.media.radioStations.LocalAudioActionHandler
@@ -27,8 +31,10 @@ import com.google.samples.apps.nowinandroid.navigation.NiaTopLevelNavigation
 import com.google.samples.apps.nowinandroid.ui.home.Home
 import com.hdmsh.common_compose.rememberFlowWithLifecycle
 import com.hdmsh.core_ui_playback.PlaybackConnectionViewModel
+import kotlinx.coroutines.InternalCoroutinesApi
 
 
+@OptIn(ExperimentalMaterialApi::class, ExperimentalMaterialNavigationApi::class, InternalCoroutinesApi::class)
 @Composable
 fun RadioApp(
     windowSizeClass: WindowSizeClass,
@@ -40,6 +46,8 @@ fun RadioApp(
 
     CompositionLocalProvider() {
         RadioCore(windowSizeClass) {
+            val bottomSheetNavigator = rememberBottomSheetNavigator()
+            navController.navigatorProvider += bottomSheetNavigator
             Home(windowSizeClass, niaTopLevelNavigation, currentDestination, navController)
         }
     }
@@ -68,7 +76,6 @@ private fun RadioCore(
         //    }
         }
     }
-
 }
 
 

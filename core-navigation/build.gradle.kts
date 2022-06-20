@@ -43,5 +43,7 @@ dependencies {
     implementation(libs.accompanist.navigation.animation)
     implementation(libs.accompanist.navigation.material)
 
+    implementation(libs.androidx.compose.material.material)
+
     kapt(libs.hilt.compiler)
 }

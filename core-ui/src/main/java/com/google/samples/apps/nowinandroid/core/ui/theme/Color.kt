@@ -237,8 +237,8 @@ internal fun animate(colors: Colors): Colors {
     )
 }
 
-//@Composable
-//fun translucentSurfaceColor() = MaterialTheme.colors.surface.copy(alpha = AppBarAlphas.translucentBarAlpha())
+@Composable
+fun translucentSurfaceColor() = MaterialTheme.colors.surface.copy(alpha = AppBarAlphas.translucentBarAlpha())
 
 //fun Modifier.translucentSurface() = composed { background(translucentSurfaceColor()) }
 

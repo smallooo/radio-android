@@ -74,6 +74,7 @@ fun InterestsScreen(
     switchTab: (Int) -> Unit,
     modifier: Modifier = Modifier,
 ) {
+    Text("Interesting")
     Column(
         modifier = modifier,
         horizontalAlignment = Alignment.CenterHorizontally

@@ -32,8 +32,7 @@ interface Screen {
     val route: String
 }
 
-val ROOT_SCREENS =
-    listOf(RootScreen.Downloads, RootScreen.Library, RootScreen.Settings)
+val ROOT_SCREENS = listOf(RootScreen.Search, RootScreen.Downloads, RootScreen.Library, RootScreen.Settings)
 
 sealed class RootScreen(
     override val route: String,
@@ -41,7 +40,7 @@ sealed class RootScreen(
     val arguments: List<NamedNavArgument> = emptyList(),
     val deepLinks: List<NavDeepLink> = emptyList(),
 ) : Screen {
-   // object Search : RootScreen("search_root", LeafScreen.Search(rootRoute = "search_root"))
+    object Search : RootScreen("search_root", LeafScreen.Search(rootRoute = "search_root"))
     object Downloads : RootScreen("downloads_root", LeafScreen.Downloads())
     object Library : RootScreen("library_root", LeafScreen.Library())
     object Settings : RootScreen("settings_root", LeafScreen.Settings(rootRoute = "settings_root"))
@@ -61,36 +60,36 @@ sealed class LeafScreen(
             else -> route
         }
 
-//    data class Search(
-//        override val route: String = "search/?$QUERY_KEY={$QUERY_KEY}&$SEARCH_BACKENDS_KEY={$SEARCH_BACKENDS_KEY}",
-//        override val rootRoute: String = "search_root",
-//    ) : LeafScreen(
-//        route, rootRoute,
-//        arguments = listOf(
-//            navArgument(QUERY_KEY) {
-//                type = NavType.StringType
-//                nullable = true
-//            },
-//            navArgument(SEARCH_BACKENDS_KEY) {
-//                type = NavType.StringType
-//                nullable = true
-//            }
-//        ),
-////        deepLinks = listOf(
-////            navDeepLink {
-////                uriPattern = "${Config.BASE_URL}search?$QUERY_KEY={$QUERY_KEY}&$SEARCH_BACKENDS_KEY={$SEARCH_BACKENDS_KEY}"
-////            }
-////        )
-//    ) {
-////        companion object {
-////            fun buildRoute(
-////                query: String,
-////                vararg backends: DatmusicSearchParams.BackendType
-////            ) = "${RootScreen.Search.route}/search/?$QUERY_KEY=$query&$SEARCH_BACKENDS_KEY=${backends.toSet().toQueryParam()}"
-////
-////            fun buildUri(query: String) = "${Config.BASE_URL}search?q=$query".toUri()
-////        }
-//    }
+    data class Search(
+        override val route: String = "search_root1",
+        override val rootRoute: String = "search_root",
+    ) : LeafScreen(
+        route, rootRoute,
+        arguments = listOf(
+            navArgument(QUERY_KEY) {
+                type = NavType.StringType
+                nullable = true
+            },
+            navArgument(SEARCH_BACKENDS_KEY) {
+                type = NavType.StringType
+                nullable = true
+            }
+        ),
+        deepLinks = listOf(
+            navDeepLink {
+                uriPattern = "${"Config.BASE_URL"}search?$QUERY_KEY={$QUERY_KEY}&$SEARCH_BACKENDS_KEY={$SEARCH_BACKENDS_KEY}"
+            }
+        )
+    ) {
+        companion object {
+            fun buildRoute(
+                query: String,
+                //vararg backends: BackendType
+            ) = "${RootScreen.Search.route}/search/?$QUERY_KEY=$query&$SEARCH_BACKENDS_KEY=#minerva"
+
+            fun buildUri(query: String) = "${"Config.BASE_URL"}search?q=$query".toUri()
+        }
+    }
 
     data class Downloads(
         override val route: String = "downloads",
@@ -121,14 +120,14 @@ sealed class LeafScreen(
         ),
         deepLinks = listOf(
             navDeepLink {
-                // uriPattern = "${Config.BASE_URL}artists/{$PLAYLIST_ID_KEY}"
+                 uriPattern = "artists/{$PLAYLIST_ID_KEY}"
             }
         )
     ) {
-//        companion object {
-//            fun buildRoute(id: PlaylistId, root: RootScreen = RootScreen.Library) = "${root.route}/local_playlist/$id"
-//            fun buildUri(id: PlaylistId) = "${Config.BASE_URL}local_playlist/$id".toUri()
-//        }
+        companion object {
+            fun buildRoute(id: PlaylistId, root: RootScreen = RootScreen.Library) = "${root.route}/local_playlist/$id"
+            fun buildUri(id: PlaylistId) = "${Config.BASE_URL}local_playlist/$id".toUri()
+        }
     }
 
     data class Settings(
@@ -148,14 +147,14 @@ sealed class LeafScreen(
         ),
         deepLinks = listOf(
             navDeepLink {
-                // uriPattern = "${Config.BASE_URL}artists/{$ARTIST_ID_KEY}"
+                 uriPattern = "artists/{$ARTIST_ID_KEY}"
             }
         )
     ) {
-//        companion object {
-//            fun buildRoute(id: ArtistId, root: RootScreen = RootScreen.Search) = "${root.route}/artists/$id"
-//            fun buildUri(id: ArtistId) = "${Config.BASE_URL}artists/$id".toUri()
-//        }
+        companion object {
+            fun buildRoute(id: String, root: RootScreen = RootScreen.Search) = "${root.route}/artists/$id"
+            fun buildUri(id: String) = "${Config.BASE_URL}artists/$id".toUri()
+        }
     }
 
     data class AlbumDetails(
@@ -175,31 +174,28 @@ sealed class LeafScreen(
             }
         )
     ) {
-//        companion object {
-//            fun buildRoute(album: Album, root: RootScreen = RootScreen.Search) =
-//                "${root.route}/albums/${album.id}/${album.artistId}/${album.accessKey}"
-//
-//            fun buildRoute(albumId: AlbumId, root: RootScreen = RootScreen.Search) = "${root.route}/albums/$albumId/-1/nokey"
-//            fun buildUri(albumId: Album) = "${Config.BASE_URL}albums/$albumId".toUri()
-//        }
+        companion object {
+
+
+            fun buildRoute(albumId: String, root: RootScreen = RootScreen.Search) = "${root.route}/albums/$albumId/-1/nokey"
+            fun buildUri(albumId: String) = "${Config.BASE_URL}albums/$albumId".toUri()
+
+        }
     }
 }
 
-@OptIn(ExperimentalAnimationApi::class)
-fun NavGraphBuilder.composableScreen(
+//@OptIn(ExperimentalAnimationApi::class)
+//fun NavGraphBuilder.composableScreen(screen: LeafScreen, content: @Composable AnimatedVisibilityScope.(NavBackStackEntry) -> Unit) {
+//    composable(screen.createRoute(), screen.arguments, screen.deepLinks, content = content)
+//}
+
+
+@OptIn(ExperimentalMaterialNavigationApi::class)
+fun NavGraphBuilder.bottomSheetScreen(
     screen: LeafScreen,
-    content: @Composable AnimatedVisibilityScope.(NavBackStackEntry) -> Unit
-) {
-    composable(screen.createRoute(), screen.arguments, screen.deepLinks, content = content)
-}
-
-
-//@OptIn(ExperimentalMaterialNavigationApi::class)
-//fun NavGraphBuilder.bottomSheetScreen(
-//    screen: LeafScreen,
-//    content: @Composable ColumnScope.(NavBackStackEntry) -> Unit
-//) =
-//    bottomSheet(screen.createRoute(), screen.arguments, screen.deepLinks, content)
+    content: @Composable ColumnScope.(NavBackStackEntry) -> Unit
+) =
+    bottomSheet(screen.createRoute(), screen.arguments, screen.deepLinks, content)
 
 //  https://stackoverflow.com/a/64961032/2897341
 @Composable

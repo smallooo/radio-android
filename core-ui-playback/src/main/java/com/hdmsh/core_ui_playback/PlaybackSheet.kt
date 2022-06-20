@@ -5,13 +5,19 @@
 package com.hdmsh.core_ui_playback
 
 
+import androidx.compose.foundation.Image
+import androidx.compose.foundation.background
+import androidx.compose.foundation.layout.Box
+import androidx.compose.foundation.layout.fillMaxHeight
+import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.lazy.rememberLazyListState
 import androidx.compose.material3.Text
 
 import androidx.compose.runtime.Composable
 
 import androidx.compose.runtime.rememberCoroutineScope
-
+import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.Color
 
 
 @Composable
@@ -25,6 +31,17 @@ fun PlaybackSheet(
     val coroutine = rememberCoroutineScope()
 
     Text(text = "hello world")
+    Text(text = "hello world")
+    Text(text = "hello world")
+    Text(text = "hello world")
+    Text(text = "hello world")
+    Text(text = "hello world")
+    Text(text = "hello world")
+    Text(text = "hello world")
+    Text(text = "hello world")
+    Text(text = "hello world")
+    
+    Box(modifier = Modifier.background(Color.Red).fillMaxWidth().fillMaxHeight())
 
 //    val scrollToTop: Callback = {
 //        coroutine.launch {
