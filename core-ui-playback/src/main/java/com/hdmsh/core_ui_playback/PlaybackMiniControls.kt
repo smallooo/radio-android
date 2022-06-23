@@ -12,6 +12,7 @@ import androidx.compose.animation.slideInVertically
 import androidx.compose.animation.slideOutVertically
 import androidx.compose.foundation.ExperimentalFoundationApi
 import androidx.compose.foundation.Image
+import androidx.compose.foundation.background
 import androidx.compose.foundation.combinedClickable
 import androidx.compose.foundation.gestures.Orientation
 import androidx.compose.foundation.gestures.draggable
@@ -64,7 +65,7 @@ fun PlaybackMiniControls(
     val nowPlaying by rememberFlowWithLifecycle(playbackConnection.nowPlaying)
     val playingStation by rememberFlowWithLifecycle(playbackConnection.playingStation)
 
-    val visible = playbackState.state == 3 || playbackState.state == 6
+    val visible = (playbackState to nowPlaying).isActive
 
     AnimatedVisibility(
         visible = visible,
@@ -108,7 +109,7 @@ fun PlaybackMiniControls(
             color = Color.Transparent,
             shape = MaterialTheme.shapes.small,
             modifier = modifier
-                .padding(horizontal = 8.dp)
+                .padding(horizontal = 0.dp)
                 .animateContentSize()
                 .combinedClickable(
                     enabled = true,
@@ -140,6 +141,7 @@ fun PlaybackMiniControls(
                     modifier = Modifier
                         .height(height)
                         .fillMaxWidth()
+                        .background(backgroundColor)
                         .onGloballyPositioned {
                             val aspectRatio = it.size.height.toFloat() / it.size.width.toFloat()
                             controlsVisible = aspectRatio < 0.9

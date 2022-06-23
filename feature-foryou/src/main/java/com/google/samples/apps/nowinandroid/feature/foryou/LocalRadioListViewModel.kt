@@ -25,7 +25,7 @@ import javax.inject.Inject
 class LocalRadioListViewModel @Inject constructor(
     savedStateHandle: SavedStateHandle,
     private val localStationsSource: LocalStationsSource,
-    private val stationsRepository: StationsRepository,
+    stationsRepository: StationsRepository,
     ) : ViewModel() {
 
     private val _tabState = MutableStateFlow(

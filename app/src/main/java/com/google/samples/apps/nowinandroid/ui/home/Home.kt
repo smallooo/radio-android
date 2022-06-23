@@ -59,12 +59,7 @@ internal fun Home(
                             PlaybackMiniControls(
                                 modifier = Modifier.padding(bottom = 8.dp),
                                 contentPadding = PaddingValues(end = 16.dp),
-                              //  navController,
                             )
-//                            NiABottomBar(
-//                                onNavigateToTopLevelDestination = niaTopLevelNavigation::navigateTo,
-//                                currentDestination = currentDestination
-//                            )
                             HomeBottomNavigation(
                                 selectedTab = selectedTab,
                                 onNavigationSelected = { selected -> navController.selectRootScreen(selected) },
@@ -77,7 +72,6 @@ internal fun Home(
                 }
             ) {
                AppNavigation(navController = navController)
-               //NiaAppContent(windowSizeClass, niaTopLevelNavigation, currentDestination, navController)
             }
         }
     }

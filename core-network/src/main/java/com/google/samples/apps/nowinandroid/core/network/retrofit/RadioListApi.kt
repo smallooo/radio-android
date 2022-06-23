@@ -20,7 +20,7 @@ class RadioListApi @Inject constructor(private val service: Service) {
         @GET("/json/stations/{type}/{param}")
         suspend fun getListByCountryDemo(@Path("type")type: String, @Path("param") param: String): ArrayList<Station>
 
-        @GET("/json/stations/topvote/100")
+        @GET("/json/stations/bycountry/japan")
         suspend fun getListByCountry(): ArrayList<NetworkStation>
 
         @GET("/json/stations")
@@ -66,7 +66,7 @@ class RadioListApi @Inject constructor(private val service: Service) {
         private String itsAdressWWWLanguages = "json/languages";
          */
     }
-
+    //http://89.58.16.19/json/station/
     companion object { const val API_URL = "http://at1.api.radio-browser.info/" }
 }
 
