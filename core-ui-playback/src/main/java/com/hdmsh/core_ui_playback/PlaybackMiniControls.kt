@@ -280,7 +280,7 @@ fun PlaybackNowPlaying(playingStation: Station, modifier: Modifier = Modifier) {
         )
         CompositionLocalProvider(LocalContentAlpha provides ContentAlpha.medium) {
             Text(
-                "audio.artist.orNA()",
+                playingStation.bitrate + "kpbs",
                 maxLines = 1,
                 overflow = TextOverflow.Ellipsis,
                 style = MaterialTheme.typography.body2

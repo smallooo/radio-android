@@ -5,99 +5,179 @@
 package com.hdmsh.core_ui_playback
 
 
-import androidx.compose.foundation.Image
+import android.annotation.SuppressLint
+import androidx.compose.animation.animateColorAsState
 import androidx.compose.foundation.background
-import androidx.compose.foundation.layout.Box
-import androidx.compose.foundation.layout.fillMaxHeight
-import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.*
+import androidx.compose.foundation.lazy.LazyColumn
+import androidx.compose.foundation.lazy.LazyListState
 import androidx.compose.foundation.lazy.rememberLazyListState
-import androidx.compose.material3.Text
-
-import androidx.compose.runtime.Composable
-
-import androidx.compose.runtime.rememberCoroutineScope
+import androidx.compose.material.*
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.KeyboardArrowDown
+import androidx.compose.runtime.*
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.graphics.vector.rememberVectorPainter
+import androidx.compose.ui.unit.dp
+
+import com.google.accompanist.pager.ExperimentalPagerApi
+import com.google.samples.app.nowinandroid.core.playback.NONE_PLAYBACK_STATE
+import com.google.samples.app.nowinandroid.core.playback.artwork
+import com.google.samples.app.nowinandroid.core.playback.isIdle
+import com.google.samples.app.nowinandroid.core.playback.models.PlaybackQueue
+import com.google.samples.apps.nowinandroid.common.compose.LocalPlaybackConnection
+import com.google.samples.apps.nowinandroid.common.compose.LocalScaffoldState
+import com.google.samples.apps.nowinandroid.core.navigation.LocalNavigator
+import com.google.samples.apps.nowinandroid.core.navigation.Navigator
+import com.google.samples.apps.nowinandroid.core.ui.ADAPTIVE_COLOR_ANIMATION
+import com.google.samples.apps.nowinandroid.core.ui.adaptiveColor
+import com.google.samples.apps.nowinandroid.core.ui.component.isWideLayout
+import com.google.samples.apps.nowinandroid.core.ui.media.radioStations.LocalAudioActionHandler
+import com.google.samples.apps.nowinandroid.core.ui.media.radioStations.audioActionHandler
+import com.google.samples.apps.nowinandroid.core.ui.theme.AppTheme
+import com.google.samples.apps.nowinandroid.core.ui.theme.ColorPalettePreference
+
+import com.google.samples.apps.nowinandroid.core.ui.theme.ThemeState
+import com.google.samples.apps.nowinandroid.playback.PlaybackConnection
+import com.hdmsh.common_compose.rememberFlowWithLifecycle
+import kotlinx.coroutines.flow.collectLatest
+import kotlinx.coroutines.flow.filter
 
 
 @Composable
 fun PlaybackSheet(
     // override local theme color palette because we want simple colors for menus n' stuff
     //sheetTheme: ThemeState = LocalThemeState.current.copy(colorPalettePreference = ColorPalettePreference.Black),
-  //  navigator: Navigator = LocalNavigator.current,
+    navigator: Navigator = LocalNavigator.current,
 ) {
     val listState = rememberLazyListState()
     val queueListState = rememberLazyListState()
     val coroutine = rememberCoroutineScope()
 
-    Text(text = "hello world")
-    Text(text = "hello world")
-    Text(text = "hello world")
-    Text(text = "hello world")
-    Text(text = "hello world")
-    Text(text = "hello world")
-    Text(text = "hello world")
-    Text(text = "hello world")
-    Text(text = "hello world")
-    Text(text = "hello world")
-    
-    Box(modifier = Modifier.background(Color.Red).fillMaxWidth().fillMaxHeight())
+    val audioActionHandler = audioActionHandler()
+    CompositionLocalProvider(LocalAudioActionHandler provides audioActionHandler) {
+        AppTheme( changeSystemBar = false) {
+            PlaybackSheetContent(
+                onClose = { navigator.goBack() },
 
-//    val scrollToTop: Callback = {
-//        coroutine.launch {
-//            listState.animateScrollToItem(0)
-//        }
-//    }
-
-//    val audioActionHandler = audioActionHandler()
-//    CompositionLocalProvider(LocalAudioActionHandler provides audioActionHandler) {
-//        AppTheme(theme = sheetTheme, changeSystemBar = false) {
-//            PlaybackSheetContent(
-//                onClose = { navigator.goBack() },
-//                scrollToTop = scrollToTop,
-//                listState = listState,
-//                queueListState = queueListState,
-//            )
-//        }
-//    }
+                listState = listState,
+                queueListState = queueListState,
+            )
+        }
+    }
 }
 
-//@OptIn(ExperimentalPagerApi::class)
-//@Composable
-//internal fun PlaybackSheetContent(
-//    onClose: Callback,
-//    scrollToTop: Callback,
-//    listState: LazyListState,
-//    queueListState: LazyListState,
-//    scaffoldState: ScaffoldState = rememberScaffoldState(snackbarHostState = LocalScaffoldState.current.snackbarHostState),
-//    playbackConnection: PlaybackConnection = LocalPlaybackConnection.current,
-//    viewModel: PlaybackViewModel = hiltViewModel(),
-//) {
-//    val playbackState by rememberFlowWithLifecycle(playbackConnection.playbackState)
-//    val playbackQueue by rememberFlowWithLifecycle(playbackConnection.playbackQueue)
-//    val nowPlaying by rememberFlowWithLifecycle(playbackConnection.nowPlaying)
-//    val pagerState = rememberPagerState(playbackQueue.currentIndex)
+@SuppressLint("UnusedMaterialScaffoldPaddingParameter")
+@OptIn(ExperimentalPagerApi::class)
+@Composable
+internal fun PlaybackSheetContent(
+    onClose: () -> Unit,
+    listState: LazyListState,
+    queueListState: LazyListState,
+    scaffoldState: ScaffoldState = rememberScaffoldState(snackbarHostState = LocalScaffoldState.current.snackbarHostState),
+    playbackConnection: PlaybackConnection = LocalPlaybackConnection.current,
+   // viewModel: PlaybackViewModel = hiltViewModel(),
+) {
+    val playbackState by rememberFlowWithLifecycle(playbackConnection.playbackState)
+
+    val nowPlaying by rememberFlowWithLifecycle(playbackConnection.nowPlaying)
+    // val pagerState = rememberPagerState(playbackQueue.currentIndex)
+
+    val adaptiveColor by adaptiveColor(
+        nowPlaying.artwork,
+        initial = MaterialTheme.colors.onBackground
+    )
+    val contentColor by animateColorAsState(adaptiveColor.color, ADAPTIVE_COLOR_ANIMATION)
+
+    LaunchedEffect(playbackConnection) {
+        playbackConnection.playbackState
+            .filter { it != NONE_PLAYBACK_STATE }
+            .collectLatest { if (it.isIdle) onClose() }
+    }
+
+        BoxWithConstraints {
+        val isWideLayout = isWideLayout()
+        val maxWidth = maxWidth
+        Row(Modifier.fillMaxSize()) {
+            if (isWideLayout) {
+//                ResizablePlaybackQueue(
+//                    maxWidth = maxWidth,
+//                    playbackQueue = playbackQueue,
+//                    queueListState = queueListState,
+//                    scrollToTop = scrollToTop
+//                )
+            }
+
+            Scaffold(
+                backgroundColor = Color.Transparent,
+                modifier = Modifier
+                    .background(adaptiveColor.gradient)
+                    .weight(1f),
+                scaffoldState = scaffoldState,
+                snackbarHost = {
+                    //  DismissableSnackbarHost(it, modifier = Modifier.navigationBarsPadding())
+                               },
+            ) {
+                LazyColumn(
+                    state = listState,
+                   // contentPadding = contentPadding,
+                ) {
+                    item {
+                        PlaybackSheetTopBar(
+//                            playbackQueue = playbackQueue,
+//                            onClose = onClose,
+//                            onTitleClick = viewModel::navigateToQueueSource,
+//                            onSaveQueueAsPlaylist = viewModel::saveQueueAsPlaylist
+                        )
+                        //Spacer(Modifier.height(AppTheme.specs.paddingTiny))
+                    }
+
+//                    item {
+//                        PlaybackArtworkPagerWithNowPlayingAndControls(
+//                            nowPlaying = nowPlaying,
+//                            playbackState = playbackState,
+//                            pagerState = pagerState,
+//                            contentColor = contentColor,
+//                            viewModel = viewModel,
+//                            modifier = Modifier.fillParentMaxHeight(0.8f),
+//                        )
+//                    }
 //
-//    val adaptiveColor by adaptiveColor(nowPlaying.artwork, initial = MaterialTheme.colors.onBackground)
-//    val contentColor by animateColorAsState(adaptiveColor.color, ADAPTIVE_COLOR_ANIMATION)
+//                    if (playbackQueue.isValid)
+//                        item {
+//                            PlaybackAudioInfo(playbackQueue.currentAudio)
+//                        }
 //
-//    LaunchedEffect(playbackConnection) {
-//        playbackConnection.playbackState
-//            .filter { it != NONE_PLAYBACK_STATE }
-//            .collectLatest { if (it.isIdle) onClose() }
-//    }
-//
+//                    if (!isWideLayout && !playbackQueue.isLastAudio) {
+//                        playbackQueueLabel()
+//                        playbackQueue(
+//                            playbackQueue = playbackQueue,
+//                            scrollToTop = scrollToTop,
+//                            playbackConnection = playbackConnection,
+//                        )
+//                    }
+                }
+            }
+        }
+    }
+}
+
+
+
+
+
 //    val contentPadding = rememberInsetsPaddingValues(
 //        insets = LocalWindowInsets.current.systemBars,
 //        applyTop = true,
 //        applyBottom = true,
 //    )
-//
+
 //    if (playbackState == NONE_PLAYBACK_STATE) {
 //        Row(Modifier.fillMaxSize()) { FullScreenLoading(delayMillis = 0) }
 //        return
 //    }
-//
+
 //    BoxWithConstraints {
 //        val isWideLayout = isWideLayout()
 //        val maxWidth = maxWidth
@@ -162,7 +242,7 @@ fun PlaybackSheet(
 //        }
 //    }
 //}
-
+//
 //@Composable
 //private fun RowScope.ResizablePlaybackQueue(
 //    maxWidth: Dp,
@@ -198,7 +278,7 @@ fun PlaybackSheet(
 //
 //            if (playbackQueue.isLastAudio) {
 //                item {
-//                    Text(
+//                    androidx.compose.material.Text(
 //                        text = stringResource(R.string.playback_queue_empty),
 //                        style = MaterialTheme.typography.body1,
 //                        textAlign = TextAlign.Center,
@@ -225,30 +305,34 @@ fun PlaybackSheet(
 //    }
 //}
 //
-//@Composable
-//private fun PlaybackSheetTopBar(
-//    playbackQueue: PlaybackQueue,
+@Composable
+private fun PlaybackSheetTopBar(
+ //   playbackQueue: PlaybackQueue,
 //    onClose: Callback,
 //    onTitleClick: Callback,
 //    onSaveQueueAsPlaylist: Callback,
-//) {
-//    TopAppBar(
-//        elevation = 0.dp,
-//        backgroundColor = Color.Transparent,
-//        title = { PlaybackSheetTopBarTitle(playbackQueue, onTitleClick) },
-//        actions = { PlaybackSheetTopBarActions(playbackQueue, onSaveQueueAsPlaylist) },
-//        navigationIcon = {
-//            IconButton(onClick = onClose) {
-//                Icon(
-//                    rememberVectorPainter(Icons.Default.KeyboardArrowDown),
-//                    modifier = Modifier.size(AppTheme.specs.iconSize),
-//                    contentDescription = null,
-//                )
-//            }
-//        },
-//    )
-//}
-//
+) {
+    TopAppBar(
+        elevation = 0.dp,
+        backgroundColor = Color.Transparent,
+        title = {
+           // PlaybackSheetTopBarTitle(playbackQueue, onTitleClick)
+                },
+        actions = {
+          //  PlaybackSheetTopBarActions(playbackQueue, onSaveQueueAsPlaylist)
+                  },
+        navigationIcon = {
+            IconButton(onClick = { Unit }) {
+                Icon(
+                    rememberVectorPainter(Icons.Default.KeyboardArrowDown),
+                    modifier = Modifier.size(36.dp),
+                    contentDescription = null,
+                )
+            }
+        },
+    )
+}
+
 //@Composable
 //private fun PlaybackSheetTopBarTitle(
 //    playbackQueue: PlaybackQueue,
@@ -348,10 +432,10 @@ fun PlaybackSheet(
 //private fun LazyListScope.playbackQueueLabel(modifier: Modifier = Modifier) {
 //    item {
 //        Row(modifier = modifier.fillMaxWidth()) {
-//            Text(
+//            androidx.compose.material.Text(
 //                text = stringResource(R.string.playback_queue_title),
 //                style = MaterialTheme.typography.h5.copy(fontWeight = FontWeight.Bold),
-//                modifier = Modifier.padding(AppTheme.specs.padding)
+//                modifier = androidx.compose.ui.Modifier.padding(AppTheme.specs.padding)
 //            )
 //        }
 //    }

@@ -81,6 +81,7 @@ dependencies {
     implementation(project(":feature-foryou"))
     implementation(project(":feature-topic"))
     implementation(project(":core-navigation"))
+    implementation(project(":core-datastore"))
     implementation(project(":sync"))
 
     implementation(project(":core-common"))
@@ -130,6 +131,8 @@ dependencies {
     implementation(libs.retrofit.core)
     implementation(libs.retrofit.kotlin.serialization)
     implementation(libs.retrofit.converter)
+
+    implementation(libs.androidx.dataStore.preferences)
 
     // androidx.test is forcing JUnit, 4.12. This forces it to use 4.13
     configurations.configureEach {

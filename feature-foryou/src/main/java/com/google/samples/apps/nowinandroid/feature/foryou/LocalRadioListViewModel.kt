@@ -1,5 +1,6 @@
 package com.google.samples.apps.nowinandroid.feature.foryou
 
+import android.util.Log
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.setValue
@@ -25,8 +26,8 @@ import javax.inject.Inject
 class LocalRadioListViewModel @Inject constructor(
     savedStateHandle: SavedStateHandle,
     private val localStationsSource: LocalStationsSource,
-    stationsRepository: StationsRepository,
-    ) : ViewModel() {
+    stationsRepository: StationsRepository
+) : ViewModel() {
 
     private val _tabState = MutableStateFlow(
         ForyouTabState(
@@ -42,23 +43,14 @@ class LocalRadioListViewModel @Inject constructor(
        stationsRepository.getFollowedStationIdsStream(),
     ) { availableStations, followedStationsIdsState ->
 
-        StationsUiState.Stations(
-            stations = availableStations
-                .map { station ->
-                    FollowableStation(
-                        station = station,
-                        isFollowed = true
-                    )
-                },
-        )
-    }
-        .stateIn(
+        Log.e("aaa", "StationsUiState")
+        StationsUiState.Stations(stations = availableStations.map { station -> FollowableStation(station = station, isFollowed = true) })
+    }.stateIn(
             scope = viewModelScope,
             started = SharingStarted.WhileSubscribed(5_000),
             initialValue = StationsUiState.Loading
         )
 }
-
 
 data class ForyouTabState(
     val titles: List<String>,

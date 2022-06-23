@@ -22,6 +22,7 @@ import androidx.navigation.NavHostController
 import com.google.samples.app.nowinandroid.core.playback.isActive
 import com.google.samples.apps.nowinandroid.common.compose.LocalPlaybackConnection
 import com.google.samples.apps.nowinandroid.core.navigation.Screens.RootScreen
+import com.google.samples.apps.nowinandroid.core.ui.component.isWideLayout
 import com.google.samples.apps.nowinandroid.playback.PlaybackConnection
 import com.google.samples.apps.nowinandroid.ui.AppNavigation
 import com.google.samples.apps.nowinandroid.ui.currentScreenAsState
@@ -47,8 +48,15 @@ internal fun Home(
     val bottomBarHeight = HomeBottomNavigationHeight * (if (isPlayerActive) 1.15f else 1f)
 
     BoxWithConstraints {
+        val isWideLayout = isWideLayout()
         val maxWidth = maxWidth
         Row(Modifier.fillMaxSize()) {
+            if (isWideLayout)
+                ResizableHomeNavigationRail(
+                    maxWidth = maxWidth,
+                    selectedTab = selectedTab,
+                    navController = navController
+                )
             Scaffold(
                 modifier = Modifier,
                 backgroundColor = Color.Transparent,
