@@ -22,7 +22,6 @@ import androidx.navigation.NavHostController
 import com.google.samples.app.nowinandroid.core.playback.isActive
 import com.google.samples.apps.nowinandroid.common.compose.LocalPlaybackConnection
 import com.google.samples.apps.nowinandroid.core.navigation.Screens.RootScreen
-import com.google.samples.apps.nowinandroid.navigation.NiaTopLevelNavigation
 import com.google.samples.apps.nowinandroid.playback.PlaybackConnection
 import com.google.samples.apps.nowinandroid.ui.AppNavigation
 import com.google.samples.apps.nowinandroid.ui.currentScreenAsState
@@ -35,7 +34,6 @@ val HomeBottomNavigationHeight = 56.dp
 @Composable
 internal fun Home(
     windowSizeClass: WindowSizeClass,
-    niaTopLevelNavigation: NiaTopLevelNavigation,
     currentDestination: NavDestination?,
     navController: NavHostController,
     playbackConnection: PlaybackConnection = LocalPlaybackConnection.current,
@@ -61,7 +59,7 @@ internal fun Home(
                             PlaybackMiniControls(
                                 modifier = Modifier.padding(bottom = 8.dp),
                                 contentPadding = PaddingValues(end = 16.dp),
-                                navController,
+                              //  navController,
                             )
 //                            NiABottomBar(
 //                                onNavigateToTopLevelDestination = niaTopLevelNavigation::navigateTo,

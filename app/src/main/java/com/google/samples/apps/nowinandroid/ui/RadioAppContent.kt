@@ -18,9 +18,7 @@ import androidx.compose.ui.zIndex
 import androidx.navigation.NavDestination
 import androidx.navigation.NavHostController
 import com.google.samples.apps.nowinandroid.common.compose.LocalPlaybackConnection
-import com.google.samples.apps.nowinandroid.core.ui.theme.AppTheme
-import com.google.samples.apps.nowinandroid.navigation.NiaNavHost
-import com.google.samples.apps.nowinandroid.navigation.NiaTopLevelNavigation
+
 import com.google.samples.apps.nowinandroid.playback.PlaybackConnection
 import com.hdmsh.core_ui_playback.PlaybackMiniControls
 

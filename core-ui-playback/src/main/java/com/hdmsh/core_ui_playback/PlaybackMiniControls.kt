@@ -34,14 +34,17 @@ import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
 import androidx.navigation.NavHostController
-import androidx.navigation.Navigator
+
 import com.google.accompanist.pager.ExperimentalPagerApi
 import com.google.samples.app.nowinandroid.core.playback.*
 import com.google.samples.apps.nowinandroid.common.compose.LocalPlaybackConnection
 import com.google.samples.apps.nowinandroid.core.model.data.Station
+import com.google.samples.apps.nowinandroid.core.navigation.LocalNavigator
+import com.google.samples.apps.nowinandroid.core.navigation.Navigator
 import com.google.samples.apps.nowinandroid.core.navigation.Screens.LeafScreen
 
 import com.google.samples.apps.nowinandroid.core.ui.Dismissable
+import com.google.samples.apps.nowinandroid.core.ui.adaptiveColor
 import com.google.samples.apps.nowinandroid.core.ui.component.CoverImage
 import com.google.samples.apps.nowinandroid.playback.PLAYBACK_PROGRESS_INTERVAL
 import com.google.samples.apps.nowinandroid.playback.PlaybackConnection
@@ -55,11 +58,8 @@ object PlaybackMiniControlsDefaults { val height = 56.dp }
 fun PlaybackMiniControls(
     modifier: Modifier = Modifier,
     contentPadding: PaddingValues = PaddingValues(),
-    //onNavigateToTopLevelDestination: (TopLevelDestination) -> Unit,
-    navController: NavHostController,
     playbackConnection: PlaybackConnection = LocalPlaybackConnection.current
 ) {
-    val openPlaybackSheet = { navController.navigate(LeafScreen.PlaybackSheet().createRoute()) }
     val playbackState by rememberFlowWithLifecycle(playbackConnection.playbackState)
     val nowPlaying by rememberFlowWithLifecycle(playbackConnection.nowPlaying)
     val playingStation by rememberFlowWithLifecycle(playbackConnection.playingStation)
@@ -94,18 +94,15 @@ fun PlaybackMiniControls(
     modifier: Modifier = Modifier,
     contentPadding: PaddingValues = PaddingValues(),
     height: Dp = PlaybackMiniControlsDefaults.height,
+    playbackConnection: PlaybackConnection = LocalPlaybackConnection.current,
+    navigator: Navigator = LocalNavigator.current,
+) {
+    val openPlaybackSheet = { navigator.navigate(LeafScreen.PlaybackSheet().createRoute()) }
+    val adaptiveColor by adaptiveColor(nowPlaying.artwork, initial = MaterialTheme.colors.background)
+    val backgroundColor = adaptiveColor.color
+    val contentColor = adaptiveColor.contentColor
 
-    ) {
-
-  //  val openPlaybackSheet = { navigator.navigate(LeafScreen.PlaybackSheet().createRoute()) }
-//    val adaptiveColor by adaptiveColor(
-//        nowPlaying.artwork,
-//        initial = MaterialTheme.colors.background
-//    )
-//    val backgroundColor = adaptiveColor.color
-//    val contentColor = adaptiveColor.contentColor
-
-    Dismissable(onDismiss = {  }) {
+    Dismissable(onDismiss = { playbackConnection.transportControls?.stop()  }) {
         var dragOffset by remember { mutableStateOf(0f) }
         Surface(
             color = Color.Transparent,
@@ -115,7 +112,7 @@ fun PlaybackMiniControls(
                 .animateContentSize()
                 .combinedClickable(
                     enabled = true,
-                    onClick = onPlayPause ,//openPlaybackSheet,
+                    onClick = openPlaybackSheet ,//openPlaybackSheet,
                     onLongClick = onPlayPause,
                     onDoubleClick = onPlayPause
                 )
@@ -128,7 +125,7 @@ fun PlaybackMiniControls(
                         }
                     ),
                     onDragStarted = {
-                       // if (dragOffset < 0) openPlaybackSheet()
+                       if (dragOffset < 0) openPlaybackSheet()
                     },
                 )
         ) {

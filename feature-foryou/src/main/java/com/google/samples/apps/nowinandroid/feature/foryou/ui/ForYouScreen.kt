@@ -85,8 +85,6 @@ fun AdvanceListContent() {
             selectedTabIndex = selectedIndex,
             edgePadding = 12.dp
         ) {
-
-            Text("For you")
             tabs.forEachIndexed      { index, title ->
                 Tab(
                     selected = index == selectedIndex,
@@ -102,10 +100,6 @@ fun AdvanceListContent() {
             selectedIndex = pagerState.currentPage
             when (commingPage) {
                 0 -> LocalRadioList(PageType.bycountry, "japan")
-//                    1 -> LocalRadioList(PageType.topclick, "100", player)
-//                    2 -> LocalRadioList(PageType.topvote, "100", player)
-//                    3 -> LocalRadioList(PageType.lastchange, "100", player)
-//                    4 -> LocalRadioList(PageType.lastclick, "100", player)
                 1 -> ShimmerList()
                 2 -> CountryList()
                 3 -> ShimmerList()

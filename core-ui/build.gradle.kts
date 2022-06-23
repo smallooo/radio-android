@@ -68,4 +68,6 @@ dependencies {
     implementation("org.jetbrains.kotlinx:kotlinx-serialization-json:1.3.3")
 
     implementation(libs.accompanist.systemuicontroller)
+
+    implementation(libs.androidx.palette)
 }

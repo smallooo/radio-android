@@ -54,6 +54,7 @@ palette = "1.0.0"
 lifecycleExtensions = "2.2.0"
 
 
+
 [libraries]
 accompanist-flowlayout = { group = "com.google.accompanist", name = "accompanist-flowlayout", version.ref = "accompanist" }
 accompanist-navigation-animation = { group = "com.google.accompanist", name = "accompanist-navigation-animation", version.ref = "accompanist" }

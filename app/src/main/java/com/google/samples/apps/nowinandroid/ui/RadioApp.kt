@@ -32,7 +32,7 @@ import com.google.samples.apps.nowinandroid.core.ui.theme.DefaultTheme
 
 import com.google.samples.apps.nowinandroid.core.ui.theme.NiaTheme
 import com.google.samples.apps.nowinandroid.core.ui.theme.ThemeViewModel
-import com.google.samples.apps.nowinandroid.navigation.NiaTopLevelNavigation
+
 import com.google.samples.apps.nowinandroid.ui.home.Home
 import com.hdmsh.common_compose.rememberFlowWithLifecycle
 import com.hdmsh.core_ui_playback.PlaybackConnectionViewModel
@@ -47,7 +47,7 @@ fun RadioApp(
     windowSizeClass: WindowSizeClass,
     navController: NavHostController = rememberAnimatedNavController(),
 ) {
-    val niaTopLevelNavigation = remember(navController) { NiaTopLevelNavigation(navController) }
+    //val niaTopLevelNavigation = remember(navController) { NiaTopLevelNavigation(navController) }
     val navBackStackEntry by navController.currentBackStackEntryAsState()
     val currentDestination = navBackStackEntry?.destination
 
@@ -57,7 +57,7 @@ fun RadioApp(
                 val bottomSheetNavigator = rememberBottomSheetNavigator()
                 navController.navigatorProvider += bottomSheetNavigator
                 ModalBottomSheetLayout(bottomSheetNavigator) {
-                    Home(windowSizeClass, niaTopLevelNavigation, currentDestination, navController)
+                    Home(windowSizeClass, currentDestination, navController)
                 }
             }
         }
