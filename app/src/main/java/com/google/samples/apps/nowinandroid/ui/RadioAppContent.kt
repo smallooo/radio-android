@@ -35,7 +35,7 @@ fun NiaAppContent(
     playbackConnection: PlaybackConnection = LocalPlaybackConnection.current,
 ) {
     Box(modifier = Modifier.fillMaxHeight().fillMaxWidth().background(Color.Red)) {
-        Text(text = "hello")
+        Text(text = "hello11")
     }
 
 

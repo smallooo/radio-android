@@ -5,6 +5,11 @@
 package com.google.samples.apps.nowinandroid.ui
 
 import androidx.compose.animation.*
+import androidx.compose.foundation.background
+import androidx.compose.foundation.layout.Box
+import androidx.compose.foundation.layout.fillMaxHeight
+import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.material3.Button
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.DisposableEffect
@@ -13,6 +18,7 @@ import androidx.compose.runtime.State
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.Color
 import androidx.navigation.*
 import androidx.navigation.NavDestination.Companion.hierarchy
 import androidx.navigation.NavGraph.Companion.findStartDestination
@@ -66,14 +72,14 @@ internal fun AppNavigation(
             else -> Unit
         }
     }
-    NavHost(
+    AnimatedNavHost(
         navController = navController,
         startDestination = RootScreen.Search.route,
         modifier = modifier,
-//        enterTransition = { defaultEnterTransition(initialState, targetState) },
-//        exitTransition = { defaultExitTransition(initialState, targetState) },
-//        popEnterTransition = { defaultPopEnterTransition() },
-//        popExitTransition = { defaultPopExitTransition() },
+        enterTransition = { defaultEnterTransition(initialState, targetState) },
+        exitTransition = { defaultExitTransition(initialState, targetState) },
+        popEnterTransition = { defaultPopEnterTransition() },
+        popExitTransition = { defaultPopExitTransition() },
     ) {
         addSearchRoot()
         addDownloadsRoot()
@@ -81,13 +87,6 @@ internal fun AppNavigation(
         addSettingsRoot()
         addPlaybackSheet()
 
-        composable("search_root/search_root1"){
-            Search()
-        }
-
-        composable("search_root1"){
-            Search()
-        }
     }
 }
 
@@ -100,14 +99,7 @@ private fun NavGraphBuilder.addSearchRoot() {
         addSearch()
         addArtistDetails(RootScreen.Search)
         addAlbumDetails(RootScreen.Search)
-
-        composable("search_root/search_root1"){
-            Search()
-        }
-
-        composable("search_root1"){
-            Search()
-        }
+        
     }
 }
 
@@ -149,47 +141,51 @@ private fun NavGraphBuilder.addSettingsRoot() {
 }
 
 private fun NavGraphBuilder.addSearch() {
-    composable(LeafScreen.Search().route) {
+    composableScreen(LeafScreen.Search()) {
         Search()
     }
 }
 
 @Composable
 fun Search(){
-    Text("hello")
+    ForYouScreen()
 }
 
 private fun NavGraphBuilder.addSettings() {
-    composable(RootScreen.Search.route){
+    composableScreen(LeafScreen.Settings()){
         Settings()
     }
 }
 
 @Composable
 fun Settings(){
-    Text("hello")
+    Text("hello3")
 }
 
 private fun NavGraphBuilder.addDownloads() {
-    composable(LeafScreen.Downloads().route) {
+    composableScreen(LeafScreen.Downloads()) {
         Downloads()
     }
 }
 
 @Composable
 fun Downloads(){
-    Text("hello")
+    Box(modifier = Modifier
+        .fillMaxWidth()
+        .fillMaxHeight()
+        .background(Color.Red))
+    Text("hello4")
 }
 
 private fun NavGraphBuilder.addLibrary() {
-    composable(LeafScreen.Library().route) {
+    composableScreen(LeafScreen.Library()) {
         Library()
     }
 }
 
 @Composable
 fun Library(){
-    Text("hello")
+    Text("hello5")
 }
 
 private fun NavGraphBuilder.addCreatePlaylist() {
@@ -200,7 +196,7 @@ private fun NavGraphBuilder.addCreatePlaylist() {
 
 @Composable
 fun CreatePlaylist(){
-    Text("hello")
+    Text("hello6")
 }
 
 private fun NavGraphBuilder.addEditPlaylist() {
@@ -213,7 +209,7 @@ private fun NavGraphBuilder.addEditPlaylist() {
 
 @Composable
 fun EditPlaylist(){
-    Text("hello")
+    Text("hello7")
 }
 
 private fun NavGraphBuilder.addPlaylistDetails(root: RootScreen) {
@@ -224,7 +220,7 @@ private fun NavGraphBuilder.addPlaylistDetails(root: RootScreen) {
 
 @Composable
 fun PlaylistDetail(){
-    Text("hello")
+    Text("hello8")
 }
 
 private fun NavGraphBuilder.addArtistDetails(root: RootScreen) {
@@ -235,7 +231,7 @@ private fun NavGraphBuilder.addArtistDetails(root: RootScreen) {
 
 @Composable
 fun ArtistDetail(){
-    Text("hello")
+    Text("hello9")
 }
 
 private fun NavGraphBuilder.addAlbumDetails(root: RootScreen) {
@@ -246,7 +242,7 @@ private fun NavGraphBuilder.addAlbumDetails(root: RootScreen) {
 
 @Composable
 fun AlbumDetail(){
-    Text("hello")
+    Text("hello10")
 }
 
 private fun NavGraphBuilder.addPlaybackSheet() {

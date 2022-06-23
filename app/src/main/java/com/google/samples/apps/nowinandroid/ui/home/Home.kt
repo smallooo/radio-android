@@ -19,10 +19,14 @@ import androidx.navigation.NavController
 import androidx.navigation.NavDestination
 import androidx.navigation.NavGraph.Companion.findStartDestination
 import androidx.navigation.NavHostController
+import com.google.samples.app.nowinandroid.core.playback.isActive
+import com.google.samples.apps.nowinandroid.common.compose.LocalPlaybackConnection
 import com.google.samples.apps.nowinandroid.core.navigation.Screens.RootScreen
 import com.google.samples.apps.nowinandroid.navigation.NiaTopLevelNavigation
+import com.google.samples.apps.nowinandroid.playback.PlaybackConnection
 import com.google.samples.apps.nowinandroid.ui.AppNavigation
 import com.google.samples.apps.nowinandroid.ui.currentScreenAsState
+import com.hdmsh.common_compose.rememberFlowWithLifecycle
 import com.hdmsh.core_ui_playback.PlaybackMiniControls
 
 val HomeBottomNavigationHeight = 56.dp
@@ -34,8 +38,16 @@ internal fun Home(
     niaTopLevelNavigation: NiaTopLevelNavigation,
     currentDestination: NavDestination?,
     navController: NavHostController,
+    playbackConnection: PlaybackConnection = LocalPlaybackConnection.current,
 ) {
     val selectedTab by navController.currentScreenAsState()
+    val playbackState by rememberFlowWithLifecycle(playbackConnection.playbackState)
+    val nowPlaying by rememberFlowWithLifecycle(playbackConnection.nowPlaying)
+
+
+    val isPlayerActive = (playbackState to nowPlaying).isActive
+    val bottomBarHeight = HomeBottomNavigationHeight * (if (isPlayerActive) 1.15f else 1f)
+
     BoxWithConstraints {
         val maxWidth = maxWidth
         Row(Modifier.fillMaxSize()) {
@@ -60,7 +72,7 @@ internal fun Home(
                                 onNavigationSelected = { selected -> navController.selectRootScreen(selected) },
                                 playerActive = false,
                                 modifier = Modifier.fillMaxWidth(),
-                                height = 156.dp
+                                height = bottomBarHeight
                             )
                         }
                     }

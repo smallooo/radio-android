@@ -184,10 +184,10 @@ sealed class LeafScreen(
     }
 }
 
-//@OptIn(ExperimentalAnimationApi::class)
-//fun NavGraphBuilder.composableScreen(screen: LeafScreen, content: @Composable AnimatedVisibilityScope.(NavBackStackEntry) -> Unit) {
-//    composable(screen.createRoute(), screen.arguments, screen.deepLinks, content = content)
-//}
+@OptIn(ExperimentalAnimationApi::class)
+fun NavGraphBuilder.composableScreen(screen: LeafScreen, content: @Composable AnimatedVisibilityScope.(NavBackStackEntry) -> Unit) {
+    composable(screen.createRoute(), screen.arguments, screen.deepLinks, content = content)
+}
 
 
 @OptIn(ExperimentalMaterialNavigationApi::class)

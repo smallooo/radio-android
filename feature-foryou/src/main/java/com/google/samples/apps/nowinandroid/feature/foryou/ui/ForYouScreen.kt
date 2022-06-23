@@ -16,6 +16,7 @@ import androidx.compose.ui.unit.dp
 
 import com.google.samples.apps.nowinandroid.components.Pager
 import com.google.samples.apps.nowinandroid.components.PagerState
+import com.google.samples.apps.nowinandroid.core.navigation.LocalNavigator
 
 import com.google.samples.apps.nowinandroid.core.navigation.Navigator
 import com.google.samples.apps.nowinandroid.core.navigation.Screens.LeafScreen
@@ -31,48 +32,40 @@ fun ForYouRoute() {
 @OptIn(ExperimentalMaterial3Api::class, ExperimentalLayoutApi::class)
 @Composable
 fun ForYouScreen(
-    //navigation: Navigator = LocalNavigator.current
+    navigation: Navigator = LocalNavigator.current
 ) {
 
-    
-    Text(text = "hello")
-    
-    Box(modifier = Modifier
-        .fillMaxHeight()
-        .fillMaxWidth()
-        .background(Color.Red))
-    Text("for you screen")
-//    NiaGradientBackground {
-//
-//        Scaffold(
-//            topBar = {
-//                NiaTopAppBar(
-//                    titleRes = R.string.app_name,
-//                    navigationIcon = Icons.Filled.Search,
-//                    navigationIconContentDescription = stringResource(
-//                        id = R.string.top_app_bar_navigation_button_content_desc
-//                    ),
-//                    actionIcon = Icons.Outlined.Timer,
-//                    actionIconContentDescription = stringResource(
-//                        id = R.string.settings_alarm_sleep_timer
-//                    ),
-//                    colors = TopAppBarDefaults.centerAlignedTopAppBarColors(
-//                        containerColor = Color.Transparent
-//                    ),
-//                    modifier = Modifier.windowInsetsPadding(
-//                        WindowInsets.safeDrawing.only(WindowInsetsSides.Top)
-//                    ),
-//                    onNavigationClick = {
-//                       // navigation.navigate(LeafScreen.Downloads().createRoute())
-//                    }
-//                )
-//            },
-//            containerColor = Color.Transparent
-//        ) { innerPadding ->
-//            val padding = innerPadding
-//            AdvanceListContent()
-//        }
-//    }
+    NiaGradientBackground {
+
+        Scaffold(
+            topBar = {
+                NiaTopAppBar(
+                    titleRes = R.string.app_name,
+                    navigationIcon = Icons.Filled.Search,
+                    navigationIconContentDescription = stringResource(
+                        id = R.string.top_app_bar_navigation_button_content_desc
+                    ),
+                    actionIcon = Icons.Outlined.Timer,
+                    actionIconContentDescription = stringResource(
+                        id = R.string.settings_alarm_sleep_timer
+                    ),
+                    colors = TopAppBarDefaults.centerAlignedTopAppBarColors(
+                        containerColor = Color.Transparent
+                    ),
+                    modifier = Modifier.windowInsetsPadding(
+                        WindowInsets.safeDrawing.only(WindowInsetsSides.Top)
+                    ),
+                    onNavigationClick = {
+                        navigation.navigate(LeafScreen.PlaybackSheet().createRoute())
+                    }
+                )
+            },
+            containerColor = Color.Transparent
+        ) { innerPadding ->
+            val padding = innerPadding
+            AdvanceListContent()
+        }
+    }
 }
 
 

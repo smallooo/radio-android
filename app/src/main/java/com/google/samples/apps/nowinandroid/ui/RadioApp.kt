@@ -1,5 +1,6 @@
 package com.google.samples.apps.nowinandroid.ui
 
+import androidx.compose.animation.ExperimentalAnimationApi
 import androidx.compose.material.ExperimentalMaterialApi
 import androidx.compose.material.ScaffoldState
 import androidx.compose.material.rememberScaffoldState
@@ -10,10 +11,14 @@ import androidx.compose.runtime.getValue
 import androidx.compose.runtime.remember
 import androidx.compose.ui.input.key.Key.Companion.Home
 import androidx.hilt.navigation.compose.hiltViewModel
+import androidx.navigation.NavHostController
 import androidx.navigation.compose.currentBackStackEntryAsState
 import androidx.navigation.compose.rememberNavController
 import androidx.navigation.plusAssign
+import com.google.accompanist.insets.ProvideWindowInsets
+import com.google.accompanist.navigation.animation.rememberAnimatedNavController
 import com.google.accompanist.navigation.material.ExperimentalMaterialNavigationApi
+import com.google.accompanist.navigation.material.ModalBottomSheetLayout
 import com.google.samples.apps.nowinandroid.common.compose.LocalPlaybackConnection
 import com.google.samples.apps.nowinandroid.common.compose.LocalScaffoldState
 import com.google.samples.apps.nowinandroid.core.navigation.NavigatorHost
@@ -34,21 +39,27 @@ import com.hdmsh.core_ui_playback.PlaybackConnectionViewModel
 import kotlinx.coroutines.InternalCoroutinesApi
 
 
-@OptIn(ExperimentalMaterialApi::class, ExperimentalMaterialNavigationApi::class, InternalCoroutinesApi::class)
+@OptIn(ExperimentalMaterialApi::class, ExperimentalMaterialNavigationApi::class, InternalCoroutinesApi::class,
+    ExperimentalAnimationApi::class
+)
 @Composable
 fun RadioApp(
     windowSizeClass: WindowSizeClass,
+    navController: NavHostController = rememberAnimatedNavController(),
 ) {
-    val navController = rememberNavController()
     val niaTopLevelNavigation = remember(navController) { NiaTopLevelNavigation(navController) }
     val navBackStackEntry by navController.currentBackStackEntryAsState()
     val currentDestination = navBackStackEntry?.destination
 
     CompositionLocalProvider() {
-        RadioCore(windowSizeClass) {
-            val bottomSheetNavigator = rememberBottomSheetNavigator()
-            navController.navigatorProvider += bottomSheetNavigator
-            Home(windowSizeClass, niaTopLevelNavigation, currentDestination, navController)
+        ProvideWindowInsets(consumeWindowInsets = false) {
+            RadioCore(windowSizeClass) {
+                val bottomSheetNavigator = rememberBottomSheetNavigator()
+                navController.navigatorProvider += bottomSheetNavigator
+                ModalBottomSheetLayout(bottomSheetNavigator) {
+                    Home(windowSizeClass, niaTopLevelNavigation, currentDestination, navController)
+                }
+            }
         }
     }
 }
