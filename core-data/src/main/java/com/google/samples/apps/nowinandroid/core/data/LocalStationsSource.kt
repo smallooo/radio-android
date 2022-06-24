@@ -22,8 +22,6 @@ class LocalStationsSource @Inject constructor(private val stationDao: StationDao
 
     suspend fun getTopClickStationsList() = withContext(Dispatchers.IO){
         if(_topVisitRadioList == null){ _topVisitRadioList = radioListApi.getTopClick() }
-        Log.e("aaa", _topVisitRadioList?.size.toString()+ "topVisitRadioList")
-        Log.e("aaa", _topVisitRadioList?.get(0)?.stationuuid?:"no value")
         return@withContext _topVisitRadioList
     }
 }

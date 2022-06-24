@@ -84,6 +84,7 @@ internal fun AppNavigation(
         addSearchRoot()
         addDownloadsRoot()
         addLibraryRoot()
+        addAlarmRoot()
         addSettingsRoot()
         addPlaybackSheet()
 
@@ -118,6 +119,21 @@ private fun NavGraphBuilder.addLibraryRoot() {
     navigation(
         route = RootScreen.Library.route,
         startDestination = LeafScreen.Library().createRoute()
+    ) {
+        addLibrary()
+        addCreatePlaylist()
+        addEditPlaylist()
+        addPlaylistDetails(RootScreen.Library)
+        addArtistDetails(RootScreen.Library)
+        addAlbumDetails(RootScreen.Library)
+    }
+}
+
+@ExperimentalAnimationApi
+private fun NavGraphBuilder.addAlarmRoot() {
+    navigation(
+        route = RootScreen.Alarm.route,
+        startDestination = LeafScreen.Alarm().createRoute()
     ) {
         addLibrary()
         addCreatePlaylist()
