@@ -8,57 +8,28 @@ import kotlinx.coroutines.flow.Flow
 
 @Dao
 interface StationDao {
-    @Query(
-        value = """
-        SELECT * FROM stations
-        WHERE stationuuid = :stationId
-    """
-    )
+    @Query(value = " SELECT * FROM stations WHERE stationuuid = :stationId")
     fun getStationEntityByUUID(stationId: String): Flow<StationEntity>
 
     @Query(value = "SELECT * FROM stations")
     fun getAllStationEntitiesStream(): Flow<List<StationEntity>>
 
-    @Query(
-        value = """
-        SELECT * FROM stations
-        WHERE stationuuid IN (:ids)
-    """
-    )
+    @Query(value = "SELECT * FROM stations Limit 5")
+    fun getTopVisitedStationsStream(): Flow<List<StationEntity>>
+
+    @Query(value = " SELECT * FROM stations WHERE stationuuid IN (:ids)")
     fun getStationbyIdsEntitiesStream(ids: Set<String>): Flow<List<StationEntity>>
 
-
-    @Query(
-        value = """
-        SELECT * FROM stations
-        WHERE stationuuid IN (:ids)
-    """
-    )
+    @Query(value = "SELECT * FROM stations WHERE stationuuid IN (:ids)")
     fun getStationbyCountryEntitiesStream(ids: Set<String>): Flow<List<StationEntity>>
 
-
-    @Query(
-        value = """
-        SELECT * FROM stations
-        WHERE stationuuid IN (:ids)
-    """
-    )
+    @Query(value = "SELECT * FROM stations WHERE stationuuid IN (:ids)")
     fun getStationbyLanguagesEntitiesStream(ids: Set<String>): Flow<List<StationEntity>>
 
-    @Query(
-        value = """
-        SELECT * FROM stations
-        WHERE stationuuid IN (:ids)
-    """
-    )
+    @Query(value = " SELECT * FROM stations WHERE stationuuid IN (:ids)")
     fun getStationbyVoteEntitiesStream(ids: Set<String>): Flow<List<StationEntity>>
 
-    @Query(
-        value = """
-        SELECT * FROM stations
-        WHERE stationuuid IN (:ids)
-    """
-    )
+    @Query(value = " SELECT * FROM stations WHERE stationuuid IN (:ids)")
     fun getStationbyViewsEntitiesbyIdsStream(ids: Set<String>): Flow<List<StationEntity>>
 
     /**
@@ -86,12 +57,7 @@ interface StationDao {
     /**
      * Deletes rows in the db matching the specified [ids]
      */
-    @Query(
-        value = """
-            DELETE FROM stations
-            WHERE stationuuid in (:ids)
-        """
-    )
+    @Query(value = "DELETE FROM stations WHERE stationuuid in (:ids)")
     suspend fun deleteStations(ids: List<String>)
 }
 

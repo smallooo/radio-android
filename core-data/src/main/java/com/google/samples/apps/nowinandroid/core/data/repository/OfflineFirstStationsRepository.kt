@@ -1,5 +1,6 @@
 package com.google.samples.apps.nowinandroid.core.data.repository
 
+import android.util.Log
 import com.google.samples.apps.nowinandroid.core.data.LocalStationsSource
 import com.google.samples.apps.nowinandroid.core.data.Synchronizer
 import com.google.samples.apps.nowinandroid.core.data.changeStationSync
@@ -15,6 +16,7 @@ import com.google.samples.apps.nowinandroid.core.network.model.NetworkStation
 
 import javax.inject.Inject
 import kotlinx.coroutines.flow.Flow
+import kotlinx.coroutines.flow.flow
 import kotlinx.coroutines.flow.map
 
 class OfflineFirstStationsRepository @Inject constructor(
@@ -23,11 +25,16 @@ class OfflineFirstStationsRepository @Inject constructor(
     private val niaPreferences: NiaPreferences,
     private val localStationsSource: LocalStationsSource,
 ) : StationsRepository {
-    override fun getStationsStream(): Flow<List<Station>> =
-       sationDao.getAllStationEntitiesStream().map { it.map(StationEntity::asExternalModel) }
+    override fun getAllStationsStream(): Flow<List<Station>> = sationDao.getAllStationEntitiesStream().map { it.map(StationEntity::asExternalModel) }
 
-    override fun getFollowedStationIdsStream(): Flow<Set<String>> =
-        niaPreferences.followedAuthorIds
+    override fun getTopVisitedStationsStream(): Flow<List<Station>> = flow {
+        localStationsSource.getTopClickStationsList()
+
+        Log.e("aaa", "in the flow")
+    }
+
+
+    override fun getFollowedStationIdsStream(): Flow<Set<String>> = niaPreferences.followedAuthorIds
 
     override suspend fun syncWith(synchronizer: Synchronizer): Boolean =
         synchronizer.changeStationSync(

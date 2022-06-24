@@ -66,6 +66,8 @@ dependencies {
 
     implementation(libs.androidx.media)
 
+    implementation(libs.timber)
+
 
     // TODO : Remove this dependency once we upgrade to Android Studio Dolphin b/228889042
     // These dependencies are currently necessary to render Compose previews

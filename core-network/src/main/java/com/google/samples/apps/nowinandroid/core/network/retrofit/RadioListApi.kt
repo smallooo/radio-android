@@ -13,6 +13,7 @@ import javax.inject.Singleton
 class RadioListApi @Inject constructor(private val service: Service) {
     suspend fun getCountryList(): ArrayList<Country> = service.getCountryList()
     suspend fun getListByCountry(type: String, param: String): List<NetworkStation> = service.getListByCountry()
+    suspend fun getTopClick(): List<Station> = service.getTopClick()
     interface Service {
         @GET("json/stations/lastchange/100")
         suspend fun getCountryList(): ArrayList<Country>
@@ -23,8 +24,8 @@ class RadioListApi @Inject constructor(private val service: Service) {
         @GET("/json/stations/bycountry/japan")
         suspend fun getListByCountry(): ArrayList<NetworkStation>
 
-        @GET("/json/stations")
-        suspend fun getStationsByLocation(): ArrayList<NetworkStation>
+        @GET("/json/stations/topclick/10")
+        suspend fun getTopClick(): ArrayList<Station>
 
         @GET("/json/stations")
         suspend fun geStationsByCountry(): ArrayList<NetworkStation>

@@ -25,8 +25,10 @@ interface StationsRepository : Syncable {
     /**
      * Gets the available topics as a stream
      */
-    fun getStationsStream(): Flow<List<Station>>
+    fun getAllStationsStream(): Flow<List<Station>>
 
+
+    fun getTopVisitedStationsStream(): Flow<List<Station>>
 //    /**
 //     * Gets data for a specific topic
 //     */
