@@ -40,5 +40,6 @@ data class NetworkStation(
     val geo_lat: String,
     val geo_long: String,
     val has_extended_info: String,
+    val favorited: Boolean
 
 )

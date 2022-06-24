@@ -57,7 +57,8 @@ data class StationEntity(
     val geo_lat: String = "",
     val geo_long: String = "",
     val has_extended_info: String = "",
-
+    @Nullable
+    val favorited: Boolean = false,
     )
 
 
@@ -97,5 +98,6 @@ fun StationEntity.asExternalModel() = Station(
     ssl_error = ssl_error,
     geo_lat = geo_lat,
     geo_long = geo_long,
-    has_extended_info = has_extended_info
+    has_extended_info = has_extended_info,
+    favorited = false
 )

@@ -2,7 +2,7 @@
   "formatVersion": 1,
   "database": {
     "version": 10,
-    "identityHash": "88e3b7e887c27f032dce67c1526c277c",
+    "identityHash": "a4b98f75342b6623162ef0ac56f0caeb",
     "entities": [
       {
         "tableName": "authors",
@@ -437,7 +437,7 @@
       },
       {
         "tableName": "stations",
-        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`changeuuid` TEXT NOT NULL, `stationuuid` TEXT NOT NULL, `serveruuid` TEXT NOT NULL, `name` TEXT NOT NULL, `url` TEXT NOT NULL, `url_resolved` TEXT NOT NULL, `homepage` TEXT NOT NULL, `favicon` TEXT NOT NULL, `tags` TEXT NOT NULL, `country` TEXT NOT NULL, `countrycode` TEXT NOT NULL, `iso_3166_2` TEXT NOT NULL, `state` TEXT NOT NULL, `language` TEXT NOT NULL, `languagecodes` TEXT NOT NULL, `votes` TEXT NOT NULL, `lastchangetime` TEXT NOT NULL, `lastchangetime_iso8601` TEXT NOT NULL, `codec` TEXT NOT NULL, `bitrate` TEXT NOT NULL, `hls` TEXT NOT NULL, `lastcheckok` TEXT NOT NULL, `lastchecktime` TEXT NOT NULL, `lastchecktime_iso8601` TEXT NOT NULL, `lastcheckoktime` TEXT NOT NULL, `lastcheckoktime_iso8601` TEXT NOT NULL, `lastlocalchecktime` TEXT NOT NULL, `lastlocalchecktime_iso8601` TEXT NOT NULL, `clicktimestamp` TEXT NOT NULL, `clicktimestamp_iso8601` TEXT NOT NULL, `clickcount` TEXT NOT NULL, `clicktrend` TEXT NOT NULL, `ssl_error` TEXT NOT NULL, `geo_lat` TEXT NOT NULL, `geo_long` TEXT NOT NULL, `has_extended_info` TEXT NOT NULL, PRIMARY KEY(`stationuuid`))",
+        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`changeuuid` TEXT NOT NULL, `stationuuid` TEXT NOT NULL, `serveruuid` TEXT NOT NULL, `name` TEXT NOT NULL, `url` TEXT NOT NULL, `url_resolved` TEXT NOT NULL, `homepage` TEXT NOT NULL, `favicon` TEXT NOT NULL, `tags` TEXT NOT NULL, `country` TEXT NOT NULL, `countrycode` TEXT NOT NULL, `iso_3166_2` TEXT NOT NULL, `state` TEXT NOT NULL, `language` TEXT NOT NULL, `languagecodes` TEXT NOT NULL, `votes` TEXT NOT NULL, `lastchangetime` TEXT NOT NULL, `lastchangetime_iso8601` TEXT NOT NULL, `codec` TEXT NOT NULL, `bitrate` TEXT NOT NULL, `hls` TEXT NOT NULL, `lastcheckok` TEXT NOT NULL, `lastchecktime` TEXT NOT NULL, `lastchecktime_iso8601` TEXT NOT NULL, `lastcheckoktime` TEXT NOT NULL, `lastcheckoktime_iso8601` TEXT NOT NULL, `lastlocalchecktime` TEXT NOT NULL, `lastlocalchecktime_iso8601` TEXT NOT NULL, `clicktimestamp` TEXT NOT NULL, `clicktimestamp_iso8601` TEXT NOT NULL, `clickcount` TEXT NOT NULL, `clicktrend` TEXT NOT NULL, `ssl_error` TEXT NOT NULL, `geo_lat` TEXT NOT NULL, `geo_long` TEXT NOT NULL, `has_extended_info` TEXT NOT NULL, `favorited` INTEGER NOT NULL, PRIMARY KEY(`stationuuid`))",
         "fields": [
           {
             "fieldPath": "changeuuid",
@@ -654,6 +654,12 @@
             "columnName": "has_extended_info",
             "affinity": "TEXT",
             "notNull": true
+          },
+          {
+            "fieldPath": "favorited",
+            "columnName": "favorited",
+            "affinity": "INTEGER",
+            "notNull": true
           }
         ],
         "primaryKey": {
@@ -669,7 +675,7 @@
     "views": [],
     "setupQueries": [
       "CREATE TABLE IF NOT EXISTS room_master_table (id INTEGER PRIMARY KEY,identity_hash TEXT)",
-      "INSERT OR REPLACE INTO room_master_table (id,identity_hash) VALUES(42, '88e3b7e887c27f032dce67c1526c277c')"
+      "INSERT OR REPLACE INTO room_master_table (id,identity_hash) VALUES(42, 'a4b98f75342b6623162ef0ac56f0caeb')"
     ]
   }
 }

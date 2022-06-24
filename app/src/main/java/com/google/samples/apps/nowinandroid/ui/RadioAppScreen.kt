@@ -47,7 +47,6 @@ fun RadioApp(
     windowSizeClass: WindowSizeClass,
     navController: NavHostController = rememberAnimatedNavController(),
 ) {
-    //val niaTopLevelNavigation = remember(navController) { NiaTopLevelNavigation(navController) }
     val navBackStackEntry by navController.currentBackStackEntryAsState()
     val currentDestination = navBackStackEntry?.destination
 

@@ -29,10 +29,8 @@ class OfflineFirstStationsRepository @Inject constructor(
 
     override fun getTopVisitedStationsStream(): Flow<List<Station>> = flow {
         localStationsSource.getTopClickStationsList()
-
         Log.e("aaa", "in the flow")
     }
-
 
     override fun getFollowedStationIdsStream(): Flow<Set<String>> = niaPreferences.followedAuthorIds
 

@@ -2,6 +2,7 @@ package com.hdmsh.core_ui_playback
 
 import android.support.v4.media.MediaMetadataCompat
 import android.support.v4.media.session.PlaybackStateCompat
+import android.util.Log
 import android.widget.Toast
 import androidx.compose.animation.AnimatedVisibility
 import androidx.compose.animation.animateContentSize
@@ -51,6 +52,7 @@ import com.google.samples.apps.nowinandroid.playback.PLAYBACK_PROGRESS_INTERVAL
 import com.google.samples.apps.nowinandroid.playback.PlaybackConnection
 import com.hdmsh.common_compose.rememberFlowWithLifecycle
 import  com.google.samples.apps.nowinandroid.core.ui.component.IconButton
+import com.google.samples.apps.nowinandroid.core.ui.component.coloredRippleClickable
 import com.google.samples.apps.nowinandroid.core.ui.theme.AppTheme
 
 object PlaybackMiniControlsDefaults { val height = 56.dp }
@@ -69,7 +71,7 @@ fun PlaybackMiniControls(
 
     AnimatedVisibility(
         visible = visible,
-        modifier = modifier.padding(8.dp,0.dp,8.dp,0.dp),
+        modifier = modifier.padding(2.dp,0.dp,2.dp,0.dp),
         enter = slideInVertically(initialOffsetY = { it / 2 }),
         exit = slideOutVertically(targetOffsetY = { it / 2 })
     ) {
@@ -77,7 +79,6 @@ fun PlaybackMiniControls(
             playbackState = playbackState,
             nowPlaying = nowPlaying,
             onPlayPause = { playbackConnection.mediaController?.playPause() },
-            // onNavigateToTopLevelDestination,
             playingStation,
             contentPadding = contentPadding
         )
@@ -90,7 +91,6 @@ fun PlaybackMiniControls(
     playbackState: PlaybackStateCompat,
     nowPlaying: MediaMetadataCompat,
     onPlayPause: () -> Unit,
-    // onNavigateToTopLevelDestination: (TopLevelDestination) -> Unit,
     playingStation: Station,
     modifier: Modifier = Modifier,
     contentPadding: PaddingValues = PaddingValues(),
@@ -116,9 +116,7 @@ fun PlaybackMiniControls(
                     onClick = openPlaybackSheet ,//openPlaybackSheet,
                     onLongClick = onPlayPause,
                     onDoubleClick = onPlayPause
-                )
-                // open playback sheet on swipe up
-                .draggable(
+                ).draggable(
                     orientation = Orientation.Vertical,
                     state = rememberDraggableState(
                         onDelta = {
@@ -130,7 +128,6 @@ fun PlaybackMiniControls(
                     },
                 )
         ) {
-
             Column {
                 var controlsVisible by remember { mutableStateOf(true) }
                 var nowPlayingVisible by remember { mutableStateOf(true) }
@@ -149,13 +146,9 @@ fun PlaybackMiniControls(
                         }
                         .padding(if (controlsVisible) contentPadding else PaddingValues())
                 ) {
-
-                    //PlaybackNowPlaying(coverOnly = !nowPlayingVisible, nowPlaying, playingStation)
-
-                    CompositionLocalProvider() {
+                    CompositionLocalProvider(LocalContentColor provides contentColor) {
                         PlaybackNowPlaying(nowPlaying = nowPlaying, playingStation = playingStation, maxHeight = height, coverOnly = !nowPlayingVisible)
-                        if (controlsVisible)
-                            PlaybackPlayPause(playbackState = playbackState, onPlayPause = onPlayPause)
+                        if (controlsVisible) PlaybackPlayPause(playbackState = playbackState, onPlayPause = onPlayPause)
                     }
                 }
 
@@ -236,19 +229,18 @@ fun RowScope.PlaybackNowPlaying(
         verticalAlignment = Alignment.CenterVertically,
         modifier = modifier.weight(if (coverOnly) 3f else 7f),
     ) {
-
-
         CoverImage(
             data = nowPlaying.artwork ?: nowPlaying.artworkUri,
             size = maxHeight - 16.dp,
-            modifier = Modifier.padding(8.dp)
+            modifier = Modifier.padding(8.dp),
+            imageModifier = Modifier.coloredRippleClickable(
+                onClick = { Log.e("aaa", "image clicked") },
+                //color = contentColor,
+                rippleRadius = Dp.Unspecified,
+            ),
         )
 
-        if (!coverOnly) {
-            // PlaybackPager(nowPlaying = nowPlaying) {
-            PlaybackNowPlaying(playingStation)
-            // }
-        }
+        if (!coverOnly) { PlaybackNowPlaying(playingStation) }
     }
 }
 
@@ -260,7 +252,7 @@ fun animatePlaybackProgress(
     animationSpec = tween(
         durationMillis = PLAYBACK_PROGRESS_INTERVAL.toInt(),
         easing = FastOutSlowInEasing
-    ),
+    )
 )
 
 

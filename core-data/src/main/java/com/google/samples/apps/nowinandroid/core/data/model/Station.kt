@@ -40,5 +40,6 @@ fun NetworkStation.asEntity() = StationEntity(
     ssl_error = ssl_error,
     geo_lat = geo_lat?:"",
     geo_long = geo_long?:"",
-    has_extended_info = has_extended_info
+    has_extended_info = has_extended_info,
+    favorited = false
 )

@@ -14,7 +14,9 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.graphics.graphicsLayer
 import androidx.compose.ui.unit.dp
+import androidx.compose.ui.zIndex
 import androidx.navigation.NavController
 import androidx.navigation.NavDestination
 import androidx.navigation.NavGraph.Companion.findStartDestination
@@ -23,6 +25,7 @@ import com.google.samples.app.nowinandroid.core.playback.isActive
 import com.google.samples.apps.nowinandroid.common.compose.LocalPlaybackConnection
 import com.google.samples.apps.nowinandroid.core.navigation.Screens.RootScreen
 import com.google.samples.apps.nowinandroid.core.ui.component.isWideLayout
+import com.google.samples.apps.nowinandroid.core.ui.theme.AppTheme
 import com.google.samples.apps.nowinandroid.playback.PlaybackConnection
 import com.google.samples.apps.nowinandroid.ui.AppNavigation
 import com.google.samples.apps.nowinandroid.ui.currentScreenAsState
@@ -43,7 +46,6 @@ internal fun Home(
     val playbackState by rememberFlowWithLifecycle(playbackConnection.playbackState)
     val nowPlaying by rememberFlowWithLifecycle(playbackConnection.nowPlaying)
 
-
     val isPlayerActive = (playbackState to nowPlaying).isActive
     val bottomBarHeight = HomeBottomNavigationHeight * (if (isPlayerActive) 1.15f else 1f)
 
@@ -52,11 +54,7 @@ internal fun Home(
         val maxWidth = maxWidth
         Row(Modifier.fillMaxSize()) {
             if (isWideLayout)
-                ResizableHomeNavigationRail(
-                    maxWidth = maxWidth,
-                    selectedTab = selectedTab,
-                    navController = navController
-                )
+                ResizableHomeNavigationRail(maxWidth = maxWidth, selectedTab = selectedTab, navController = navController)
             Scaffold(
                 modifier = Modifier,
                 backgroundColor = Color.Transparent,
@@ -65,8 +63,9 @@ internal fun Home(
                     if (windowSizeClass.widthSizeClass == WindowWidthSizeClass.Compact) {
                         Column {
                             PlaybackMiniControls(
-                                modifier = Modifier.padding(bottom = 8.dp),
-                                contentPadding = PaddingValues(end = 16.dp),
+                                modifier = Modifier.graphicsLayer(translationY = 16.dp.value)
+                                    .zIndex(2f),
+                                contentPadding = PaddingValues(end = 0.dp),
                             )
                             HomeBottomNavigation(
                                 selectedTab = selectedTab,

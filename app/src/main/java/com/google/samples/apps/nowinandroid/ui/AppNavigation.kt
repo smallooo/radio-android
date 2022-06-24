@@ -135,12 +135,7 @@ private fun NavGraphBuilder.addAlarmRoot() {
         route = RootScreen.Alarm.route,
         startDestination = LeafScreen.Alarm().createRoute()
     ) {
-        addLibrary()
-        addCreatePlaylist()
-        addEditPlaylist()
-        addPlaylistDetails(RootScreen.Library)
-        addArtistDetails(RootScreen.Library)
-        addAlbumDetails(RootScreen.Library)
+        addAlarm()
     }
 }
 
@@ -165,6 +160,12 @@ private fun NavGraphBuilder.addSearch() {
 @Composable
 fun Search(){
     ForYouScreen()
+}
+
+private fun NavGraphBuilder.addAlarm() {
+    composableScreen(LeafScreen.Alarm()){
+        Settings()
+    }
 }
 
 private fun NavGraphBuilder.addSettings() {
