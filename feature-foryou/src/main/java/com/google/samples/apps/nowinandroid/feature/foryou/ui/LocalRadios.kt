@@ -1,41 +1,41 @@
 package com.google.samples.apps.nowinandroid.feature.foryou
 
 import android.annotation.SuppressLint
+import android.util.Log
 import androidx.compose.animation.animateColor
 import androidx.compose.animation.core.*
-import androidx.compose.foundation.Image
-import androidx.compose.foundation.clickable
-import androidx.compose.foundation.layout.*
-import androidx.compose.foundation.lazy.LazyColumn
-import androidx.compose.foundation.lazy.itemsIndexed
-import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.filled.MoreVert
 import androidx.compose.material3.*
 import androidx.compose.runtime.*
-import androidx.compose.ui.Alignment
-import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.layout.ContentScale
-import androidx.compose.ui.text.style.TextOverflow
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
-import coil.compose.rememberImagePainter
 import com.google.samples.app.nowinandroid.core.playback.isActive
 import com.google.samples.apps.nowinandroid.common.compose.LocalPlaybackConnection
+import com.google.samples.apps.nowinandroid.core.datastore.PreferencesStore
 
-import com.google.samples.apps.nowinandroid.core.model.data.FollowableStation
 import com.google.samples.apps.nowinandroid.core.ui.component.RadioItem
 import com.google.samples.apps.nowinandroid.feature.foryou.ui.ShimmerAnimationType
 import com.google.samples.apps.nowinandroid.playback.PlaybackConnection
 import com.hdmsh.common_compose.rememberFlowWithLifecycle
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.GlobalScope
+import kotlinx.coroutines.flow.collectLatest
+import kotlinx.coroutines.flow.first
+import kotlinx.coroutines.launch
 
 @SuppressLint("StateFlowValueCalledInComposition")
 @Composable
 fun LocalRadioList(
     pageType:PageType, param: String,
     viewModel: LocalRadioListViewModel = hiltViewModel(),
+
     playbackConnection: PlaybackConnection = LocalPlaybackConnection.current,
-) {
+
+    ) {
+    val preferences = PreferencesStore(LocalContext.current)
+    val preString = rememberFlowWithLifecycle(preferences.get("aaa",ArrayList<String>()))
+    val exampleEntities: ArrayList<String> by preString.collectAsState(initial = ArrayList<String>())
     val uiState by viewModel.localRadiosState.collectAsState()
     val shimmerAnimationType by remember { mutableStateOf(ShimmerAnimationType.FADE) }
     val transition = rememberInfiniteTransition()
@@ -77,7 +77,34 @@ fun LocalRadioList(
         StationsUiState.Loading ->
             for(i in 1..5) ShimmerItem(list, dpValue.value, shimmerAnimationType == ShimmerAnimationType.VERTICAL)
         is StationsUiState.Stations -> {
-            RadioItem(listOf((uiState as StationsUiState.Stations).stations))
+//            Button(onClick = {
+////                    val station = (uiState as StationsUiState.Stations).stations.get(0).station
+////                    station.favorited = true
+////                    station.bitrate = 999.toString()
+////                    station.state = "helloworld"
+////                    Log.e("aaa","aaa" + station.favorited + station.bitrate + station.state)
+////                    viewModel.setFavoritedStation(station)
+//                GlobalScope.launch (Dispatchers.IO) {
+//                    val a = ArrayList<String>()
+//                    a.add("a")
+//                    a.add("b")
+//                    a.add("c")
+//                    preferences.save("aaa", a)
+//                }
+//            }){}
+
+//            GlobalScope.launch (Dispatchers.IO) {
+//                preString.collectLatest { it ->  Log.e("aaa123453463563242543",it)}
+//            }
+
+//            for(item in exampleEntities){
+//
+//                Text(item)
+//            }
+
+            RadioItem(listOf((uiState as StationsUiState.Stations).stations), onImageClick1 = {
+               }
+            )
         }
         is StationsUiState.Empty  -> ShimmerItem(list, dpValue.value, shimmerAnimationType == ShimmerAnimationType.VERTICAL)
     }

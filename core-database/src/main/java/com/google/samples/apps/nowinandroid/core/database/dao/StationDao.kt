@@ -3,6 +3,7 @@ package com.google.samples.apps.nowinandroid.core.database.dao
 import androidx.room.*
 import com.google.samples.apps.nowinandroid.core.database.model.StationEntity
 import com.google.samples.apps.nowinandroid.core.database.model.TopicEntity
+import com.google.samples.apps.nowinandroid.core.model.data.Station
 import kotlinx.coroutines.flow.Flow
 
 
@@ -17,8 +18,8 @@ interface StationDao {
     @Query(value = "SELECT * FROM stations WHERE favorited = 1")
     fun getFavoritedStations(): Flow<List<StationEntity>>
 
-    @Query(value = "UPDATE stations SET favorited = 1 WHERE stationuuid = :stationId" )
-    fun setFavoritedStation(stationId: String)
+    @Update
+    fun setFavoritedStation(entitie: StationEntity)
 
     @Query(value = "SELECT * FROM stations Limit 5")
     fun getTopVisitedStationsStream(): Flow<List<StationEntity>>

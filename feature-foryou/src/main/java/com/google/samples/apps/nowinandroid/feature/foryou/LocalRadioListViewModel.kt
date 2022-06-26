@@ -11,14 +11,17 @@ import com.google.samples.apps.nowinandroid.core.model.data.FollowableStation
 import com.google.samples.apps.nowinandroid.core.model.data.Station
 
 import dagger.hilt.android.lifecycle.HiltViewModel
+import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.*
+import kotlinx.coroutines.launch
+import kotlinx.coroutines.withContext
 import javax.inject.Inject
 
 @HiltViewModel
 class LocalRadioListViewModel @Inject constructor(
     savedStateHandle: SavedStateHandle,
     private val localStationsSource: LocalStationsSource,
-    stationsRepository: StationsRepository
+    private val stationsRepository: StationsRepository
 ) : ViewModel() {
 
     data class ForyouTabState(val titles: List<String>, val currentIndex: Int)
@@ -37,6 +40,17 @@ class LocalRadioListViewModel @Inject constructor(
             started = SharingStarted.WhileSubscribed(5_000),
             initialValue = StationsUiState.Loading
         )
+
+
+    //val setFavoritedStation = stationsRepository.setFavoriteStation(stationUUID)
+
+     fun setFavoritedStation(station: Station) {
+         stationsRepository.setFavoriteStation(station)
+//        viewModelScope.launch {
+//            stationsRepository.setFavoriteStation(stationUUID)
+//        }
+    }
+
 
     val topVisitRadiosState: Flow<List<Station>> = stationsRepository.getTopVisitedStationsStream()
 

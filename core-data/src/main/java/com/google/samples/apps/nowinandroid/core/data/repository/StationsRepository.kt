@@ -17,6 +17,7 @@
 package com.google.samples.apps.nowinandroid.core.data.repository
 
 import com.google.samples.apps.nowinandroid.core.data.Syncable
+import com.google.samples.apps.nowinandroid.core.database.model.StationEntity
 import com.google.samples.apps.nowinandroid.core.model.data.Station
 import com.google.samples.apps.nowinandroid.core.model.data.Topic
 import kotlinx.coroutines.flow.Flow
@@ -33,6 +34,10 @@ interface StationsRepository : Syncable {
 //     * Gets data for a specific topic
 //     */
     fun getFavoriteStations(): Flow<List<Station>>
+
+    fun setFavoriteStation(entitie: Station): () -> Unit
+
+    fun getStationbyIdsEntitiesStream(entities: List<String>): Flow<List<Station>>
 //
 //    /**
 //     * Sets the user's currently followed topics

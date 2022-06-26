@@ -31,17 +31,34 @@ import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
+import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.platform.LocalLifecycleOwner
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
+import androidx.lifecycle.Lifecycle
+import androidx.lifecycle.flowWithLifecycle
 import com.google.samples.apps.nowinandroid.core.model.data.FollowableStation
 import com.google.samples.apps.nowinandroid.core.ui.LoadingWheel
 import com.google.samples.apps.nowinandroid.core.ui.component.NiaTab
 import com.google.samples.apps.nowinandroid.core.ui.component.NiaTabRow
 import com.google.samples.apps.nowinandroid.core.ui.component.NiaTopAppBar
 import com.google.samples.apps.nowinandroid.core.ui.component.RadioItem
+import kotlinx.coroutines.flow.Flow
+
+@Composable
+fun <T> rememberFlowWithLifecycle(
+    flow: Flow<T>,
+    lifecycle: Lifecycle = LocalLifecycleOwner.current.lifecycle,
+    minActiveState: Lifecycle.State = Lifecycle.State.STARTED
+): Flow<T> = remember(flow, lifecycle) {
+    flow.flowWithLifecycle(
+        lifecycle = lifecycle,
+        minActiveState = minActiveState
+    )
+}
 
 @Composable
 fun InterestsRoute(
@@ -53,12 +70,13 @@ fun InterestsRoute(
 ) {
     val uiState by viewModel.uiState.collectAsState()
     val tabState by viewModel.tabState.collectAsState()
-    val favoriteState by favoriteStationstViewModel.favoriteStationsState.collectAsState()
+   // val favoriteState by rememberFlowWithLifecycle(favoriteStationstViewModel.favoriteStationsState1)
+    val uiState1 by favoriteStationstViewModel.favoriteStationsState1.collectAsState()
 
     InterestsScreen(
         uiState = uiState,
         tabState = tabState,
-        favoriteState = favoriteState,
+        favoriteState = uiState1,
         followTopic = viewModel::followTopic,
         followAuthor = viewModel::followAuthor,
         navigateToAuthor = navigateToAuthor,
@@ -110,7 +128,12 @@ fun InterestsScreen(
                     contentDesc = stringResource(id = R.string.interests_loading),
                 )
             is StationsUiState.Stations ->
-                RadioItem(listOf(favoriteState .stations))
+               // Text(favoriteState.stations.get(0).station.name.toString())
+
+                RadioItem(listOf((favoriteState as StationsUiState.Stations).stations), onImageClick1 = {
+                }
+                )
+               // RadioItem(listOf(favoriteState .stations))
             is StationsUiState.Empty -> InterestsEmptyScreen()
         }
     }

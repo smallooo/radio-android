@@ -26,22 +26,25 @@ import com.google.samples.apps.nowinandroid.core.model.data.FollowableStation
 import com.google.samples.apps.nowinandroid.playback.PlaybackConnection
 
 @Composable
-fun RadioItem(stateCategories : List<List<FollowableStation>>){
+fun RadioItem(stateCategories : List<List<FollowableStation>>, onImageClick1: () -> Unit){
     LazyColumn {
         itemsIndexed(
             items = stateCategories.get(0),
             itemContent = {index, item ->
-                AnimatedListItem(station = item, index)
+                AnimatedListItem(station = item, index, onImageClick = {
+                    onImageClick1
+                })
             }
         )
     }
 }
 
 @Composable
-fun AnimatedListItem(station: FollowableStation, itemIndex: Int, playbackConnection: PlaybackConnection = LocalPlaybackConnection.current,) {
+fun AnimatedListItem(station: FollowableStation, itemIndex: Int, onImageClick: () -> Unit, playbackConnection: PlaybackConnection = LocalPlaybackConnection.current) {
     Row(
         verticalAlignment = Alignment.CenterVertically,
-        modifier = Modifier.clickable { playbackConnection.playAudio(station.station) }
+        modifier = Modifier.clickable { playbackConnection.playAudio(station.station) },
+
     ) {
         Image(
             painter = rememberImagePainter(data = station.station.favicon),
@@ -49,7 +52,9 @@ fun AnimatedListItem(station: FollowableStation, itemIndex: Int, playbackConnect
             contentScale = ContentScale.Crop,
             modifier = Modifier
                 .size(55.dp)
-                .padding(4.dp)
+                .padding(4.dp).clickable {
+                    onImageClick
+                }
         )
         Column(
             modifier = Modifier
