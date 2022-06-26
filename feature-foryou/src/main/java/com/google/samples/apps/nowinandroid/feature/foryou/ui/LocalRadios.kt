@@ -24,6 +24,7 @@ import com.google.samples.app.nowinandroid.core.playback.isActive
 import com.google.samples.apps.nowinandroid.common.compose.LocalPlaybackConnection
 
 import com.google.samples.apps.nowinandroid.core.model.data.FollowableStation
+import com.google.samples.apps.nowinandroid.core.ui.component.RadioItem
 import com.google.samples.apps.nowinandroid.feature.foryou.ui.ShimmerAnimationType
 import com.google.samples.apps.nowinandroid.playback.PlaybackConnection
 import com.hdmsh.common_compose.rememberFlowWithLifecycle
@@ -79,57 +80,5 @@ fun LocalRadioList(
             RadioItem(listOf((uiState as StationsUiState.Stations).stations))
         }
         is StationsUiState.Empty  -> ShimmerItem(list, dpValue.value, shimmerAnimationType == ShimmerAnimationType.VERTICAL)
-    }
-}
-
-@Composable
-fun RadioItem(stateCategories : List<List<FollowableStation>>){
-    LazyColumn {
-        itemsIndexed(
-            items = stateCategories.get(0),
-            itemContent = {index, item ->
-                AnimatedListItem(station = item, index)
-            }
-        )
-    }
-}
-
-@Composable
-fun AnimatedListItem(station: FollowableStation, itemIndex: Int, playbackConnection: PlaybackConnection = LocalPlaybackConnection.current,) {
-    Row(
-        verticalAlignment = Alignment.CenterVertically,
-        modifier = Modifier.clickable { playbackConnection.playAudio(station.station) }
-    ) {
-        Image(
-            painter = rememberImagePainter(data = station.station.favicon),
-            contentDescription = null,
-            contentScale = ContentScale.Crop,
-            modifier = Modifier
-                .size(55.dp)
-                .padding(4.dp)
-        )
-        Column(
-            modifier = Modifier
-                .padding(horizontal = 4.dp)
-                .weight(1f)
-        ) {
-            Text(
-                text = station.station.name,
-                style = MaterialTheme.typography.bodyLarge,
-                color = MaterialTheme.colorScheme.onSurface
-            )
-            Text(
-                text = station.station.bitrate + "kbps",
-                style = MaterialTheme.typography.bodyLarge,
-                maxLines = 1,
-                overflow = TextOverflow.Ellipsis
-            )
-        }
-        Icon(
-            imageVector = Icons.Default.MoreVert,
-            contentDescription = null,
-            tint = Color.LightGray,
-            modifier = Modifier.padding(4.dp)
-        )
     }
 }

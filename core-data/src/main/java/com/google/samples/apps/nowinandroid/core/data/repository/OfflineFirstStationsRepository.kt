@@ -32,6 +32,8 @@ class OfflineFirstStationsRepository @Inject constructor(
         Log.e("aaa", "in the flow")
     }
 
+    override fun getFavoriteStations(): Flow<List<Station>> = sationDao.getFavoritedStations().map{ it.map(StationEntity::asExternalModel)}
+
     override fun getFollowedStationIdsStream(): Flow<Set<String>> = niaPreferences.followedAuthorIds
 
     override suspend fun syncWith(synchronizer: Synchronizer): Boolean =

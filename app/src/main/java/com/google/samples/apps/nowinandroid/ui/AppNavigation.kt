@@ -40,6 +40,7 @@ import com.google.samples.apps.nowinandroid.feature.foryou.ForYouRoute
 import com.google.samples.apps.nowinandroid.feature.foryou.ForYouScreen
 import com.google.samples.apps.nowinandroid.feature.foryou.navigation.ForYouDestination
 import com.google.samples.apps.nowinandroid.feature.interests.InterestsRoute
+import com.google.samples.apps.nowinandroid.feature.interests.InterestsScreen
 import com.google.samples.apps.nowinandroid.feature.interests.navigation.InterestsDestination
 import com.google.samples.apps.nowinandroid.feature.topic.navigation.TopicDestination
 import com.hdmsh.common_compose.collectEvent
@@ -187,11 +188,7 @@ private fun NavGraphBuilder.addDownloads() {
 
 @Composable
 fun Downloads(){
-    Box(modifier = Modifier
-        .fillMaxWidth()
-        .fillMaxHeight()
-        .background(Color.Red))
-    Text("hello4")
+    InterestsRoute( )
 }
 
 private fun NavGraphBuilder.addLibrary() {

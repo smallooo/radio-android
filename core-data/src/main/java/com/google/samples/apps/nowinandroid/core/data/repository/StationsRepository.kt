@@ -32,7 +32,7 @@ interface StationsRepository : Syncable {
 //    /**
 //     * Gets data for a specific topic
 //     */
-//    fun getStation(id: String): Flow<Station>
+    fun getFavoriteStations(): Flow<List<Station>>
 //
 //    /**
 //     * Sets the user's currently followed topics

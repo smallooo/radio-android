@@ -1,5 +1,6 @@
 package com.google.samples.apps.nowinandroid.core.database.model
 
+import androidx.room.ColumnInfo
 import androidx.room.Entity
 import androidx.room.PrimaryKey
 import com.google.samples.apps.nowinandroid.core.model.data.Station
@@ -58,6 +59,7 @@ data class StationEntity(
     val geo_long: String = "",
     val has_extended_info: String = "",
     @Nullable
+    @ColumnInfo(defaultValue = false.toString())
     val favorited: Boolean = false,
     )
 

@@ -36,24 +36,29 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
+import com.google.samples.apps.nowinandroid.core.model.data.FollowableStation
 import com.google.samples.apps.nowinandroid.core.ui.LoadingWheel
 import com.google.samples.apps.nowinandroid.core.ui.component.NiaTab
 import com.google.samples.apps.nowinandroid.core.ui.component.NiaTabRow
 import com.google.samples.apps.nowinandroid.core.ui.component.NiaTopAppBar
+import com.google.samples.apps.nowinandroid.core.ui.component.RadioItem
 
 @Composable
 fun InterestsRoute(
     modifier: Modifier = Modifier,
-    navigateToAuthor: (String) -> Unit,
-    navigateToTopic: (String) -> Unit,
-    viewModel: InterestsViewModel = hiltViewModel()
+    navigateToAuthor: (String) -> Unit = {},
+    navigateToTopic: (String) -> Unit = {},
+    viewModel: InterestsViewModel = hiltViewModel(),
+    favoriteStationstViewModel: FavoriteStationstViewModel = hiltViewModel()
 ) {
     val uiState by viewModel.uiState.collectAsState()
     val tabState by viewModel.tabState.collectAsState()
+    val favoriteState by favoriteStationstViewModel.favoriteStationsState.collectAsState()
 
     InterestsScreen(
         uiState = uiState,
         tabState = tabState,
+        favoriteState = favoriteState,
         followTopic = viewModel::followTopic,
         followAuthor = viewModel::followAuthor,
         navigateToAuthor = navigateToAuthor,
@@ -67,6 +72,7 @@ fun InterestsRoute(
 fun InterestsScreen(
     uiState: InterestsUiState,
     tabState: InterestsTabState,
+    favoriteState : StationsUiState,
     followAuthor: (String, Boolean) -> Unit,
     followTopic: (String, Boolean) -> Unit,
     navigateToAuthor: (String) -> Unit,
@@ -74,7 +80,6 @@ fun InterestsScreen(
     switchTab: (Int) -> Unit,
     modifier: Modifier = Modifier,
 ) {
-    Text("Interesting")
     Column(
         modifier = modifier,
         horizontalAlignment = Alignment.CenterHorizontally
@@ -98,23 +103,15 @@ fun InterestsScreen(
                 id = R.string.top_app_bar_navigation_button_content_desc
             )
         )
-        when (uiState) {
-            InterestsUiState.Loading ->
+        when (favoriteState) {
+            StationsUiState.Loading ->
                 LoadingWheel(
                     modifier = modifier,
                     contentDesc = stringResource(id = R.string.interests_loading),
                 )
-            is InterestsUiState.Interests ->
-                InterestsContent(
-                    tabState = tabState,
-                    switchTab = switchTab,
-                    uiState = uiState,
-                    navigateToTopic = navigateToTopic,
-                    followTopic = followTopic,
-                    navigateToAuthor = navigateToAuthor,
-                    followAuthor = followAuthor
-                )
-            is InterestsUiState.Empty -> InterestsEmptyScreen()
+            is StationsUiState.Stations ->
+                RadioItem(listOf(favoriteState .stations))
+            is StationsUiState.Empty -> InterestsEmptyScreen()
         }
     }
 }

@@ -14,6 +14,12 @@ interface StationDao {
     @Query(value = "SELECT * FROM stations")
     fun getAllStationEntitiesStream(): Flow<List<StationEntity>>
 
+    @Query(value = "SELECT * FROM stations WHERE favorited = 1")
+    fun getFavoritedStations(): Flow<List<StationEntity>>
+
+    @Query(value = "UPDATE stations SET favorited = 1 WHERE stationuuid = :stationId" )
+    fun setFavoritedStation(stationId: String)
+
     @Query(value = "SELECT * FROM stations Limit 5")
     fun getTopVisitedStationsStream(): Flow<List<StationEntity>>
 
