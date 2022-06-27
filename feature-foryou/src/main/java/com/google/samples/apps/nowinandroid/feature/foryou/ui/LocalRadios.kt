@@ -71,11 +71,11 @@ fun LocalRadioList(
         StationsUiState.Loading ->
             for(i in 1..5) ShimmerItem(list, dpValue.value, shimmerAnimationType == ShimmerAnimationType.VERTICAL)
         is StationsUiState.Stations -> {
-            Button(onClick = {
-                val station = (uiState as StationsUiState.Stations).stations.get(0).station
-                station.favorited = true
-                viewModel.setFavoritedStation(station)
-            }){ }
+//            Button(onClick = {
+//                val station = (uiState as StationsUiState.Stations).stations.get(3).station
+//                station.favorited = true
+//                viewModel.setFavoritedStation(station)
+//            }){ }
 
 //                GlobalScope.launch (Dispatchers.IO) {
 //                    val a = ArrayList<String>()
@@ -95,7 +95,15 @@ fun LocalRadioList(
 //                Text(item)
 //            })
 
-            RadioItem(listOf((uiState as StationsUiState.Stations).stations), onImageClick = { Log.e("aaa", "onImageClick1") },preferences)
+            RadioItem(viewModel,
+                listOf((uiState as StationsUiState.Stations).stations),
+                preferences,
+                onImageClick = { Station ->
+                    Log.e("aaa", Station.stationuuid)
+                    Station.favorited = !Station.favorited
+                    viewModel.setFavoritedStation(Station)
+                }
+            )
         }
         is StationsUiState.Empty  -> ShimmerItem(list, dpValue.value, shimmerAnimationType == ShimmerAnimationType.VERTICAL)
     }

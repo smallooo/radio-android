@@ -74,6 +74,7 @@ fun InterestsRoute(
 ) {
     val uiState by viewModel.uiState.collectAsState()
     val tabState by viewModel.tabState.collectAsState()
+    val uiState1 by favoriteStationstViewModel.favoriteStationsState.collectAsState()
    // val favoriteState by rememberFlowWithLifecycle(favoriteStationstViewModel.favoriteStationsState1)
         //val aaa by favoriteStationstViewModel.getFavoritedStation1().first().get(0).stationuuid.get(0).dec().dec()
 
@@ -86,6 +87,7 @@ fun InterestsRoute(
     InterestsScreen(
         uiState = uiState,
         tabState = tabState,
+        uiState1 = uiState1,
         followTopic = viewModel::followTopic,
         followAuthor = viewModel::followAuthor,
         navigateToAuthor = navigateToAuthor,
@@ -99,6 +101,7 @@ fun InterestsRoute(
 fun InterestsScreen(
     uiState: InterestsUiState,
     tabState: InterestsTabState,
+    uiState1: StationsUiState,
     followAuthor: (String, Boolean) -> Unit,
     followTopic: (String, Boolean) -> Unit,
     navigateToAuthor: (String) -> Unit,
@@ -133,19 +136,19 @@ fun InterestsScreen(
 //            Text(text = favoriteState.get(0).name)
 //        }
         
-//        when (favoriteState) {
-//            StationsUiState.Loading ->
-//                LoadingWheel(
-//                    modifier = modifier,
-//                    contentDesc = stringResource(id = R.string.interests_loading),
-//                )
-//            is StationsUiState.Stations ->
-//               // Text(favoriteState.stations.get(0).station.name.toString())
-//
-//                RadioItemFavorite(listOf((favoriteState as StationsUiState.Stations).stations), onImageClick = {})
-//               // RadioItem(listOf(favoriteState .stations))
-//            is StationsUiState.Empty -> InterestsEmptyScreen()
-//        }
+        when (uiState1) {
+            StationsUiState.Loading ->
+                LoadingWheel(
+                    modifier = modifier,
+                    contentDesc = stringResource(id = R.string.interests_loading),
+                )
+            is StationsUiState.Stations ->
+               // Text(favoriteState.stations.get(0).station.name.toString())
+
+                RadioItemFavorite(listOf((uiState1 as StationsUiState.Stations).stations), onImageClick = {})
+               // RadioItem(listOf(favoriteState .stations))
+            is StationsUiState.Empty -> InterestsEmptyScreen()
+        }
     }
 }
 

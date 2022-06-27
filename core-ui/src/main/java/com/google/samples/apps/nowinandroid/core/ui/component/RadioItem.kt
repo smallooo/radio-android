@@ -21,10 +21,12 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
+import androidx.lifecycle.ViewModel
 import coil.compose.rememberImagePainter
 import com.google.samples.apps.nowinandroid.common.compose.LocalPlaybackConnection
 import com.google.samples.apps.nowinandroid.core.datastore.PreferencesStore
 import com.google.samples.apps.nowinandroid.core.model.data.FollowableStation
+import com.google.samples.apps.nowinandroid.core.model.data.Station
 import com.google.samples.apps.nowinandroid.playback.PlaybackConnection
 import com.hdmsh.common_compose.rememberFlowWithLifecycle
 import kotlinx.coroutines.Dispatchers
@@ -34,21 +36,23 @@ import kotlinx.coroutines.flow.toList
 import kotlinx.coroutines.launch
 
 @Composable
-fun RadioItem(stateCategories : List<List<FollowableStation>>,
-              onImageClick: () -> Unit,preferences: PreferencesStore
-        ){
+fun RadioItem(viewModel: ViewModel, stateCategories : List<List<FollowableStation>>, preferences: PreferencesStore, onImageClick: (station: Station) -> Unit){
     LazyColumn {
         itemsIndexed(
             items = stateCategories.get(0),
             itemContent = {index, item ->
-                AnimatedListItem(station = item, index, onImageClick,preferences)
+                AnimatedListItem(
+                    station = item,
+                    index,
+                    preferences,
+                    onImageClick = onImageClick)
             }
         )
     }
 }
 
 @Composable
-fun AnimatedListItem(station: FollowableStation, itemIndex: Int,   onImageClick: () -> Unit, preferences: PreferencesStore) {
+fun AnimatedListItem(station: FollowableStation, itemIndex: Int, preferences: PreferencesStore, onImageClick: (station: Station) -> Unit,) {
     val playbackConnection: PlaybackConnection = LocalPlaybackConnection.current
     Row(
         verticalAlignment = Alignment.CenterVertically,
@@ -77,7 +81,7 @@ fun AnimatedListItem(station: FollowableStation, itemIndex: Int,   onImageClick:
                 .size(55.dp)
                 .padding(4.dp).clickable {
                     Log.e("aaa", "onImageClick3")
-                    onImageClick
+                    onImageClick(station.station)
 
 //                    GlobalScope.launch (Dispatchers.IO) {
 //                        val a =  preferences.get("favorite", ArrayList<String>())
