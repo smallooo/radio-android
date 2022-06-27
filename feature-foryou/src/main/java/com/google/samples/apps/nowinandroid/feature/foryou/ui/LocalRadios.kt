@@ -25,7 +25,6 @@ fun LocalRadioList(
     pageType:PageType, param: String,
     viewModel: LocalRadioListViewModel = hiltViewModel(),
     playbackConnection: PlaybackConnection = LocalPlaybackConnection.current,
-
     ) {
     val preferences = PreferencesStore(LocalContext.current)
     val preString = rememberFlowWithLifecycle(preferences.get("aaa",ArrayList<String>()))
@@ -71,12 +70,9 @@ fun LocalRadioList(
         StationsUiState.Loading ->
             for(i in 1..5) ShimmerItem(list, dpValue.value, shimmerAnimationType == ShimmerAnimationType.VERTICAL)
         is StationsUiState.Stations -> {
-
-
             RadioItem(viewModel,
                 listOf((uiState as StationsUiState.Stations).stations),
                 onImageClick = { Station ->
-                    Log.e("aaa", Station.stationuuid)
                     Station.favorited = !Station.favorited
                     viewModel.setFavoritedStation(Station)
                 },

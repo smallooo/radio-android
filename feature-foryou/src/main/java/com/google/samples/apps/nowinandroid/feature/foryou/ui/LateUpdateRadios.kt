@@ -96,7 +96,18 @@ fun LateUpdateRadios(
             ShimmerItem(list, dpValue.value, shimmerAnimationType == ShimmerAnimationType.VERTICAL)
         }
     } else {
-        RadioItem111(listOf(uiState.localStations))
+        RadioItem111(viewModel,
+            listOf(uiState.localStations),
+            onImageClick = { Station ->
+                Station.favorited = !Station.favorited
+                viewModel.setFavoritedStation(Station)
+            },
+            onPlayClick = { Station ->
+                Station.lastPlayedTime = System.currentTimeMillis().toString()
+                viewModel.setPlayHistory(Station)
+
+            }
+        )
     }
 }
 

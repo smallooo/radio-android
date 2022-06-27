@@ -24,11 +24,13 @@ import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
+import androidx.lifecycle.ViewModel
 import coil.compose.rememberImagePainter
 import com.google.samples.app.nowinandroid.core.playback.isActive
 import com.google.samples.apps.nowinandroid.common.compose.LocalPlaybackConnection
 import com.google.samples.apps.nowinandroid.core.model.data.FollowableStation
 import com.google.samples.apps.nowinandroid.core.model.data.Station
+import com.google.samples.apps.nowinandroid.core.ui.component.RadioItem
 import com.google.samples.apps.nowinandroid.core.ui.theme.AppTheme.state
 
 import com.google.samples.apps.nowinandroid.feature.foryou.ui.ShimmerAnimationType
@@ -95,17 +97,30 @@ fun TopVisitRadios(
             ShimmerItem(list, dpValue.value, shimmerAnimationType == ShimmerAnimationType.VERTICAL)
         }
     } else {
-        RadioItem111(listOf(topVisitsState.localStations))
+        RadioItem111(viewModel,
+            listOf(topVisitsState.localStations),
+            onImageClick = { Station ->
+                Log.e("aaa","1234567")
+                Station.favorited = !Station.favorited
+                viewModel.setFavoritedStation(Station)
+            },
+            onPlayClick = { Station ->
+                Log.e("aaa","123456")
+                Station.lastPlayedTime = System.currentTimeMillis().toString()
+                viewModel.setPlayHistory(Station)
+
+            }
+        )
     }
 }
 
 @Composable
-fun RadioItem111(stateCategories: List<List<Station>>) {
+fun RadioItem111(viewModel: ViewModel, stateCategories: List<List<Station>>, onImageClick: (station: Station) -> Unit, onPlayClick: (station: Station) -> Unit) {
     LazyColumn {
         itemsIndexed(
             items = stateCategories.get(0),
             itemContent = { index, item ->
-                AnimatedListItem111(station = item, index)
+                AnimatedListItem111(station = item, index, onImageClick = onImageClick, onPlayClick = onPlayClick)
             }
         )
     }
@@ -113,10 +128,13 @@ fun RadioItem111(stateCategories: List<List<Station>>) {
 
 
 @Composable
-fun AnimatedListItem111(station: Station, itemIndex: Int, playbackConnection: PlaybackConnection = LocalPlaybackConnection.current,) {
+fun AnimatedListItem111(station: Station, itemIndex: Int, playbackConnection: PlaybackConnection = LocalPlaybackConnection.current,  onImageClick: (station: Station) -> Unit,onPlayClick: (station: Station) -> Unit) {
     Row(
         verticalAlignment = Alignment.CenterVertically,
-        modifier = Modifier.clickable { playbackConnection.playAudio(station) }
+        modifier = Modifier.clickable {
+            playbackConnection.playAudio(station)
+            onPlayClick(station)
+        }
     ) {
         Image(
             painter = rememberImagePainter(data = station.favicon),
@@ -124,7 +142,10 @@ fun AnimatedListItem111(station: Station, itemIndex: Int, playbackConnection: Pl
             contentScale = ContentScale.Crop,
             modifier = Modifier
                 .size(55.dp)
-                .padding(4.dp)
+                .padding(4.dp).clickable {
+                    onImageClick(station)
+
+                }
         )
         Column(
             modifier = Modifier
