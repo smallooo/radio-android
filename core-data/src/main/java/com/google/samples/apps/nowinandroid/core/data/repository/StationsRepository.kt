@@ -30,6 +30,20 @@ interface StationsRepository : Syncable {
 
 
     fun getTopVisitedStationsStream(): Flow<List<Station>>
+
+    fun gettopVotedStationsStream(): Flow<List<Station>>
+
+    fun getLateUpdateStationsStream(): Flow<List<Station>>
+
+    fun getnowPlayingStationsStream(): Flow<List<Station>>
+
+    fun getStationsTagStream(): Flow<List<String>>
+
+    fun getCountryList(): Flow<List<String>>
+
+    fun getLanguageList(): Flow<List<String>>
+
+    fun getSearchResult(): Flow<List<String>>
 //    /**
 //     * Gets data for a specific topic
 //     */

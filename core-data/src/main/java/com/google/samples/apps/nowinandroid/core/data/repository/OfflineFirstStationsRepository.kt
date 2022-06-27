@@ -30,15 +30,32 @@ class OfflineFirstStationsRepository @Inject constructor(
 ) : StationsRepository {
     override fun getAllStationsStream(): Flow<List<Station>> = sationDao.getAllStationEntitiesStream().map { it.map(StationEntity::asExternalModel) }
 
-    override fun getTopVisitedStationsStream(): Flow<List<Station>> = flow {
-        localStationsSource.getTopClickStationsList()
-        Log.e("aaa", "in the flow")
+    override fun getTopVisitedStationsStream(): Flow<List<Station>> = flow { localStationsSource.getTopClickStationsList()}
+
+    override fun gettopVotedStationsStream(): Flow<List<Station>> = flow { localStationsSource.gettopVotedStationsList()}
+
+    override fun getLateUpdateStationsStream(): Flow<List<Station>> = flow { localStationsSource.getLateUpdateStationsList()}
+
+    override fun getnowPlayingStationsStream(): Flow<List<Station>> = flow { localStationsSource.getLastClickStationsList()}
+
+    override fun getStationsTagStream(): Flow<List<String>> = flow { localStationsSource.getStationsTagList()}
+
+    override fun getCountryList(): Flow<List<String>> {
+        TODO("Not yet implemented")
     }
+
+    override fun getLanguageList(): Flow<List<String>> {
+        TODO("Not yet implemented")
+    }
+
+    override fun getSearchResult(): Flow<List<String>> {
+        TODO("Not yet implemented")
+    }
+
 
     override fun getFavoriteStations(): Flow<List<Station>> = sationDao.getFavoritedStations().map{ it.map(StationEntity::asExternalModel)}
 
     override fun setFavoriteStation(entitie: Station) {
-        Log.e("aaa", "loalao111")
         GlobalScope.launch(Dispatchers.IO) {
             sationDao.setFavoritedStation(entitie.asExternalModel())
         }
@@ -51,11 +68,6 @@ class OfflineFirstStationsRepository @Inject constructor(
     }
 
     override fun getPlayHistory(): Flow<List<Station>> = sationDao.getPlayHistory().map { it.map(StationEntity::asExternalModel) }
-//    {
-//        GlobalScope.launch(Dispatchers.IO) {
-//            sationDao.getPlayHistory()
-//        }
-//    }
 
     override fun getStationbyIdsEntitiesStream(entities: List<String>): Flow<List<Station>> =
         sationDao.getStationbyIdsEntitiesStream(HashSet(entities)).map{ it.map(StationEntity::asExternalModel)}
@@ -73,5 +85,4 @@ class OfflineFirstStationsRepository @Inject constructor(
                 if (netWorkStations != null) { sationDao.upsertStations(entities = netWorkStations.map(NetworkStation::asEntity)) }
             }
         )
-
 }

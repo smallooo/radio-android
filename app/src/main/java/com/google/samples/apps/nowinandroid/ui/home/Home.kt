@@ -63,8 +63,7 @@ internal fun Home(
                     if (windowSizeClass.widthSizeClass == WindowWidthSizeClass.Compact) {
                         Column {
                             PlaybackMiniControls(
-                                modifier = Modifier.graphicsLayer(translationY = 16.dp.value)
-                                    .zIndex(2f),
+                                modifier = Modifier.graphicsLayer(translationY = 16.dp.value).zIndex(2f),
                                 contentPadding = PaddingValues(end = 0.dp),
                             )
                             HomeBottomNavigation(
@@ -77,9 +76,7 @@ internal fun Home(
                         }
                     }
                 }
-            ) {
-               AppNavigation(navController = navController)
-            }
+            ) { AppNavigation(navController = navController) }
         }
     }
 }

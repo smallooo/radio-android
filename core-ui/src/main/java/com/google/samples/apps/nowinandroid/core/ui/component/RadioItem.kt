@@ -36,7 +36,7 @@ import kotlinx.coroutines.flow.toList
 import kotlinx.coroutines.launch
 
 @Composable
-fun RadioItem(viewModel: ViewModel, stateCategories : List<List<FollowableStation>>, preferences: PreferencesStore, onImageClick: (station: Station) -> Unit, onPlayClick: (station: Station) -> Unit){
+fun RadioItem(viewModel: ViewModel, stateCategories : List<List<FollowableStation>>, onImageClick: (station: Station) -> Unit, onPlayClick: (station: Station) -> Unit){
     LazyColumn {
         itemsIndexed(
             items = stateCategories.get(0),
@@ -44,7 +44,7 @@ fun RadioItem(viewModel: ViewModel, stateCategories : List<List<FollowableStatio
                 AnimatedListItem(
                     station = item,
                     index,
-                    preferences,
+
                     onImageClick = onImageClick,
                     onPlayClick = onPlayClick)
             }
@@ -53,7 +53,7 @@ fun RadioItem(viewModel: ViewModel, stateCategories : List<List<FollowableStatio
 }
 
 @Composable
-fun AnimatedListItem(station: FollowableStation, itemIndex: Int, preferences: PreferencesStore, onImageClick: (station: Station) -> Unit,onPlayClick: (station: Station) -> Unit) {
+fun AnimatedListItem(station: FollowableStation, itemIndex: Int,  onImageClick: (station: Station) -> Unit,onPlayClick: (station: Station) -> Unit) {
     val playbackConnection: PlaybackConnection = LocalPlaybackConnection.current
     Row(
         verticalAlignment = Alignment.CenterVertically,

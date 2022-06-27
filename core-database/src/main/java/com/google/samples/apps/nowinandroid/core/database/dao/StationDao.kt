@@ -64,7 +64,7 @@ interface StationDao {
     suspend fun upsertStations(entities: List<StationEntity>) = upsert(
         items = entities,
         insertMany = ::insertOrIgnoreStations,
-        updateMany = ::updateStations
+        updateMany = ::insertOrIgnoreStations
     )
 
     /**

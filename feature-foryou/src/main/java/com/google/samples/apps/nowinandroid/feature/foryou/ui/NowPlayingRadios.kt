@@ -4,33 +4,49 @@ import android.annotation.SuppressLint
 import android.util.Log
 import androidx.compose.animation.animateColor
 import androidx.compose.animation.core.*
-import androidx.compose.material3.*
+import androidx.compose.foundation.Image
+import androidx.compose.foundation.clickable
+import androidx.compose.foundation.layout.*
+import androidx.compose.foundation.lazy.LazyColumn
+import androidx.compose.foundation.lazy.itemsIndexed
+import androidx.compose.foundation.rememberScrollState
+import androidx.compose.foundation.verticalScroll
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.MoreVert
+import androidx.compose.material3.Icon
+import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.Text
 import androidx.compose.runtime.*
+import androidx.compose.ui.Alignment
+import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.layout.ContentScale
+import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
+import coil.compose.rememberImagePainter
 import com.google.samples.app.nowinandroid.core.playback.isActive
 import com.google.samples.apps.nowinandroid.common.compose.LocalPlaybackConnection
-import com.google.samples.apps.nowinandroid.core.datastore.PreferencesStore
-
+import com.google.samples.apps.nowinandroid.core.model.data.FollowableStation
+import com.google.samples.apps.nowinandroid.core.model.data.Station
 import com.google.samples.apps.nowinandroid.core.ui.component.RadioItem
+import com.google.samples.apps.nowinandroid.core.ui.theme.AppTheme.state
+
 import com.google.samples.apps.nowinandroid.feature.foryou.ui.ShimmerAnimationType
 import com.google.samples.apps.nowinandroid.playback.PlaybackConnection
 import com.hdmsh.common_compose.rememberFlowWithLifecycle
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.flow.first
+import kotlinx.coroutines.runBlocking
 
 @SuppressLint("StateFlowValueCalledInComposition")
 @Composable
-fun LocalRadioList(
+fun NowPlayingRadios(
     pageType:PageType, param: String,
-    viewModel: LocalRadioListViewModel = hiltViewModel(),
+    viewModel: NowPlayingViewModel = hiltViewModel(),
     playbackConnection: PlaybackConnection = LocalPlaybackConnection.current,
-
-    ) {
-    val preferences = PreferencesStore(LocalContext.current)
-    val preString = rememberFlowWithLifecycle(preferences.get("aaa",ArrayList<String>()))
-    val exampleEntities: ArrayList<String> by preString.collectAsState(initial = ArrayList<String>())
-    val uiState by viewModel.localRadiosState.collectAsState()
+) {
+    val uiState = viewModel.state
     val shimmerAnimationType by remember { mutableStateOf(ShimmerAnimationType.FADE) }
     val transition = rememberInfiniteTransition()
     val playbackState by rememberFlowWithLifecycle(playbackConnection.playbackState)
@@ -67,26 +83,24 @@ fun LocalRadioList(
         2000.dp
     }
 
-    when (uiState) {
-        StationsUiState.Loading ->
-            for(i in 1..5) ShimmerItem(list, dpValue.value, shimmerAnimationType == ShimmerAnimationType.VERTICAL)
-        is StationsUiState.Stations -> {
-
-
-            RadioItem(viewModel,
-                listOf((uiState as StationsUiState.Stations).stations),
-                onImageClick = { Station ->
-                    Log.e("aaa", Station.stationuuid)
-                    Station.favorited = !Station.favorited
-                    viewModel.setFavoritedStation(Station)
-                },
-                onPlayClick = { Station ->
-                    Station.lastPlayedTime = System.currentTimeMillis().toString()
-                    viewModel.setFavoritedStation(Station)
-
-                }
-            )
+    if (uiState.isLoading) {
+        Column(
+            modifier = Modifier
+                .fillMaxSize()
+                .verticalScroll(rememberScrollState())
+        ) {
+            ShimmerItem(list, dpValue.value, shimmerAnimationType == ShimmerAnimationType.VERTICAL)
+            ShimmerItem(list, dpValue.value, shimmerAnimationType == ShimmerAnimationType.VERTICAL)
+            ShimmerItem(list, dpValue.value, shimmerAnimationType == ShimmerAnimationType.VERTICAL)
+            ShimmerItem(list, dpValue.value, shimmerAnimationType == ShimmerAnimationType.VERTICAL)
+            ShimmerItem(list, dpValue.value, shimmerAnimationType == ShimmerAnimationType.VERTICAL)
         }
-        is StationsUiState.Empty  -> ShimmerItem(list, dpValue.value, shimmerAnimationType == ShimmerAnimationType.VERTICAL)
+    } else {
+        RadioItem111(listOf(uiState.localStations))
     }
 }
+
+
+
+
+

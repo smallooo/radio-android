@@ -15,11 +15,12 @@ class RadioListApi @Inject constructor(private val service: Service) {
     suspend fun getListByCountry(type: String, param: String): List<NetworkStation> = service.getListByCountry()
     suspend fun getTopClick(): List<Station> = service.getTopClick()
     suspend fun getTopVote(): List<Station> = service.getTopVote()
-    suspend fun getRecentlyChanged(): List<Station> = service.getRecentlyChanged()
+    suspend fun getLateUpdated(): List<Station> = service.getRecentlyChanged()
     suspend fun getLastClick(): List<Station> = service.getLastClick()
     suspend fun getTags(): List<Station> = service.getTags()
     suspend fun getCountries(): List<Country> = service.getCountries()
-    suspend fun getLanguages(): List<Country> = service.getLanguages()
+    suspend fun getLanguages(): List<String> = service.getLanguages()
+    suspend fun getSearchResult(): List<Station> = service.getSearchResult()
     interface Service {
         @GET("json/stations/lastchange/100")
         suspend fun getCountryList(): ArrayList<Country>
@@ -49,7 +50,10 @@ class RadioListApi @Inject constructor(private val service: Service) {
         suspend fun getCountries(): ArrayList<Country>
 
         @GET("/json/languages")
-        suspend fun getLanguages(): ArrayList<Country>
+        suspend fun getLanguages(): ArrayList<String>
+
+        @GET("/json/languages")
+        suspend fun getSearchResult(): ArrayList<Station>
     }
 
     companion object { const val API_URL = "http://at1.api.radio-browser.info/" }

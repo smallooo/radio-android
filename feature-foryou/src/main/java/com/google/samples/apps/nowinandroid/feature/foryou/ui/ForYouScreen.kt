@@ -100,15 +100,15 @@ fun AdvanceListContent() {
         Pager(state = pagerState, modifier = Modifier.weight(1f)) {
             selectedIndex = pagerState.currentPage
             when (commingPage) {
-                0 -> LocalRadioList(PageType.bycountry, "japan")
-                1 -> TopVisitRadios(PageType.bycountry, "china")
-                2 -> LocalRadioList(PageType.bycountry, "japan")
-                3 -> LocalRadioList(PageType.bycountry, "japan")
-                4 -> LocalRadioList(PageType.bycountry, "japan")
-                5 -> LocalRadioList(PageType.bycountry, "japan")
+                0 -> LocalRadioList(PageType.bycountry, "")
+                1 -> TopVisitRadios(PageType.bycountry, "")
+                2 -> TopVoteRadios(PageType.bycountry, "")
+                3 -> LateUpdateRadios(PageType.bycountry, "")
+                4 -> NowPlayingRadios(PageType.bycountry, "")
+                5 -> LocalRadioList(PageType.bycountry, "")
                 6 -> CountryList()
-                7 -> LocalRadioList(PageType.bycountry, "japan")
-                8 -> LocalRadioList(PageType.bycountry, "japan")
+                7 -> LocalRadioList(PageType.bycountry, "")
+                8 -> LocalRadioList(PageType.bycountry, "")
             }
         }
     }
