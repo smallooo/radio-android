@@ -37,6 +37,10 @@ interface StationsRepository : Syncable {
 
     fun setFavoriteStation(entitie: Station)
 
+    fun setPlayHistory(entitie: Station)
+
+    fun getPlayHistory(): Flow<List<Station>>
+
     fun getStationbyIdsEntitiesStream(entities: List<String>): Flow<List<Station>>
 //
 //    /**

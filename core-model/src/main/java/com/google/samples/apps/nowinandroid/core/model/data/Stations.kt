@@ -44,4 +44,5 @@ data class Station(
     val geo_long: String = "",
     val has_extended_info: String = "",
     var favorited: Boolean = false,
+    var lastPlayedTime: String = ""
 ) : Parcelable

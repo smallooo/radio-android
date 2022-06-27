@@ -102,6 +102,11 @@ fun LocalRadioList(
                     Log.e("aaa", Station.stationuuid)
                     Station.favorited = !Station.favorited
                     viewModel.setFavoritedStation(Station)
+                },
+                onPlayClick = { Station ->
+                    Station.lastPlayedTime = System.currentTimeMillis().toString()
+                    viewModel.setFavoritedStation(Station)
+
                 }
             )
         }

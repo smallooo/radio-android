@@ -44,6 +44,19 @@ class OfflineFirstStationsRepository @Inject constructor(
         }
     }
 
+    override fun setPlayHistory(entitie: Station) {
+        GlobalScope.launch(Dispatchers.IO) {
+            sationDao.setPlayHistory(entitie.asExternalModel())
+        }
+    }
+
+    override fun getPlayHistory(): Flow<List<Station>> = sationDao.getPlayHistory().map { it.map(StationEntity::asExternalModel) }
+//    {
+//        GlobalScope.launch(Dispatchers.IO) {
+//            sationDao.getPlayHistory()
+//        }
+//    }
+
     override fun getStationbyIdsEntitiesStream(entities: List<String>): Flow<List<Station>> =
         sationDao.getStationbyIdsEntitiesStream(HashSet(entities)).map{ it.map(StationEntity::asExternalModel)}
 

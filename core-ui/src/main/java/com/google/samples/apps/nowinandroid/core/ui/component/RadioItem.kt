@@ -36,7 +36,7 @@ import kotlinx.coroutines.flow.toList
 import kotlinx.coroutines.launch
 
 @Composable
-fun RadioItem(viewModel: ViewModel, stateCategories : List<List<FollowableStation>>, preferences: PreferencesStore, onImageClick: (station: Station) -> Unit){
+fun RadioItem(viewModel: ViewModel, stateCategories : List<List<FollowableStation>>, preferences: PreferencesStore, onImageClick: (station: Station) -> Unit, onPlayClick: (station: Station) -> Unit){
     LazyColumn {
         itemsIndexed(
             items = stateCategories.get(0),
@@ -45,32 +45,34 @@ fun RadioItem(viewModel: ViewModel, stateCategories : List<List<FollowableStatio
                     station = item,
                     index,
                     preferences,
-                    onImageClick = onImageClick)
+                    onImageClick = onImageClick,
+                    onPlayClick = onPlayClick)
             }
         )
     }
 }
 
 @Composable
-fun AnimatedListItem(station: FollowableStation, itemIndex: Int, preferences: PreferencesStore, onImageClick: (station: Station) -> Unit,) {
+fun AnimatedListItem(station: FollowableStation, itemIndex: Int, preferences: PreferencesStore, onImageClick: (station: Station) -> Unit,onPlayClick: (station: Station) -> Unit) {
     val playbackConnection: PlaybackConnection = LocalPlaybackConnection.current
     Row(
         verticalAlignment = Alignment.CenterVertically,
         modifier = Modifier.clickable {
             playbackConnection.playAudio(station.station)
-            GlobalScope.launch (Dispatchers.IO) {
-                val aaa = ArrayList<String>()
-               preferences.get("favorite", aaa).collect{ stationUUIDs ->
-                   if (stationUUIDs.size > 0) {
-                       stationUUIDs.forEach {
-                           Log.e("aaa", it)
-                           aaa.add(it)
-                       }
-                       aaa.add(station.station.stationuuid)
-                       preferences.save("favorite", aaa.toSet().toList() as java.util.ArrayList)
-                   }
-               }
-            }
+            onPlayClick(station.station)
+//            GlobalScope.launch (Dispatchers.IO) {
+//                val aaa = ArrayList<String>()
+//               preferences.get("favorite", aaa).collect{ stationUUIDs ->
+//                   if (stationUUIDs.size > 0) {
+//                       stationUUIDs.forEach {
+//                           Log.e("aaa", it)
+//                           aaa.add(it)
+//                       }
+//                       aaa.add(station.station.stationuuid)
+//                       preferences.save("favorite", aaa.toSet().toList() as java.util.ArrayList)
+//                   }
+//               }
+//            }
                                       },
     ) {
         Image(

@@ -21,6 +21,12 @@ interface StationDao {
     @Update
     fun setFavoritedStation(entitie: StationEntity)
 
+    @Update()
+    fun setPlayHistory(entitie: StationEntity)
+
+    @Query(value = "SELECT * FROM stations WHERE length(lastPlayedTime) > 1 ORDER BY cast(lastPlayedTime as unsigned) desc")
+    fun getPlayHistory(): Flow<List<StationEntity>>
+
     @Query(value = "SELECT * FROM stations Limit 5")
     fun getTopVisitedStationsStream(): Flow<List<StationEntity>>
 

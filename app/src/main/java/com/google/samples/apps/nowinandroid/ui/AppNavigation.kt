@@ -5,11 +5,6 @@
 package com.google.samples.apps.nowinandroid.ui
 
 import androidx.compose.animation.*
-import androidx.compose.foundation.background
-import androidx.compose.foundation.layout.Box
-import androidx.compose.foundation.layout.fillMaxHeight
-import androidx.compose.foundation.layout.fillMaxWidth
-import androidx.compose.material3.Button
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.DisposableEffect
@@ -18,16 +13,13 @@ import androidx.compose.runtime.State
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.graphics.Color
 import androidx.navigation.*
 import androidx.navigation.NavDestination.Companion.hierarchy
 import androidx.navigation.NavGraph.Companion.findStartDestination
-import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
-import com.dmhsh.feature_history.navigation.HistoryDestination
+import com.dmhsh.feature_history.HistoryRoute
 import com.google.accompanist.navigation.animation.AnimatedNavHost
 import com.google.accompanist.navigation.animation.navigation
-import com.google.samples.apps.nowinandroid.core.domain.None
 import com.google.samples.apps.nowinandroid.core.navigation.LocalNavigator
 
 import com.google.samples.apps.nowinandroid.core.navigation.NavigationEvent
@@ -35,14 +27,8 @@ import com.google.samples.apps.nowinandroid.core.navigation.Navigator
 import com.google.samples.apps.nowinandroid.core.navigation.Screens.*
 
 
-import com.google.samples.apps.nowinandroid.feature.author.navigation.AuthorDestination
-import com.google.samples.apps.nowinandroid.feature.foryou.ForYouRoute
 import com.google.samples.apps.nowinandroid.feature.foryou.ForYouScreen
-import com.google.samples.apps.nowinandroid.feature.foryou.navigation.ForYouDestination
 import com.google.samples.apps.nowinandroid.feature.interests.InterestsRoute
-import com.google.samples.apps.nowinandroid.feature.interests.InterestsScreen
-import com.google.samples.apps.nowinandroid.feature.interests.navigation.InterestsDestination
-import com.google.samples.apps.nowinandroid.feature.topic.navigation.TopicDestination
 import com.hdmsh.common_compose.collectEvent
 import com.hdmsh.core_ui_playback.PlaybackSheet
 
@@ -82,9 +68,9 @@ internal fun AppNavigation(
         popEnterTransition = { defaultPopEnterTransition() },
         popExitTransition = { defaultPopExitTransition() },
     ) {
-        addSearchRoot()
-        addDownloadsRoot()
-        addLibraryRoot()
+        addStationsRoot()
+        addFavoritesRoot()
+        addHistoryRoot()
         addAlarmRoot()
         addSettingsRoot()
         addPlaybackSheet()
@@ -93,7 +79,7 @@ internal fun AppNavigation(
 }
 
 @ExperimentalAnimationApi
-private fun NavGraphBuilder.addSearchRoot() {
+private fun NavGraphBuilder.addStationsRoot() {
     navigation(
         route = RootScreen.Search.route,
         startDestination = LeafScreen.Search().createRoute()
@@ -106,7 +92,7 @@ private fun NavGraphBuilder.addSearchRoot() {
 }
 
 @ExperimentalAnimationApi
-private fun NavGraphBuilder.addDownloadsRoot() {
+private fun NavGraphBuilder.addFavoritesRoot() {
     navigation(
         route = RootScreen.Downloads.route,
         startDestination = LeafScreen.Downloads().createRoute()
@@ -116,7 +102,7 @@ private fun NavGraphBuilder.addDownloadsRoot() {
 }
 
 @ExperimentalAnimationApi
-private fun NavGraphBuilder.addLibraryRoot() {
+private fun NavGraphBuilder.addHistoryRoot() {
     navigation(
         route = RootScreen.Library.route,
         startDestination = LeafScreen.Library().createRoute()
@@ -193,14 +179,11 @@ fun Downloads(){
 
 private fun NavGraphBuilder.addLibrary() {
     composableScreen(LeafScreen.Library()) {
-        Library()
+        HistoryRoute(onBackClick = { /*TODO*/ })
     }
 }
 
-@Composable
-fun Library(){
-    Text("hello5")
-}
+
 
 private fun NavGraphBuilder.addCreatePlaylist() {
     bottomSheetScreen(LeafScreen.CreatePlaylist()) {

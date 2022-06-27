@@ -49,6 +49,8 @@ class LocalRadioListViewModel @Inject constructor(
 //            stationsRepository.setFavoriteStation(stationUUID)
 //        }
 
+    fun setPlayHistory(station: Station) = stationsRepository.setPlayHistory(station)
+
     val topVisitRadiosState: Flow<List<Station>> = stationsRepository.getTopVisitedStationsStream()
 }
 

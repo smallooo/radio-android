@@ -61,6 +61,9 @@ data class StationEntity(
     @Nullable
     @ColumnInfo(defaultValue = false.toString())
     val favorited: Boolean = false,
+    @Nullable
+    @ColumnInfo(defaultValue = "")
+    val lastPlayedTime: String = ""
     )
 
 
@@ -101,7 +104,8 @@ fun StationEntity.asExternalModel() = Station(
     geo_lat = geo_lat,
     geo_long = geo_long,
     has_extended_info = has_extended_info,
-    favorited = favorited
+    favorited = favorited,
+    lastPlayedTime = lastPlayedTime
 )
 
 
@@ -142,5 +146,6 @@ fun Station.asExternalModel() = StationEntity(
     geo_lat = geo_lat,
     geo_long = geo_long,
     has_extended_info = has_extended_info,
-    favorited = favorited
+    favorited = favorited,
+    lastPlayedTime = lastPlayedTime
 )
