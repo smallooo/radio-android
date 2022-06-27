@@ -101,7 +101,7 @@ fun StationEntity.asExternalModel() = Station(
     geo_lat = geo_lat,
     geo_long = geo_long,
     has_extended_info = has_extended_info,
-    favorited = false
+    favorited = favorited
 )
 
 
@@ -142,5 +142,5 @@ fun Station.asExternalModel() = StationEntity(
     geo_lat = geo_lat,
     geo_long = geo_long,
     has_extended_info = has_extended_info,
-    favorited = false
+    favorited = favorited
 )

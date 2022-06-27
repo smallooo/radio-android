@@ -18,18 +18,12 @@ import com.google.samples.apps.nowinandroid.core.ui.component.RadioItem
 import com.google.samples.apps.nowinandroid.feature.foryou.ui.ShimmerAnimationType
 import com.google.samples.apps.nowinandroid.playback.PlaybackConnection
 import com.hdmsh.common_compose.rememberFlowWithLifecycle
-import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.GlobalScope
-import kotlinx.coroutines.flow.collectLatest
-import kotlinx.coroutines.flow.first
-import kotlinx.coroutines.launch
 
 @SuppressLint("StateFlowValueCalledInComposition")
 @Composable
 fun LocalRadioList(
     pageType:PageType, param: String,
     viewModel: LocalRadioListViewModel = hiltViewModel(),
-
     playbackConnection: PlaybackConnection = LocalPlaybackConnection.current,
 
     ) {
@@ -77,13 +71,12 @@ fun LocalRadioList(
         StationsUiState.Loading ->
             for(i in 1..5) ShimmerItem(list, dpValue.value, shimmerAnimationType == ShimmerAnimationType.VERTICAL)
         is StationsUiState.Stations -> {
-//            Button(onClick = {
-////                    val station = (uiState as StationsUiState.Stations).stations.get(0).station
-////                    station.favorited = true
-////                    station.bitrate = 999.toString()
-////                    station.state = "helloworld"
-////                    Log.e("aaa","aaa" + station.favorited + station.bitrate + station.state)
-////                    viewModel.setFavoritedStation(station)
+            Button(onClick = {
+                val station = (uiState as StationsUiState.Stations).stations.get(0).station
+                station.favorited = true
+                viewModel.setFavoritedStation(station)
+            }){ }
+
 //                GlobalScope.launch (Dispatchers.IO) {
 //                    val a = ArrayList<String>()
 //                    a.add("a")
@@ -100,11 +93,9 @@ fun LocalRadioList(
 //            for(item in exampleEntities){
 //
 //                Text(item)
-//            }
+//            })
 
-            RadioItem(listOf((uiState as StationsUiState.Stations).stations), onImageClick1 = {
-               }
-            )
+            RadioItem(listOf((uiState as StationsUiState.Stations).stations), onImageClick = { Log.e("aaa", "onImageClick1") },preferences)
         }
         is StationsUiState.Empty  -> ShimmerItem(list, dpValue.value, shimmerAnimationType == ShimmerAnimationType.VERTICAL)
     }

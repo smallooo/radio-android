@@ -35,7 +35,7 @@ interface StationsRepository : Syncable {
 //     */
     fun getFavoriteStations(): Flow<List<Station>>
 
-    fun setFavoriteStation(entitie: Station): () -> Unit
+    fun setFavoriteStation(entitie: Station)
 
     fun getStationbyIdsEntitiesStream(entities: List<String>): Flow<List<Station>>
 //

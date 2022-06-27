@@ -13,11 +13,14 @@ import com.google.samples.apps.nowinandroid.core.datastore.NiaPreferences
 import com.google.samples.apps.nowinandroid.core.model.data.Station
 import com.google.samples.apps.nowinandroid.core.network.NiANetwork
 import com.google.samples.apps.nowinandroid.core.network.model.NetworkStation
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.GlobalScope
 
 import javax.inject.Inject
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.flow
 import kotlinx.coroutines.flow.map
+import kotlinx.coroutines.launch
 
 class OfflineFirstStationsRepository @Inject constructor(
     private val sationDao: StationDao,
@@ -34,10 +37,11 @@ class OfflineFirstStationsRepository @Inject constructor(
 
     override fun getFavoriteStations(): Flow<List<Station>> = sationDao.getFavoritedStations().map{ it.map(StationEntity::asExternalModel)}
 
-    override fun setFavoriteStation(entitie: Station) = {
-        sationDao.setFavoritedStation(StationEntity("1","32d5e5ac-e196-4451-9193-bd41a7961556","3","3","1","3","9","1","3","9","1","1","3","2"
-        ,"2","2","2","2","2","2","2","2","2","2","2","2","2","2","2","2"
-            ,"2","2","2","2","2","2",true))
+    override fun setFavoriteStation(entitie: Station) {
+        Log.e("aaa", "loalao111")
+        GlobalScope.launch(Dispatchers.IO) {
+            sationDao.setFavoritedStation(entitie.asExternalModel())
+        }
     }
 
     override fun getStationbyIdsEntitiesStream(entities: List<String>): Flow<List<Station>> =

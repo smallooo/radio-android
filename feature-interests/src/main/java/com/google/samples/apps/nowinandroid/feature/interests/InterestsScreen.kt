@@ -16,6 +16,8 @@
 
 package com.google.samples.apps.nowinandroid.feature.interests
 
+import android.content.Context
+import android.util.Log
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.WindowInsets
@@ -28,10 +30,7 @@ import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.MoreVert
 import androidx.compose.material.icons.filled.Search
 import androidx.compose.material3.Text
-import androidx.compose.runtime.Composable
-import androidx.compose.runtime.collectAsState
-import androidx.compose.runtime.getValue
-import androidx.compose.runtime.remember
+import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalLifecycleOwner
@@ -41,12 +40,17 @@ import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.flowWithLifecycle
 import com.google.samples.apps.nowinandroid.core.model.data.FollowableStation
+import com.google.samples.apps.nowinandroid.core.model.data.Station
 import com.google.samples.apps.nowinandroid.core.ui.LoadingWheel
-import com.google.samples.apps.nowinandroid.core.ui.component.NiaTab
-import com.google.samples.apps.nowinandroid.core.ui.component.NiaTabRow
-import com.google.samples.apps.nowinandroid.core.ui.component.NiaTopAppBar
-import com.google.samples.apps.nowinandroid.core.ui.component.RadioItem
+import com.google.samples.apps.nowinandroid.core.ui.component.*
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.flow.Flow
+import kotlinx.coroutines.flow.collect
+import kotlinx.coroutines.flow.collectLatest
+import kotlinx.coroutines.flow.first
+import kotlinx.coroutines.launch
+import kotlinx.coroutines.runBlocking
 
 @Composable
 fun <T> rememberFlowWithLifecycle(
@@ -71,12 +75,17 @@ fun InterestsRoute(
     val uiState by viewModel.uiState.collectAsState()
     val tabState by viewModel.tabState.collectAsState()
    // val favoriteState by rememberFlowWithLifecycle(favoriteStationstViewModel.favoriteStationsState1)
-    val uiState1 by favoriteStationstViewModel.favoriteStationsState1.collectAsState()
+        //val aaa by favoriteStationstViewModel.getFavoritedStation1().first().get(0).stationuuid.get(0).dec().dec()
+
+       // Log.e("aaa",favoriteStationstViewModel.getFavoritedStation1().first().get(0).stationuuid)
+
+
+    //val uiState1: List<Station> by rememberCoroutineScope(favoriteStationstViewModel.getFavoritedStation1())
+
 
     InterestsScreen(
         uiState = uiState,
         tabState = tabState,
-        favoriteState = uiState1,
         followTopic = viewModel::followTopic,
         followAuthor = viewModel::followAuthor,
         navigateToAuthor = navigateToAuthor,
@@ -90,7 +99,6 @@ fun InterestsRoute(
 fun InterestsScreen(
     uiState: InterestsUiState,
     tabState: InterestsTabState,
-    favoriteState : StationsUiState,
     followAuthor: (String, Boolean) -> Unit,
     followTopic: (String, Boolean) -> Unit,
     navigateToAuthor: (String) -> Unit,
@@ -121,21 +129,23 @@ fun InterestsScreen(
                 id = R.string.top_app_bar_navigation_button_content_desc
             )
         )
-        when (favoriteState) {
-            StationsUiState.Loading ->
-                LoadingWheel(
-                    modifier = modifier,
-                    contentDesc = stringResource(id = R.string.interests_loading),
-                )
-            is StationsUiState.Stations ->
-               // Text(favoriteState.stations.get(0).station.name.toString())
-
-                RadioItem(listOf((favoriteState as StationsUiState.Stations).stations), onImageClick1 = {
-                }
-                )
-               // RadioItem(listOf(favoriteState .stations))
-            is StationsUiState.Empty -> InterestsEmptyScreen()
-        }
+//        if(favoriteState.size > 0){
+//            Text(text = favoriteState.get(0).name)
+//        }
+        
+//        when (favoriteState) {
+//            StationsUiState.Loading ->
+//                LoadingWheel(
+//                    modifier = modifier,
+//                    contentDesc = stringResource(id = R.string.interests_loading),
+//                )
+//            is StationsUiState.Stations ->
+//               // Text(favoriteState.stations.get(0).station.name.toString())
+//
+//                RadioItemFavorite(listOf((favoriteState as StationsUiState.Stations).stations), onImageClick = {})
+//               // RadioItem(listOf(favoriteState .stations))
+//            is StationsUiState.Empty -> InterestsEmptyScreen()
+//        }
     }
 }
 

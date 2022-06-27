@@ -29,45 +29,30 @@ import com.google.samples.apps.nowinandroid.playback.PlaybackConnection
 import com.hdmsh.common_compose.rememberFlowWithLifecycle
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.GlobalScope
-import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.flow.toList
 import kotlinx.coroutines.launch
 
 @Composable
-fun RadioItem(stateCategories : List<List<FollowableStation>>,
-              onImageClick: () -> Unit,preferences: PreferencesStore
+fun RadioItemFavorite(stateCategories : List<List<FollowableStation>>,
+              onImageClick: () -> Unit
         ){
     LazyColumn {
         itemsIndexed(
             items = stateCategories.get(0),
             itemContent = {index, item ->
-                AnimatedListItem(station = item, index, onImageClick,preferences)
+                AnimatedListFavoriteItem(station = item, index, onImageClick)
             }
         )
     }
 }
 
 @Composable
-fun AnimatedListItem(station: FollowableStation, itemIndex: Int,   onImageClick: () -> Unit, preferences: PreferencesStore) {
+fun AnimatedListFavoriteItem(station: FollowableStation, itemIndex: Int,   onImageClick: () -> Unit) {
     val playbackConnection: PlaybackConnection = LocalPlaybackConnection.current
     Row(
         verticalAlignment = Alignment.CenterVertically,
-        modifier = Modifier.clickable {
-            playbackConnection.playAudio(station.station)
-            GlobalScope.launch (Dispatchers.IO) {
-                val aaa = ArrayList<String>()
-               preferences.get("favorite", aaa).collect{ stationUUIDs ->
-                   if (stationUUIDs.size > 0) {
-                       stationUUIDs.forEach {
-                           Log.e("aaa", it)
-                           aaa.add(it)
-                       }
-                       aaa.add(station.station.stationuuid)
-                       preferences.save("favorite", aaa.toSet().toList() as java.util.ArrayList)
-                   }
-               }
-            }
-                                      },
+        modifier = Modifier.clickable { playbackConnection.playAudio(station.station) },
+
     ) {
         Image(
             painter = rememberImagePainter(data = station.station.favicon),
@@ -79,15 +64,7 @@ fun AnimatedListItem(station: FollowableStation, itemIndex: Int,   onImageClick:
                     Log.e("aaa", "onImageClick3")
                     onImageClick
 
-//                    GlobalScope.launch (Dispatchers.IO) {
-//                        val a =  preferences.get("favorite", ArrayList<String>())
-//                        val b = a.toList() as ArrayList<String>
-//                        b.add(station.station.stationuuid)
-//                        preferences.save("favorite", b)
-//                    }
 
-                    GlobalScope.launch (Dispatchers.IO) {
-                    }
                 }
         )
         Column(
