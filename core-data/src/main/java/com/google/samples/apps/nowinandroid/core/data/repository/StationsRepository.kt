@@ -19,6 +19,7 @@ package com.google.samples.apps.nowinandroid.core.data.repository
 import com.google.samples.apps.nowinandroid.core.data.Syncable
 import com.google.samples.apps.nowinandroid.core.database.model.StationEntity
 import com.google.samples.apps.nowinandroid.core.model.data.Station
+import com.google.samples.apps.nowinandroid.core.model.data.StationsTag
 import com.google.samples.apps.nowinandroid.core.model.data.Topic
 import kotlinx.coroutines.flow.Flow
 
@@ -39,11 +40,13 @@ interface StationsRepository : Syncable {
 
     fun getStationsTagStream(): Flow<List<String>>
 
+    fun getTagList(): Flow<List<StationsTag>>
+
     fun getCountryList(): Flow<List<String>>
 
     fun getLanguageList(): Flow<List<String>>
 
-    fun getSearchResult(): Flow<List<String>>
+    fun getStationsByConditionList(type: String, param:String): Flow<List<Station>>
 //    /**
 //     * Gets data for a specific topic
 //     */

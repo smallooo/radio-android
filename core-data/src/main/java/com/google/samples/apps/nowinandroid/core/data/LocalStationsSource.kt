@@ -4,6 +4,7 @@ import android.util.Log
 import com.google.samples.apps.nowinandroid.core.database.dao.StationDao
 import com.google.samples.apps.nowinandroid.core.model.data.Country
 import com.google.samples.apps.nowinandroid.core.model.data.Station
+import com.google.samples.apps.nowinandroid.core.model.data.StationsTag
 import com.google.samples.apps.nowinandroid.core.network.model.NetworkStation
 import com.google.samples.apps.nowinandroid.core.network.retrofit.RadioListApi
 import kotlinx.coroutines.Dispatchers
@@ -18,7 +19,7 @@ class LocalStationsSource @Inject constructor(private val stationDao: StationDao
     private var _topVotedRadioList: List<Station>? = null
     private var _lateUpdateRadioList: List<Station>? = null
     private var _lastClickRadioList: List<Station>? = null
-    private var _stationsTagList: List<Station>? = null
+    private var _stationsTagList: List<StationsTag>? = null
     private var _countryList: List<Country>? = null
     private var _languageList: List<String>? = null
     private var _serchList: List<Station>? = null
@@ -50,7 +51,10 @@ class LocalStationsSource @Inject constructor(private val stationDao: StationDao
     }
 
     suspend fun getStationsTagList() = withContext(Dispatchers.IO){
-        if(_stationsTagList == null){ _stationsTagList = radioListApi.getTags() }
+        if(_stationsTagList == null){
+            _stationsTagList = radioListApi.getTags()
+            Log.e("aaa", _stationsTagList!!.size.toString())
+        }
         return@withContext _stationsTagList
     }
 
@@ -64,8 +68,8 @@ class LocalStationsSource @Inject constructor(private val stationDao: StationDao
         return@withContext _languageList
     }
 
-    suspend fun getSearchList() = withContext(Dispatchers.IO){
-        if(_serchList == null){ _serchList = radioListApi.getTopClick() }
+    suspend fun getStationsByConditionList(type: String, param: String) = withContext(Dispatchers.IO){
+        if(_serchList == null){ _serchList = radioListApi.getStationsByConditionList(type, param) }
         return@withContext _serchList
     }
 }

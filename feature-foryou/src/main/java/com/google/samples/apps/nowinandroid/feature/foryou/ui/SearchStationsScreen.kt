@@ -4,8 +4,13 @@ import android.annotation.SuppressLint
 import android.util.Log
 import androidx.compose.animation.animateColor
 import androidx.compose.animation.core.*
+import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.rememberScrollState
+import androidx.compose.foundation.verticalScroll
 import androidx.compose.material3.*
 import androidx.compose.runtime.*
+import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.unit.dp
@@ -21,20 +26,19 @@ import com.hdmsh.common_compose.rememberFlowWithLifecycle
 
 @SuppressLint("StateFlowValueCalledInComposition")
 @Composable
-fun LocalRadioList(
-    pageType:PageType, param: String,
-    viewModel: LocalRadioListViewModel = hiltViewModel(),
-    playbackConnection: PlaybackConnection = LocalPlaybackConnection.current,
-    ) {
-    val preferences = PreferencesStore(LocalContext.current)
-    val preString = rememberFlowWithLifecycle(preferences.get("aaa",ArrayList<String>()))
-    val exampleEntities: ArrayList<String> by preString.collectAsState(initial = ArrayList<String>())
-    val uiState by viewModel.localRadiosState.collectAsState()
+fun SearchStationsScreen(
+    pageType:String, param: String,
+    viewModel: SearchListViewModel = hiltViewModel(),
+    playbackConnection: PlaybackConnection = LocalPlaybackConnection.current) {
+
+    viewModel.type = pageType
+    viewModel.param = param
+
+    val uiState = viewModel.state
     val shimmerAnimationType by remember { mutableStateOf(ShimmerAnimationType.FADE) }
     val transition = rememberInfiniteTransition()
     val playbackState by rememberFlowWithLifecycle(playbackConnection.playbackState)
     val nowPlaying by rememberFlowWithLifecycle(playbackConnection.nowPlaying)
-    val isPlayerActive = (playbackState to nowPlaying).isActive
 
     val translateAnim by transition.animateFloat(
         initialValue = 100f,
@@ -66,23 +70,30 @@ fun LocalRadioList(
         2000.dp
     }
 
-    when (uiState) {
-        StationsUiState.Loading ->
-            for(i in 1..5) ShimmerItem(list, dpValue.value, shimmerAnimationType == ShimmerAnimationType.VERTICAL)
-        is StationsUiState.Stations -> {
-            RadioItem(viewModel,
-                listOf((uiState as StationsUiState.Stations).stations),
-                onImageClick = { Station ->
-                    Station.favorited = !Station.favorited
-                    viewModel.setFavoritedStation(Station)
-                },
-                onPlayClick = { Station ->
-                    Station.lastPlayedTime = System.currentTimeMillis().toString()
-                    viewModel.setFavoritedStation(Station)
-
-                }
-            )
+    if (uiState.isLoading) {
+        Column(
+            modifier = Modifier
+                .fillMaxSize()
+                .verticalScroll(rememberScrollState())
+        ) {
+            ShimmerItem(list, dpValue.value, shimmerAnimationType == ShimmerAnimationType.VERTICAL)
+            ShimmerItem(list, dpValue.value, shimmerAnimationType == ShimmerAnimationType.VERTICAL)
+            ShimmerItem(list, dpValue.value, shimmerAnimationType == ShimmerAnimationType.VERTICAL)
+            ShimmerItem(list, dpValue.value, shimmerAnimationType == ShimmerAnimationType.VERTICAL)
+            ShimmerItem(list, dpValue.value, shimmerAnimationType == ShimmerAnimationType.VERTICAL)
         }
-        is StationsUiState.Empty -> ShimmerItem(list, dpValue.value, shimmerAnimationType == ShimmerAnimationType.VERTICAL)
+    } else {
+        RadioItem111(viewModel,
+            listOf(uiState.localStations),
+            onImageClick = { Station ->
+                Station.favorited = !Station.favorited
+                viewModel.setFavoritedStation(Station)
+            },
+            onPlayClick = { Station ->
+                Station.lastPlayedTime = System.currentTimeMillis().toString()
+                viewModel.setPlayHistory(Station)
+
+            }
+        )
     }
 }

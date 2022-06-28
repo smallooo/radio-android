@@ -23,11 +23,13 @@ import androidx.hilt.navigation.compose.hiltViewModel
 import coil.compose.rememberImagePainter
 import com.google.samples.apps.nowinandroid.core.model.data.Country
 import com.google.samples.apps.nowinandroid.core.ui.component.CoverImage
+import com.google.samples.apps.nowinandroid.core.ui.component.RadioItem
 import com.google.samples.apps.nowinandroid.feature.foryou.ui.ShimmerAnimationType
 
 @Composable
-fun CountryList( viewModel: CountryViewModel = hiltViewModel(), onCountrySelect:(country: Country) -> Unit) {
-    val state = viewModel.state
+fun TagListScreen( viewModel: TagListViewModel = hiltViewModel(), onCountrySelect:(country: Country) -> Unit) {
+
+    val uiState = viewModel.tagListState.collectAsState()
     val shimmerAnimationType by remember { mutableStateOf(ShimmerAnimationType.FADE) }
 
     val transition = rememberInfiniteTransition()
@@ -67,74 +69,28 @@ fun CountryList( viewModel: CountryViewModel = hiltViewModel(), onCountrySelect:
             MaterialTheme.colorScheme.primary else Color.LightGray
     )
 
-    if(state.isLoading) {
-        Column(
-            modifier = Modifier
-                .fillMaxSize()
-                .verticalScroll(rememberScrollState())
-        ) {
-            ShimmerItem(list, dpValue.value, shimmerAnimationType == ShimmerAnimationType.VERTICAL)
-            ShimmerItem(list, dpValue.value, shimmerAnimationType == ShimmerAnimationType.VERTICAL)
-            ShimmerItem(list, dpValue.value, shimmerAnimationType == ShimmerAnimationType.VERTICAL)
-            ShimmerItem(list, dpValue.value, shimmerAnimationType == ShimmerAnimationType.VERTICAL)
-            ShimmerItem(list, dpValue.value, shimmerAnimationType == ShimmerAnimationType.VERTICAL)
-        }
-    }else{
-        Button(onClick = {onCountrySelect(state.categories.get(1)) }) {
-
-        }
-        CountryItem(state.categories)
-    }
-}
-
-@Composable
-fun CountryItem(stateCategories : List<Country>){
-    LazyColumn {
-        itemsIndexed(
-            items = stateCategories,
-            itemContent = {index, item ->
-                AnimatedCountryListItem(tweet = item, index)
+    when (uiState.value) {
+        TagUiState.Loading ->
+            for(i in 1..5) ShimmerItem(list, dpValue.value, shimmerAnimationType == ShimmerAnimationType.VERTICAL)
+        is TagUiState.Tags -> {
+//            RadioItem(viewModel,
+//                listOf((uiState as StationsUiState.Stations).stations),
+//                onImageClick = { Station ->
+//                    Station.favorited = !Station.favorited
+//                    viewModel.setFavoritedStation(Station)
+//                },
+//                onPlayClick = { Station ->
+//                    Station.lastPlayedTime = System.currentTimeMillis().toString()
+//                    viewModel.setFavoritedStation(Station)
+//
+//                }
+//            )
+            (uiState.value as TagUiState.Tags).tags.forEach {
+                Text(text = it.name)
             }
-        )
+        }
+        is TagUiState.Empty -> ShimmerItem(list, dpValue.value, shimmerAnimationType == ShimmerAnimationType.VERTICAL)
     }
 }
 
-@Composable
-fun AnimatedCountryListItem(tweet: Country, itemIndex: Int) {
-    Row(
-        verticalAlignment = Alignment.CenterVertically,
-        modifier = Modifier.clickable {  }
-    ) {
-        CoverImage(
-            data = "https://picsum.photos/id/${itemIndex + 1}/200/200",
-            contentDescription = null,
-            contentScale = ContentScale.Crop,
-            modifier = Modifier
-                .size(55.dp)
-                .padding(4.dp)
-        )
-        Column(
-            modifier = Modifier
-                .padding(horizontal = 4.dp)
-                .weight(1f)
-        ) {
-            Text(
-                text = tweet.name?:"",
-               // style = typography.h6.copy(fontSize = 16.sp),
-                color = MaterialTheme.colorScheme.onSurface
-            )
-            Text(
-                text = tweet.stationcount?:"",
-               // style = typography.subtitle2,
-                maxLines = 1,
-                overflow = TextOverflow.Ellipsis
-            )
-        }
-        Icon(
-            imageVector = Icons.Default.MoreVert,
-            contentDescription = null,
-            tint = Color.LightGray,
-            modifier = Modifier.padding(4.dp)
-        )
-    }
-}
+

@@ -71,9 +71,7 @@ fun CoverImage(
             .aspectRatio(1f)
     ) {
         AsyncImage(
-            model = ImageRequest.Builder(LocalContext.current)
-                .data(data)
-                .build(),
+            model = ImageRequest.Builder(LocalContext.current).data(data).build(),
             contentDescription = contentDescription,
             contentScale = contentScale,
         ) { state ->

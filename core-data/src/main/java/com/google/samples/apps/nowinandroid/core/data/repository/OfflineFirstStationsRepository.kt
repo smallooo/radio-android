@@ -11,15 +11,14 @@ import com.google.samples.apps.nowinandroid.core.database.model.asExternalModel
 import com.google.samples.apps.nowinandroid.core.datastore.ChangeListVersions
 import com.google.samples.apps.nowinandroid.core.datastore.NiaPreferences
 import com.google.samples.apps.nowinandroid.core.model.data.Station
+import com.google.samples.apps.nowinandroid.core.model.data.StationsTag
 import com.google.samples.apps.nowinandroid.core.network.NiANetwork
 import com.google.samples.apps.nowinandroid.core.network.model.NetworkStation
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.GlobalScope
+import kotlinx.coroutines.flow.*
 
 import javax.inject.Inject
-import kotlinx.coroutines.flow.Flow
-import kotlinx.coroutines.flow.flow
-import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.launch
 
 class OfflineFirstStationsRepository @Inject constructor(
@@ -40,6 +39,10 @@ class OfflineFirstStationsRepository @Inject constructor(
 
     override fun getStationsTagStream(): Flow<List<String>> = flow { localStationsSource.getStationsTagList()}
 
+    override fun getTagList(): Flow<List<StationsTag>> = flow {
+        localStationsSource.getStationsTagList()?.let { emit(it) }
+    }
+
     override fun getCountryList(): Flow<List<String>> {
         TODO("Not yet implemented")
     }
@@ -48,9 +51,7 @@ class OfflineFirstStationsRepository @Inject constructor(
         TODO("Not yet implemented")
     }
 
-    override fun getSearchResult(): Flow<List<String>> {
-        TODO("Not yet implemented")
-    }
+    override fun getStationsByConditionList(type: String, param:String): Flow<List<Station>> = flow { localStationsSource.getStationsByConditionList(type, param)}
 
 
     override fun getFavoriteStations(): Flow<List<Station>> = sationDao.getFavoritedStations().map{ it.map(StationEntity::asExternalModel)}

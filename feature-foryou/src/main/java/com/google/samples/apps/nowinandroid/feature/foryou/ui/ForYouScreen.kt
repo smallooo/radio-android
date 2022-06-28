@@ -1,13 +1,11 @@
 package com.google.samples.apps.nowinandroid.feature.foryou
 
 
-import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.*
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Search
 import androidx.compose.material.icons.outlined.Timer
 import androidx.compose.material3.*
-import androidx.compose.material3.windowsizeclass.WindowSizeClass
 import androidx.compose.runtime.*
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
@@ -22,7 +20,6 @@ import com.google.samples.apps.nowinandroid.core.navigation.Navigator
 import com.google.samples.apps.nowinandroid.core.navigation.Screens.LeafScreen
 import com.google.samples.apps.nowinandroid.core.ui.component.NiaGradientBackground
 import com.google.samples.apps.nowinandroid.core.ui.component.NiaTopAppBar
-import com.google.samples.apps.nowinandroid.feature.foryou.ui.ShimmerList
 
 @Composable
 fun ForYouRoute() {
@@ -34,9 +31,7 @@ fun ForYouRoute() {
 fun ForYouScreen(
     navigation: Navigator = LocalNavigator.current
 ) {
-
     NiaGradientBackground {
-
         Scaffold(
             topBar = {
                 NiaTopAppBar(
@@ -71,6 +66,8 @@ fun ForYouScreen(
 
 @Composable
 fun AdvanceListContent() {
+    var type = ""
+    var param = ""
     var selectedIndex by remember { mutableStateOf(0) }
     val tabs = listOf("本地电台", "访问排行", "投票排行","最近更新", "正在播放", "标签", "国家", "语言", "搜索")
     val pagerState: PagerState = run {
@@ -105,10 +102,20 @@ fun AdvanceListContent() {
                 2 -> TopVoteRadios(PageType.bycountry, "")
                 3 -> LateUpdateRadios(PageType.bycountry, "")
                 4 -> NowPlayingRadios(PageType.bycountry, "")
-                5 -> LocalRadioList(PageType.bycountry, "")
-                6 -> CountryList()
+                5 -> TagListScreen(onCountrySelect = {Country ->
+                    selectedIndex = 8
+                    pagerState.currentPage = selectedIndex
+                    type = "bycountry"
+                    param = "Andorra"
+                })
+                6 -> CountryList(onCountrySelect = {Country ->
+                    selectedIndex = 8
+                    pagerState.currentPage = selectedIndex
+                    type = "bycountry"
+                    param = "Andorra"
+                })
                 7 -> LocalRadioList(PageType.bycountry, "")
-                8 -> LocalRadioList(PageType.bycountry, "")
+                8 -> SearchStationsScreen(type, param)
             }
         }
     }

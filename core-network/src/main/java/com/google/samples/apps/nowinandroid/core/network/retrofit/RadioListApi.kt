@@ -2,6 +2,7 @@ package com.google.samples.apps.nowinandroid.core.network.retrofit
 
 import com.google.samples.apps.nowinandroid.core.model.data.Country
 import com.google.samples.apps.nowinandroid.core.model.data.Station
+import com.google.samples.apps.nowinandroid.core.model.data.StationsTag
 import com.google.samples.apps.nowinandroid.core.network.model.NetworkStation
 import retrofit2.http.GET
 
@@ -17,12 +18,12 @@ class RadioListApi @Inject constructor(private val service: Service) {
     suspend fun getTopVote(): List<Station> = service.getTopVote()
     suspend fun getLateUpdated(): List<Station> = service.getRecentlyChanged()
     suspend fun getLastClick(): List<Station> = service.getLastClick()
-    suspend fun getTags(): List<Station> = service.getTags()
+    suspend fun getTags(): List<StationsTag> = service.getTags()
     suspend fun getCountries(): List<Country> = service.getCountries()
     suspend fun getLanguages(): List<String> = service.getLanguages()
-    suspend fun getSearchResult(): List<Station> = service.getSearchResult()
+    suspend fun getStationsByConditionList(type: String, param: String): List<Station> = service.getStationsByConditionList(type, param)
     interface Service {
-        @GET("json/stations/lastchange/100")
+        @GET("json/countries")
         suspend fun getCountryList(): ArrayList<Country>
 
         @GET("/json/stations/{type}/{param}")
@@ -44,7 +45,7 @@ class RadioListApi @Inject constructor(private val service: Service) {
         suspend fun getLastClick(): ArrayList<Station>
 
         @GET("/json/tags")
-        suspend fun getTags(): ArrayList<Station>
+        suspend fun getTags(): ArrayList<StationsTag>
 
         @GET("/json/countrycodes")
         suspend fun getCountries(): ArrayList<Country>
@@ -54,6 +55,9 @@ class RadioListApi @Inject constructor(private val service: Service) {
 
         @GET("/json/languages")
         suspend fun getSearchResult(): ArrayList<Station>
+
+        @GET("/json/stations/{type}/{param}")
+        suspend fun getStationsByConditionList(@Path("type")type: String, @Path("param") param: String): ArrayList<Station>
     }
 
     companion object { const val API_URL = "http://at1.api.radio-browser.info/" }
