@@ -46,7 +46,7 @@ interface StationsRepository : Syncable {
 
     fun getLanguageList(): Flow<List<String>>
 
-    fun getStationsByConditionList(type: String, param:String): Flow<List<Station>>
+    fun getStationsByConditionList(): Flow<List<Station>>
 //    /**
 //     * Gets data for a specific topic
 //     */

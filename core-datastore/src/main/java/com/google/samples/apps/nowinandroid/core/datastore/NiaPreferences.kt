@@ -39,6 +39,7 @@ class NiaPreferences @Inject constructor(private val userPreferences: DataStore<
         }
     }
 
+
     suspend fun toggleFollowedTopicId(followedTopicId: String, followed: Boolean) {
         try {
             userPreferences.updateData {

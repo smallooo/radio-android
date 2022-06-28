@@ -10,6 +10,7 @@ import com.google.samples.apps.nowinandroid.core.database.model.StationEntity
 import com.google.samples.apps.nowinandroid.core.database.model.asExternalModel
 import com.google.samples.apps.nowinandroid.core.datastore.ChangeListVersions
 import com.google.samples.apps.nowinandroid.core.datastore.NiaPreferences
+import com.google.samples.apps.nowinandroid.core.datastore.PreferencesStore
 import com.google.samples.apps.nowinandroid.core.model.data.Station
 import com.google.samples.apps.nowinandroid.core.model.data.StationsTag
 import com.google.samples.apps.nowinandroid.core.network.NiANetwork
@@ -25,6 +26,7 @@ class OfflineFirstStationsRepository @Inject constructor(
     private val sationDao: StationDao,
     private val network: NiANetwork,
     private val niaPreferences: NiaPreferences,
+    private val preferences: PreferencesStore,
     private val localStationsSource: LocalStationsSource,
 ) : StationsRepository {
     override fun getAllStationsStream(): Flow<List<Station>> = sationDao.getAllStationEntitiesStream().map { it.map(StationEntity::asExternalModel) }
@@ -51,7 +53,11 @@ class OfflineFirstStationsRepository @Inject constructor(
         TODO("Not yet implemented")
     }
 
-    override fun getStationsByConditionList(type: String, param:String): Flow<List<Station>> = flow { localStationsSource.getStationsByConditionList(type, param)}
+    override fun getStationsByConditionList(): Flow<List<Station>> = flow {
+        val type = preferences.get("type","").first()
+        val param = preferences.get("param","").first()
+        localStationsSource.getStationsByConditionList(type, param)?.let { emit(it) }
+    }
 
 
     override fun getFavoriteStations(): Flow<List<Station>> = sationDao.getFavoritedStations().map{ it.map(StationEntity::asExternalModel)}

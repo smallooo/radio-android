@@ -26,19 +26,11 @@ import com.hdmsh.common_compose.rememberFlowWithLifecycle
 
 @SuppressLint("StateFlowValueCalledInComposition")
 @Composable
-fun SearchStationsScreen(
-    pageType:String, param: String,
-    viewModel: SearchListViewModel = hiltViewModel(),
-    playbackConnection: PlaybackConnection = LocalPlaybackConnection.current) {
-
-    viewModel.type = pageType
-    viewModel.param = param
-
-    val uiState = viewModel.state
+fun SearchStationsScreen(viewModel: SearchListViewModel = hiltViewModel()) {
+    val uiState = viewModel.searchRadiosState.collectAsState()
     val shimmerAnimationType by remember { mutableStateOf(ShimmerAnimationType.FADE) }
     val transition = rememberInfiniteTransition()
-    val playbackState by rememberFlowWithLifecycle(playbackConnection.playbackState)
-    val nowPlaying by rememberFlowWithLifecycle(playbackConnection.nowPlaying)
+
 
     val translateAnim by transition.animateFloat(
         initialValue = 100f,
@@ -70,30 +62,22 @@ fun SearchStationsScreen(
         2000.dp
     }
 
-    if (uiState.isLoading) {
-        Column(
-            modifier = Modifier
-                .fillMaxSize()
-                .verticalScroll(rememberScrollState())
-        ) {
-            ShimmerItem(list, dpValue.value, shimmerAnimationType == ShimmerAnimationType.VERTICAL)
-            ShimmerItem(list, dpValue.value, shimmerAnimationType == ShimmerAnimationType.VERTICAL)
-            ShimmerItem(list, dpValue.value, shimmerAnimationType == ShimmerAnimationType.VERTICAL)
-            ShimmerItem(list, dpValue.value, shimmerAnimationType == ShimmerAnimationType.VERTICAL)
-            ShimmerItem(list, dpValue.value, shimmerAnimationType == ShimmerAnimationType.VERTICAL)
+    when (uiState.value) {
+        StationsUiState.Loading ->
+            for(i in 1..5) ShimmerItem(list, dpValue.value, shimmerAnimationType == ShimmerAnimationType.VERTICAL)
+        is StationsUiState.Stations -> {
+            RadioItem(viewModel,
+                listOf((uiState.value as StationsUiState.Stations).stations),
+                onImageClick = { Station ->
+                    Station.favorited = !Station.favorited
+                    viewModel.setFavoritedStation(Station)
+                },
+                onPlayClick = { Station ->
+                    Station.lastPlayedTime = System.currentTimeMillis().toString()
+                    viewModel.setFavoritedStation(Station)
+                }
+            )
         }
-    } else {
-        RadioItem111(viewModel,
-            listOf(uiState.localStations),
-            onImageClick = { Station ->
-                Station.favorited = !Station.favorited
-                viewModel.setFavoritedStation(Station)
-            },
-            onPlayClick = { Station ->
-                Station.lastPlayedTime = System.currentTimeMillis().toString()
-                viewModel.setPlayHistory(Station)
-
-            }
-        )
+        is StationsUiState.Empty -> ShimmerItem(list, dpValue.value, shimmerAnimationType == ShimmerAnimationType.VERTICAL)
     }
 }

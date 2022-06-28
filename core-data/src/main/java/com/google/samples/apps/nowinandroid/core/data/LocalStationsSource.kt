@@ -69,7 +69,7 @@ class LocalStationsSource @Inject constructor(private val stationDao: StationDao
     }
 
     suspend fun getStationsByConditionList(type: String, param: String) = withContext(Dispatchers.IO){
-        if(_serchList == null){ _serchList = radioListApi.getStationsByConditionList(type, param) }
+        if(_serchList == null){ _serchList = radioListApi.getStationsByConditionList(type, param.substring(1)) }
         return@withContext _serchList
     }
 }

@@ -1,5 +1,6 @@
 package com.google.samples.apps.nowinandroid.feature.foryou
 
+
 import androidx.compose.animation.animateColor
 import androidx.compose.animation.core.*
 import androidx.compose.foundation.Image
@@ -22,12 +23,15 @@ import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import coil.compose.rememberImagePainter
 import com.google.samples.apps.nowinandroid.core.model.data.Country
+import com.google.samples.apps.nowinandroid.core.model.data.StationsTag
 import com.google.samples.apps.nowinandroid.core.ui.component.CoverImage
 import com.google.samples.apps.nowinandroid.core.ui.component.RadioItem
+import com.google.samples.apps.nowinandroid.core.ui.component.TagItems
+
 import com.google.samples.apps.nowinandroid.feature.foryou.ui.ShimmerAnimationType
 
 @Composable
-fun TagListScreen( viewModel: TagListViewModel = hiltViewModel(), onCountrySelect:(country: Country) -> Unit) {
+fun TagListScreen( viewModel: TagListViewModel = hiltViewModel(), viewModel1: SearchListViewModel = hiltViewModel(),onTagSelect:(stationsTag: StationsTag) -> Unit) {
 
     val uiState = viewModel.tagListState.collectAsState()
     val shimmerAnimationType by remember { mutableStateOf(ShimmerAnimationType.FADE) }
@@ -73,21 +77,13 @@ fun TagListScreen( viewModel: TagListViewModel = hiltViewModel(), onCountrySelec
         TagUiState.Loading ->
             for(i in 1..5) ShimmerItem(list, dpValue.value, shimmerAnimationType == ShimmerAnimationType.VERTICAL)
         is TagUiState.Tags -> {
-//            RadioItem(viewModel,
-//                listOf((uiState as StationsUiState.Stations).stations),
-//                onImageClick = { Station ->
-//                    Station.favorited = !Station.favorited
-//                    viewModel.setFavoritedStation(Station)
-//                },
-//                onPlayClick = { Station ->
-//                    Station.lastPlayedTime = System.currentTimeMillis().toString()
-//                    viewModel.setFavoritedStation(Station)
-//
-//                }
-//            )
-            (uiState.value as TagUiState.Tags).tags.forEach {
-                Text(text = it.name)
-            }
+            TagItems(
+                (uiState.value as TagUiState.Tags).tags,
+                onItemClick = {
+                    onTagSelect(it)
+
+                }
+            )
         }
         is TagUiState.Empty -> ShimmerItem(list, dpValue.value, shimmerAnimationType == ShimmerAnimationType.VERTICAL)
     }
