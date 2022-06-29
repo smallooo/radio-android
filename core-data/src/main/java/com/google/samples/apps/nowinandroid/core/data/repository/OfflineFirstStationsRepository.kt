@@ -56,6 +56,9 @@ class OfflineFirstStationsRepository @Inject constructor(
     override fun getStationsByConditionList(): Flow<List<Station>> = flow {
         val type = preferences.get("type","").first()
         val param = preferences.get("param","").first()
+        Log.e("aaa", "type"+ type)
+        Log.e("param", "param"+ param)
+
         localStationsSource.getStationsByConditionList(type, param)?.let { emit(it) }
     }
 

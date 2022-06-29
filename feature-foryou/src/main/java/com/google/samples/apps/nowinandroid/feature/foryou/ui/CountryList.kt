@@ -80,9 +80,9 @@ fun CountryList( viewModel: CountryViewModel = hiltViewModel(), onCountrySelect:
             ShimmerItem(list, dpValue.value, shimmerAnimationType == ShimmerAnimationType.VERTICAL)
         }
     }else{
-        Button(onClick = {onCountrySelect(state.categories.get(1)) }) {
-
-        }
+//        Button(onClick = {onCountrySelect(state.categories.get(1)) }) {
+//
+//        }
         CountryItem(state.categories)
     }
 }

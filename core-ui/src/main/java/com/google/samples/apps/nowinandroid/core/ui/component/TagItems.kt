@@ -40,9 +40,9 @@ fun AnimatedTagListItem(stationTag: StationsTag, itemIndex: Int,  onItemClick: (
         verticalAlignment = Alignment.CenterVertically,
         modifier = Modifier.clickable { onItemClick(stationTag) },
     ) {
-        Column(
+        Row(
             modifier = Modifier
-                .padding(horizontal = 4.dp)
+                .padding(horizontal = 4.dp, vertical = 8.dp)
                 .weight(1f)
         ) {
             Text(

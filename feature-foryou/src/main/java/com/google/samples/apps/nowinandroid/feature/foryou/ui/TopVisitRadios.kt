@@ -100,12 +100,11 @@ fun TopVisitRadios(
         RadioItem111(viewModel,
             listOf(topVisitsState.localStations),
             onImageClick = { Station ->
-                Log.e("aaa","1234567")
+
                 Station.favorited = !Station.favorited
                 viewModel.setFavoritedStation(Station)
             },
             onPlayClick = { Station ->
-                Log.e("aaa","123456")
                 Station.lastPlayedTime = System.currentTimeMillis().toString()
                 viewModel.setPlayHistory(Station)
 

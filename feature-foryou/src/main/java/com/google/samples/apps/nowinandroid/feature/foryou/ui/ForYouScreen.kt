@@ -12,7 +12,7 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
-import androidx.lifecycle.SavedStateHandle
+import androidx.hilt.navigation.compose.hiltViewModel
 
 import com.google.samples.apps.nowinandroid.components.Pager
 import com.google.samples.apps.nowinandroid.components.PagerState
@@ -71,7 +71,7 @@ fun ForYouScreen(
 
 
 @Composable
-fun AdvanceListContent() {
+fun AdvanceListContent(viewModel: SearchListViewModel = hiltViewModel()) {
     var type = ""
     var param = ""
     var selectedIndex by remember { mutableStateOf(0) }
@@ -118,6 +118,7 @@ fun AdvanceListContent() {
                         preferences.save("param", param)
                         selectedIndex = 8
                         pagerState.currentPage = selectedIndex
+                        viewModel.upDateSearch(type, param)
                     }
                 })
                 6 -> CountryList(onCountrySelect = {Country ->
