@@ -83,27 +83,27 @@ fun CountryList( viewModel: CountryViewModel = hiltViewModel(), onCountrySelect:
 //        Button(onClick = {onCountrySelect(state.categories.get(1)) }) {
 //
 //        }
-        CountryItem(state.categories)
+        CountryItem(state.categories,onCountrySelect)
     }
 }
 
 @Composable
-fun CountryItem(stateCategories : List<Country>){
+fun CountryItem(stateCategories : List<Country>, onCountrySelect: (country: Country) -> Unit){
     LazyColumn {
         itemsIndexed(
             items = stateCategories,
             itemContent = {index, item ->
-                AnimatedCountryListItem(tweet = item, index)
+                AnimatedCountryListItem(tweet = item, index,onCountrySelect)
             }
         )
     }
 }
 
 @Composable
-fun AnimatedCountryListItem(tweet: Country, itemIndex: Int) {
+fun AnimatedCountryListItem(tweet: Country, itemIndex: Int, onCountrySelect: (country: Country) -> Unit) {
     Row(
         verticalAlignment = Alignment.CenterVertically,
-        modifier = Modifier.clickable {  }
+        modifier = Modifier.clickable { onCountrySelect(tweet) }
     ) {
         CoverImage(
             data = "https://picsum.photos/id/${itemIndex + 1}/200/200",

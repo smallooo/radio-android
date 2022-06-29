@@ -26,17 +26,6 @@ class  SearchListViewModel @Inject constructor(
     private val stationDao: StationDao,
     ) : ViewModel() {
 
-//    var searchRadiosState: StateFlow<StationsUiState> = combine(
-//        stationsRepository.getStationsByConditionList(),
-//        stationsRepository.getFollowedStationIdsStream(),
-//    ) { availableStations, followedStationsIdsState ->
-//        StationsUiState.Stations(stations = availableStations.map { station -> FollowableStation(station = station, isFollowed = true) })
-//    }.stateIn(
-//        scope = viewModelScope,
-//        started = SharingStarted.WhileSubscribed(5_000),
-//        initialValue = StationsUiState.Loading
-//    )
-
     var type: String = "bytag"
     var param: String = "1012"
 
@@ -60,14 +49,9 @@ class  SearchListViewModel @Inject constructor(
         val categories = remoteSource.getStationsByConditionList(type, param)
         if (categories != null) {
             val stations = ArrayList<StationEntity>()
-            for(item in categories){
-                stations.add(item.asExternalModel())
-            }
-
+            for(item in categories){ stations.add(item.asExternalModel()) }
             stationDao.upsertStations(entities = stations)
-
         }
-
 
         viewModelScope.launch {
             state = categories?.let { state.copy(localStations = it, isLoading = false) }!!
@@ -75,13 +59,11 @@ class  SearchListViewModel @Inject constructor(
         }
     }
 
-
     fun upDateSearch(type: String, param: String){
         GlobalScope.launch(Dispatchers.IO) {
-            state =  state.copy(localStations = emptyList(), isLoading = false)
+            state =  state.copy(localStations = emptyList(), isLoading = true)
             getSearchStationList(type, param)
         }
-        //searchRadiosState.value = StationsUiState.Stations( stations = stationsRepository.getStationsByConditionList())
     }
 
     fun setFavoritedStation(station: Station) = stationsRepository.setFavoriteStation(station)

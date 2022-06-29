@@ -124,8 +124,11 @@ fun AdvanceListContent(viewModel: SearchListViewModel = hiltViewModel()) {
                 6 -> CountryList(onCountrySelect = {Country ->
                     selectedIndex = 8
                     pagerState.currentPage = selectedIndex
-                    type = "bycountry"
-                    param = "Andorra"
+                    GlobalScope.launch(Dispatchers.IO) {
+                        selectedIndex = 8
+                        pagerState.currentPage = selectedIndex
+                        viewModel.upDateSearch("bycountry", Country.name)
+                    }
                 })
                 7 -> LocalRadioList(PageType.bycountry, "")
                 8 -> {
