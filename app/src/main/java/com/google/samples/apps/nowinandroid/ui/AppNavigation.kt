@@ -179,8 +179,13 @@ fun Downloads(){
 
 private fun NavGraphBuilder.addLibrary() {
     composableScreen(LeafScreen.Library()) {
-        HistoryRoute(onBackClick = { /*TODO*/ })
+        History()
     }
+}
+
+@Composable
+fun History(){
+    HistoryRoute(onBackClick = { /*TODO*/ })
 }
 
 

@@ -71,14 +71,10 @@ fun ForYouScreen(
 
 @Composable
 fun AdvanceListContent(viewModel: SearchListViewModel = hiltViewModel()) {
-    var type = ""
-    var param = ""
     var selectedIndex by remember { mutableStateOf(0) }
     val tabs = listOf("本地电台", "访问排行", "投票排行","最近更新", "正在播放", "标签", "国家", "语言", "搜索")
     val pagerState: PagerState = run {
-        remember {
-            PagerState(0, 0, tabs.size - 1)
-        }
+        remember { PagerState(0, 0, tabs.size - 1) }
     }
 
     Column {
@@ -122,7 +118,13 @@ fun AdvanceListContent(viewModel: SearchListViewModel = hiltViewModel()) {
                         viewModel.upDateSearch("bycountry", Country.name)
                     }
                 })
-                7 -> LocalRadioList(PageType.bycountry, "")
+                7 -> LanguageListScreen(onTagSelect = {
+                    GlobalScope.launch(Dispatchers.IO) {
+                        selectedIndex = 8
+                        pagerState.currentPage = selectedIndex
+                        viewModel.upDateSearch("bylanguage", it.name)
+                    }
+                })
                 8 -> SearchStationsScreen()
             }
         }

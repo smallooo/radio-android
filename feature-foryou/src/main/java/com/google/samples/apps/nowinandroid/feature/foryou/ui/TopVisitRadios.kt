@@ -30,6 +30,7 @@ import com.google.samples.app.nowinandroid.core.playback.isActive
 import com.google.samples.apps.nowinandroid.common.compose.LocalPlaybackConnection
 import com.google.samples.apps.nowinandroid.core.model.data.FollowableStation
 import com.google.samples.apps.nowinandroid.core.model.data.Station
+import com.google.samples.apps.nowinandroid.core.ui.component.CoverImage
 import com.google.samples.apps.nowinandroid.core.ui.component.RadioItem
 import com.google.samples.apps.nowinandroid.core.ui.theme.AppTheme.state
 
@@ -135,8 +136,8 @@ fun AnimatedListItem111(station: Station, itemIndex: Int, playbackConnection: Pl
             onPlayClick(station)
         }
     ) {
-        Image(
-            painter = rememberImagePainter(data = station.favicon),
+        CoverImage(
+            data = station.favicon,
             contentDescription = null,
             contentScale = ContentScale.Crop,
             modifier = Modifier

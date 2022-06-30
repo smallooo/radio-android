@@ -71,6 +71,7 @@ private fun Context.syncWorkNotification(): Notification {
     )
         .setSmallIcon(R.drawable.ic_nia_notification)
         .setContentTitle(getString(R.string.sync_notification_title))
+        .setSilent(true)
         .setPriority(NotificationCompat.PRIORITY_DEFAULT)
         .build()
 }

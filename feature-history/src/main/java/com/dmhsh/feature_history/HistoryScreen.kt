@@ -76,7 +76,7 @@ internal fun HistoryScreen(
             is StationsUiState.Stations ->
                 // Text(favoriteState.stations.get(0).station.name.toString())
 
-                RadioItemFavorite(listOf((playHistory as StationsUiState.Stations).stations), onImageClick = {})
+                RadioItemFavorite(listOf(playHistory.stations), onImageClick = {})
             // RadioItem(listOf(favoriteState .stations))
             is StationsUiState.Empty -> Text("hello")
         }

@@ -11,6 +11,7 @@ import com.google.samples.apps.nowinandroid.core.database.model.asExternalModel
 import com.google.samples.apps.nowinandroid.core.datastore.ChangeListVersions
 import com.google.samples.apps.nowinandroid.core.datastore.NiaPreferences
 import com.google.samples.apps.nowinandroid.core.datastore.PreferencesStore
+import com.google.samples.apps.nowinandroid.core.model.data.LanguageTag
 import com.google.samples.apps.nowinandroid.core.model.data.Station
 import com.google.samples.apps.nowinandroid.core.model.data.StationsTag
 import com.google.samples.apps.nowinandroid.core.network.NiANetwork
@@ -49,8 +50,8 @@ class OfflineFirstStationsRepository @Inject constructor(
         TODO("Not yet implemented")
     }
 
-    override fun getLanguageList(): Flow<List<String>> {
-        TODO("Not yet implemented")
+    override fun getLanguageList(): Flow<List<LanguageTag>>  = flow {
+        localStationsSource.getLanguageList()?.let { emit(it) }
     }
 
     override fun getStationsByConditionList(): Flow<List<Station>> = flow {

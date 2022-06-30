@@ -1,12 +1,10 @@
 package com.google.samples.apps.nowinandroid.core.ui.component
 
 import android.util.Log
+import android.widget.ScrollView
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.clickable
-import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.Row
-import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.layout.size
+import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.itemsIndexed
 import androidx.compose.material.icons.Icons
@@ -17,7 +15,11 @@ import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.geometry.Offset
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.input.nestedscroll.NestedScrollConnection
+import androidx.compose.ui.input.nestedscroll.NestedScrollSource
+import androidx.compose.ui.input.nestedscroll.nestedScroll
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
@@ -32,18 +34,30 @@ import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.flow.toList
 import kotlinx.coroutines.launch
 
+//fun Modifier.scrollEnabled(
+//    enabled: Boolean,
+//) = nestedScroll(
+//    connection = object : NestedScrollConnection {
+//        override fun onPreScroll(
+//            available: Offset,
+//            source: NestedScrollSource
+//        ): Offset = if(enabled) Offset.Zero else available
+//    }
+//)
+
 @Composable
-fun RadioItemFavorite(stateCategories : List<List<FollowableStation>>,
-              onImageClick: () -> Unit
-        ){
+fun RadioItemFavorite(stateCategories : List<List<FollowableStation>>, onImageClick: () -> Unit){
+
+//    Column(modifier = Modifier.fillMaxSize()){
     LazyColumn {
-        itemsIndexed(
-            items = stateCategories.get(0),
-            itemContent = {index, item ->
-                AnimatedListFavoriteItem(station = item, index, onImageClick)
-            }
-        )
-    }
+            itemsIndexed(
+                items = stateCategories.get(0),
+                itemContent = { index, item ->
+                    AnimatedListFavoriteItem(station = item, index, onImageClick)
+                }
+            )
+        }
+  //  }
 }
 
 @Composable
@@ -54,8 +68,8 @@ fun AnimatedListFavoriteItem(station: FollowableStation, itemIndex: Int,   onIma
         modifier = Modifier.clickable { playbackConnection.playAudio(station.station) },
 
     ) {
-        Image(
-            painter = rememberImagePainter(data = station.station.favicon),
+        CoverImage(
+            data = station.station.favicon,
             contentDescription = null,
             contentScale = ContentScale.Crop,
             modifier = Modifier

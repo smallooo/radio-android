@@ -1,6 +1,7 @@
 package com.google.samples.apps.nowinandroid.core.network.retrofit
 
 import com.google.samples.apps.nowinandroid.core.model.data.Country
+import com.google.samples.apps.nowinandroid.core.model.data.LanguageTag
 import com.google.samples.apps.nowinandroid.core.model.data.Station
 import com.google.samples.apps.nowinandroid.core.model.data.StationsTag
 import com.google.samples.apps.nowinandroid.core.network.model.NetworkStation
@@ -20,7 +21,7 @@ class RadioListApi @Inject constructor(private val service: Service) {
     suspend fun getLastClick(): List<Station> = service.getLastClick()
     suspend fun getTags(): List<StationsTag> = service.getTags()
     suspend fun getCountries(): List<Country> = service.getCountries()
-    suspend fun getLanguages(): List<String> = service.getLanguages()
+    suspend fun getLanguages(): List<LanguageTag> = service.getLanguages()
     suspend fun getStationsByConditionList(type: String, param: String): List<Station> = service.getStationsByConditionList(type, param)
     interface Service {
         @GET("json/countries")
@@ -51,7 +52,7 @@ class RadioListApi @Inject constructor(private val service: Service) {
         suspend fun getCountries(): ArrayList<Country>
 
         @GET("/json/languages")
-        suspend fun getLanguages(): ArrayList<String>
+        suspend fun getLanguages(): ArrayList<LanguageTag>
 
         @GET("/json/languages")
         suspend fun getSearchResult(): ArrayList<Station>

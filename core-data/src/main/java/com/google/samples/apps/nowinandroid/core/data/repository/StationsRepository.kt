@@ -18,6 +18,7 @@ package com.google.samples.apps.nowinandroid.core.data.repository
 
 import com.google.samples.apps.nowinandroid.core.data.Syncable
 import com.google.samples.apps.nowinandroid.core.database.model.StationEntity
+import com.google.samples.apps.nowinandroid.core.model.data.LanguageTag
 import com.google.samples.apps.nowinandroid.core.model.data.Station
 import com.google.samples.apps.nowinandroid.core.model.data.StationsTag
 import com.google.samples.apps.nowinandroid.core.model.data.Topic
@@ -44,7 +45,7 @@ interface StationsRepository : Syncable {
 
     fun getCountryList(): Flow<List<String>>
 
-    fun getLanguageList(): Flow<List<String>>
+    fun getLanguageList(): Flow<List<LanguageTag>>
 
     fun getStationsByConditionList(): Flow<List<Station>>
 //    /**

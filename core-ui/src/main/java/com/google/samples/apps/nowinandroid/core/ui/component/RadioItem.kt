@@ -44,7 +44,6 @@ fun RadioItem(viewModel: ViewModel, stateCategories : List<List<FollowableStatio
                 AnimatedListItem(
                     station = item,
                     index,
-
                     onImageClick = onImageClick,
                     onPlayClick = onPlayClick)
             }
@@ -75,25 +74,14 @@ fun AnimatedListItem(station: FollowableStation, itemIndex: Int,  onImageClick: 
 //            }
                                       },
     ) {
-        Image(
-            painter = rememberImagePainter(data = station.station.favicon),
+        CoverImage(
+            data =  station.station.favicon,
             contentDescription = null,
             contentScale = ContentScale.Crop,
             modifier = Modifier
                 .size(55.dp)
                 .padding(4.dp).clickable {
-                    Log.e("aaa", "onImageClick3")
                     onImageClick(station.station)
-
-//                    GlobalScope.launch (Dispatchers.IO) {
-//                        val a =  preferences.get("favorite", ArrayList<String>())
-//                        val b = a.toList() as ArrayList<String>
-//                        b.add(station.station.stationuuid)
-//                        preferences.save("favorite", b)
-//                    }
-
-                    GlobalScope.launch (Dispatchers.IO) {
-                    }
                 }
         )
         Column(

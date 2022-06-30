@@ -3,6 +3,7 @@ package com.google.samples.apps.nowinandroid.core.data
 import android.util.Log
 import com.google.samples.apps.nowinandroid.core.database.dao.StationDao
 import com.google.samples.apps.nowinandroid.core.model.data.Country
+import com.google.samples.apps.nowinandroid.core.model.data.LanguageTag
 import com.google.samples.apps.nowinandroid.core.model.data.Station
 import com.google.samples.apps.nowinandroid.core.model.data.StationsTag
 import com.google.samples.apps.nowinandroid.core.network.model.NetworkStation
@@ -21,7 +22,7 @@ class LocalStationsSource @Inject constructor(private val stationDao: StationDao
     private var _lastClickRadioList: List<Station>? = null
     private var _stationsTagList: List<StationsTag>? = null
     private var _countryList: List<Country>? = null
-    private var _languageList: List<String>? = null
+    private var _languageList: List<LanguageTag>? = null
     private var _serchList: List<Station>? = null
 
 

@@ -15,7 +15,7 @@
      limitations under the License.
 -->
 <resources>
-    <string name="interests">Interests</string>
+    <string name="interests">Favorite</string>
     <string name="interests_topics">Topics</string>
     <string name="interests_people">People</string>
     <string name="interests_loading">Loading data</string>
