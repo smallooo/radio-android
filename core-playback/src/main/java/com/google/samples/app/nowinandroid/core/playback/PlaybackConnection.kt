@@ -66,6 +66,8 @@ class PlaybackConnectionImpl(
             Bundle().apply {
                 //putStringArray(QUEUE_LIST_KEY, ["1","2"])
                 putString(QUEUE_TITLE_KEY, "Audio".toString())
+                putString("ARTIST", "ARTIST".toString())
+                putString(QUEUE_TITLE_KEY, "Audio".toString())
             }
         )
 

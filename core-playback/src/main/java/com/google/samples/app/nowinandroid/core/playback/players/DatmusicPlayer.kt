@@ -291,6 +291,8 @@ class DatmusicPlayerImpl @Inject constructor(
                 if (artworkFromFile != null) {
                    putBitmap(MediaMetadataCompat.METADATA_KEY_ALBUM_ART, artworkFromFile)
                 }
+                putString(MediaMetadataCompat.METADATA_KEY_ARTIST, station.name)
+                putString(MediaMetadataCompat.METADATA_KEY_ALBUM, station.language)
             }
             mediaSession.setMetadata(mediaMetadata.build())
             metaDataChangedCallback(player)

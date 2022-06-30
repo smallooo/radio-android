@@ -69,7 +69,6 @@ fun ForYouScreen(
     }
 }
 
-
 @Composable
 fun AdvanceListContent(viewModel: SearchListViewModel = hiltViewModel()) {
     var type = ""
@@ -80,10 +79,7 @@ fun AdvanceListContent(viewModel: SearchListViewModel = hiltViewModel()) {
         remember {
             PagerState(0, 0, tabs.size - 1)
         }
-
     }
-
-    val preferences:PreferencesStore = PreferencesStore(LocalContext.current)
 
     Column {
         Spacer(modifier = Modifier.height(88.dp))
@@ -111,14 +107,10 @@ fun AdvanceListContent(viewModel: SearchListViewModel = hiltViewModel()) {
                 3 -> LateUpdateRadios(PageType.bycountry, "")
                 4 -> NowPlayingRadios(PageType.bycountry, "")
                 5 -> TagListScreen(onTagSelect = {stationTag ->
-                    type = "bytag"
-                    param = stationTag.name
                     GlobalScope.launch(Dispatchers.IO) {
-                        preferences.save("type", type)
-                        preferences.save("param", param)
                         selectedIndex = 8
                         pagerState.currentPage = selectedIndex
-                        viewModel.upDateSearch(type, param)
+                        viewModel.upDateSearch("bytag", stationTag.name)
                     }
                 })
                 6 -> CountryList(onCountrySelect = {Country ->
@@ -131,9 +123,7 @@ fun AdvanceListContent(viewModel: SearchListViewModel = hiltViewModel()) {
                     }
                 })
                 7 -> LocalRadioList(PageType.bycountry, "")
-                8 -> {
-                    SearchStationsScreen()
-                }
+                8 -> SearchStationsScreen()
             }
         }
     }

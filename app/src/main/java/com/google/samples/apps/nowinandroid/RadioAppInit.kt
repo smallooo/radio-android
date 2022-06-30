@@ -27,7 +27,7 @@ import dagger.hilt.android.HiltAndroidApp
  * [Application] class for NiA
  */
 @HiltAndroidApp
-class RadioAppInit : Application(), ImageLoaderFactory {
+class RadioAppInit : Application() {
     override fun onCreate() {
         super.onCreate()
         // Initialize Sync; the system responsible for keeping data in the app up to date.
@@ -41,11 +41,11 @@ class RadioAppInit : Application(), ImageLoaderFactory {
      *
      * @see https://github.com/coil-kt/coil/blob/main/coil-singleton/src/main/java/coil/Coil.kt#L63
      */
-    override fun newImageLoader(): ImageLoader {
-        return ImageLoader.Builder(this)
-            .components {
-                add(SvgDecoder.Factory())
-            }
-            .build()
-    }
+//    override fun newImageLoader(): ImageLoader {
+//        return ImageLoader.Builder(this)
+//            .components {
+//                add(SvgDecoder.Factory())
+//            }
+//            .build()
+//    }
 }

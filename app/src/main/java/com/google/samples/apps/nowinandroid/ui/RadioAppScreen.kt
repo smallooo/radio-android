@@ -40,8 +40,7 @@ import kotlinx.coroutines.InternalCoroutinesApi
 
 
 @OptIn(ExperimentalMaterialApi::class, ExperimentalMaterialNavigationApi::class, InternalCoroutinesApi::class,
-    ExperimentalAnimationApi::class
-)
+    ExperimentalAnimationApi::class)
 @Composable
 fun RadioApp(
     windowSizeClass: WindowSizeClass,
@@ -87,7 +86,6 @@ private fun RadioCore(
         }
     }
 }
-
 
 @Composable
 fun PlaybackHost(

@@ -29,12 +29,10 @@ import com.google.samples.apps.nowinandroid.core.util.systemService
 import androidx.media.app.NotificationCompat as NotificationMediaCompat
 
 import dagger.hilt.android.qualifiers.ApplicationContext
+import kotlinx.coroutines.DelicateCoroutinesApi
 import javax.inject.Inject
 import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.launch
-
-
-
 
 const val NOTIFICATION_ID = 2000
 const val CHANNEL_ID = "audio-player"
@@ -68,6 +66,7 @@ class MediaNotificationsImpl @Inject constructor(
 
     private val notificationManager: NotificationManager = context.systemService(Context.NOTIFICATION_SERVICE)
 
+    @OptIn(DelicateCoroutinesApi::class)
     override fun updateNotification(mediaSession: MediaSessionCompat) {
         if (!PlayerService.IS_FOREGROUND) return
         GlobalScope.launch {
