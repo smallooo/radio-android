@@ -35,6 +35,8 @@
 
 # Application classes that will be serialized/deserialized over Gson
 #-keep class com.google.samples.apps.nowinandroid.core.network { *; }
+-keep class com.google.samples.apps.nowinandroid.di.NetworkModule { *; }
 -keep class com.google.samples.apps.nowinandroid.core.network.di.DispatchersModule { *; }
+-keep class com.google.samples.apps.nowinandroid.core.network.** { *; }
 -keep class com.google.samples.apps.nowinandroid.core.network.Dispatcher { *; }
 -keep class com.google.samples.apps.nowinandroid.core.network.NiaDispatchers { *; }
