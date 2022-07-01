@@ -53,22 +53,20 @@ import com.google.samples.apps.nowinandroid.core.ui.LoadingWheel
 import com.google.samples.apps.nowinandroid.core.ui.component.NiaFilterChip
 import com.google.samples.apps.nowinandroid.core.ui.newsResourceCardItems
 import com.google.samples.apps.nowinandroid.feature.topic.R.string
-import com.google.samples.apps.nowinandroid.feature.topic.TopicUiState.Loading
+
 
 @Composable
 fun TopicRoute(
     onBackClick: () -> Unit,
     modifier: Modifier = Modifier,
-    viewModel: TopicViewModel = hiltViewModel(),
+
 ) {
-    val uiState: TopicScreenUiState by viewModel.uiState.collectAsState()
+
 
     TopicScreen(
-        topicState = uiState.topicState,
-        newsState = uiState.newsState,
+
         modifier = modifier,
         onBackClick = onBackClick,
-        onFollowClick = viewModel::followTopicToggle,
     )
 }
 
@@ -76,10 +74,9 @@ fun TopicRoute(
 @VisibleForTesting
 @Composable
 internal fun TopicScreen(
-    topicState: TopicUiState,
-    newsState: NewsUiState,
+
     onBackClick: () -> Unit,
-    onFollowClick: (Boolean) -> Unit,
+
     modifier: Modifier = Modifier,
 ) {
     LazyColumn(
@@ -95,30 +92,7 @@ internal fun TopicScreen(
                 )
             )
         }
-        when (topicState) {
-            Loading -> item {
-                LoadingWheel(
-                    modifier = modifier,
-                    contentDesc = stringResource(id = string.topic_loading),
-                )
-            }
-            //TopicUiState.Error -> TODO()
-            is TopicUiState.Success -> {
-                item {
-                    TopicToolbar(
-                        onBackClick = onBackClick,
-                        onFollowClick = onFollowClick,
-                        uiState = topicState.followableTopic,
-                    )
-                }
-                TopicBody(
-                    name = topicState.followableTopic.topic.name,
-                    description = topicState.followableTopic.topic.longDescription,
-                    news = newsState,
-                    imageUrl = topicState.followableTopic.topic.imageUrl
-                )
-            }
-        }
+
         item {
             Spacer(
                 // TODO: Replace with windowInsetsBottomHeight after
@@ -131,19 +105,7 @@ internal fun TopicScreen(
     }
 }
 
-private fun LazyListScope.TopicBody(
-    name: String,
-    description: String,
-    news: NewsUiState,
-    imageUrl: String
-) {
-    // TODO: Show icon if available
-    item {
-        TopicHeader(name, description, imageUrl)
-    }
 
-    TopicCards(news)
-}
 
 @Composable
 private fun TopicHeader(name: String, description: String, imageUrl: String) {
@@ -153,7 +115,8 @@ private fun TopicHeader(name: String, description: String, imageUrl: String) {
         AsyncImage(
             model = imageUrl,
             contentDescription = null,
-            modifier = Modifier.align(Alignment.CenterHorizontally)
+            modifier = Modifier
+                .align(Alignment.CenterHorizontally)
                 .size(216.dp)
                 .padding(bottom = 12.dp)
         )
@@ -168,38 +131,6 @@ private fun TopicHeader(name: String, description: String, imageUrl: String) {
     }
 }
 
-private fun LazyListScope.TopicCards(news: NewsUiState) {
-    when (news) {
-        is NewsUiState.Success -> {
-            newsResourceCardItems(
-                items = news.news,
-                newsResourceMapper = { it },
-                isBookmarkedMapper = { /* TODO */ false },
-                onToggleBookmark = { /* TODO */ },
-                itemModifier = Modifier.padding(24.dp)
-            )
-        }
-        is NewsUiState.Loading -> item {
-            LoadingWheel(contentDesc = "Loading news") // TODO
-        }
-        else -> item {
-            Text("Error") // TODO
-        }
-    }
-}
-
-@Preview
-@Composable
-private fun TopicBodyPreview() {
-    MaterialTheme {
-        LazyColumn {
-            TopicBody(
-                "Jetpack Compose", "Lorem ipsum maximum",
-                NewsUiState.Success(emptyList()), ""
-            )
-        }
-    }
-}
 
 @Composable
 private fun TopicToolbar(

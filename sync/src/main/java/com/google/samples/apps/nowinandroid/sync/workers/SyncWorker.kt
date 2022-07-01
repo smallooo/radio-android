@@ -24,10 +24,7 @@ import androidx.work.OneTimeWorkRequestBuilder
 import androidx.work.OutOfQuotaPolicy
 import androidx.work.WorkerParameters
 import com.google.samples.apps.nowinandroid.core.data.Synchronizer
-import com.google.samples.apps.nowinandroid.core.data.repository.AuthorsRepository
-import com.google.samples.apps.nowinandroid.core.data.repository.NewsRepository
 import com.google.samples.apps.nowinandroid.core.data.repository.StationsRepository
-import com.google.samples.apps.nowinandroid.core.data.repository.TopicsRepository
 import com.google.samples.apps.nowinandroid.core.datastore.ChangeListVersions
 import com.google.samples.apps.nowinandroid.core.datastore.NiaPreferences
 import com.google.samples.apps.nowinandroid.core.network.Dispatcher
@@ -50,9 +47,6 @@ class SyncWorker @AssistedInject constructor(
     @Assisted private val appContext: Context,
     @Assisted workerParams: WorkerParameters,
     private val niaPreferences: NiaPreferences,
-    private val topicRepository: TopicsRepository,
-    private val newsRepository: NewsRepository,
-    private val authorsRepository: AuthorsRepository,
     private val stationsRepository: StationsRepository,
     @Dispatcher(IO) private val ioDispatcher: CoroutineDispatcher,
 ) : CoroutineWorker(appContext, workerParams), Synchronizer {
@@ -63,9 +57,6 @@ class SyncWorker @AssistedInject constructor(
     override suspend fun doWork(): Result = withContext(ioDispatcher) {
         // First sync the repositories in parallel
         val syncedSuccessfully = awaitAll(
-            async { topicRepository.sync() },
-            async { authorsRepository.sync() },
-            async { newsRepository.sync() },
             async { stationsRepository.sync() },
         ).all { it }
 

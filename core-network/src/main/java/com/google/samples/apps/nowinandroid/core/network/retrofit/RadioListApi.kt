@@ -61,7 +61,7 @@ class RadioListApi @Inject constructor(private val service: Service) {
         suspend fun getStationsByConditionList(@Path("type")type: String, @Path("param") param: String): ArrayList<Station>
     }
 
-    companion object { const val API_URL = "http://at1.api.radio-browser.info/" }
+    companion object { const val API_URL = "https://at1.api.radio-browser.info/" }
 }
 
 

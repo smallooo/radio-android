@@ -16,7 +16,6 @@
 
 package com.google.samples.apps.nowinandroid.core.data.repository
 
-import com.google.samples.apps.nowinandroid.core.data.repository.fake.FakeNewsRepository
 import kotlinx.coroutines.test.StandardTestDispatcher
 import kotlinx.serialization.json.Json
 import org.junit.Before

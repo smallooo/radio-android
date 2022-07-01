@@ -69,44 +69,24 @@ fun InterestsRoute(
     modifier: Modifier = Modifier,
     navigateToAuthor: (String) -> Unit = {},
     navigateToTopic: (String) -> Unit = {},
-    viewModel: InterestsViewModel = hiltViewModel(),
     favoriteStationstViewModel: FavoriteStationstViewModel = hiltViewModel()
 ) {
-    val uiState by viewModel.uiState.collectAsState()
-    val tabState by viewModel.tabState.collectAsState()
+
     val uiState1 by favoriteStationstViewModel.favoriteStationsState.collectAsState()
-   // val favoriteState by rememberFlowWithLifecycle(favoriteStationstViewModel.favoriteStationsState1)
-        //val aaa by favoriteStationstViewModel.getFavoritedStation1().first().get(0).stationuuid.get(0).dec().dec()
-
-       // Log.e("aaa",favoriteStationstViewModel.getFavoritedStation1().first().get(0).stationuuid)
-
-
-    //val uiState1: List<Station> by rememberCoroutineScope(favoriteStationstViewModel.getFavoritedStation1())
-
 
     InterestsScreen(
-        uiState = uiState,
-        tabState = tabState,
         uiState1 = uiState1,
-        followTopic = viewModel::followTopic,
-        followAuthor = viewModel::followAuthor,
         navigateToAuthor = navigateToAuthor,
         navigateToTopic = navigateToTopic,
-        switchTab = viewModel::switchTab,
         modifier = modifier
     )
 }
 
 @Composable
 fun InterestsScreen(
-    uiState: InterestsUiState,
-    tabState: InterestsTabState,
     uiState1: StationsUiState,
-    followAuthor: (String, Boolean) -> Unit,
-    followTopic: (String, Boolean) -> Unit,
     navigateToAuthor: (String) -> Unit,
     navigateToTopic: (String) -> Unit,
-    switchTab: (Int) -> Unit,
     modifier: Modifier = Modifier,
 ) {
     Column(
@@ -132,9 +112,7 @@ fun InterestsScreen(
                 id = R.string.top_app_bar_navigation_button_content_desc
             )
         )
-//        if(favoriteState.size > 0){
-//            Text(text = favoriteState.get(0).name)
-//        }
+
         
         when (uiState1) {
             StationsUiState.Loading ->
@@ -152,47 +130,6 @@ fun InterestsScreen(
     }
 }
 
-@Composable
-private fun InterestsContent(
-    tabState: InterestsTabState,
-    switchTab: (Int) -> Unit,
-    uiState: InterestsUiState.Interests,
-    navigateToTopic: (String) -> Unit,
-    followTopic: (String, Boolean) -> Unit,
-    navigateToAuthor: (String) -> Unit,
-    followAuthor: (String, Boolean) -> Unit,
-    modifier: Modifier = Modifier
-) {
-    Column(modifier) {
-        NiaTabRow(selectedTabIndex = tabState.currentIndex) {
-            tabState.titles.forEachIndexed { index, titleId ->
-                NiaTab(
-                    selected = index == tabState.currentIndex,
-                    onClick = { switchTab(index) },
-                    text = { Text(text = stringResource(id = titleId)) }
-                )
-            }
-        }
-        when (tabState.currentIndex) {
-            0 -> {
-                TopicsTabContent(
-                    topics = uiState.topics,
-                    onTopicClick = navigateToTopic,
-                    onFollowButtonClick = followTopic,
-                    modifier = Modifier.padding(top = 8.dp)
-                )
-            }
-            1 -> {
-                AuthorsTabContent(
-                    authors = uiState.authors,
-                    onAuthorClick = navigateToAuthor,
-                    onFollowButtonClick = followAuthor,
-                    modifier = Modifier.padding(top = 8.dp)
-                )
-            }
-        }
-    }
-}
 
 @Composable
 private fun InterestsEmptyScreen() {

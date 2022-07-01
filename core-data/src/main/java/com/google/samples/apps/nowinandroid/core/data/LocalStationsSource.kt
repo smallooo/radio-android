@@ -55,6 +55,7 @@ class LocalStationsSource @Inject constructor(private val stationDao: StationDao
         if(_stationsTagList == null){
             _stationsTagList = radioListApi.getTags()
             Log.e("aaa", _stationsTagList!!.size.toString())
+            Log.e("aaa", "name" + _stationsTagList!!.get(1).name.toString())
         }
         return@withContext _stationsTagList
     }

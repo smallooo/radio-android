@@ -77,6 +77,7 @@ fun TagListScreen( viewModel: TagListViewModel = hiltViewModel(), viewModel1: Se
         TagUiState.Loading ->
             for(i in 1..5) ShimmerItem(list, dpValue.value, shimmerAnimationType == ShimmerAnimationType.VERTICAL)
         is TagUiState.Tags -> {
+            Text(uiState.value.toString())
             TagItems(
                 (uiState.value as TagUiState.Tags).tags,
                 onItemClick = {

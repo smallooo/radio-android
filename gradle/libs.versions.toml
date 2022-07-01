@@ -53,6 +53,8 @@ palette = "1.0.0"
 
 lifecycleExtensions = "2.2.0"
 
+rxjavaAdapter = "2.9.0"
+
 
 
 [libraries]
@@ -133,6 +135,7 @@ protobuf-kotlin-lite = { group = "com.google.protobuf", name = "protobuf-kotlin-
 turbine = { group = "app.cash.turbine", name = "turbine", version.ref = "turbine" }
 retrofit-core = { group = "com.squareup.retrofit2", name = "retrofit", version.ref = "retrofit" }
 retrofit-converter = { group = "com.squareup.retrofit2", name = "converter-gson", version.ref = "retrofit" }
+rxjavaAdapter = { group = "com.squareup.retrofit2", name = "adapter-rxjava2", version.ref = "rxjavaAdapter"}
 retrofit-kotlin-serialization = { group = "com.jakewharton.retrofit", name = "retrofit2-kotlinx-serialization-converter", version.ref = "retrofitKotlinxSerializationJson" }
 google-gson = { group = "com.google.code.gson", name = "gson", version.ref = "retrofit"}
 room-runtime = { group = "androidx.room", name = "room-runtime", version.ref = "room" }

@@ -26,20 +26,7 @@ import dagger.hilt.components.SingletonComponent
 @InstallIn(SingletonComponent::class)
 interface DataModule {
 
-    @Binds
-    fun bindsTopicRepository(
-        topicsRepository: OfflineFirstTopicsRepository
-    ): TopicsRepository
 
-    @Binds
-    fun bindsAuthorsRepository(
-        authorsRepository: OfflineFirstAuthorsRepository
-    ): AuthorsRepository
-
-    @Binds
-    fun bindsNewsResourceRepository(
-        newsRepository: OfflineFirstNewsRepository
-    ): NewsRepository
 
     @Binds
     fun bindsStationRepository(

@@ -31,7 +31,7 @@ class TagListViewModel @Inject constructor(
     val tagListState: StateFlow<TagUiState> = combine(
         stationsRepository.getTagList()
     ) { availableTags ->
-        Log.e("aaa", "availableTags")
+        Log.e("aaa", availableTags.get(0).get(1).name)
         TagUiState.Tags(tags = availableTags.get(0))
     }.stateIn(
             scope = viewModelScope,

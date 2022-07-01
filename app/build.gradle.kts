@@ -131,6 +131,7 @@ dependencies {
     implementation(libs.retrofit.core)
     implementation(libs.retrofit.kotlin.serialization)
     implementation(libs.retrofit.converter)
+    implementation(libs.rxjavaAdapter)
 
     implementation(libs.androidx.dataStore.preferences)
 

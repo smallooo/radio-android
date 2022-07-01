@@ -17,17 +17,26 @@
 package com.google.samples.apps.nowinandroid.core.network.retrofit
 
 import com.google.samples.apps.nowinandroid.core.network.BuildConfig
+import com.google.samples.apps.nowinandroid.core.network.Dispatcher
 import com.google.samples.apps.nowinandroid.core.network.NiANetwork
+import com.google.samples.apps.nowinandroid.core.network.NiaDispatchers
+import com.google.samples.apps.nowinandroid.core.network.fake.FakeDataSource
+
 import com.google.samples.apps.nowinandroid.core.network.model.*
 import com.jakewharton.retrofit2.converter.kotlinx.serialization.asConverterFactory
+import kotlinx.coroutines.CoroutineDispatcher
+import kotlinx.coroutines.withContext
 import javax.inject.Inject
 import javax.inject.Singleton
 import kotlinx.serialization.Serializable
+import kotlinx.serialization.decodeFromString
 import kotlinx.serialization.json.Json
 import okhttp3.MediaType.Companion.toMediaType
 import okhttp3.OkHttpClient
 import okhttp3.logging.HttpLoggingInterceptor
 import retrofit2.Retrofit
+import retrofit2.adapter.rxjava2.RxJava2CallAdapterFactory
+import retrofit2.converter.gson.GsonConverterFactory
 import retrofit2.http.GET
 import retrofit2.http.Query
 
@@ -89,46 +98,57 @@ private data class NetworkResponse<T>(
  */
 @Singleton
 class RetrofitNiANetwork @Inject constructor(
-    networkJson: Json
+    @Dispatcher(NiaDispatchers.IO) private val ioDispatcher: CoroutineDispatcher,
+    private val networkJson: Json
 ) : NiANetwork {
 
     private val networkApi = Retrofit.Builder()
-        .baseUrl(NiABaseUrl)
-        .client(
-            OkHttpClient.Builder()
-                .addInterceptor(
-                    // TODO: Decide logging logic
-                    HttpLoggingInterceptor().apply {
-                        setLevel(HttpLoggingInterceptor.Level.BODY)
-                    }
-                )
-                .build()
-        )
-        .addConverterFactory(networkJson.asConverterFactory("application/json".toMediaType()))
+        .baseUrl("https://at1.api.radio-browser.info/")
+        .addConverterFactory(GsonConverterFactory.create())
+        .addCallAdapterFactory(RxJava2CallAdapterFactory.create())
+
+        .client(OkHttpClient())
         .build()
-        .create(RetrofitNiANetworkApi::class.java)
 
     override suspend fun getTopics(ids: List<String>?): List<NetworkTopic> =
-        networkApi.getTopics(ids = ids).data
+        withContext(ioDispatcher) {
+            networkJson.decodeFromString(FakeDataSource.topicsData)
+        }
 
-    override suspend fun getStations(): List<NetworkStation> =
-        networkApi.getStations().data
+    override suspend fun getStations(): List<NetworkStation> {
+        TODO("Not yet implemented")
+    }
 
-    override suspend fun getCountries(): List<NetworkCountry> =
-        networkApi.getCountries().data
-
-    override suspend fun getAuthors(ids: List<String>?): List<NetworkAuthor> =
-        networkApi.getAuthors(ids = ids).data
+    override suspend fun getCountries(): List<NetworkCountry> {
+        TODO("Not yet implemented")
+    }
 
     override suspend fun getNewsResources(ids: List<String>?): List<NetworkNewsResource> =
-        networkApi.getNewsResources(ids = ids).data
+        withContext(ioDispatcher) {
+            networkJson.decodeFromString(FakeDataSource.data)
+        }
+
+    override suspend fun getAuthors(ids: List<String>?): List<NetworkAuthor> =
+        withContext(ioDispatcher) {
+            networkJson.decodeFromString(FakeDataSource.authors)
+        }
 
     override suspend fun getTopicChangeList(after: Int?): List<NetworkChangeList> =
-        networkApi.getTopicChangeList(after = after)
+        getTopics().mapToChangeList(NetworkTopic::id)
 
     override suspend fun getAuthorChangeList(after: Int?): List<NetworkChangeList> =
-        networkApi.getAuthorsChangeList(after = after)
+        getAuthors().mapToChangeList(NetworkAuthor::id)
 
     override suspend fun getNewsResourceChangeList(after: Int?): List<NetworkChangeList> =
-        networkApi.getNewsResourcesChangeList(after = after)
+        getNewsResources().mapToChangeList(NetworkNewsResource::id)
+}
+
+private fun <T> List<T>.mapToChangeList(
+    idGetter: (T) -> String
+) = mapIndexed { index, item ->
+    NetworkChangeList(
+        id = idGetter(item),
+        changeListVersion = index,
+        isDelete = false,
+    )
 }

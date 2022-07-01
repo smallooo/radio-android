@@ -39,11 +39,10 @@ interface StationsRepository : Syncable {
 
     fun getnowPlayingStationsStream(): Flow<List<Station>>
 
-    fun getStationsTagStream(): Flow<List<String>>
 
     fun getTagList(): Flow<List<StationsTag>>
 
-    fun getCountryList(): Flow<List<String>>
+
 
     fun getLanguageList(): Flow<List<LanguageTag>>
 

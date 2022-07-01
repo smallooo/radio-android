@@ -56,23 +56,22 @@ import com.google.samples.apps.nowinandroid.core.model.data.FollowableAuthor
 import com.google.samples.apps.nowinandroid.core.ui.LoadingWheel
 import com.google.samples.apps.nowinandroid.core.ui.component.NiaFilterChip
 import com.google.samples.apps.nowinandroid.core.ui.newsResourceCardItems
-import com.google.samples.apps.nowinandroid.feature.author.AuthorUiState.Loading
+
 import com.google.samples.apps.nowinandroid.feature.author.R.string
 
 @Composable
 fun AuthorRoute(
     onBackClick: () -> Unit,
     modifier: Modifier = Modifier,
-    viewModel: AuthorViewModel = hiltViewModel(),
+
 ) {
-    val uiState: AuthorScreenUiState by viewModel.uiState.collectAsState()
+
 
     AuthorScreen(
-        authorState = uiState.authorState,
-        newsState = uiState.newsState,
-        modifier = modifier,
+
         onBackClick = onBackClick,
-        onFollowClick = viewModel::followAuthorToggle,
+        modifier = modifier,
+
     )
 }
 
@@ -80,10 +79,8 @@ fun AuthorRoute(
 @VisibleForTesting
 @Composable
 internal fun AuthorScreen(
-    authorState: AuthorUiState,
-    newsState: NewsUiState,
     onBackClick: () -> Unit,
-    onFollowClick: (Boolean) -> Unit,
+
     modifier: Modifier = Modifier,
 ) {
     LazyColumn(
@@ -99,32 +96,7 @@ internal fun AuthorScreen(
                 )
             )
         }
-        when (authorState) {
-            Loading -> {
-                item {
-                    LoadingWheel(
-                        modifier = modifier,
-                        contentDesc = stringResource(id = string.author_loading),
-                    )
-                }
-            }
-            AuthorUiState.Error -> {
-                TODO()
-            }
-            is AuthorUiState.Success -> {
-                item {
-                    AuthorToolbar(
-                        onBackClick = onBackClick,
-                        onFollowClick = onFollowClick,
-                        uiState = authorState.followableAuthor,
-                    )
-                }
-                authorBody(
-                    author = authorState.followableAuthor.author,
-                    news = newsState
-                )
-            }
-        }
+
         item {
             Spacer(
                 // TODO: Replace with windowInsetsBottomHeight after
@@ -137,16 +109,7 @@ internal fun AuthorScreen(
     }
 }
 
-private fun LazyListScope.authorBody(
-    author: Author,
-    news: NewsUiState
-) {
-    item {
-        AuthorHeader(author)
-    }
 
-    authorCards(news)
-}
 
 @Composable
 private fun AuthorHeader(author: Author) {
@@ -174,25 +137,7 @@ private fun AuthorHeader(author: Author) {
     }
 }
 
-private fun LazyListScope.authorCards(news: NewsUiState) {
-    when (news) {
-        is NewsUiState.Success -> {
-            newsResourceCardItems(
-                items = news.news,
-                newsResourceMapper = { it },
-                isBookmarkedMapper = { /* TODO */ false },
-                onToggleBookmark = { /* TODO */ },
-                itemModifier = Modifier.padding(24.dp)
-            )
-        }
-        is NewsUiState.Loading -> item {
-            LoadingWheel(contentDesc = "Loading news") // TODO
-        }
-        else -> item {
-            Text("Error") // TODO
-        }
-    }
-}
+
 
 @Composable
 private fun AuthorToolbar(
@@ -229,22 +174,4 @@ private fun AuthorToolbar(
     }
 }
 
-@Preview
-@Composable
-private fun AuthorBodyPreview() {
-    MaterialTheme {
-        LazyColumn {
-            authorBody(
-                author = Author(
-                    id = "0",
-                    name = "Android Dev",
-                    bio = "Works on Compose",
-                    twitter = "dev",
-                    mediumPage = "",
-                    imageUrl = "",
-                ),
-                news = NewsUiState.Success(emptyList())
-            )
-        }
-    }
-}
+
