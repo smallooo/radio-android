@@ -21,19 +21,19 @@ import kotlinx.coroutines.NonDisposableHandle.parent
 import javax.security.auth.callback.Callback
 
 
-//@OptIn(ExperimentalPagerApi::class)
-//@Composable
-//fun PlaybackArtworkPagerWithNowPlayingAndControls(
-//    nowPlaying: MediaMetadataCompat,
-//    playbackState: PlaybackStateCompat,
-//    modifier: Modifier = Modifier,
-//    contentColor: Color = MaterialTheme.colors.onBackground,
-//    titleTextStyle: TextStyle = PlaybackNowPlayingDefaults.titleTextStyle,
-//    artistTextStyle: TextStyle = PlaybackNowPlayingDefaults.artistTextStyle,
-//    pagerState: PagerState = rememberPagerState(),
-//    onArtworkClick: Callback? = null,
-//    viewModel: PlaybackViewModel = hiltViewModel(),
-//) {
+@OptIn(ExperimentalPagerApi::class)
+@Composable
+fun PlaybackArtworkPagerWithNowPlayingAndControls(
+    nowPlaying: MediaMetadataCompat,
+   // playbackState: PlaybackStateCompat,
+    modifier: Modifier = Modifier,
+    contentColor: Color = MaterialTheme.colors.onBackground,
+    titleTextStyle: TextStyle = PlaybackNowPlayingDefaults.titleTextStyle,
+    artistTextStyle: TextStyle = PlaybackNowPlayingDefaults.artistTextStyle,
+    //pagerState: PagerState = rememberPagerState(),
+    onArtworkClick: Callback? = null,
+    //viewModel: PlaybackViewModel = hiltViewModel(),
+) {
 //    ConstraintLayout(modifier = modifier) {
 //        val (pager, nowPlayingControls) = createRefs()
 //        PlaybackPager(
@@ -70,4 +70,4 @@ import javax.security.auth.callback.Callback
 //            }
 //        )
 //    }
-//}
+}
