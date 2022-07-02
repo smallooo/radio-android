@@ -41,6 +41,7 @@ dependencies {
     implementation(libs.androidx.compose.ui.tooling)
     implementation(libs.androidx.compose.material.material)
     implementation(libs.androidx.lifecycle.viewmodelKtx)
+    implementation(libs.androidx.constraint.layout)
 
     implementation(libs.androidx.media)
 

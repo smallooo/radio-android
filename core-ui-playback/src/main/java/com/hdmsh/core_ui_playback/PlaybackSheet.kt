@@ -5,6 +5,7 @@
 package com.hdmsh.core_ui_playback
 
 import android.annotation.SuppressLint
+import android.util.Log
 import androidx.compose.animation.animateColorAsState
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.*
@@ -24,6 +25,7 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
+import androidx.hilt.navigation.compose.hiltViewModel
 
 import com.google.accompanist.pager.ExperimentalPagerApi
 import com.dmhsh.samples.app.nowinandroid.core.playback.NONE_PLAYBACK_STATE
@@ -35,6 +37,8 @@ import com.dmhsh.samples.apps.nowinandroid.core.navigation.LocalNavigator
 import com.dmhsh.samples.apps.nowinandroid.core.navigation.Navigator
 import com.dmhsh.samples.apps.nowinandroid.core.ui.ADAPTIVE_COLOR_ANIMATION
 import com.dmhsh.samples.apps.nowinandroid.core.ui.adaptiveColor
+import com.dmhsh.samples.apps.nowinandroid.core.ui.component.DismissableSnackbarHost
+import com.dmhsh.samples.apps.nowinandroid.core.ui.component.MoreVerticalIcon
 
 import com.dmhsh.samples.apps.nowinandroid.core.ui.component.isWideLayout
 import com.dmhsh.samples.apps.nowinandroid.core.ui.component.simpleClickable
@@ -90,7 +94,7 @@ internal fun PlaybackSheetContent(
     queueListState: LazyListState,
     scaffoldState: ScaffoldState = rememberScaffoldState(snackbarHostState = LocalScaffoldState.current.snackbarHostState),
     playbackConnection: PlaybackConnection = LocalPlaybackConnection.current,
-   // viewModel: PlaybackViewModel = hiltViewModel(),
+   viewModel: PlaybackViewModel = hiltViewModel(),
 ) {
     val playbackState by rememberFlowWithLifecycle(playbackConnection.playbackState)
 
@@ -130,9 +134,7 @@ internal fun PlaybackSheetContent(
                     .background(adaptiveColor.gradient)
                     .weight(1f),
                 scaffoldState = scaffoldState,
-                snackbarHost = {
-                    //  DismissableSnackbarHost(it, modifier = Modifier.navigationBarsPadding())
-                               },
+                snackbarHost = { DismissableSnackbarHost(it, modifier = Modifier.navigationBarsPadding()) },
             ) {
                 LazyColumn(
                     state = listState,
@@ -141,18 +143,19 @@ internal fun PlaybackSheetContent(
                     item {
                         PlaybackSheetTopBar(
 //                            playbackQueue = playbackQueue,
+                            viewModel,
                             onClose = onClose,
-//                            onTitleClick = viewModel::navigateToQueueSource,
+                            onTitleClick = {},
 //                            onSaveQueueAsPlaylist = viewModel::saveQueueAsPlaylist
                         )
-                        //Spacer(Modifier.height(AppTheme.specs.paddingTiny))
+                        Spacer(Modifier.height(4.dp))
                     }
 
 
                     item {
                         PlaybackArtworkPagerWithNowPlayingAndControls(
                             nowPlaying = nowPlaying,
-                            //playbackState = playbackState,
+                            playbackState = playbackState,
                             //pagerState = pagerState,
                             contentColor = contentColor,
                            // viewModel = viewModel,
@@ -186,16 +189,16 @@ internal fun PlaybackSheetContent(
 
 @Composable
 private fun PlaybackSheetTopBar(
- //   playbackQueue: PlaybackQueue,
-       onClose: Callback,
-//    onTitleClick: Callback,
+    viewModel: PlaybackViewModel,
+    onClose: Callback,
+    onTitleClick: Callback,
 //    onSaveQueueAsPlaylist: Callback,
 ) {
     TopAppBar(
         elevation = 0.dp,
         backgroundColor = Color.Transparent,
         title = {
-            PlaybackSheetTopBarTitle()
+           // PlaybackSheetTopBarTitle(viewModel)
                 },
         actions = {
             PlaybackSheetTopBarActions()
@@ -216,6 +219,7 @@ private fun PlaybackSheetTopBar(
 private fun PlaybackSheetTopBarTitle(
     //playbackQueue: PlaybackQueue,
     //onTitleClick: Callback,
+    viewModel: PlaybackViewModel,
     modifier: Modifier = Modifier
 ) {
     Column(
@@ -223,17 +227,17 @@ private fun PlaybackSheetTopBarTitle(
         modifier = modifier
             .fillMaxWidth()
             .offset(x = -8.dp) // idk why this is needed for centering
-            .simpleClickable(onClick ={} )
+            .simpleClickable(onClick = {})
     ) {
         val context = LocalContext.current
-        val queueTitle = "playbackQueue.title.asQueueTitle()"
+        //val queueTitle = viewModel.getPlayBackConnection().homepage
         Text(
-            text = "queueTitle.localizeType(context.resources).uppercase()",
+            text = "queueTitle.uppercase()",
             style = MaterialTheme.typography.overline.copy(fontWeight = FontWeight.Light),
             maxLines = 1,
         )
         Text(
-            text = "queueTitle.localizeValue()",
+            text = "viewModel.getPlayBackConnection().name",
             style = MaterialTheme.typography.body1,
             textAlign = TextAlign.Center,
             overflow = TextOverflow.Ellipsis,
@@ -276,7 +280,7 @@ private fun PlaybackSheetTopBarActions(
 //                    }
 //                }
 //            }
-//        } else MoreVerticalIcon()
+    MoreVerticalIcon()
     }
 }
 

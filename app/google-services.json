@@ -1,0 +1,39 @@
+{
+  "project_info": {
+    "project_number": "323816797816",
+    "project_id": "iradio-f8d70",
+    "storage_bucket": "iradio-f8d70.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:323816797816:android:e4865bffa363854e655f8d",
+        "android_client_info": {
+          "package_name": "com.dmhsh.samples.apps.nowinandroid"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "323816797816-v8hr42n71hg7q7tds1duja5fa8e4lqju.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDh7-4lvnf-GaS8oBT2UcVfimBJ_aBd0sI"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "323816797816-v8hr42n71hg7q7tds1duja5fa8e4lqju.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

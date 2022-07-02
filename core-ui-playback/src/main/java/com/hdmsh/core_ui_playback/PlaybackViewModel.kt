@@ -4,49 +4,41 @@
  */
 package com.hdmsh.core_ui_playback
 
-//import androidx.lifecycle.SavedStateHandle
-//import androidx.lifecycle.ViewModel
-//import androidx.lifecycle.viewModelScope
-//import com.google.firebase.analytics.FirebaseAnalytics
-//import dagger.hilt.android.lifecycle.HiltViewModel
-//import javax.inject.Inject
-//import kotlinx.coroutines.flow.catch
-//import kotlinx.coroutines.flow.collectLatest
-//import kotlinx.coroutines.flow.first
-//import kotlinx.coroutines.launch
-//import tm.alashow.base.ui.SnackbarAction
-//import tm.alashow.base.ui.SnackbarManager
-//import tm.alashow.base.ui.SnackbarMessage
-//import tm.alashow.base.util.event
-//import tm.alashow.base.util.toUiMessage
-//import tm.alashow.datmusic.data.DatmusicSearchParams
-//import tm.alashow.datmusic.data.interactors.playlist.CreatePlaylist
-//import tm.alashow.datmusic.domain.entities.Playlist
-//import tm.alashow.datmusic.domain.entities.PlaylistId
-//import tm.alashow.datmusic.playback.PlaybackConnection
-//import tm.alashow.datmusic.playback.models.*
-//import tm.alashow.datmusic.playback.models.QueueTitle.Companion.asQueueTitle
-//import tm.alashow.datmusic.ui.coreLibrary.R
-//import tm.alashow.i18n.UiMessage
-//import tm.alashow.navigation.Navigator
-//import tm.alashow.navigation.screens.LeafScreen
-//
+import androidx.lifecycle.SavedStateHandle
+import androidx.lifecycle.ViewModel
+import androidx.lifecycle.viewModelScope
+import com.dmhsh.samples.apps.nowinandroid.core.model.data.Station
+import com.dmhsh.samples.apps.nowinandroid.playback.PlaybackConnection
+
+import dagger.hilt.android.lifecycle.HiltViewModel
+import javax.inject.Inject
+import kotlinx.coroutines.flow.catch
+import kotlinx.coroutines.flow.collectLatest
+import kotlinx.coroutines.flow.first
+import kotlinx.coroutines.launch
+
+
 //data class SavedAsPlaylistMessage(val playlist: Playlist) :
 //    SnackbarMessage<PlaylistId>(
 //        message = UiMessage.Resource(R.string.playback_queue_saveAsPlaylist_saved, formatArgs = listOf(playlist.name)),
 //        action = SnackbarAction(UiMessage.Resource(R.string.playback_queue_saveAsPlaylist_open), playlist.id)
 //    )
-//
-//@HiltViewModel
-//class PlaybackViewModel @Inject constructor(
-//    handle: SavedStateHandle,
-//    private val playbackConnection: PlaybackConnection,
-//    private val createPlaylist: CreatePlaylist,
-//    private val snackbarManager: SnackbarManager,
-//    private val navigator: Navigator,
-//    private val analytics: FirebaseAnalytics
-//) : ViewModel() {
-//
+
+@HiltViewModel
+class PlaybackViewModel @Inject constructor(
+    handle: SavedStateHandle,
+    private val playbackConnection: PlaybackConnection,
+    //private val createPlaylist: CreatePlaylist,
+    //private val snackbarManager: SnackbarManager,
+    //private val navigator: Navigator,
+    //private val analytics: FirebaseAnalytics
+) : ViewModel() {
+
+
+    fun getPlayBackConnection(): Station {
+        return playbackConnection.playingStation.value
+    }
+
 //    fun saveQueueAsPlaylist() = viewModelScope.launch {
 //        val queue = playbackConnection.playbackQueue.first()
 //        analytics.event(
@@ -64,7 +56,7 @@ package com.hdmsh.core_ui_playback
 //                    navigator.navigate(LeafScreen.PlaylistDetail.buildRoute(playlist.id))
 //            }
 //    }
-//
+
 //    fun navigateToQueueSource() = viewModelScope.launch {
 //        val queue = playbackConnection.playbackQueue.first()
 //        val (sourceMediaType, sourceMediaValue) = queue.title.asQueueTitle().sourceMediaId
@@ -94,7 +86,7 @@ package com.hdmsh.core_ui_playback
 //            else -> Unit
 //        }
 //    }
-//
+
 //    fun onTitleClick() = viewModelScope.launch {
 //        val nowPlaying = playbackConnection.nowPlaying.value
 //        val query = nowPlaying.toAlbumSearchQuery()
@@ -113,4 +105,4 @@ package com.hdmsh.core_ui_playback
 //            )
 //        )
 //    }
-//}
+}

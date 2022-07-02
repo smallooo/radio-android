@@ -17,6 +17,8 @@
 package com.dmhsh.samples.apps.nowinandroid.core.ui.component
 
 import androidx.compose.foundation.layout.Box
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.MoreVert
 import androidx.compose.material3.DropdownMenu
 import androidx.compose.material3.DropdownMenuItem
 import androidx.compose.material3.Icon
@@ -26,6 +28,9 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.vector.rememberVectorPainter
+import androidx.compose.ui.res.stringResource
+import com.dmhsh.samples.apps.nowinandroid.core.ui.R
 import com.dmhsh.samples.apps.nowinandroid.core.ui.icon.NiaIcons
 
 /**
@@ -128,5 +133,22 @@ fun <T> NiaDropdownMenu(
                 }
             )
         }
+    }
+}
+
+@Composable
+fun MoreVerticalIcon(
+    modifier: Modifier = Modifier,
+    onClick: () -> Unit = {},
+    contentDescription: String = stringResource(R.string.bookmark)
+) {
+    IconButton(
+        onClick = onClick,
+        modifier = modifier
+    ) {
+        androidx.compose.material.Icon(
+            painter = rememberVectorPainter(Icons.Default.MoreVert),
+            contentDescription = contentDescription,
+        )
     }
 }
