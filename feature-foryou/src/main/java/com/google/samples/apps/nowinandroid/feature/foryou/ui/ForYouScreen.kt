@@ -17,12 +17,14 @@ import androidx.hilt.navigation.compose.hiltViewModel
 import com.google.samples.apps.nowinandroid.components.Pager
 import com.google.samples.apps.nowinandroid.components.PagerState
 import com.google.samples.apps.nowinandroid.core.datastore.PreferencesStore
+import com.google.samples.apps.nowinandroid.core.model.data.StationsTag
 import com.google.samples.apps.nowinandroid.core.navigation.LocalNavigator
 
 import com.google.samples.apps.nowinandroid.core.navigation.Navigator
 import com.google.samples.apps.nowinandroid.core.navigation.Screens.LeafScreen
 import com.google.samples.apps.nowinandroid.core.ui.component.NiaGradientBackground
 import com.google.samples.apps.nowinandroid.core.ui.component.NiaTopAppBar
+import kotlinx.coroutines.DelicateCoroutinesApi
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.launch
@@ -73,15 +75,15 @@ fun ForYouScreen(
 @Composable
 fun AdvanceListContent(viewModel: SearchListViewModel = hiltViewModel()) {
     var selectedIndex by remember { mutableStateOf(0) }
-    val tabs = listOf(stringResource(com.google.samples.apps.nowinandroid.feature.foryou.R.string.for_you),
-        stringResource(R.string.nav_item_save_playlist),
-        "投票排行",
-        "最近更新",
-        "正在播放",
-        "标签",
-        "国家",
-        "语言",
-        "搜索")
+    val tabs = listOf(stringResource(R.string.action_local),
+        stringResource(R.string.action_top_click),
+        stringResource(R.string.action_top_vote),
+        stringResource(R.string.action_changed_lately),
+        stringResource(R.string.action_currently_playing),
+        stringResource(R.string.action_tags),
+        stringResource(R.string.action_countries),
+        stringResource(R.string.action_languages),
+        stringResource(R.string.action_search))
     val pagerState: PagerState = run {
         remember { PagerState(0, 0, tabs.size - 1) }
     }
@@ -106,37 +108,29 @@ fun AdvanceListContent(viewModel: SearchListViewModel = hiltViewModel()) {
         Pager(state = pagerState, modifier = Modifier.weight(1f)) {
             selectedIndex = pagerState.currentPage
             when (commingPage) {
-                0 -> LocalRadioList(PageType.bycountry, "")
-                1 -> TopVisitRadios(PageType.bycountry, "")
-                2 -> TopVoteRadios(PageType.bycountry, "")
-                3 -> LateUpdateRadios(PageType.bycountry, "")
-                4 -> NowPlayingRadios(PageType.bycountry, "")
-                5 -> TagListScreen(onTagSelect = {stationTag ->
-                    GlobalScope.launch(Dispatchers.IO) {
-                        selectedIndex = 8
-                        pagerState.currentPage = selectedIndex
-                        viewModel.upDateSearch("bytag", stationTag.name)
-                    }
-                })
-                6 -> CountryList(onCountrySelect = {Country ->
-                    selectedIndex = 8
-                    pagerState.currentPage = selectedIndex
-                    GlobalScope.launch(Dispatchers.IO) {
-                        selectedIndex = 8
-                        pagerState.currentPage = selectedIndex
-                        viewModel.upDateSearch("bycountry", Country.name)
-                    }
-                })
-                7 -> LanguageListScreen(onTagSelect = {
-                    GlobalScope.launch(Dispatchers.IO) {
-                        selectedIndex = 8
-                        pagerState.currentPage = selectedIndex
-                        viewModel.upDateSearch("bylanguage", it.name)
-                    }
-                })
+                0 -> LocalRadioList()
+                1 -> TopVisitRadios()
+                2 -> TopVoteRadios()
+                3 -> LateUpdateRadios()
+                4 -> NowPlayingRadios()
+                5 -> TagListScreen(onTagSelect = {stationTag -> LaunchSearchScreen(pagerState, viewModel,"bytag", stationTag.name) })
+                6 -> CountryList(onCountrySelect = {Country -> LaunchSearchScreen( pagerState, viewModel,"bycountry", Country.name) })
+                7 -> LanguageListScreen(onTagSelect = { LaunchSearchScreen(pagerState, viewModel,"bylanguage", it.name) })
                 8 -> SearchStationsScreen()
             }
         }
+    }
+}
+
+private fun LaunchSearchScreen(
+    pagerState: PagerState,
+    viewModel: SearchListViewModel,
+    searchType: String,
+    param: String
+) {
+    GlobalScope.launch(Dispatchers.IO) {
+        pagerState.currentPage = 8
+        viewModel.upDateSearch(searchType, param)
     }
 }
 

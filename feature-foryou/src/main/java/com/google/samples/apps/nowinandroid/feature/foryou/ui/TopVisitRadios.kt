@@ -44,7 +44,6 @@ import kotlinx.coroutines.runBlocking
 @SuppressLint("StateFlowValueCalledInComposition")
 @Composable
 fun TopVisitRadios(
-    pageType:PageType, param: String,
     viewModel: TopClickViewModel = hiltViewModel(),
     playbackConnection: PlaybackConnection = LocalPlaybackConnection.current,
 ) {

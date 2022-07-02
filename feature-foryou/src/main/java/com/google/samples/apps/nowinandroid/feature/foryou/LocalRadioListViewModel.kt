@@ -23,9 +23,6 @@ class LocalRadioListViewModel @Inject constructor(
     private val localStationsSource: LocalStationsSource,
     private val stationsRepository: StationsRepository,
 ) : ViewModel() {
-//    data class ForyouTabState(val titles: List<String>, val currentIndex: Int)
-//    val _tabState = MutableStateFlow(ForyouTabState(titles = listOf("本地电台", "访问排行", "投票排行","最近更新", "正在播放", "标签", "国家", "语言", "搜索"), currentIndex = 0))
-//    val tabState: StateFlow<ForyouTabState> = _tabState.asStateFlow()
 
     val localRadiosState: StateFlow<StationsUiState> = combine(
         stationsRepository.getAllStationsStream(),
@@ -38,44 +35,10 @@ class LocalRadioListViewModel @Inject constructor(
             initialValue = StationsUiState.Loading
         )
 
-
-//    val topVoteRadiosState: StateFlow<StationsUiState> = combine(
-//        stationsRepository.gettopVotedStationsStream(),
-//        stationsRepository.getFollowedStationIdsStream(),
-//    ) { availableStations1, followedStationsIdsState ->
-//        StationsUiState.Stations(stations = availableStations1.map { station -> FollowableStation(station = station, isFollowed = true) })
-//    }.stateIn(
-//        scope = viewModelScope,
-//        started = SharingStarted.WhileSubscribed(5_000),
-//        initialValue = StationsUiState.Loading
-//    )
-//
-//    val lateUpdateRadiosState: StateFlow<StationsUiState> = combine(
-//        stationsRepository.getLateUpdateStationsStream(),
-//        stationsRepository.getFollowedStationIdsStream(),
-//    ) { availableStations2, followedStationsIdsState ->
-//        StationsUiState.Stations(stations = availableStations2.map { station -> FollowableStation(station = station, isFollowed = true) })
-//    }.stateIn(
-//        scope = viewModelScope,
-//        started = SharingStarted.WhileSubscribed(5_000),
-//        initialValue = StationsUiState.Loading
-//    )
-//
-//    val nowPlayingRadiosState: StateFlow<StationsUiState> = combine(
-//        stationsRepository.getnowPlayingStationsStream(),
-//        stationsRepository.getFollowedStationIdsStream(),
-//    ) { availableStations3, followedStationsIdsState ->
-//        StationsUiState.Stations(stations = availableStations3.map { station -> FollowableStation(station = station, isFollowed = true) })
-//    }.stateIn(
-//        scope = viewModelScope,
-//        started = SharingStarted.WhileSubscribed(5_000),
-//        initialValue = StationsUiState.Loading
-//    )
-
     fun setFavoritedStation(station: Station) = stationsRepository.setFavoriteStation(station)
 
     fun setPlayHistory(station: Station) = stationsRepository.setPlayHistory(station)
-    val topVisitRadiosState: Flow<List<Station>> = stationsRepository.getTopVisitedStationsStream()
+
 }
 
 sealed interface StationsUiState {

@@ -22,7 +22,6 @@ import com.hdmsh.common_compose.rememberFlowWithLifecycle
 @SuppressLint("StateFlowValueCalledInComposition")
 @Composable
 fun LocalRadioList(
-    pageType:PageType, param: String,
     viewModel: LocalRadioListViewModel = hiltViewModel(),
     playbackConnection: PlaybackConnection = LocalPlaybackConnection.current,
     ) {

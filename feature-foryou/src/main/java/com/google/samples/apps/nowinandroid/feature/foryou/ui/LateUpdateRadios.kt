@@ -42,7 +42,6 @@ import kotlinx.coroutines.runBlocking
 @SuppressLint("StateFlowValueCalledInComposition")
 @Composable
 fun LateUpdateRadios(
-    pageType:PageType, param: String,
     viewModel: LateUpdateViewModel = hiltViewModel(),
     playbackConnection: PlaybackConnection = LocalPlaybackConnection.current,
 ) {

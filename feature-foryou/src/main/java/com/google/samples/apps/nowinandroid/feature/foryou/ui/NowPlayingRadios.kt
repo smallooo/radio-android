@@ -42,7 +42,6 @@ import kotlinx.coroutines.runBlocking
 @SuppressLint("StateFlowValueCalledInComposition")
 @Composable
 fun NowPlayingRadios(
-    pageType:PageType, param: String,
     viewModel: NowPlayingViewModel = hiltViewModel(),
     playbackConnection: PlaybackConnection = LocalPlaybackConnection.current,
 ) {
