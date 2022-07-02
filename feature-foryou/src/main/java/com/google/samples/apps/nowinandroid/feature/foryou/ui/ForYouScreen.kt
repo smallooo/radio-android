@@ -45,11 +45,11 @@ fun ForYouScreen(
                     titleRes = R.string.app_name,
                     navigationIcon = Icons.Filled.Search,
                     navigationIconContentDescription = stringResource(
-                        id = R.string.downloader_enqueue_audio_existing_resuming
+                        id = R.string.app_name
                     ),
                     actionIcon = Icons.Outlined.Timer,
                     actionIconContentDescription = stringResource(
-                        id = R.string.app_label
+                        id = R.string.app_name
                     ),
                     colors = TopAppBarDefaults.centerAlignedTopAppBarColors(
                         containerColor = Color.Transparent
@@ -74,7 +74,7 @@ fun ForYouScreen(
 fun AdvanceListContent(viewModel: SearchListViewModel = hiltViewModel()) {
     var selectedIndex by remember { mutableStateOf(0) }
     val tabs = listOf(stringResource(com.google.samples.apps.nowinandroid.feature.foryou.R.string.for_you),
-        stringResource(R.string.downloader_enqueue_audio_existing_resuming),
+        stringResource(R.string.nav_item_save_playlist),
         "投票排行",
         "最近更新",
         "正在播放",
