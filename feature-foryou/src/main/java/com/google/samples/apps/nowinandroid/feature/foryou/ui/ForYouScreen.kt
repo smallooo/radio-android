@@ -26,6 +26,7 @@ import com.google.samples.apps.nowinandroid.core.ui.component.NiaTopAppBar
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.launch
+import tm.alashow.i18n.R
 
 @Composable
 fun ForYouRoute() {
@@ -44,11 +45,11 @@ fun ForYouScreen(
                     titleRes = R.string.app_name,
                     navigationIcon = Icons.Filled.Search,
                     navigationIconContentDescription = stringResource(
-                        id = R.string.top_app_bar_navigation_button_content_desc
+                        id = R.string.downloader_enqueue_audio_existing_resuming
                     ),
                     actionIcon = Icons.Outlined.Timer,
                     actionIconContentDescription = stringResource(
-                        id = R.string.settings_alarm_sleep_timer
+                        id = R.string.app_label
                     ),
                     colors = TopAppBarDefaults.centerAlignedTopAppBarColors(
                         containerColor = Color.Transparent
@@ -72,7 +73,15 @@ fun ForYouScreen(
 @Composable
 fun AdvanceListContent(viewModel: SearchListViewModel = hiltViewModel()) {
     var selectedIndex by remember { mutableStateOf(0) }
-    val tabs = listOf("本地电台", "访问排行", "投票排行","最近更新", "正在播放", "标签", "国家", "语言", "搜索")
+    val tabs = listOf(stringResource(com.google.samples.apps.nowinandroid.feature.foryou.R.string.for_you),
+        stringResource(R.string.downloader_enqueue_audio_existing_resuming),
+        "投票排行",
+        "最近更新",
+        "正在播放",
+        "标签",
+        "国家",
+        "语言",
+        "搜索")
     val pagerState: PagerState = run {
         remember { PagerState(0, 0, tabs.size - 1) }
     }

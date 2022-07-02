@@ -38,6 +38,7 @@ dependencies {
     implementation(project(":core-network"))
     implementation(project(":core-navigation"))
     implementation(project(":common-compose"))
+    implementation(project(":i18n"))
 
 
     implementation(project(":core-playback"))
