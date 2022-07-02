@@ -2,6 +2,7 @@ package com.google.samples.apps.nowinandroid.core.ui.component
 
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.itemsIndexed
@@ -35,11 +36,11 @@ fun AnimatedLanguageListItem(stationTag: LanguageTag, itemIndex: Int, onItemClic
     val playbackConnection: PlaybackConnection = LocalPlaybackConnection.current
     Row(
         verticalAlignment = Alignment.CenterVertically,
-        modifier = Modifier.clickable { onItemClick(stationTag) },
+        modifier = Modifier.fillMaxWidth().clickable { onItemClick(stationTag)}.padding(8.dp, 0.dp, 16.dp, 0.dp) ,
     ) {
         Row(
             modifier = Modifier
-                .padding(horizontal = 4.dp, vertical = 8.dp)
+                .padding(horizontal = 8.dp, vertical = 8.dp)
                 .weight(1f)
         ) {
             Text(
@@ -47,11 +48,13 @@ fun AnimatedLanguageListItem(stationTag: LanguageTag, itemIndex: Int, onItemClic
                 style = MaterialTheme.typography.bodyLarge,
                 color = MaterialTheme.colorScheme.onSurface
             )
-            Text(
-                text = stationTag.stationcount,
-                style = MaterialTheme.typography.bodyLarge,
-                color = MaterialTheme.colorScheme.onSurface
-            )
+
         }
+
+        Text(
+            text = stationTag.stationcount,
+            style = MaterialTheme.typography.bodyLarge,
+            color = MaterialTheme.colorScheme.onSurface
+        )
     }
 }
