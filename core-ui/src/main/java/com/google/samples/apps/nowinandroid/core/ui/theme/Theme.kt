@@ -73,7 +73,7 @@ fun AppTheme(
     ProvideAppTheme(theme, colors) {
         androidx.compose.material.MaterialTheme(
             colors = animate(colors.materialColors),
-            typography = Typography,
+            //typography = Typography,
             shapes = Shapes,
             content = { MaterialThemePatches(content) }
         )

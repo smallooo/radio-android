@@ -54,7 +54,7 @@ palette = "1.0.0"
 lifecycleExtensions = "2.2.0"
 
 rxjavaAdapter = "2.9.0"
-
+lottie = "4.2.0"
 
 
 [libraries]
@@ -152,7 +152,8 @@ androidx-palette = { group = "androidx.palette", name = "palette-ktx", version.r
 google-exoPlayer = { group = "com.google.android.exoplayer", name = "exoplayer-core", version.ref = "exoPlayer"}
 google-exoPlayer-Okhttp = { group = "com.google.android.exoplayer", name = "extension-okhttp", version.ref = "exoPlayerOkhttp"}
 
-
+lottie = { group = "com.airbnb.android", name = "lottie", version.ref = "lottie"}
+lottie-compose = {group = "com.airbnb.android", name = "lottie-compose", version.ref = "lottie"}
 
 
 timber = { group = "com.jakewharton.timber", name = "timber", version.ref = "timber"}

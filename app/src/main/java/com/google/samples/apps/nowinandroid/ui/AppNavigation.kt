@@ -25,6 +25,7 @@ import com.google.samples.apps.nowinandroid.core.navigation.LocalNavigator
 import com.google.samples.apps.nowinandroid.core.navigation.NavigationEvent
 import com.google.samples.apps.nowinandroid.core.navigation.Navigator
 import com.google.samples.apps.nowinandroid.core.navigation.Screens.*
+import com.google.samples.apps.nowinandroid.core.ui.component.ComingSoon
 
 
 import com.google.samples.apps.nowinandroid.feature.foryou.ForYouScreen
@@ -163,7 +164,7 @@ private fun NavGraphBuilder.addSettings() {
 
 @Composable
 fun Settings(){
-    Text("hello3")
+    ComingSoon()
 }
 
 private fun NavGraphBuilder.addDownloads() {

@@ -70,4 +70,7 @@ dependencies {
     implementation(libs.accompanist.systemuicontroller)
 
     implementation(libs.androidx.palette)
+
+   // implementation(libs.lottie)
+    implementation(libs.lottie.compose)
 }
