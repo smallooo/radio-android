@@ -18,7 +18,7 @@ plugins {
     `kotlin-dsl`
 }
 
-group = "com.google.samples.apps.nowinandroid.buildlogic"
+group = "com.dmhsh.samples.apps.nowinandroid.buildlogic"
 
 java {
     sourceCompatibility = JavaVersion.VERSION_1_8

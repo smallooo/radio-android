@@ -14,12 +14,12 @@
  * limitations under the License.
  */
 
-package com.google.samples.apps.nowinandroid.core.network.fake
+package com.dmhsh.samples.apps.nowinandroid.core.network.fake
 
-import com.google.samples.apps.nowinandroid.core.network.Dispatcher
-import com.google.samples.apps.nowinandroid.core.network.NiANetwork
-import com.google.samples.apps.nowinandroid.core.network.NiaDispatchers.IO
-import com.google.samples.apps.nowinandroid.core.network.model.*
+import com.dmhsh.samples.apps.nowinandroid.core.network.Dispatcher
+import com.dmhsh.samples.apps.nowinandroid.core.network.NiANetwork
+import com.dmhsh.samples.apps.nowinandroid.core.network.NiaDispatchers.IO
+import com.dmhsh.samples.apps.nowinandroid.core.network.model.*
 import javax.inject.Inject
 import kotlinx.coroutines.CoroutineDispatcher
 import kotlinx.coroutines.withContext

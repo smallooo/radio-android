@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-package com.google.samples.apps.nowinandroid.core.data.repository
+package com.dmhsh.samples.apps.nowinandroid.core.data.repository
 
 import kotlinx.coroutines.test.StandardTestDispatcher
 import kotlinx.serialization.json.Json

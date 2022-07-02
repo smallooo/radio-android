@@ -1,4 +1,4 @@
-package com.google.samples.apps.nowinandroid.core.network.model
+package com.dmhsh.samples.apps.nowinandroid.core.network.model
 
 import kotlinx.serialization.Serializable
 

@@ -25,7 +25,7 @@ plugins {
 android {
     defaultConfig {
         testInstrumentationRunner =
-            "com.google.samples.apps.nowinandroid.core.testing.NiaTestRunner"
+            "com.google.dmhsh.apps.nowinandroid.core.testing.NiaTestRunner"
     }
 }
 

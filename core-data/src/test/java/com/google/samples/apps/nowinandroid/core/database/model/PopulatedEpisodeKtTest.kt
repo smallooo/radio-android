@@ -14,12 +14,12 @@
  * limitations under the License.
  */
 
-package com.google.samples.apps.nowinandroid.core.database.model
+package com.dmhsh.samples.apps.nowinandroid.core.database.model
 
-import com.google.samples.apps.nowinandroid.core.model.data.Author
-import com.google.samples.apps.nowinandroid.core.model.data.Episode
-import com.google.samples.apps.nowinandroid.core.model.data.NewsResource
-import com.google.samples.apps.nowinandroid.core.model.data.NewsResourceType.Video
+import com.dmhsh.samples.apps.nowinandroid.core.model.data.Author
+import com.dmhsh.samples.apps.nowinandroid.core.model.data.Episode
+import com.dmhsh.samples.apps.nowinandroid.core.model.data.NewsResource
+import com.dmhsh.samples.apps.nowinandroid.core.model.data.NewsResourceType.Video
 import kotlinx.datetime.Instant
 import org.junit.Assert.assertEquals
 import org.junit.Test

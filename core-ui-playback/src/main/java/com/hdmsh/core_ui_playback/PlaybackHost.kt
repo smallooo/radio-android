@@ -8,7 +8,7 @@ import androidx.compose.material.ExperimentalMaterialApi
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.CompositionLocalProvider
 import androidx.hilt.navigation.compose.hiltViewModel
-import com.google.samples.apps.nowinandroid.common.compose.LocalPlaybackConnection
+import com.dmhsh.samples.apps.nowinandroid.common.compose.LocalPlaybackConnection
 
 
 @OptIn(ExperimentalMaterialApi::class)

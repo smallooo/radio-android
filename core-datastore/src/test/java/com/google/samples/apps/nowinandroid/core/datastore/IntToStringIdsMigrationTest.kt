@@ -14,8 +14,9 @@
  * limitations under the License.
  */
 
-package com.google.samples.apps.nowinandroid.core.datastore
+package com.dmhsh.samples.apps.nowinandroid.core.datastore
 
+import com.dmhsh.samples.apps.nowinandroid.core.datastore.IntToStringIdsMigration
 import kotlinx.coroutines.test.runTest
 import org.junit.Assert.assertEquals
 import org.junit.Assert.assertTrue

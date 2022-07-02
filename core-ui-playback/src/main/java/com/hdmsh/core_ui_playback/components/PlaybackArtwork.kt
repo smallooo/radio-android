@@ -13,15 +13,15 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.RectangleShape
 import androidx.compose.ui.unit.Dp
-import com.google.samples.app.nowinandroid.core.playback.artwork
-import com.google.samples.app.nowinandroid.core.playback.playPause
-import com.google.samples.apps.nowinandroid.common.compose.LocalPlaybackConnection
-import com.google.samples.apps.nowinandroid.core.ui.component.CoverImage
-import com.google.samples.apps.nowinandroid.core.ui.component.coloredRippleClickable
-import com.google.samples.apps.nowinandroid.core.ui.extensions.Callback
-import com.google.samples.apps.nowinandroid.core.ui.theme.AppTheme
-import com.google.samples.apps.nowinandroid.core.ui.theme.plainSurfaceColor
-import com.google.samples.apps.nowinandroid.playback.PlaybackConnection
+import com.dmhsh.samples.app.nowinandroid.core.playback.artwork
+import com.dmhsh.samples.app.nowinandroid.core.playback.playPause
+import com.dmhsh.samples.apps.nowinandroid.common.compose.LocalPlaybackConnection
+import com.dmhsh.samples.apps.nowinandroid.core.ui.component.CoverImage
+import com.dmhsh.samples.apps.nowinandroid.core.ui.component.coloredRippleClickable
+import com.dmhsh.samples.apps.nowinandroid.core.ui.extensions.Callback
+import com.dmhsh.samples.apps.nowinandroid.core.ui.theme.AppTheme
+import com.dmhsh.samples.apps.nowinandroid.core.ui.theme.plainSurfaceColor
+import com.dmhsh.samples.apps.nowinandroid.playback.PlaybackConnection
 
 
 @Composable

@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-import com.google.samples.apps.nowinandroid.configureJacoco
+import com.dmhsh.samples.apps.nowinandroid.configureJacoco
 
 plugins {
     id("com.android.application")

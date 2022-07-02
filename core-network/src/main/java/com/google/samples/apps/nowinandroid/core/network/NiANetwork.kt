@@ -14,9 +14,9 @@
  * limitations under the License.
  */
 
-package com.google.samples.apps.nowinandroid.core.network
+package com.dmhsh.samples.apps.nowinandroid.core.network
 
-import com.google.samples.apps.nowinandroid.core.network.model.*
+import com.dmhsh.samples.apps.nowinandroid.core.network.model.*
 
 /**
  * Interface representing network calls to the NIA backend

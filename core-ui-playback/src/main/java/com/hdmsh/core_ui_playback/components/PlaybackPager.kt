@@ -18,8 +18,8 @@ import com.google.accompanist.pager.HorizontalPager
 import com.google.accompanist.pager.PagerState
 import com.google.accompanist.pager.calculateCurrentOffsetForPage
 import com.google.accompanist.pager.rememberPagerState
-import com.google.samples.apps.nowinandroid.common.compose.LocalPlaybackConnection
-import com.google.samples.apps.nowinandroid.playback.PlaybackConnection
+import com.dmhsh.samples.apps.nowinandroid.common.compose.LocalPlaybackConnection
+import com.dmhsh.samples.apps.nowinandroid.playback.PlaybackConnection
 import com.hdmsh.common_compose.rememberFlowWithLifecycle
 import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.flow.filter

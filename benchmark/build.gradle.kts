@@ -20,7 +20,7 @@ plugins {
 }
 
 android {
-    namespace = "com.google.samples.apps.nowinandroid.benchmark"
+    namespace = "com.dmhsh.samples.apps.nowinandroid.benchmark"
 
     defaultConfig {
         minSdk = 23

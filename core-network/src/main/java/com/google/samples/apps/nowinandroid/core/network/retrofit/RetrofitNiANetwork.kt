@@ -14,15 +14,15 @@
  * limitations under the License.
  */
 
-package com.google.samples.apps.nowinandroid.core.network.retrofit
+package com.dmhsh.samples.apps.nowinandroid.core.network.retrofit
 
-import com.google.samples.apps.nowinandroid.core.network.BuildConfig
-import com.google.samples.apps.nowinandroid.core.network.Dispatcher
-import com.google.samples.apps.nowinandroid.core.network.NiANetwork
-import com.google.samples.apps.nowinandroid.core.network.NiaDispatchers
-import com.google.samples.apps.nowinandroid.core.network.fake.FakeDataSource
+import com.dmhsh.samples.apps.nowinandroid.core.network.BuildConfig
+import com.dmhsh.samples.apps.nowinandroid.core.network.Dispatcher
+import com.dmhsh.samples.apps.nowinandroid.core.network.NiANetwork
+import com.dmhsh.samples.apps.nowinandroid.core.network.NiaDispatchers
+import com.dmhsh.samples.apps.nowinandroid.core.network.fake.FakeDataSource
 
-import com.google.samples.apps.nowinandroid.core.network.model.*
+import com.dmhsh.samples.apps.nowinandroid.core.network.model.*
 import com.jakewharton.retrofit2.converter.kotlinx.serialization.asConverterFactory
 import kotlinx.coroutines.CoroutineDispatcher
 import kotlinx.coroutines.withContext

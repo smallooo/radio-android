@@ -14,7 +14,8 @@
  * limitations under the License.
  */
 
-import com.google.samples.apps.nowinandroid.configureKotlinAndroid
+import com.dmhsh.samples.apps.nowinandroid.configureKotlinAndroid
+
 
 plugins {
     id("com.android.application")

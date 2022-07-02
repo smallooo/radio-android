@@ -14,9 +14,10 @@
  * limitations under the License.
  */
 
-package com.google.samples.apps.nowinandroid.core.datastore
+package com.dmhsh.samples.apps.nowinandroid.core.datastore
 
 import androidx.datastore.core.CorruptionException
+import com.dmhsh.samples.apps.nowinandroid.core.datastore.UserPreferencesSerializer
 import java.io.ByteArrayInputStream
 import java.io.ByteArrayOutputStream
 import kotlinx.coroutines.test.runTest

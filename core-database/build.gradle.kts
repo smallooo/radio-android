@@ -33,7 +33,7 @@ android {
             arg("room.schemaLocation", "$projectDir/schemas")
         }
 
-        testInstrumentationRunner = "com.google.samples.apps.nowinandroid.core.testing.NiaTestRunner"
+        testInstrumentationRunner = "com.dmhsh.samples.apps.nowinandroid.core.testing.NiaTestRunner"
     }
 }
 

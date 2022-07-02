@@ -3,8 +3,8 @@ package com.dmhsh.feature_history
 import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.google.samples.apps.nowinandroid.core.data.repository.StationsRepository
-import com.google.samples.apps.nowinandroid.core.model.data.FollowableStation
+import com.dmhsh.samples.apps.nowinandroid.core.data.repository.StationsRepository
+import com.dmhsh.samples.apps.nowinandroid.core.model.data.FollowableStation
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.*
 import kotlinx.coroutines.launch

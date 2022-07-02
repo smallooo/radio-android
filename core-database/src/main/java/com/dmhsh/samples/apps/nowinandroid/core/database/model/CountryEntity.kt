@@ -1,0 +1,24 @@
+package com.dmhsh.samples.apps.nowinandroid.core.database.model
+
+import androidx.room.ColumnInfo
+import androidx.room.Entity
+import androidx.room.PrimaryKey
+import com.dmhsh.samples.apps.nowinandroid.core.model.data.Country
+
+
+@Entity(
+    tableName = "country",
+)
+data class CountryEntity (@PrimaryKey
+                          val name: String,
+                          val iso_3166_1: String,
+                          @ColumnInfo(defaultValue = "")
+                          val stationcount: String,
+)
+
+fun CountryEntity.asExternalModel() = Country(
+
+    name = name,
+    iso_3166_1 = iso_3166_1,
+    stationcount = stationcount
+)

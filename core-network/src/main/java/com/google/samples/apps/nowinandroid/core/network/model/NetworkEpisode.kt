@@ -14,10 +14,10 @@
  * limitations under the License.
  */
 
-package com.google.samples.apps.nowinandroid.core.network.model
+package com.dmhsh.samples.apps.nowinandroid.core.network.model
 
-import com.google.samples.apps.nowinandroid.core.model.data.Episode
-import com.google.samples.apps.nowinandroid.core.network.model.util.InstantSerializer
+import com.dmhsh.samples.apps.nowinandroid.core.model.data.Episode
+import com.dmhsh.samples.apps.nowinandroid.core.network.model.util.InstantSerializer
 import kotlinx.datetime.Instant
 import kotlinx.serialization.Serializable
 

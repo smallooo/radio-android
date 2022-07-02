@@ -14,9 +14,11 @@
  * limitations under the License.
  */
 
-package com.google.samples.apps.nowinandroid.core.result
+package com.dmhsh.samples.apps.nowinandroid.core.result
 
 import app.cash.turbine.test
+import com.dmhsh.samples.apps.nowinandroid.core.result.Result
+import com.dmhsh.samples.apps.nowinandroid.core.result.asResult
 import kotlinx.coroutines.flow.flow
 import kotlinx.coroutines.test.runTest
 import org.junit.Assert.assertEquals

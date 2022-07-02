@@ -20,15 +20,15 @@ import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
-import com.google.samples.app.nowinandroid.core.playback.isBuffering
-import com.google.samples.app.nowinandroid.core.playback.models.PlaybackProgressState
-import com.google.samples.apps.nowinandroid.common.compose.LocalPlaybackConnection
-import com.google.samples.apps.nowinandroid.core.ui.Delayed
-import com.google.samples.apps.nowinandroid.core.ui.extensions.toFloat
-import com.google.samples.apps.nowinandroid.core.ui.material.Slider
-import com.google.samples.apps.nowinandroid.core.ui.material.SliderDefaults
-import com.google.samples.apps.nowinandroid.playback.PLAYBACK_PROGRESS_INTERVAL
-import com.google.samples.apps.nowinandroid.playback.PlaybackConnection
+import com.dmhsh.samples.app.nowinandroid.core.playback.isBuffering
+import com.dmhsh.samples.app.nowinandroid.core.playback.models.PlaybackProgressState
+import com.dmhsh.samples.apps.nowinandroid.common.compose.LocalPlaybackConnection
+import com.dmhsh.samples.apps.nowinandroid.core.ui.Delayed
+import com.dmhsh.samples.apps.nowinandroid.core.ui.extensions.toFloat
+import com.dmhsh.samples.apps.nowinandroid.core.ui.material.Slider
+import com.dmhsh.samples.apps.nowinandroid.core.ui.material.SliderDefaults
+import com.dmhsh.samples.apps.nowinandroid.playback.PLAYBACK_PROGRESS_INTERVAL
+import com.dmhsh.samples.apps.nowinandroid.playback.PlaybackConnection
 import com.hdmsh.common_compose.rememberFlowWithLifecycle
 import kotlin.math.roundToLong
 

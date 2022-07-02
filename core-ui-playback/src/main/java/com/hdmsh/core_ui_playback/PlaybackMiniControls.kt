@@ -36,24 +36,25 @@ import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
 import androidx.navigation.NavHostController
+import com.dmhsh.samples.app.nowinandroid.core.playback.*
 
 import com.google.accompanist.pager.ExperimentalPagerApi
-import com.google.samples.app.nowinandroid.core.playback.*
-import com.google.samples.apps.nowinandroid.common.compose.LocalPlaybackConnection
-import com.google.samples.apps.nowinandroid.core.model.data.Station
-import com.google.samples.apps.nowinandroid.core.navigation.LocalNavigator
-import com.google.samples.apps.nowinandroid.core.navigation.Navigator
-import com.google.samples.apps.nowinandroid.core.navigation.Screens.LeafScreen
+import com.dmhsh.samples.app.nowinandroid.core.playback.*
+import com.dmhsh.samples.apps.nowinandroid.common.compose.LocalPlaybackConnection
+import com.dmhsh.samples.apps.nowinandroid.core.model.data.Station
+import com.dmhsh.samples.apps.nowinandroid.core.navigation.LocalNavigator
+import com.dmhsh.samples.apps.nowinandroid.core.navigation.Navigator
+import com.dmhsh.samples.apps.nowinandroid.core.navigation.Screens.LeafScreen
 
-import com.google.samples.apps.nowinandroid.core.ui.Dismissable
-import com.google.samples.apps.nowinandroid.core.ui.adaptiveColor
-import com.google.samples.apps.nowinandroid.core.ui.component.CoverImage
-import com.google.samples.apps.nowinandroid.playback.PLAYBACK_PROGRESS_INTERVAL
-import com.google.samples.apps.nowinandroid.playback.PlaybackConnection
+import com.dmhsh.samples.apps.nowinandroid.core.ui.Dismissable
+import com.dmhsh.samples.apps.nowinandroid.core.ui.adaptiveColor
+import com.dmhsh.samples.apps.nowinandroid.core.ui.component.CoverImage
+import com.dmhsh.samples.apps.nowinandroid.playback.PLAYBACK_PROGRESS_INTERVAL
+import com.dmhsh.samples.apps.nowinandroid.playback.PlaybackConnection
 import com.hdmsh.common_compose.rememberFlowWithLifecycle
-import  com.google.samples.apps.nowinandroid.core.ui.component.IconButton
-import com.google.samples.apps.nowinandroid.core.ui.component.coloredRippleClickable
-import com.google.samples.apps.nowinandroid.core.ui.theme.AppTheme
+import  com.dmhsh.samples.apps.nowinandroid.core.ui.component.IconButton
+import com.dmhsh.samples.apps.nowinandroid.core.ui.component.coloredRippleClickable
+import com.dmhsh.samples.apps.nowinandroid.core.ui.theme.AppTheme
 
 object PlaybackMiniControlsDefaults { val height = 56.dp }
 

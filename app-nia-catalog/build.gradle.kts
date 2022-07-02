@@ -21,7 +21,7 @@ plugins {
 
 android {
     defaultConfig {
-        applicationId = "com.google.samples.apps.niacatalog"
+        applicationId = "com.dmhsh.samples.apps.niacatalog"
     }
 
     packagingOptions {

@@ -14,10 +14,10 @@
  * limitations under the License.
  */
 
-package com.google.samples.apps.nowinandroid.core.network.model.util
+package com.dmhsh.samples.apps.nowinandroid.core.network.model.util
 
-import com.google.samples.apps.nowinandroid.core.model.data.NewsResourceType
-import com.google.samples.apps.nowinandroid.core.model.data.asNewsResourceType
+import com.dmhsh.samples.apps.nowinandroid.core.model.data.NewsResourceType
+import com.dmhsh.samples.apps.nowinandroid.core.model.data.asNewsResourceType
 import kotlinx.serialization.KSerializer
 import kotlinx.serialization.descriptors.PrimitiveKind.STRING
 import kotlinx.serialization.descriptors.PrimitiveSerialDescriptor

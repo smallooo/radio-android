@@ -1,10 +1,10 @@
-package com.google.samples.apps.nowinandroid.core.network.retrofit
+package com.dmhsh.samples.apps.nowinandroid.core.network.retrofit
 
-import com.google.samples.apps.nowinandroid.core.model.data.Country
-import com.google.samples.apps.nowinandroid.core.model.data.LanguageTag
-import com.google.samples.apps.nowinandroid.core.model.data.Station
-import com.google.samples.apps.nowinandroid.core.model.data.StationsTag
-import com.google.samples.apps.nowinandroid.core.network.model.NetworkStation
+import com.dmhsh.samples.apps.nowinandroid.core.model.data.Country
+import com.dmhsh.samples.apps.nowinandroid.core.model.data.LanguageTag
+import com.dmhsh.samples.apps.nowinandroid.core.model.data.Station
+import com.dmhsh.samples.apps.nowinandroid.core.model.data.StationsTag
+import com.dmhsh.samples.apps.nowinandroid.core.network.model.NetworkStation
 import retrofit2.http.GET
 
 import retrofit2.http.Path

@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-package com.google.samples.apps.nowinandroid.core.network.fake
+package com.dmhsh.samples.apps.nowinandroid.core.network.fake
 
 import kotlinx.coroutines.test.StandardTestDispatcher
 import kotlinx.coroutines.test.runTest
@@ -31,7 +31,7 @@ class FakeNiANetworkTest {
 
     @Before
     fun setUp() {
-        subject = com.google.samples.apps.nowinandroid.core.network.fake.FakeNiANetwork(
+        subject = com.dmhsh.samples.apps.nowinandroid.core.network.fake.FakeNiANetwork(
             ioDispatcher = testDispatcher,
             networkJson = Json { ignoreUnknownKeys = true }
         )

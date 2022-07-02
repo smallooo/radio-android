@@ -14,18 +14,18 @@
  * limitations under the License.
  */
 
-package com.google.samples.apps.nowinandroid.feature.topic
+package com.dmhsh.samples.apps.nowinandroid.feature.topic
 
 import androidx.lifecycle.SavedStateHandle
 import app.cash.turbine.test
-import com.google.samples.apps.nowinandroid.core.model.data.FollowableTopic
-import com.google.samples.apps.nowinandroid.core.model.data.NewsResource
-import com.google.samples.apps.nowinandroid.core.model.data.NewsResourceType.Video
-import com.google.samples.apps.nowinandroid.core.model.data.Topic
-import com.google.samples.apps.nowinandroid.core.testing.repository.TestNewsRepository
-import com.google.samples.apps.nowinandroid.core.testing.repository.TestTopicsRepository
-import com.google.samples.apps.nowinandroid.core.testing.util.TestDispatcherRule
-import com.google.samples.apps.nowinandroid.feature.topic.navigation.TopicDestination
+import com.dmhsh.samples.apps.nowinandroid.core.model.data.FollowableTopic
+import com.dmhsh.samples.apps.nowinandroid.core.model.data.NewsResource
+import com.dmhsh.samples.apps.nowinandroid.core.model.data.NewsResourceType.Video
+import com.dmhsh.samples.apps.nowinandroid.core.model.data.Topic
+import com.dmhsh.samples.apps.nowinandroid.core.testing.repository.TestNewsRepository
+import com.dmhsh.samples.apps.nowinandroid.core.testing.repository.TestTopicsRepository
+import com.dmhsh.samples.apps.nowinandroid.core.testing.util.TestDispatcherRule
+import com.dmhsh.samples.apps.nowinandroid.feature.topic.navigation.TopicDestination
 import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.test.runTest
 import kotlinx.datetime.Instant

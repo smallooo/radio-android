@@ -14,10 +14,11 @@
  * limitations under the License.
  */
 
-package com.google.samples.apps.nowinandroid.core.network.di
+package com.dmhsh.samples.apps.nowinandroid.core.network.di
 
-import com.google.samples.apps.nowinandroid.core.network.NiANetwork
-import com.google.samples.apps.nowinandroid.core.network.fake.FakeNiANetwork
+import com.dmhsh.samples.apps.nowinandroid.core.network.NiANetwork
+import com.dmhsh.samples.apps.nowinandroid.core.network.fake.FakeNiANetwork
+
 import dagger.Binds
 import dagger.Module
 import dagger.Provides

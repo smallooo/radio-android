@@ -14,9 +14,9 @@
  * limitations under the License.
  */
 
-package com.google.samples.apps.nowinandroid.core.database.util
+package com.dmhsh.samples.apps.nowinandroid.core.database.util
 
-import com.google.samples.apps.nowinandroid.core.model.data.NewsResourceType
+import com.dmhsh.samples.apps.nowinandroid.core.model.data.NewsResourceType
 import org.junit.Assert.assertEquals
 import org.junit.Test
 

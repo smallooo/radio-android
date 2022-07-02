@@ -1,8 +1,8 @@
-package com.google.samples.apps.nowinandroid.core.network
+package com.dmhsh.samples.apps.nowinandroid.core.network
 
 
-import com.google.samples.apps.nowinandroid.core.network.retrofit.RadioListApi
-import com.google.samples.apps.nowinandroid.core.network.retrofit.RadioListApi.Companion.API_URL
+import com.dmhsh.samples.apps.nowinandroid.core.network.retrofit.RadioListApi
+import com.dmhsh.samples.apps.nowinandroid.core.network.retrofit.RadioListApi.Companion.API_URL
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn

@@ -14,16 +14,17 @@
  * limitations under the License.
  */
 
-package com.google.samples.apps.nowinandroid.feature.author
+package com.dmhsh.samples.apps.nowinandroid.feature.author
 
 import androidx.activity.ComponentActivity
 import androidx.compose.ui.test.junit4.createAndroidComposeRule
 import androidx.compose.ui.test.onNodeWithContentDescription
 import androidx.compose.ui.test.onNodeWithText
-import com.google.samples.apps.nowinandroid.core.model.data.Author
-import com.google.samples.apps.nowinandroid.core.model.data.FollowableAuthor
-import com.google.samples.apps.nowinandroid.core.model.data.NewsResource
-import com.google.samples.apps.nowinandroid.core.model.data.NewsResourceType.Video
+import com.dmhsh.samples.apps.nowinandroid.feature.author.AuthorScreen
+import com.dmhsh.samples.apps.nowinandroid.core.model.data.Author
+import com.dmhsh.samples.apps.nowinandroid.core.model.data.FollowableAuthor
+import com.dmhsh.samples.apps.nowinandroid.core.model.data.NewsResource
+import com.dmhsh.samples.apps.nowinandroid.core.model.data.NewsResourceType.Video
 import kotlinx.datetime.Instant
 import org.junit.Before
 import org.junit.Rule

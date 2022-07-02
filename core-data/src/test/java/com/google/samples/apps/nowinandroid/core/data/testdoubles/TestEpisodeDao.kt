@@ -14,11 +14,11 @@
  * limitations under the License.
  */
 
-package com.google.samples.apps.nowinandroid.core.data.testdoubles
+package com.dmhsh.samples.apps.nowinandroid.core.data.testdoubles
 
-import com.google.samples.apps.nowinandroid.core.database.dao.EpisodeDao
-import com.google.samples.apps.nowinandroid.core.database.model.EpisodeEntity
-import com.google.samples.apps.nowinandroid.core.database.model.PopulatedEpisode
+import com.dmhsh.samples.apps.nowinandroid.core.database.dao.EpisodeDao
+import com.dmhsh.samples.apps.nowinandroid.core.database.model.EpisodeEntity
+import com.dmhsh.samples.apps.nowinandroid.core.database.model.PopulatedEpisode
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.map

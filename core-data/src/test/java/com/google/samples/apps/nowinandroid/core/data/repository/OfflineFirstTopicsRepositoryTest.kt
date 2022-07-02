@@ -14,24 +14,11 @@
  * limitations under the License.
  */
 
-package com.google.samples.apps.nowinandroid.core.data.repository
+package com.dmhsh.samples.apps.nowinandroid.core.data.repository
 
-import com.google.samples.apps.nowinandroid.core.data.Synchronizer
-import com.google.samples.apps.nowinandroid.core.data.model.asEntity
-import com.google.samples.apps.nowinandroid.core.data.testdoubles.CollectionType
-import com.google.samples.apps.nowinandroid.core.data.testdoubles.TestNiaNetwork
-import com.google.samples.apps.nowinandroid.core.data.testdoubles.TestTopicDao
-import com.google.samples.apps.nowinandroid.core.database.dao.TopicDao
-import com.google.samples.apps.nowinandroid.core.database.model.TopicEntity
-import com.google.samples.apps.nowinandroid.core.database.model.asExternalModel
-import com.google.samples.apps.nowinandroid.core.datastore.NiaPreferences
-import com.google.samples.apps.nowinandroid.core.datastore.test.testUserPreferencesDataStore
-import com.google.samples.apps.nowinandroid.core.model.data.Topic
-import com.google.samples.apps.nowinandroid.core.network.model.NetworkTopic
-import kotlinx.coroutines.flow.first
-import kotlinx.coroutines.test.runTest
-import org.junit.Assert
-import org.junit.Before
+import com.dmhsh.samples.apps.nowinandroid.core.data.Synchronizer
+import com.dmhsh.samples.apps.nowinandroid.core.data.model.asEntity
+
 import org.junit.Rule
 import org.junit.Test
 import org.junit.rules.TemporaryFolder

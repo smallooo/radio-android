@@ -6,7 +6,7 @@ import androidx.navigation.compose.composable
 import androidx.navigation.navArgument
 import com.dmhsh.feature_history.HistoryRoute
 
-import com.google.samples.apps.nowinandroid.core.navigation.NiaNavigationDestination
+import com.dmhsh.samples.apps.nowinandroid.core.navigation.NiaNavigationDestination
 
 
 object HistoryDestination : NiaNavigationDestination {

@@ -13,9 +13,9 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
 import androidx.hilt.navigation.compose.hiltViewModel
-import com.google.samples.apps.nowinandroid.core.ui.LoadingWheel
-import com.google.samples.apps.nowinandroid.core.ui.component.NiaTopAppBar
-import com.google.samples.apps.nowinandroid.core.ui.component.RadioItemFavorite
+import com.dmhsh.samples.apps.nowinandroid.core.ui.LoadingWheel
+import com.dmhsh.samples.apps.nowinandroid.core.ui.component.NiaTopAppBar
+import com.dmhsh.samples.apps.nowinandroid.core.ui.component.RadioItemFavorite
 
 @Composable
 fun HistoryRoute(

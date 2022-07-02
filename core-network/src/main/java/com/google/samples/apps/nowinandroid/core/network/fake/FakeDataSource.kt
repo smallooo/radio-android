@@ -14,11 +14,11 @@
  * limitations under the License.
  */
 
-package com.google.samples.apps.nowinandroid.core.network.fake
+package com.dmhsh.samples.apps.nowinandroid.core.network.fake
 
-import com.google.samples.apps.nowinandroid.core.model.data.NewsResourceType.Codelab
-import com.google.samples.apps.nowinandroid.core.network.model.NetworkNewsResource
-import com.google.samples.apps.nowinandroid.core.network.model.NetworkTopic
+import com.dmhsh.samples.apps.nowinandroid.core.model.data.NewsResourceType.Codelab
+import com.dmhsh.samples.apps.nowinandroid.core.network.model.NetworkNewsResource
+import com.dmhsh.samples.apps.nowinandroid.core.network.model.NetworkTopic
 import kotlinx.datetime.LocalDateTime
 import kotlinx.datetime.TimeZone
 import kotlinx.datetime.toInstant

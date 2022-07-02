@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-package com.google.samples.apps.nowinandroid.sync.workers
+package com.dmhsh.samples.apps.nowinandroid.sync.workers
 
 import android.util.Log
 import androidx.test.platform.app.InstrumentationRegistry
@@ -23,6 +23,7 @@ import androidx.work.WorkInfo
 import androidx.work.WorkManager
 import androidx.work.testing.SynchronousExecutor
 import androidx.work.testing.WorkManagerTestInitHelper
+import com.dmhsh.samples.apps.nowinandroid.sync.workers.SyncWorker
 import dagger.hilt.android.testing.HiltAndroidRule
 import dagger.hilt.android.testing.HiltAndroidTest
 import org.junit.Assert.assertEquals

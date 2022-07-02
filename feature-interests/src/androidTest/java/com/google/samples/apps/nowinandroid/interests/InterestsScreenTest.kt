@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-package com.google.samples.apps.nowinandroid.interests
+package com.dmhsh.samples.apps.nowinandroid.interests
 
 import androidx.activity.ComponentActivity
 import androidx.compose.runtime.Composable
@@ -25,14 +25,14 @@ import androidx.compose.ui.test.onAllNodesWithContentDescription
 import androidx.compose.ui.test.onAllNodesWithText
 import androidx.compose.ui.test.onNodeWithContentDescription
 import androidx.compose.ui.test.onNodeWithText
-import com.google.samples.apps.nowinandroid.core.model.data.Author
-import com.google.samples.apps.nowinandroid.core.model.data.FollowableAuthor
-import com.google.samples.apps.nowinandroid.core.model.data.FollowableTopic
-import com.google.samples.apps.nowinandroid.core.model.data.Topic
-import com.google.samples.apps.nowinandroid.feature.interests.InterestsScreen
-import com.google.samples.apps.nowinandroid.feature.interests.InterestsTabState
-import com.google.samples.apps.nowinandroid.feature.interests.InterestsUiState
-import com.google.samples.apps.nowinandroid.feature.interests.R
+import com.dmhsh.samples.apps.nowinandroid.core.model.data.Author
+import com.dmhsh.samples.apps.nowinandroid.core.model.data.FollowableAuthor
+import com.dmhsh.samples.apps.nowinandroid.core.model.data.FollowableTopic
+import com.dmhsh.samples.apps.nowinandroid.core.model.data.Topic
+import com.dmhsh.samples.apps.nowinandroid.feature.interests.InterestsScreen
+import com.dmhsh.samples.apps.nowinandroid.feature.interests.InterestsTabState
+import com.dmhsh.samples.apps.nowinandroid.feature.interests.InterestsUiState
+import com.dmhsh.samples.apps.nowinandroid.feature.interests.R
 import org.junit.Before
 import org.junit.Rule
 import org.junit.Test

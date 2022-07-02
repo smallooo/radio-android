@@ -14,7 +14,8 @@
  * limitations under the License.
  */
 
-import com.google.samples.apps.nowinandroid.configureAndroidCompose
+import com.dmhsh.samples.apps.nowinandroid.configureAndroidCompose
+
 
 plugins {
     id("com.android.application")

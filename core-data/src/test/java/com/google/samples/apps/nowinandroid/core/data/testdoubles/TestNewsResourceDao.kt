@@ -14,17 +14,17 @@
  * limitations under the License.
  */
 
-package com.google.samples.apps.nowinandroid.core.data.testdoubles
+package com.dmhsh.samples.apps.nowinandroid.core.data.testdoubles
 
-import com.google.samples.apps.nowinandroid.core.database.dao.NewsResourceDao
-import com.google.samples.apps.nowinandroid.core.database.model.AuthorEntity
-import com.google.samples.apps.nowinandroid.core.database.model.EpisodeEntity
-import com.google.samples.apps.nowinandroid.core.database.model.NewsResourceAuthorCrossRef
-import com.google.samples.apps.nowinandroid.core.database.model.NewsResourceEntity
-import com.google.samples.apps.nowinandroid.core.database.model.NewsResourceTopicCrossRef
-import com.google.samples.apps.nowinandroid.core.database.model.PopulatedNewsResource
-import com.google.samples.apps.nowinandroid.core.database.model.TopicEntity
-import com.google.samples.apps.nowinandroid.core.model.data.NewsResourceType.Video
+import com.dmhsh.samples.apps.nowinandroid.core.database.dao.NewsResourceDao
+import com.dmhsh.samples.apps.nowinandroid.core.database.model.AuthorEntity
+import com.dmhsh.samples.apps.nowinandroid.core.database.model.EpisodeEntity
+import com.dmhsh.samples.apps.nowinandroid.core.database.model.NewsResourceAuthorCrossRef
+import com.dmhsh.samples.apps.nowinandroid.core.database.model.NewsResourceEntity
+import com.dmhsh.samples.apps.nowinandroid.core.database.model.NewsResourceTopicCrossRef
+import com.dmhsh.samples.apps.nowinandroid.core.database.model.PopulatedNewsResource
+import com.dmhsh.samples.apps.nowinandroid.core.database.model.TopicEntity
+import com.dmhsh.samples.apps.nowinandroid.core.model.data.NewsResourceType.Video
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.map

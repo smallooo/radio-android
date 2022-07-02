@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-package com.google.samples.apps.nowinandroid
+package com.dmhsh.samples.apps.nowinandroid
 
 import com.android.build.api.dsl.CommonExtension
 import org.gradle.api.JavaVersion
@@ -36,6 +36,7 @@ fun Project.configureKotlinAndroid(
 
         defaultConfig {
             minSdk = 21
+
         }
 
         compileOptions {
