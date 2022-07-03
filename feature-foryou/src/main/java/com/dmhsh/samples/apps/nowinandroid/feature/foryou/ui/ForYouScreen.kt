@@ -123,6 +123,7 @@ fun AdvanceListContent(viewModel: SearchListViewModel = hiltViewModel()) {
     }
 }
 
+@OptIn(DelicateCoroutinesApi::class)
 private fun LaunchSearchScreen(
     pagerState: PagerState,
     viewModel: SearchListViewModel,

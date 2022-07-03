@@ -58,21 +58,7 @@ fun AnimatedListItem(station: FollowableStation, itemIndex: Int, onImageClick: (
         verticalAlignment = Alignment.CenterVertically,
         modifier = Modifier.clickable {
             playbackConnection.playAudio(station.station)
-            onPlayClick(station.station)
-//            GlobalScope.launch (Dispatchers.IO) {
-//                val aaa = ArrayList<String>()
-//               preferences.get("favorite", aaa).collect{ stationUUIDs ->
-//                   if (stationUUIDs.size > 0) {
-//                       stationUUIDs.forEach {
-//                           Log.e("aaa", it)
-//                           aaa.add(it)
-//                       }
-//                       aaa.add(station.station.stationuuid)
-//                       preferences.save("favorite", aaa.toSet().toList() as java.util.ArrayList)
-//                   }
-//               }
-//            }
-                                      },
+            onPlayClick(station.station) },
     ) {
         CoverImage(
             data =  station.station.favicon,

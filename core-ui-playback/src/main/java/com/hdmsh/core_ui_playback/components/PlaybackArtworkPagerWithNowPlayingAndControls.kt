@@ -10,8 +10,12 @@ import androidx.compose.foundation.layout.Box
 import androidx.compose.material.MaterialTheme
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.focus.FocusRequester.Companion.createRefs
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.TextStyle
+import androidx.constraintlayout.compose.ConstraintLayout
+import androidx.constraintlayout.compose.Dimension
+
 import com.dmhsh.samples.app.nowinandroid.core.playback.artworkUri
 
 import com.google.accompanist.pager.ExperimentalPagerApi
@@ -35,17 +39,18 @@ fun PlaybackArtworkPagerWithNowPlayingAndControls(
     onArtworkClick: Callback? = null,
     //viewModel: PlaybackViewModel = hiltViewModel(),
 ) {
-    Box(modifier = modifier) {
-        //val (pager, nowPlayingControls) = createRefs()
+    ConstraintLayout(modifier = modifier) {
+        val (pager, nowPlayingControls) = createRefs()
         PlaybackPager(
            // nowPlaying = nowPlaying,
             pagerState = pagerState,
-//            modifier = Modifier.constrainAs(pager) {
-//                centerHorizontallyTo(parent)
-//                top.linkTo(parent.top)
-//                bottom.linkTo(nowPlayingControls.top)
-//                height = Dimension.fillToConstraints
-//            }
+
+            modifier = Modifier.constrainAs(pager) {
+                centerHorizontallyTo(parent)
+                top.linkTo(parent.top)
+                bottom.linkTo(nowPlayingControls.top)
+                height = Dimension.fillToConstraints
+            }
         ) { _ , _ ->
             val currentArtwork = nowPlaying.artworkUri
             PlaybackArtwork(
@@ -64,11 +69,11 @@ fun PlaybackArtworkPagerWithNowPlayingAndControls(
             artistTextStyle = artistTextStyle,
             onTitleClick = {},
             onArtistClick = {},
-//            modifier = Modifier.constrainAs(nowPlayingControls) {
-//                centerHorizontallyTo(parent)
-//                bottom.linkTo(parent.bottom)
-//                height = Dimension.fillToConstraints
-//            }
+            modifier = Modifier.constrainAs(nowPlayingControls) {
+                centerHorizontallyTo(parent)
+                bottom.linkTo(parent.bottom)
+                height = Dimension.fillToConstraints
+            }
         )
     }
 }
