@@ -6,6 +6,7 @@ import androidx.compose.animation.animateColor
 import androidx.compose.animation.core.*
 import androidx.compose.material3.*
 import androidx.compose.runtime.*
+import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.unit.dp
@@ -29,6 +30,8 @@ fun LocalRadioList(
     val preString = rememberFlowWithLifecycle(preferences.get("aaa",ArrayList<String>()))
     val exampleEntities: ArrayList<String> by preString.collectAsState(initial = ArrayList<String>())
     val uiState by viewModel.localRadiosState.collectAsState()
+
+
     val shimmerAnimationType by remember { mutableStateOf(ShimmerAnimationType.FADE) }
     val transition = rememberInfiniteTransition()
     val playbackState by rememberFlowWithLifecycle(playbackConnection.playbackState)
@@ -66,21 +69,30 @@ fun LocalRadioList(
     }
 
     when (uiState) {
-        StationsUiState.Loading ->
-            for(i in 1..5) ShimmerItem(list, dpValue.value, shimmerAnimationType == ShimmerAnimationType.VERTICAL)
-        is StationsUiState.Stations -> {
-            RadioItem(viewModel,
-                listOf((uiState as StationsUiState.Stations).stations),
-                onImageClick = { Station ->
-                    Station.favorited = !Station.favorited
-                    viewModel.setFavoritedStation(Station)
-                },
-                onPlayClick = { Station ->
-                    Station.lastPlayedTime = System.currentTimeMillis().toString()
-                    viewModel.setFavoritedStation(Station)
-
-                }
+        StationsUiState.Loading -> {
+            Log.e("aaa", "refresh Loading")
+            for (i in 1..5) ShimmerItem(
+                list,
+                dpValue.value,
+                shimmerAnimationType == ShimmerAnimationType.VERTICAL
             )
+        }
+        is StationsUiState.Stations -> {
+            Log.e("aaa", "refresh stations")
+            if (uiState is StationsUiState.Stations) (
+                    RadioItem(viewModel,
+                        (uiState as StationsUiState.Stations).stations,
+                        onImageClick = { Station ->
+                            Station.favorited = !Station.favorited
+                            viewModel.setFavoritedStation(Station)
+                        },
+                        onPlayClick = { Station ->
+                            Station.lastPlayedTime = System.currentTimeMillis().toString()
+                            viewModel.setFavoritedStation(Station)
+
+                        }
+                    )
+                    )
         }
         is StationsUiState.Empty -> ShimmerItem(list, dpValue.value, shimmerAnimationType == ShimmerAnimationType.VERTICAL)
     }

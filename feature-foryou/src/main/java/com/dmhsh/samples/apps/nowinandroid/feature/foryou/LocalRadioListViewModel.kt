@@ -26,9 +26,8 @@ class LocalRadioListViewModel @Inject constructor(
 
     val localRadiosState: StateFlow<StationsUiState> = combine(
         stationsRepository.getAllStationsStream(),
-       stationsRepository.getFollowedStationIdsStream(),
-    ) { availableStations, followedStationsIdsState ->
-        StationsUiState.Stations(stations = availableStations.map { station -> FollowableStation(station = station, isFollowed = true) })
+    ) { availableStations ->
+        StationsUiState.Stations(stations = availableStations.get(0) )
     }.stateIn(
             scope = viewModelScope,
             started = SharingStarted.WhileSubscribed(5_000),
@@ -45,8 +44,10 @@ sealed interface StationsUiState {
     object Loading : StationsUiState
 
     data class Stations(
-        val stations: List<FollowableStation>,
-    ) : StationsUiState
+        val stations: List<Station>,
+    ) : StationsUiState {
+
+    }
 
     object Empty : StationsUiState
 }

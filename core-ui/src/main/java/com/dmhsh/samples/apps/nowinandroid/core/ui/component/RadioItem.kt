@@ -36,10 +36,10 @@ import kotlinx.coroutines.flow.toList
 import kotlinx.coroutines.launch
 
 @Composable
-fun RadioItem(viewModel: ViewModel, stateCategories : List<List<FollowableStation>>, onImageClick: (station: Station) -> Unit, onPlayClick: (station: Station) -> Unit){
+fun RadioItem(viewModel: ViewModel, stateCategories : List<Station>, onImageClick: (station: Station) -> Unit, onPlayClick: (station: Station) -> Unit){
     LazyColumn {
         itemsIndexed(
-            items = stateCategories.get(0),
+            items = stateCategories,
             itemContent = {index, item ->
                 AnimatedListItem(
                     station = item,
@@ -52,22 +52,22 @@ fun RadioItem(viewModel: ViewModel, stateCategories : List<List<FollowableStatio
 }
 
 @Composable
-fun AnimatedListItem(station: FollowableStation, itemIndex: Int, onImageClick: (station: Station) -> Unit, onPlayClick: (station: Station) -> Unit) {
+fun AnimatedListItem(station: Station, itemIndex: Int, onImageClick: (station: Station) -> Unit, onPlayClick: (station: Station) -> Unit) {
     val playbackConnection: PlaybackConnection = LocalPlaybackConnection.current
     Row(
         verticalAlignment = Alignment.CenterVertically,
         modifier = Modifier.clickable {
-            playbackConnection.playAudio(station.station)
-            onPlayClick(station.station) },
+            playbackConnection.playAudio(station)
+            onPlayClick(station) },
     ) {
         CoverImage(
-            data =  station.station.favicon,
+            data =  station.favicon,
             contentDescription = null,
             contentScale = ContentScale.Crop,
             modifier = Modifier
                 .size(55.dp)
                 .padding(4.dp).clickable {
-                    onImageClick(station.station)
+                    onImageClick(station)
                 }
         )
         Column(
@@ -76,12 +76,12 @@ fun AnimatedListItem(station: FollowableStation, itemIndex: Int, onImageClick: (
                 .weight(1f)
         ) {
             Text(
-                text = station.station.name,
+                text = station.name,
                 style = MaterialTheme.typography.bodyLarge,
                 color = MaterialTheme.colorScheme.onSurface
             )
             Text(
-                text = station.station.bitrate + "kbps",
+                text = station.bitrate + "kbps",
                 style = MaterialTheme.typography.bodyLarge,
                 maxLines = 1,
                 overflow = TextOverflow.Ellipsis

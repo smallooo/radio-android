@@ -52,15 +52,12 @@ class TopClickViewModel @Inject constructor(
             for(item in categories){
                 stations.add(item.asExternalModel())
             }
-
             stationDao.upsertStations(entities = stations)
-
         }
-
 
         viewModelScope.launch {
             state = categories?.let { state.copy(localStations = it, isLoading = false) }!!
-            effects.send(com.dmhsh.samples.apps.nowinandroid.feature.foryou.CountryCategoriesContract.Effect.DataWasLoaded)
+            effects.send(CountryCategoriesContract.Effect.DataWasLoaded)
         }
     }
 
