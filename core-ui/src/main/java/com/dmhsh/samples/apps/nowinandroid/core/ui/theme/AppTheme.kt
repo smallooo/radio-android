@@ -26,9 +26,9 @@ val LocalThemeState = staticCompositionLocalOf<ThemeState> {
 private val LocalAppColors = staticCompositionLocalOf<AppColors> {
     error("No LocalAppColors provided")
 }
-//private val LocalSpecs = staticCompositionLocalOf<Specs> {
-//    error("No LocalSpecs provided")
-//}
+private val LocalSpecs = staticCompositionLocalOf<Specs> {
+    error("No LocalSpecs provided")
+}
 
 object AppTheme {
     val state: ThemeState
@@ -39,9 +39,9 @@ object AppTheme {
         @Composable
         get() = LocalAppColors.current
 
-//    val specs: Specs
-//        @Composable
-//        get() = LocalSpecs.current
+    val specs: Specs
+        @Composable
+        get() = LocalSpecs.current
 }
 
 @Composable
@@ -56,7 +56,7 @@ fun ProvideAppTheme(
     CompositionLocalProvider(
         LocalThemeState provides theme,
         LocalAppColors provides appColors,
-       // LocalSpecs provides specs,
+        LocalSpecs provides specs,
         content = content
     )
 }

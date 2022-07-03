@@ -6,18 +6,19 @@ package com.hdmsh.core_ui_playback.components
 
 import android.support.v4.media.MediaMetadataCompat
 import android.support.v4.media.session.PlaybackStateCompat
+import androidx.compose.foundation.layout.Box
 import androidx.compose.material.MaterialTheme
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.TextStyle
-import androidx.constraintlayout.compose.ConstraintLayout
-import androidx.constraintlayout.compose.Dimension
-import androidx.core.net.toUri
+import com.dmhsh.samples.app.nowinandroid.core.playback.artworkUri
 
 import com.google.accompanist.pager.ExperimentalPagerApi
 import com.google.accompanist.pager.PagerState
 import com.google.accompanist.pager.rememberPagerState
+import com.hdmsh.core_ui_playback.PlaybackMiniControlsDefaults.height
+import kotlinx.coroutines.NonDisposableHandle.parent
 import javax.security.auth.callback.Callback
 
 
@@ -34,21 +35,21 @@ fun PlaybackArtworkPagerWithNowPlayingAndControls(
     onArtworkClick: Callback? = null,
     //viewModel: PlaybackViewModel = hiltViewModel(),
 ) {
-    ConstraintLayout(modifier = modifier) {
-        val (pager, nowPlayingControls) = createRefs()
+    Box(modifier = modifier) {
+        //val (pager, nowPlayingControls) = createRefs()
         PlaybackPager(
-            nowPlaying = nowPlaying,
+           // nowPlaying = nowPlaying,
             pagerState = pagerState,
-            modifier = Modifier.constrainAs(pager) {
-                centerHorizontallyTo(parent)
-                top.linkTo(parent.top)
-                bottom.linkTo(nowPlayingControls.top)
-                height = Dimension.fillToConstraints
-            }
-        ) { _, pagerMod ->
-            val currentArtwork = ""
+//            modifier = Modifier.constrainAs(pager) {
+//                centerHorizontallyTo(parent)
+//                top.linkTo(parent.top)
+//                bottom.linkTo(nowPlayingControls.top)
+//                height = Dimension.fillToConstraints
+//            }
+        ) { _ , _ ->
+            val currentArtwork = nowPlaying.artworkUri
             PlaybackArtwork(
-                artwork = "".toUri(),
+                artwork = currentArtwork,
                 contentColor = contentColor,
                 nowPlaying = nowPlaying,
                 onClick = {  },
@@ -59,15 +60,15 @@ fun PlaybackArtworkPagerWithNowPlayingAndControls(
             nowPlaying = nowPlaying,
             playbackState = playbackState,
             contentColor = contentColor,
-           // titleTextStyle = titleTextStyle,
-           // artistTextStyle = artistTextStyle,
+            titleTextStyle = titleTextStyle,
+            artistTextStyle = artistTextStyle,
             onTitleClick = {},
             onArtistClick = {},
-            modifier = Modifier.constrainAs(nowPlayingControls) {
-                centerHorizontallyTo(parent)
-                bottom.linkTo(parent.bottom)
-                height = Dimension.fillToConstraints
-            }
+//            modifier = Modifier.constrainAs(nowPlayingControls) {
+//                centerHorizontallyTo(parent)
+//                bottom.linkTo(parent.bottom)
+//                height = Dimension.fillToConstraints
+//            }
         )
     }
 }

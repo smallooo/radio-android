@@ -198,7 +198,7 @@ private fun PlaybackSheetTopBar(
         elevation = 0.dp,
         backgroundColor = Color.Transparent,
         title = {
-           // PlaybackSheetTopBarTitle(viewModel)
+            PlaybackSheetTopBarTitle(viewModel)
                 },
         actions = {
             PlaybackSheetTopBarActions()
@@ -230,14 +230,14 @@ private fun PlaybackSheetTopBarTitle(
             .simpleClickable(onClick = {})
     ) {
         val context = LocalContext.current
-        //val queueTitle = viewModel.getPlayBackConnection().homepage
+        val queueTitle = viewModel.getPlayBackConnection().homepage
         Text(
-            text = "queueTitle.uppercase()",
+            text = queueTitle.uppercase(),
             style = MaterialTheme.typography.overline.copy(fontWeight = FontWeight.Light),
             maxLines = 1,
         )
         Text(
-            text = "viewModel.getPlayBackConnection().name",
+            text = viewModel.getPlayBackConnection().name,
             style = MaterialTheme.typography.body1,
             textAlign = TextAlign.Center,
             overflow = TextOverflow.Ellipsis,

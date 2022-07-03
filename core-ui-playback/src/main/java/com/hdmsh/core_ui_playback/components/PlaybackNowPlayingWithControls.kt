@@ -34,7 +34,8 @@ import com.dmhsh.samples.apps.nowinandroid.playback.PlaybackConnection
 import com.hdmsh.common_compose.rememberFlowWithLifecycle
 import com.hdmsh.core_ui_playback.components.PlaybackNowPlayingDefaults.artistTextStyle
 import com.hdmsh.core_ui_playback.components.PlaybackNowPlayingDefaults.titleTextStyle
-import java.time.format.TextStyle
+import androidx.compose.ui.text.TextStyle
+import com.dmhsh.samples.apps.nowinandroid.core.ui.extensions.orNA
 
 
 object PlaybackNowPlayingDefaults {
@@ -50,21 +51,21 @@ internal fun PlaybackNowPlayingWithControls(
     onTitleClick: Callback,
     onArtistClick: Callback,
     modifier: Modifier = Modifier,
-    //titleTextStyle: TextStyle = PlaybackNowPlayingDefaults.titleTextStyle,
-    //artistTextStyle: TextStyle = PlaybackNowPlayingDefaults.artistTextStyle,
+    titleTextStyle: TextStyle = PlaybackNowPlayingDefaults.titleTextStyle,
+    artistTextStyle: TextStyle = PlaybackNowPlayingDefaults.artistTextStyle,
     onlyControls: Boolean = false,
 ) {
     Column(
         horizontalAlignment = Alignment.CenterHorizontally,
-        //modifier = modifier.padding(AppTheme.specs.paddingLarge)
+        modifier = modifier.padding(28.dp)  //(AppTheme.specs.paddingLarge)
     ) {
         if (!onlyControls)
             PlaybackNowPlaying(
                 nowPlaying = nowPlaying,
                 onTitleClick = onTitleClick,
                 onArtistClick = onArtistClick,
-               // titleTextStyle = titleTextStyle,
-               // artistTextStyle = artistTextStyle,
+                titleTextStyle = titleTextStyle,
+                artistTextStyle = artistTextStyle,
             )
 
         PlaybackProgress(
@@ -84,17 +85,17 @@ internal fun PlaybackNowPlaying(
     onTitleClick: Callback,
     onArtistClick: Callback,
     modifier: Modifier = Modifier,
-    //titleTextStyle: TextStyle = PlaybackNowPlayingDefaults.titleTextStyle,
-   // artistTextStyle: TextStyle = PlaybackNowPlayingDefaults.artistTextStyle,
+    titleTextStyle: TextStyle = PlaybackNowPlayingDefaults.titleTextStyle,
+    artistTextStyle: TextStyle = PlaybackNowPlayingDefaults.artistTextStyle,
     horizontalAlignment: Alignment.Horizontal = Alignment.CenterHorizontally,
 ) {
-   // val title = nowPlaying.title
     Column(
         horizontalAlignment = horizontalAlignment,
         modifier = modifier
     ) {
+        val title = nowPlaying.title
         Text(
-            "title",
+            title.orNA(),
             style = titleTextStyle,
             overflow = TextOverflow.Ellipsis,
             maxLines = 1,
@@ -146,7 +147,7 @@ internal fun PlaybackControls(
             )
         }
 
-       // Spacer(Modifier.width(AppTheme.specs.paddingLarge))
+        Spacer(Modifier.width(AppTheme.specs.paddingLarge))
 
         IconButton(
             onClick = { playbackConnection.transportControls?.skipToPrevious() },
@@ -163,7 +164,7 @@ internal fun PlaybackControls(
             )
         }
 
-       // Spacer(Modifier.width(AppTheme.specs.padding))
+       Spacer(Modifier.width(AppTheme.specs.padding))
 
         IconButton(
             onClick = { playbackConnection.mediaController?.playPause() },
@@ -187,7 +188,7 @@ internal fun PlaybackControls(
             )
         }
 
-//        Spacer(Modifier.width(AppTheme.specs.padding))
+        Spacer(Modifier.width(AppTheme.specs.padding))
 
         IconButton(
             onClick = { playbackConnection.transportControls?.skipToNext() },
@@ -204,7 +205,7 @@ internal fun PlaybackControls(
             )
         }
 
-//        Spacer(Modifier.width(AppTheme.specs.paddingLarge))
+        Spacer(Modifier.width(AppTheme.specs.paddingLarge))
 
         IconButton(
             onClick = { playbackConnection.mediaController?.toggleRepeatMode() },

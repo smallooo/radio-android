@@ -294,6 +294,7 @@ class DatmusicPlayerImpl @Inject constructor(
                 }
                 putString(MediaMetadataCompat.METADATA_KEY_ARTIST, station.name)
                 putString(MediaMetadataCompat.METADATA_KEY_ALBUM, station.language)
+                putString(MediaMetadataCompat.METADATA_KEY_ALBUM_ART_URI, station.favicon)
             }
             mediaSession.setMetadata(mediaMetadata.build())
             metaDataChangedCallback(player)

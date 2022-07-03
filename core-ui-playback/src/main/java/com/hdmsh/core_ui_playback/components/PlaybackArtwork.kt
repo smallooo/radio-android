@@ -40,7 +40,7 @@ internal fun PlaybackArtwork(
         contentColor = contentColor,
         bitmapPlaceholder = nowPlaying.artwork,
         modifier = Modifier
-            //.padding(horizontal = AppTheme.specs.paddingLarge)
+            .padding(horizontal = AppTheme.specs.paddingLarge)
             .then(modifier),
         imageModifier = Modifier.coloredRippleClickable(
             onClick = {
