@@ -18,18 +18,32 @@ package com.dmhsh.samples.apps.nowinandroid.feature.author
 
 import androidx.annotation.VisibleForTesting
 import androidx.compose.foundation.ExperimentalFoundationApi
-import androidx.compose.foundation.layout.Spacer
-import androidx.compose.foundation.layout.WindowInsets
-import androidx.compose.foundation.layout.WindowInsetsSides
-import androidx.compose.foundation.layout.only
-import androidx.compose.foundation.layout.safeDrawing
-import androidx.compose.foundation.layout.windowInsetsPadding
+import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
+import androidx.compose.foundation.lazy.LazyListScope
+import androidx.compose.material.OutlinedButton
+import androidx.compose.material.Scaffold
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.MoreVert
+import androidx.compose.material.icons.filled.Search
+import androidx.compose.material3.Button
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.tooling.preview.Preview
+import androidx.compose.ui.unit.dp
 import com.dmhsh.samples.apps.nowinandroid.core.ui.component.ComingSoon
+import com.dmhsh.samples.apps.nowinandroid.core.ui.component.NiaTopAppBar
+import com.dmhsh.samples.apps.nowinandroid.core.ui.theme.*
+import com.dmhsh.samples.apps.nowinandroid.feature.author.ui.SelectableDropdownMenu
+import com.dmhsh.samples.apps.nowinandroid.feature.author.ui.SettingsItem
+import com.dmhsh.samples.apps.nowinandroid.feature.author.ui.SettingsLinkItem
+import com.dmhsh.samples.apps.nowinandroid.feature.author.ui.SettingsSectionLabel
+import kotlinx.coroutines.launch
+import tm.alashow.i18n.R
 
 @Composable
 fun SettingRoute(
@@ -37,44 +51,194 @@ fun SettingRoute(
     modifier: Modifier = Modifier,
 ) {
 
-    ComingSoon()
-//    Setting(
-//        onBackClick = onBackClick,
-//        modifier = modifier,
-//    )
+    //val themeState by rememberFlowWithLifecycle(themeViewModel.themeState)
+   // val settingsLinks by rememberFlowWithLifecycle(viewModel.settingsLinks)
+    Settings() //(themeState, themeViewModel::applyThemeState, settingsLinks)
 }
 
-@OptIn(ExperimentalFoundationApi::class)
-@VisibleForTesting
+
+
+
 @Composable
-internal fun Setting(
-    onBackClick: () -> Unit,
-    modifier: Modifier = Modifier,
+private fun Settings(
+    //themeState: ThemeState,
+    //setThemeState: (ThemeState) -> Unit,
+   // settingsLinks: SettingsLinks = emptyList()
+) {
+    Scaffold(
+        topBar = {
+            NiaTopAppBar(titleRes = R.string.app_name,
+                navigationIcon = Icons.Filled.Search,
+                navigationIconContentDescription = stringResource(
+                    id = R.string.app_name
+                ),
+                actionIcon = Icons.Filled.MoreVert,
+                actionIconContentDescription = stringResource(
+                    id = R.string.app_name
+                ))
+        }
+    ) { padding ->
+        SettingsList(
+//            themeState,
+//            setThemeState,
+//            settingsLinks,
+            padding)
+    }
+}
+
+@Composable
+fun SettingsList(
+   // themeState: ThemeState,
+    //setThemeState: (ThemeState) -> Unit,
+   // settingsLinks: SettingsLinks,
+    paddings: PaddingValues,
+   // downloader: Downloader = LocalDownloader.current
 ) {
     LazyColumn(
-        modifier = modifier,
-        horizontalAlignment = Alignment.CenterHorizontally
+        verticalArrangement = Arrangement.spacedBy(16.dp),
+        modifier = Modifier.fillMaxWidth(),
+        contentPadding = paddings
     ) {
+        settingsGeneralSection()
+        //settingsThemeSection(themeState, setThemeState)
+        //settingsDownloadsSection(downloader)
+        settingsDatabaseSection()
+        settingsAboutSection()
+        //settingsLinksSection(settingsLinks)
+    }
+}
 
+fun LazyListScope.settingsGeneralSection() {
+    item {
+        SettingsSectionLabel(stringResource(R.string.app_name))
 
-//        item {
-//            Spacer(
-//                // TODO: Replace with windowInsetsTopHeight after
-//                //       https://issuetracker.google.com/issues/230383055
-//                Modifier.windowInsetsPadding(
-//                    WindowInsets.safeDrawing.only(WindowInsetsSides.Top)
-//                )
-//            )
-//        }
+        SettingsItem(stringResource(R.string.app_name)) {
+            //PremiumButton()
+            Button(onClick = { /*TODO*/ }) { Text("PremiumButton")}
+        }
+    }
+}
+
+//fun LazyListScope.settingsDownloadsSection(downloader: Downloader) {
+//    item {
+//        val coroutine = rememberCoroutineScope()
+//        val downloadsLocationSelected by rememberFlowWithLifecycle(downloader.hasDownloadsLocation).collectAsState(initial = null)
+//        val downloadsSongsGrouping by rememberFlowWithLifecycle(downloader.downloadsSongsGrouping).collectAsState(initial = null)
 //
-//        item {
-//            Spacer(
-//                // TODO: Replace with windowInsetsBottomHeight after
-//                //       https://issuetracker.google.com/issues/230383055
-//                Modifier.windowInsetsPadding(
-//                    WindowInsets.safeDrawing.only(WindowInsetsSides.Bottom)
+//        SettingsSectionLabel(stringResource(R.string.settings_downloads))
+//        Column(verticalArrangement = Arrangement.spacedBy(AppTheme.specs.padding)) {
+//            SettingsItem(stringResource(R.string.settings_downloads_location)) {
+//                OutlinedButton(
+//                    onClick = { downloader.requestNewDownloadsLocation() },
+//                    colors = outlinedButtonColors()
+//                ) {
+//                    if (downloadsLocationSelected != null) {
+//                        androidx.compose.material.Text(
+//                            stringResource(
+//                                if (downloadsLocationSelected == true) R.string.settings_downloads_location_change
+//                                else R.string.settings_downloads_location_select
+//                            )
+//                        )
+//                    }
+//                }
+//            }
+//
+//            SettingsItem(stringResource(R.string.settings_downloads_songsGrouping)) {
+//                val downloadSongsGrouping = downloadsSongsGrouping ?: return@SettingsItem
+//                SelectableDropdownMenu(
+//                    items = DownloadsSongsGrouping.values().toList(),
+//                    itemLabelMapper = { stringResource(it.labelRes) },
+//                    subtitles = DownloadsSongsGrouping.values().map { stringResource(it.exampleRes) },
+//                    selectedItem = downloadSongsGrouping,
+//                    onItemSelect = { coroutine.launch { downloader.setDownloadsSongsGrouping(it) } },
+//                    modifier = Modifier.offset(x = 12.dp)
 //                )
+//            }
+//        }
+//    }
+//}
+
+fun LazyListScope.settingsThemeSection(themeState: ThemeState, setThemeState: (ThemeState) -> Unit) {
+    item {
+        SettingsSectionLabel(stringResource(R.string.app_name))
+        SettingsItem(stringResource(R.string.app_name)) {
+            SelectableDropdownMenu(
+                items = DarkModePreference.values().toList(),
+                selectedItem = themeState.darkModePreference,
+                onItemSelect = { setThemeState(themeState.copy(darkModePreference = it)) },
+                modifier = Modifier.offset(x = 12.dp)
+            )
+        }
+        SettingsItem(stringResource(R.string.app_name)) {
+            SelectableDropdownMenu(
+                items = ColorPalettePreference.values().toList(),
+                selectedItem = themeState.colorPalettePreference,
+                onItemSelect = { setThemeState(themeState.copy(colorPalettePreference = it)) },
+                modifier = Modifier.offset(x = 12.dp)
+            )
+        }
+    }
+}
+
+fun LazyListScope.settingsAboutSection() {
+    item {
+        SettingsSectionLabel(stringResource(R.string.settings_about))
+
+        Column(verticalArrangement = Arrangement.spacedBy(16.dp)) {
+            SettingsLinkItem(
+                labelRes = R.string.app_name,
+                textRes = R.string.app_name,
+                linkRes = R.string.app_name
+            )
+            SettingsLinkItem(
+                label = stringResource(R.string.app_name),
+                text = "LocalAppVersion.current",
+                link = "Config.PLAYSTORE_URL"
+            )
+        }
+    }
+}
+
+//fun LazyListScope.settingsLinksSection(settingsLinks: SettingsLinks) {
+//    settingsLinks.forEach { settingsLink ->
+//        item {
+//            settingsLink.localizedCategory?.let { category ->
+//                SettingsSectionLabel(category)
+//            }
+//
+//            SettingsLinkItem(
+//                label = settingsLink.localizedLabel,
+//                text = settingsLink.getLinkName(),
+//                link = settingsLink.getLinkUrl()
 //            )
 //        }
+//    }
+//}
+
+internal fun LazyListScope.settingsDatabaseSection() {
+    item {
+        SettingsSectionLabel(stringResource(R.string.app_name))
+        SettingsItem(stringResource(R.string.app_name)) {
+            //BackupRestoreButton()
+            Button(onClick = {}){
+                Text("BackupRestoreButton")
+            }
+        }
+    }
+}
+
+@Preview
+@Composable
+fun SettingsPreview() {
+    AppTheme(DefaultTheme) {
+        Settings()
+    }
+}
+
+@Preview
+@Composable
+fun SettingsPreviewDark() {
+    AppTheme(DefaultThemeDark) {
+        Settings()
     }
 }

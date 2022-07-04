@@ -32,8 +32,10 @@ dependencies {
     implementation(project(":core-model"))
     implementation(project(":core-ui"))
     implementation(project(":core-data"))
+    implementation(project(":core-datastore"))
     implementation(project(":core-common"))
     implementation(project(":core-navigation"))
+    implementation(project(":i18n"))
 
     testImplementation(project(":core-testing"))
     androidTestImplementation(project(":core-testing"))
