@@ -14,7 +14,7 @@ import javax.inject.Singleton
 @Singleton
 class RadioListApi @Inject constructor(private val service: Service) {
     suspend fun getCountryList(): ArrayList<Country> = service.getCountryList()
-    suspend fun getListByCountry(type: String, param: String): List<NetworkStation> = service.getListByCountry()
+    suspend fun getListByCountry(type: String, param: String): List<NetworkStation> = service.getListByCountry(type, param)
     suspend fun getTopClick(): List<Station> = service.getTopClick()
     suspend fun getTopVote(): List<Station> = service.getTopVote()
     suspend fun getLateUpdated(): List<Station> = service.getRecentlyChanged()
@@ -22,16 +22,16 @@ class RadioListApi @Inject constructor(private val service: Service) {
     suspend fun getTags(): List<StationsTag> = service.getTags()
     suspend fun getCountries(): List<Country> = service.getCountries()
     suspend fun getLanguages(): List<LanguageTag> = service.getLanguages()
-    suspend fun getStationsByConditionList(type: String, param: String): List<Station> = service.getStationsByConditionList(type, param)
+    suspend fun searchByTypeList(type: String, param: String): List<Station> = service.searchByTypeList(type, param)
     interface Service {
         @GET("json/countries")
         suspend fun getCountryList(): ArrayList<Country>
 
-        @GET("/json/stations/{type}/{param}")
-        suspend fun getListByCountryDemo(@Path("type")type: String, @Path("param") param: String): ArrayList<Station>
+//        @GET("/json/stations/{type}/{param}")
+//        suspend fun getListByCountryDemo(@Path("type")type: String, @Path("param") param: String): ArrayList<Station>
 
-        @GET("/json/stations/bycountry/japan")
-        suspend fun getListByCountry(): ArrayList<NetworkStation>
+        @GET("/json/stations/{type}/{param}")
+        suspend fun getListByCountry(@Path("type")type: String, @Path("param") param: String): ArrayList<NetworkStation>
 
         @GET("/json/stations/topclick/200")
         suspend fun getTopClick(): ArrayList<Station>
@@ -54,14 +54,14 @@ class RadioListApi @Inject constructor(private val service: Service) {
         @GET("/json/languages")
         suspend fun getLanguages(): ArrayList<LanguageTag>
 
-        @GET("/json/languages")
-        suspend fun getSearchResult(): ArrayList<Station>
+//        @GET("/json/languages")
+//        suspend fun getSearchResult(): ArrayList<Station>
 
         @GET("/json/stations/{type}/{param}")
-        suspend fun getStationsByConditionList(@Path("type")type: String, @Path("param") param: String): ArrayList<Station>
+        suspend fun searchByTypeList(@Path("type")type: String, @Path("param") param: String): ArrayList<Station>
     }
 
-    companion object { const val API_URL = "https://at1.api.radio-browser.info/" }
+   // companion object { const val API_URL = "https://at1.api.radio-browser.info/" }
 }
 
 

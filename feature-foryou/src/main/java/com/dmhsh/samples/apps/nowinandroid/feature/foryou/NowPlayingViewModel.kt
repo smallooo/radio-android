@@ -5,9 +5,8 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.setValue
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.dmhsh.samples.apps.nowinandroid.core.data.CountrySource
-import com.dmhsh.samples.apps.nowinandroid.core.data.LocalStationsSource
-import com.dmhsh.samples.apps.nowinandroid.core.data.repository.StationsRepository
+import com.dmhsh.samples.apps.nowinandroid.core.data.NetSource
+import com.dmhsh.samples.apps.nowinandroid.core.data.repository.StationsRepo
 import com.dmhsh.samples.apps.nowinandroid.core.model.data.Station
 
 import dagger.hilt.android.lifecycle.HiltViewModel
@@ -17,8 +16,8 @@ import kotlinx.coroutines.launch
 import javax.inject.Inject
 
 @HiltViewModel
-class NowPlayingViewModel @Inject constructor(private val remoteSource: LocalStationsSource,
-                                              private val stationsRepository: StationsRepository,) :
+class NowPlayingViewModel @Inject constructor(private val remoteSource: NetSource,
+                                              private val stationsRepo: StationsRepo,) :
     ViewModel() {
 
     var state by mutableStateOf(
@@ -38,16 +37,16 @@ class NowPlayingViewModel @Inject constructor(private val remoteSource: LocalSta
     }
 
     private suspend fun getTopClickStationList() {
-        val categories = remoteSource.getLastClickStationsList()
+        val categories = remoteSource.getLastClickList()
         viewModelScope.launch {
             state = categories?.let { state.copy(localStations = it, isLoading = false) }!!
             effects.send(com.dmhsh.samples.apps.nowinandroid.feature.foryou.CountryCategoriesContract.Effect.DataWasLoaded)
         }
     }
 
-    fun setFavoritedStation(station: Station) = stationsRepository.setFavoriteStation(station)
+    fun setFavoritedStation(station: Station) = stationsRepo.setFavorite(station)
 
-    fun setPlayHistory(station: Station) = stationsRepository.setPlayHistory(station)
+    fun setPlayHistory(station: Station) = stationsRepo.setPlayHistory(station)
 }
 
 

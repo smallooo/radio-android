@@ -22,7 +22,6 @@ import com.google.accompanist.insets.navigationBarsPadding
 import com.dmhsh.samples.apps.nowinandroid.core.navigation.Screens.RootScreen
 import com.dmhsh.samples.apps.nowinandroid.core.ui.theme.translucentSurfaceColor
 
-
 @Composable
 internal fun HomeBottomNavigation(
     selectedTab: RootScreen,

@@ -76,7 +76,9 @@ internal fun Home(
                         }
                     }
                 }
-            ) { AppNavigation(navController = navController) }
+            ) {
+                AppNavigation(navController = navController)
+            }
         }
     }
 }

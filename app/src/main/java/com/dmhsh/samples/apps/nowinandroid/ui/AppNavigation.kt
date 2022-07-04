@@ -25,12 +25,12 @@ import com.dmhsh.samples.apps.nowinandroid.core.navigation.LocalNavigator
 import com.dmhsh.samples.apps.nowinandroid.core.navigation.NavigationEvent
 import com.dmhsh.samples.apps.nowinandroid.core.navigation.Navigator
 import com.dmhsh.samples.apps.nowinandroid.core.navigation.Screens.*
-import com.dmhsh.samples.apps.nowinandroid.core.navigation.Screens.*
-import com.dmhsh.samples.apps.nowinandroid.core.ui.component.ComingSoon
+import com.dmhsh.samples.apps.nowinandroid.feature.author.SettingRoute
 
 
 import com.dmhsh.samples.apps.nowinandroid.feature.foryou.ForYouScreen
 import com.dmhsh.samples.apps.nowinandroid.feature.interests.InterestsRoute
+import com.dmhsh.samples.apps.nowinandroid.feature.alarm.AlarmRoute
 import com.hdmsh.common_compose.collectEvent
 import com.hdmsh.core_ui_playback.PlaybackSheet
 
@@ -153,19 +153,14 @@ fun Search(){
 
 private fun NavGraphBuilder.addAlarm() {
     composableScreen(LeafScreen.Alarm()){
-        Settings()
+        AlarmRoute(onBackClick = { /*TODO*/ })
     }
 }
 
 private fun NavGraphBuilder.addSettings() {
     composableScreen(LeafScreen.Settings()){
-        Settings()
+        SettingRoute(onBackClick = { /*TODO*/ })
     }
-}
-
-@Composable
-fun Settings(){
-    ComingSoon()
 }
 
 private fun NavGraphBuilder.addDownloads() {
@@ -208,8 +203,6 @@ private fun NavGraphBuilder.addEditPlaylist() {
         EditPlaylist()
     }
 }
-
-
 
 @Composable
 fun EditPlaylist(){

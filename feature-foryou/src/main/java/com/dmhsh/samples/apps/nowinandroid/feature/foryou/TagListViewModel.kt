@@ -1,37 +1,27 @@
 package com.dmhsh.samples.apps.nowinandroid.feature.foryou
 
 
-import android.util.Log
 import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.dmhsh.samples.apps.nowinandroid.core.data.LocalStationsSource
-import com.dmhsh.samples.apps.nowinandroid.core.data.repository.StationsRepository
-import com.dmhsh.samples.apps.nowinandroid.core.database.model.StationEntity
-import com.dmhsh.samples.apps.nowinandroid.core.database.model.asExternalModel
-import com.dmhsh.samples.apps.nowinandroid.core.model.data.FollowableStation
-import com.dmhsh.samples.apps.nowinandroid.core.model.data.FollowableTag
-import com.dmhsh.samples.apps.nowinandroid.core.model.data.Station
+import com.dmhsh.samples.apps.nowinandroid.core.data.NetSource
+import com.dmhsh.samples.apps.nowinandroid.core.data.repository.StationsRepo
 import com.dmhsh.samples.apps.nowinandroid.core.model.data.StationsTag
 
 import dagger.hilt.android.lifecycle.HiltViewModel
-import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.*
-import kotlinx.coroutines.launch
-import kotlinx.coroutines.withContext
 import javax.inject.Inject
 
 @HiltViewModel
 class TagListViewModel @Inject constructor(
     savedStateHandle: SavedStateHandle,
-    private val localStationsSource: LocalStationsSource,
-    private val stationsRepository: StationsRepository,
+    private val netSource: NetSource,
+    private val stationsRepo: StationsRepo,
 ) : ViewModel() {
 
     val tagListState: StateFlow<TagUiState> = combine(
-        stationsRepository.getTagList()
+        stationsRepo.getTagList()
     ) { availableTags ->
-        Log.e("aaa", availableTags.get(0).get(1).name)
         TagUiState.Tags(tags = availableTags.get(0))
     }.stateIn(
             scope = viewModelScope,

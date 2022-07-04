@@ -75,11 +75,11 @@ android {
 }
 
 dependencies {
-    implementation(project(":feature-author"))
+    implementation(project(":feature-setting"))
     implementation(project(":feature-interests"))
     implementation(project(":feature-history"))
     implementation(project(":feature-foryou"))
-    implementation(project(":feature-topic"))
+    implementation(project(":feature-alarm"))
     implementation(project(":core-navigation"))
     implementation(project(":core-datastore"))
     implementation(project(":sync"))

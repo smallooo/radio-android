@@ -1,33 +1,26 @@
 package com.dmhsh.samples.apps.nowinandroid.feature.foryou
 
 
-import android.util.Log
 import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.dmhsh.samples.apps.nowinandroid.core.model.data.LanguageTag
-import com.dmhsh.samples.apps.nowinandroid.core.data.LocalStationsSource
-import com.dmhsh.samples.apps.nowinandroid.core.data.repository.StationsRepository
-import com.dmhsh.samples.apps.nowinandroid.core.database.model.StationEntity
-import com.dmhsh.samples.apps.nowinandroid.core.database.model.asExternalModel
-import com.dmhsh.samples.apps.nowinandroid.core.model.data.*
+import com.dmhsh.samples.apps.nowinandroid.core.data.NetSource
+import com.dmhsh.samples.apps.nowinandroid.core.data.repository.StationsRepo
 
 import dagger.hilt.android.lifecycle.HiltViewModel
-import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.*
-import kotlinx.coroutines.launch
-import kotlinx.coroutines.withContext
 import javax.inject.Inject
 
 @HiltViewModel
 class LanguageListViewModel @Inject constructor(
     savedStateHandle: SavedStateHandle,
-    private val localStationsSource: LocalStationsSource,
-    private val stationsRepository: StationsRepository,
+    private val netSource: NetSource,
+    private val stationsRepo: StationsRepo,
 ) : ViewModel() {
 
     val languageListState: StateFlow<LanguageUiState> = combine(
-        stationsRepository.getLanguageList()
+        stationsRepo.getLanguageList()
     ) { availableTags ->
 
         LanguageUiState.Tags(tags = availableTags.get(0))

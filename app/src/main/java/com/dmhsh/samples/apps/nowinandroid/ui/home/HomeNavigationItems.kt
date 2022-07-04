@@ -39,14 +39,14 @@ internal val HomeNavigationItems = listOf(
         screen = RootScreen.Alarm,
         labelResId = com.dmhsh.samples.apps.nowinandroid.feature.foryou.R.string.nav_item_alarm,
         contentDescriptionResId = com.dmhsh.samples.apps.nowinandroid.feature.foryou.R.string.app_id,
-        iconImageVector = Icons.Outlined.Gamepad,
-        selectedImageVector = Icons.Filled.Gamepad,
+        iconImageVector = Icons.Outlined.PunchClock,
+        selectedImageVector = Icons.Filled.PunchClock,
     ),
     HomeNavigationItem.ImageVectorIcon(
         screen = RootScreen.Settings,
         labelResId = com.dmhsh.samples.apps.nowinandroid.feature.foryou.R.string.nav_item_settings,
         contentDescriptionResId = com.dmhsh.samples.apps.nowinandroid.feature.foryou.R.string.app_id,
-        iconImageVector = Icons.Outlined.GTranslate,
-        selectedImageVector =  Icons.Filled.GTranslate,
+        iconImageVector = Icons.Outlined.Settings,
+        selectedImageVector =  Icons.Filled.Settings,
     ),
 )
