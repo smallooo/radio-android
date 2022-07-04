@@ -1,7 +1,6 @@
 package com.dmhsh.samples.apps.nowinandroid.core.data.repository
 
-import android.util.Log
-import com.dmhsh.samples.apps.nowinandroid.core.data.LocalStationsSource
+import com.dmhsh.samples.apps.nowinandroid.core.data.NetSource
 import com.dmhsh.samples.apps.nowinandroid.core.data.Synchronizer
 import com.dmhsh.samples.apps.nowinandroid.core.data.changeStationSync
 import com.dmhsh.samples.apps.nowinandroid.core.data.model.asEntity
@@ -16,6 +15,7 @@ import com.dmhsh.samples.apps.nowinandroid.core.model.data.Station
 import com.dmhsh.samples.apps.nowinandroid.core.model.data.StationsTag
 import com.dmhsh.samples.apps.nowinandroid.core.network.NiANetwork
 import com.dmhsh.samples.apps.nowinandroid.core.network.model.NetworkStation
+import kotlinx.coroutines.DelicateCoroutinesApi
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.flow.*
@@ -23,63 +23,46 @@ import kotlinx.coroutines.flow.*
 import javax.inject.Inject
 import kotlinx.coroutines.launch
 
-class OfflineFirstStationsRepository @Inject constructor(
+class OffFirstStationsRepo @Inject constructor(
     private val sationDao: StationDao,
     private val network: NiANetwork,
     private val niaPreferences: NiaPreferences,
     private val preferences: PreferencesStore,
-    private val localStationsSource: LocalStationsSource,
-) : StationsRepository {
-    override fun getAllStationsStream(): Flow<List<Station>> = sationDao.getAllStationEntitiesStream().map { it.map(StationEntity::asExternalModel) }
+    private val netSource: NetSource,
+) : StationsRepo {
+    override fun getAllStream(): Flow<List<Station>> = sationDao.getAllStationEntitiesStream().map { it.map(StationEntity::asExternalModel) }
 
-    override fun getTopVisitedStationsStream(): Flow<List<Station>> = flow { localStationsSource.getTopClickStationsList()}
+    override fun getTopVisitedStream(): Flow<List<Station>> = flow { netSource.getTopClickList()}
 
-    override fun gettopVotedStationsStream(): Flow<List<Station>> = flow { localStationsSource.gettopVotedStationsList()}
+    override fun gettopVotedStream(): Flow<List<Station>> = flow { netSource.gettopVotedList()}
 
-    override fun getLateUpdateStationsStream(): Flow<List<Station>> = flow { localStationsSource.getLateUpdateStationsList()}
+    override fun getLateUpdateStream(): Flow<List<Station>> = flow { netSource.getLateUpdateStationsList()}
 
-    override fun getnowPlayingStationsStream(): Flow<List<Station>> = flow { localStationsSource.getLastClickStationsList()}
+    override fun getnowPlayingStream(): Flow<List<Station>> = flow { netSource.getLastClickList()}
 
+    override fun getTagList(): Flow<List<StationsTag>> = flow { netSource.getTagList()?.let { emit(it) } }
 
+    override fun getLanguageList(): Flow<List<LanguageTag>>  = flow { netSource.getLanguageList()?.let { emit(it) } }
 
-    override fun getTagList(): Flow<List<StationsTag>> = flow {
-        localStationsSource.getStationsTagList()?.let { emit(it) }
-    }
-
-    override fun getLanguageList(): Flow<List<LanguageTag>>  = flow {
-        localStationsSource.getLanguageList()?.let { emit(it) }
-    }
-
-    override fun getStationsByConditionList(): Flow<List<Station>> = flow {
+    override fun getSearchByTypeList(): Flow<List<Station>> = flow {
         val type = preferences.get("type","").first()
         val param = preferences.get("param","").first()
-        Log.e("aaa", "type"+ type)
-        Log.e("param", "param"+ param)
-
-        localStationsSource.getStationsByConditionList(type, param)?.let { emit(it) }
+        netSource.searchByTypeList(type, param)?.let { emit(it) }
     }
 
+    override fun getFavorite(): Flow<List<Station>> = sationDao.getFavoritedStations().map{ it.map(StationEntity::asExternalModel)}
 
-    override fun getFavoriteStations(): Flow<List<Station>> = sationDao.getFavoritedStations().map{ it.map(StationEntity::asExternalModel)}
+    @OptIn(DelicateCoroutinesApi::class)
+    override fun setFavorite(entitie: Station) { GlobalScope.launch(Dispatchers.IO) { sationDao.setFavoritedStation(entitie.asExternalModel()) } }
 
-    override fun setFavoriteStation(entitie: Station) {
-        GlobalScope.launch(Dispatchers.IO) {
-            sationDao.setFavoritedStation(entitie.asExternalModel())
-        }
-    }
-
-    override fun setPlayHistory(entitie: Station) {
-        GlobalScope.launch(Dispatchers.IO) {
-            sationDao.setPlayHistory(entitie.asExternalModel())
-        }
-    }
+    override fun setPlayHistory(entitie: Station) { GlobalScope.launch(Dispatchers.IO) { sationDao.setPlayHistory(entitie.asExternalModel()) } }
 
     override fun getPlayHistory(): Flow<List<Station>> = sationDao.getPlayHistory().map { it.map(StationEntity::asExternalModel) }
 
-    override fun getStationbyIdsEntitiesStream(entities: List<String>): Flow<List<Station>> =
+    override fun getbyIdsEntitiesStream(entities: List<String>): Flow<List<Station>> =
         sationDao.getStationbyIdsEntitiesStream(HashSet(entities)).map{ it.map(StationEntity::asExternalModel)}
 
-    override fun getFollowedStationIdsStream(): Flow<Set<String>> = niaPreferences.followedAuthorIds
+    override fun getFollowedIdsStream(): Flow<Set<String>> = niaPreferences.followedAuthorIds
 
     override suspend fun syncWith(synchronizer: Synchronizer): Boolean =
         synchronizer.changeStationSync(
@@ -88,7 +71,7 @@ class OfflineFirstStationsRepository @Inject constructor(
             versionUpdater = { latestVersion -> copy(topicVersion = latestVersion) },
             modelDeleter = sationDao::deleteStations,
             modelUpdater = { changedIds ->
-                val netWorkStations =  localStationsSource.getLocalStationsList("topclick", "100")
+                val netWorkStations =  netSource.getLocalList("topclick", "100")
                 if (netWorkStations != null) { sationDao.upsertStations(entities = netWorkStations.map(NetworkStation::asEntity)) }
             }
         )

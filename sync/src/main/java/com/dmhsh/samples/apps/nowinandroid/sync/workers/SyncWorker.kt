@@ -24,7 +24,7 @@ import androidx.work.OneTimeWorkRequestBuilder
 import androidx.work.OutOfQuotaPolicy
 import androidx.work.WorkerParameters
 import com.dmhsh.samples.apps.nowinandroid.core.data.Synchronizer
-import com.dmhsh.samples.apps.nowinandroid.core.data.repository.StationsRepository
+import com.dmhsh.samples.apps.nowinandroid.core.data.repository.StationsRepo
 import com.dmhsh.samples.apps.nowinandroid.core.datastore.ChangeListVersions
 import com.dmhsh.samples.apps.nowinandroid.core.datastore.NiaPreferences
 import com.dmhsh.samples.apps.nowinandroid.core.network.Dispatcher
@@ -47,7 +47,7 @@ class SyncWorker @AssistedInject constructor(
     @Assisted private val appContext: Context,
     @Assisted workerParams: WorkerParameters,
     private val niaPreferences: NiaPreferences,
-    private val stationsRepository: StationsRepository,
+    private val stationsRepo: StationsRepo,
     @Dispatcher(IO) private val ioDispatcher: CoroutineDispatcher,
 ) : CoroutineWorker(appContext, workerParams), Synchronizer {
 
@@ -57,7 +57,7 @@ class SyncWorker @AssistedInject constructor(
     override suspend fun doWork(): Result = withContext(ioDispatcher) {
         // First sync the repositories in parallel
         val syncedSuccessfully = awaitAll(
-            async { stationsRepository.sync() },
+            async { stationsRepo.sync() },
         ).all { it }
 
         if (syncedSuccessfully) Result.success()

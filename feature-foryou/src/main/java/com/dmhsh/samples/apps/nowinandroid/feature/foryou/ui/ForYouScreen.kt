@@ -84,7 +84,8 @@ fun AdvanceListContent(viewModel: SearchListViewModel = hiltViewModel()) {
         stringResource(R.string.action_tags),
         stringResource(R.string.action_countries),
         stringResource(R.string.action_languages),
-        stringResource(R.string.action_search))
+        stringResource(R.string.action_search)
+    )
     val pagerState: PagerState = run {
         remember { PagerState(0, 0, tabs.size - 1) }
     }
@@ -109,14 +110,14 @@ fun AdvanceListContent(viewModel: SearchListViewModel = hiltViewModel()) {
         Pager(state = pagerState, modifier = Modifier.weight(1f)) {
             selectedIndex = pagerState.currentPage
             when (commingPage) {
-                0 -> LocalRadioList()
+                0 -> LocalRadioList()  //0
                 1 -> TopVisitRadios()
                 2 -> TopVoteRadios()
                 3 -> LateUpdateRadios()
                 4 -> NowPlayingRadios()
-                5 -> TagListScreen(onTagSelect = {stationTag -> LaunchSearchScreen(pagerState, viewModel,"bytag", stationTag.name) })
+                5 -> TagListScreen(onTagSelect = {stationTag -> LaunchSearchScreen(pagerState, viewModel,"bytag", stationTag.name) }) //0
                 6 -> CountryList(onCountrySelect = {Country -> LaunchSearchScreen( pagerState, viewModel,"bycountry", Country.name) })
-                7 -> LanguageListScreen(onTagSelect = { LaunchSearchScreen(pagerState, viewModel,"bylanguage", it.name) })
+                7 -> LanguageListScreen(onTagSelect = { LaunchSearchScreen(pagerState, viewModel,"bylanguage", it.name) })  //0
                 8 -> SearchStationsScreen()
             }
         }

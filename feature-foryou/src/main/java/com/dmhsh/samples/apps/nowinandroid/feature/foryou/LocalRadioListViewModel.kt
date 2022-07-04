@@ -1,31 +1,26 @@
 package com.dmhsh.samples.apps.nowinandroid.feature.foryou
 
 
-import android.util.Log
 import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.dmhsh.samples.apps.nowinandroid.core.data.LocalStationsSource
-import com.dmhsh.samples.apps.nowinandroid.core.data.repository.StationsRepository
-import com.dmhsh.samples.apps.nowinandroid.core.model.data.FollowableStation
+import com.dmhsh.samples.apps.nowinandroid.core.data.NetSource
+import com.dmhsh.samples.apps.nowinandroid.core.data.repository.StationsRepo
 import com.dmhsh.samples.apps.nowinandroid.core.model.data.Station
 
 import dagger.hilt.android.lifecycle.HiltViewModel
-import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.*
-import kotlinx.coroutines.launch
-import kotlinx.coroutines.withContext
 import javax.inject.Inject
 
 @HiltViewModel
 class LocalRadioListViewModel @Inject constructor(
     savedStateHandle: SavedStateHandle,
-    private val localStationsSource: LocalStationsSource,
-    private val stationsRepository: StationsRepository,
+    private val netSource: NetSource,
+    private val stationsRepo: StationsRepo,
 ) : ViewModel() {
 
     val localRadiosState: StateFlow<StationsUiState> = combine(
-        stationsRepository.getAllStationsStream(),
+        stationsRepo.getAllStream(),
     ) { availableStations ->
         StationsUiState.Stations(stations = availableStations.get(0) )
     }.stateIn(
@@ -34,9 +29,9 @@ class LocalRadioListViewModel @Inject constructor(
             initialValue = StationsUiState.Loading
         )
 
-    fun setFavoritedStation(station: Station) = stationsRepository.setFavoriteStation(station)
+    fun setFavoritedStation(station: Station) = stationsRepo.setFavorite(station)
 
-    fun setPlayHistory(station: Station) = stationsRepository.setPlayHistory(station)
+    fun setPlayHistory(station: Station) = stationsRepo.setPlayHistory(station)
 
 }
 

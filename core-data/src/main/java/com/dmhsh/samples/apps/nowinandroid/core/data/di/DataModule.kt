@@ -16,8 +16,8 @@
 
 package com.dmhsh.samples.apps.nowinandroid.core.data.di
 
-import com.dmhsh.samples.apps.nowinandroid.core.data.repository.OfflineFirstStationsRepository
-import com.dmhsh.samples.apps.nowinandroid.core.data.repository.StationsRepository
+import com.dmhsh.samples.apps.nowinandroid.core.data.repository.OffFirstStationsRepo
+import com.dmhsh.samples.apps.nowinandroid.core.data.repository.StationsRepo
 
 import dagger.Binds
 import dagger.Module
@@ -32,7 +32,7 @@ interface DataModule {
 
     @Binds
     fun bindsStationRepository(
-        stationsRepository: OfflineFirstStationsRepository
-    ): StationsRepository
+        stationsRepository: OffFirstStationsRepo
+    ): StationsRepo
 
 }

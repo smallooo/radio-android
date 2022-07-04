@@ -5,8 +5,8 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.setValue
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.dmhsh.samples.apps.nowinandroid.core.data.LocalStationsSource
-import com.dmhsh.samples.apps.nowinandroid.core.data.repository.StationsRepository
+import com.dmhsh.samples.apps.nowinandroid.core.data.NetSource
+import com.dmhsh.samples.apps.nowinandroid.core.data.repository.StationsRepo
 import com.dmhsh.samples.apps.nowinandroid.core.database.dao.StationDao
 import com.dmhsh.samples.apps.nowinandroid.core.database.model.StationEntity
 import com.dmhsh.samples.apps.nowinandroid.core.database.model.asExternalModel
@@ -21,8 +21,8 @@ import javax.inject.Inject
 
 @HiltViewModel
 class  SearchListViewModel @Inject constructor(
-    private val remoteSource: LocalStationsSource,
-    private val stationsRepository: StationsRepository,
+    private val remoteSource: NetSource,
+    private val stationsRepo: StationsRepo,
     private val stationDao: StationDao,
     ) : ViewModel() {
 
@@ -46,7 +46,7 @@ class  SearchListViewModel @Inject constructor(
     }
 
     private suspend fun getSearchStationList(type: String, param: String) {
-        val categories = remoteSource.getStationsByConditionList(type, param)
+        val categories = remoteSource.searchByTypeList(type, param)
         if (categories != null) {
             val stations = ArrayList<StationEntity>()
             for(item in categories){ stations.add(item.asExternalModel()) }
@@ -66,9 +66,9 @@ class  SearchListViewModel @Inject constructor(
         }
     }
 
-    fun setFavoritedStation(station: Station) = stationsRepository.setFavoriteStation(station)
+    fun setFavoritedStation(station: Station) = stationsRepo.setFavorite(station)
 
-    fun setPlayHistory(station: Station) = stationsRepository.setPlayHistory(station)
+    fun setPlayHistory(station: Station) = stationsRepo.setPlayHistory(station)
 }
 
 
