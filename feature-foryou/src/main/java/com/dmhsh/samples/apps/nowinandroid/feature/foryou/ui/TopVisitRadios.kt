@@ -47,7 +47,7 @@ fun TopVisitRadios(
     viewModel: TopClickViewModel = hiltViewModel(),
     playbackConnection: PlaybackConnection = LocalPlaybackConnection.current,
 ) {
-    val topVisitsState = viewModel.state
+    val topVisitsState = remember{ viewModel.state }
     val shimmerAnimationType by remember { mutableStateOf(ShimmerAnimationType.FADE) }
     val transition = rememberInfiniteTransition()
     val playbackState by rememberFlowWithLifecycle(playbackConnection.playbackState)
@@ -85,17 +85,7 @@ fun TopVisitRadios(
     }
 
     if (topVisitsState.isLoading) {
-        Column(
-            modifier = Modifier
-                .fillMaxSize()
-                .verticalScroll(rememberScrollState())
-        ) {
-            ShimmerItem(list, dpValue.value, shimmerAnimationType == ShimmerAnimationType.VERTICAL)
-            ShimmerItem(list, dpValue.value, shimmerAnimationType == ShimmerAnimationType.VERTICAL)
-            ShimmerItem(list, dpValue.value, shimmerAnimationType == ShimmerAnimationType.VERTICAL)
-            ShimmerItem(list, dpValue.value, shimmerAnimationType == ShimmerAnimationType.VERTICAL)
-            ShimmerItem(list, dpValue.value, shimmerAnimationType == ShimmerAnimationType.VERTICAL)
-        }
+        for (i in 1..5) ShimmerItem(list, dpValue.value, shimmerAnimationType == ShimmerAnimationType.VERTICAL)
     } else {
         RadioItem111(viewModel,
             listOf(topVisitsState.localStations),

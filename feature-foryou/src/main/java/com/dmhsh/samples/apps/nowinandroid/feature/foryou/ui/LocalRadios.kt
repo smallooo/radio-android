@@ -69,13 +69,7 @@ fun LocalRadioList(
     }
 
     when (uiState) {
-        StationsUiState.Loading -> {
-            for (i in 1..5) ShimmerItem(
-                list,
-                dpValue.value,
-                shimmerAnimationType == ShimmerAnimationType.VERTICAL
-            )
-        }
+        StationsUiState.Loading -> for (i in 1..5) ShimmerItem(list, dpValue.value, shimmerAnimationType == ShimmerAnimationType.VERTICAL)
         is StationsUiState.Stations -> {
            // Log.e("aaa", "refresh stations")
             if (uiState is StationsUiState.Stations) (

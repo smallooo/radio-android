@@ -45,7 +45,7 @@ fun TopVoteRadios(
     viewModel: TopVoteViewModel = hiltViewModel(),
     playbackConnection: PlaybackConnection = LocalPlaybackConnection.current,
 ) {
-    val uiState = viewModel.state
+    val uiState = remember{viewModel.state}
     val shimmerAnimationType by remember { mutableStateOf(ShimmerAnimationType.FADE) }
     val transition = rememberInfiniteTransition()
     val playbackState by rememberFlowWithLifecycle(playbackConnection.playbackState)
@@ -83,17 +83,7 @@ fun TopVoteRadios(
     }
 
     if (uiState.isLoading) {
-        Column(
-            modifier = Modifier
-                .fillMaxSize()
-                .verticalScroll(rememberScrollState())
-        ) {
-            ShimmerItem(list, dpValue.value, shimmerAnimationType == ShimmerAnimationType.VERTICAL)
-            ShimmerItem(list, dpValue.value, shimmerAnimationType == ShimmerAnimationType.VERTICAL)
-            ShimmerItem(list, dpValue.value, shimmerAnimationType == ShimmerAnimationType.VERTICAL)
-            ShimmerItem(list, dpValue.value, shimmerAnimationType == ShimmerAnimationType.VERTICAL)
-            ShimmerItem(list, dpValue.value, shimmerAnimationType == ShimmerAnimationType.VERTICAL)
-        }
+        for (i in 1..5) ShimmerItem(list, dpValue.value, shimmerAnimationType == ShimmerAnimationType.VERTICAL)
     } else {
         RadioItem111(viewModel,
             listOf(uiState.localStations),

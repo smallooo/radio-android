@@ -27,7 +27,7 @@ import com.dmhsh.samples.apps.nowinandroid.feature.foryou.ui.ShimmerAnimationTyp
 
 @Composable
 fun CountryList( viewModel: CountryViewModel = hiltViewModel(), onCountrySelect:(country: Country) -> Unit) {
-    val state = viewModel.state
+    val state = remember{ viewModel.state }
     val shimmerAnimationType by remember { mutableStateOf(ShimmerAnimationType.FADE) }
 
     val transition = rememberInfiniteTransition()
@@ -68,17 +68,7 @@ fun CountryList( viewModel: CountryViewModel = hiltViewModel(), onCountrySelect:
     )
 
     if(state.isLoading) {
-        Column(
-            modifier = Modifier
-                .fillMaxSize()
-                .verticalScroll(rememberScrollState())
-        ) {
-            ShimmerItem(list, dpValue.value, shimmerAnimationType == ShimmerAnimationType.VERTICAL)
-            ShimmerItem(list, dpValue.value, shimmerAnimationType == ShimmerAnimationType.VERTICAL)
-            ShimmerItem(list, dpValue.value, shimmerAnimationType == ShimmerAnimationType.VERTICAL)
-            ShimmerItem(list, dpValue.value, shimmerAnimationType == ShimmerAnimationType.VERTICAL)
-            ShimmerItem(list, dpValue.value, shimmerAnimationType == ShimmerAnimationType.VERTICAL)
-        }
+        for (i in 1..5) ShimmerItem(list, dpValue.value, shimmerAnimationType == ShimmerAnimationType.VERTICAL)
     }else{
 //        Button(onClick = {onCountrySelect(state.categories.get(1)) }) {
 //

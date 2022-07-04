@@ -26,7 +26,7 @@ import java.util.Date;
 public class AppOpenManager implements Application.ActivityLifecycleCallbacks, LifecycleObserver {
 
     private static final String LOG_TAG = "AppOpenManager";
-    private static final String AD_UNIT_ID = "ca-app-pub-3940256099942544/3419835294"; //"ca-app-pub-5568022063904772/3521264188";
+    private static final String AD_UNIT_ID = "ca-app-pub-5568022063904772/3521264188"; //"ca-app-pub-5568022063904772/3521264188"; "ca-app-pub-3940256099942544/3419835294"
     private AppOpenAd appOpenAd = null;
 
     private AppOpenAd.AppOpenAdLoadCallback loadCallback;
