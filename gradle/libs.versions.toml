@@ -11,7 +11,8 @@ androidxCustomView = "1.0.0-alpha01"
 androidxDataStore = "1.0.0"
 androidxEspresso = "3.3.0"
 androidxHiltNavigationCompose = "1.0.0"
-androidxLifecycle = "2.4.0"
+androidxLifecycle = "2.0.0"
+androidxLifecycle1 = "2.4.0"
 androidxMacroBenchmark = "1.1.0-rc02"
 androidxNavigation = "2.4.0-rc01"
 androidxProfileinstaller = "1.2.0-beta01"
@@ -57,7 +58,7 @@ lifecycleExtensions = "2.2.0"
 rxjavaAdapter = "2.9.0"
 lottie = "4.2.0"
 
-
+playServicesAds = "21.0.0"
 
 
 [libraries]
@@ -68,6 +69,7 @@ accompanist-insets = { group = "com.google.accompanist", name = "accompanist-ins
 accompanist-pager = {group = "com.google.accompanist", name = "accompanist-pager", version.ref = "accompanist" }
 accompanist-placeholder = {group = "com.google.accompanist", name = "accompanist-placeholder-material", version.ref = "accompanist"}
 accompanist-navigation-material = {group = "com.google.accompanist", name = "accompanist-navigation-material", version.ref = "accompanist"}
+play-services-ads = {group = "com.google.android.gms", name = "play-services-ads", version.ref = "playServicesAds"}
 android-desugarJdkLibs = { group = "com.android.tools", name = "desugar_jdk_libs", version.ref = "androidDesugarJdkLibs" }
 android-gradlePlugin = { group = "com.android.tools.build", name = "gradle", version.ref = "androidGradlePlugin" }
 androidx-activity-compose = { group = "androidx.activity", name = "activity-compose", version.ref = "androidxActivity" }
@@ -93,11 +95,11 @@ androidx-dataStore-preferences = { group = "androidx.datastore", name = "datasto
 androidx-hilt-navigation-compose = { group = "androidx.hilt", name = "hilt-navigation-compose", version.ref = "androidxHiltNavigationCompose" }
 
 androidx-lifecycle-runtime = { group = "androidx.lifecycle", name = "lifecycle-runtime", version.ref = "androidxLifecycle" }
-androidx-lifecycle-runtimeKtx = { group = "androidx.lifecycle", name = "lifecycle-runtime-ktx", version.ref = "androidxLifecycle" }
+androidx-lifecycle-runtimeKtx = { group = "androidx.lifecycle", name = "lifecycle-runtime-ktx", version.ref = "androidxLifecycle1" }
 androidx-lifecycle-compiler = { group = "androidx.lifecycle", name = "lifecycle-compiler", version.ref = "androidxLifecycle" }
 androidx-lifecycle-viewmodelKtx = { group = "androidx.lifecycle", name = "lifecycle-viewmodel-ktx", version.ref = "androidxLifecycle" }
 androidx-lifecycle-viewmodelSavedstate = { group = "androidx.lifecycle", name = "lifecycle-viewmodel-savedstate", version.ref = "androidxLifecycle" }
-androidx-lifecycle-viewModelCompose = { group = "androidx.lifecycle", name = "lifecycle-viewmodel-compose", version.ref = "androidxLifecycle" }
+androidx-lifecycle-viewModelCompose = { group = "androidx.lifecycle", name = "lifecycle-viewmodel-compose", version.ref = "androidxLifecycle1" }
 
 androidx-lifecycle-extensions = { group = "androidx.lifecycle", name = "lifecycle-extensions", version.ref = "lifecycleExtensions" }
 androidx-constraint-layout = { group = "androidx.constraintlayout", name = "constraintlayout-compose", version.ref = "androidxConstraintLayout" }

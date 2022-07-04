@@ -70,7 +70,6 @@ fun LocalRadioList(
 
     when (uiState) {
         StationsUiState.Loading -> {
-            Log.e("aaa", "refresh Loading")
             for (i in 1..5) ShimmerItem(
                 list,
                 dpValue.value,
@@ -78,7 +77,7 @@ fun LocalRadioList(
             )
         }
         is StationsUiState.Stations -> {
-            Log.e("aaa", "refresh stations")
+           // Log.e("aaa", "refresh stations")
             if (uiState is StationsUiState.Stations) (
                     RadioItem(viewModel,
                         (uiState as StationsUiState.Stations).stations,

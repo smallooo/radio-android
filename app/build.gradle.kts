@@ -28,8 +28,8 @@ plugins {
 android {
     defaultConfig {
         applicationId = "com.dmhsh.samples.apps.nowinandroid"
-        versionCode = 2
-        versionName = "0.0.2" // X.Y.Z; X = Major, Y = minor, Z = Patch level
+        versionCode = 3
+        versionName = "0.0.3" // X.Y.Z; X = Major, Y = minor, Z = Patch level
 
         // Custom test runner to set up Hilt dependency graph
         testInstrumentationRunner = "com.dmhsh.samples.apps.nowinandroid.core.testing.NiaTestRunner"
@@ -121,9 +121,14 @@ dependencies {
     implementation(libs.accompanist.navigation.material)
 
 
-    implementation("androidx.lifecycle:lifecycle-runtime-ktx:2.5.0-rc01")
 
     implementation(libs.androidx.media)
+    implementation(libs.androidx.lifecycle.extensions)
+    implementation(libs.androidx.lifecycle.runtime)
+    implementation(libs.androidx.lifecycle.runtimeKtx)
+    implementation(libs.androidx.lifecycle.compiler)
+
+
     implementation(libs.google.exoPlayer)
     implementation(libs.google.exoPlayer.okhttp)
     implementation(libs.accompanist.insets)
@@ -134,6 +139,7 @@ dependencies {
     implementation(libs.rxjavaAdapter)
 
     implementation(libs.androidx.dataStore.preferences)
+    implementation(libs.play.services.ads)
 
     // androidx.test is forcing JUnit, 4.12. This forces it to use 4.13
     configurations.configureEach {

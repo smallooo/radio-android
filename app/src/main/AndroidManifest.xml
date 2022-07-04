@@ -19,9 +19,11 @@
     package="com.dmhsh.samples.apps.nowinandroid">
 
     <uses-permission android:name="android.permission.INTERNET" />
+    <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
+    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
 
     <application
-        android:name=".RadioAppInit"
+        android:name="com.dmhsh.samples.apps.nowinandroid.RadioAppInit"
         android:allowBackup="true"
         android:icon="@mipmap/ic_launcher"
         android:label="@string/app_name"
@@ -32,6 +34,11 @@
         <profileable
             android:shell="true"
             tools:targetApi="q" />
+
+        <meta-data
+            android:name="com.google.android.gms.ads.APPLICATION_ID"
+            android:value= "ca-app-pub-3940256099942544~3419835294"/>
+<!--                "ca-app-pub-5568022063904772~9830687515"/>-->
 
         <activity
             android:name=".MainActivity"

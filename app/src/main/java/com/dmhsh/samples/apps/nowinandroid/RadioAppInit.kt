@@ -17,21 +17,29 @@
 package com.dmhsh.samples.apps.nowinandroid
 
 import android.app.Application
-import coil.ImageLoader
-import coil.ImageLoaderFactory
-import coil.decode.SvgDecoder
 import com.dmhsh.samples.apps.nowinandroid.sync.initializers.Sync
+import com.google.android.gms.ads.MobileAds
 import dagger.hilt.android.HiltAndroidApp
+
 
 /**
  * [Application] class for NiA
  */
 @HiltAndroidApp
 class RadioAppInit : Application() {
+    private var appOpenManager: AppOpenManager? = null
+
     override fun onCreate() {
         super.onCreate()
         // Initialize Sync; the system responsible for keeping data in the app up to date.
         Sync.initialize(context = this)
+
+        MobileAds.initialize(
+            this
+        ) { }
+
+        appOpenManager = AppOpenManager(this);
+
     }
 
     /**
