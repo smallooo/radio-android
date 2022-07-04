@@ -114,15 +114,18 @@ class NetworkModule {
 //            .addCallAdapterFactory(RxJava2CallAdapterFactory.create())
 //            .client(client)
 //            .build()
+
+
     Retrofit.Builder()
         .baseUrl("https://at1.api.radio-browser.info/")
         .addConverterFactory(GsonConverterFactory.create())
         .addCallAdapterFactory(RxJava2CallAdapterFactory.create())
         .client(
-            OkHttpClient.Builder().addInterceptor(
+            OkHttpClient.Builder()
+                .addInterceptor(
                     HttpLoggingInterceptor().apply {
-                        setLevel(HttpLoggingInterceptor.Level.BODY)
-                    }
-                ).build())
+                        setLevel(HttpLoggingInterceptor.Level.BASIC)
+                    }).build()
+        )
                 .build()
 }
