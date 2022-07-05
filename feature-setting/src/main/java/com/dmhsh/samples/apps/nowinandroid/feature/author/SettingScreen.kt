@@ -60,9 +60,9 @@ fun SettingRoute(
     viewModel: SettingsViewModel = hiltViewModel(),
 ) {
 
-    //val themeState by rememberFlowWithLifecycle(themeViewModel.themeState)
-    //val settingsLinks by rememberFlowWithLifecycle(viewModel.settingsLinks)
-    Settings() //(themeState, themeViewModel::applyThemeState, settingsLinks)
+    val themeState by rememberFlowWithLifecycle(themeViewModel.themeState)
+    val settingsLinks by rememberFlowWithLifecycle(viewModel.settingsLinks)
+    Settings(themeState, themeViewModel::applyThemeState, settingsLinks)
 }
 
 
@@ -70,8 +70,8 @@ fun SettingRoute(
 
 @Composable
 private fun Settings(
-   // themeState: ThemeState,
-    //setThemeState: (ThemeState) -> Unit,
+    themeState: ThemeState,
+    setThemeState: (ThemeState) -> Unit,
    // settingsLinks: SettingsLinks = emptyList()
 ) {
     Scaffold(
@@ -89,8 +89,8 @@ private fun Settings(
         }
     ) { padding ->
         SettingsList(
-           // themeState,
-          //  setThemeState,
+            themeState,
+            setThemeState,
 //            settingsLinks,
             padding)
     }
@@ -98,8 +98,8 @@ private fun Settings(
 
 @Composable
 fun SettingsList(
-   // themeState: ThemeState,
-   // setThemeState: (ThemeState) -> Unit,
+    themeState: ThemeState,
+    setThemeState: (ThemeState) -> Unit,
    // settingsLinks: SettingsLinks,
     paddings: PaddingValues,
    // downloader: Downloader = LocalDownloader.current
@@ -110,7 +110,7 @@ fun SettingsList(
         contentPadding = paddings
     ) {
        // settingsGeneralSection()
-        settingsThemeSection()
+        settingsThemeSection(themeState, setThemeState)
         //settingsDownloadsSection(downloader)
        // settingsDatabaseSection()
         settingsAboutSection()
@@ -168,18 +168,18 @@ fun LazyListScope.settingsGeneralSection() {
 //    }
 //}
 
-fun LazyListScope.settingsThemeSection() {
+fun LazyListScope.settingsThemeSection(themeState: ThemeState, setThemeState: (ThemeState) -> Unit) {
     item {
         SettingsSectionLabel(stringResource(R.string.settings_theme_selection_title))
         SettingsItem(stringResource(R.string.settings_theme_dark_mode)) {
             SelectableDropdownMenu(
                 items = DarkModePreference.values().toList(),
-                selectedItem = "",
-                onItemSelect = {  },
+                selectedItem = themeState.darkModePreference,
+                onItemSelect = {  setThemeState(themeState.copy(darkModePreference = it)) },
                 modifier = Modifier.offset(x = 12.dp)
             )
         }
-        SettingsItem(stringResource(R.string.app_name)) {
+        SettingsItem(stringResource(R.string.settings_theme_colorPalette)) {
             SelectableDropdownMenu(
                 items = ColorPalettePreference.values().toList(),
                 selectedItem = "",
