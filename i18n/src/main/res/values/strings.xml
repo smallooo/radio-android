@@ -341,4 +341,21 @@
     <string name="context_menu_add_alarm">@string/action_alarm</string>
     <string name="context_menu_create_shortcut">@string/detail_create_shortcut</string>
     <string name="context_menu_delete">@string/action_delete</string>
+
+
+    <string name="error_empty_title"> Empty</string>
+    <string name="error_empty"> No Item collect</string>
+    <string name="error_empty_play"> No radio played</string>
+    <string name="error_retry"> No Item1</string>
+    <string name="error_title"> No Item2</string>
+    <string name="error_unknown"> No Item3</string>
+    <string name="downloads_empty"> No Item collect</string>
+    <string name="card_tap_action"> card_tap_action</string>
+    <string name="unbookmark"> unbookmark</string>
+    <string name="bookmark"> bookmark</string>
+    <string name="top_app_bar_preview_title"> History</string>
+    <string name="back"> back</string>
+    <string name="generic_back"> back</string>
+
+
 </resources>

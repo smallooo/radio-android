@@ -2,11 +2,12 @@ package com.dmhsh.samples.apps.nowinandroid.core.ui.component
 
 import android.util.Log
 import android.widget.ScrollView
+import androidx.compose.foundation.ExperimentalFoundationApi
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
-import androidx.compose.foundation.lazy.LazyColumn
-import androidx.compose.foundation.lazy.itemsIndexed
+import androidx.compose.foundation.lazy.*
+import androidx.compose.material.Divider
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.MoreVert
 import androidx.compose.material3.Icon
@@ -21,6 +22,7 @@ import androidx.compose.ui.input.nestedscroll.NestedScrollConnection
 import androidx.compose.ui.input.nestedscroll.NestedScrollSource
 import androidx.compose.ui.input.nestedscroll.nestedScroll
 import androidx.compose.ui.layout.ContentScale
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
 import coil.compose.rememberImagePainter
@@ -33,6 +35,7 @@ import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.flow.toList
 import kotlinx.coroutines.launch
+import tm.alashow.i18n.R
 
 //fun Modifier.scrollEnabled(
 //    enabled: Boolean,
@@ -46,19 +49,67 @@ import kotlinx.coroutines.launch
 //)
 
 @Composable
-fun RadioItemFavorite(stateCategories : List<List<FollowableStation>>, onImageClick: () -> Unit){
+fun RadioItemFavorite(stateCategories : List<List<FollowableStation>>,
+                      listState: LazyListState = rememberLazyListState(),
+                      onImageClick: () -> Unit){
 
-//    Column(modifier = Modifier.fillMaxSize()){
-    LazyColumn {
-            itemsIndexed(
-                items = stateCategories.get(0),
-                itemContent = { index, item ->
-                    AnimatedListFavoriteItem(station = item, index, onImageClick)
-                }
-            )
-        }
+    LazyColumn(
+        state = listState,
+        contentPadding = PaddingValues(8.dp),
+    ) {
+        interestsList(stateCategories, onImageClick)
+    }
+//    if (stateCategories.isEmpty()) {
+//        item {
+//            Delayed {
+//                EmptyErrorBox(
+//                    message = stringResource(R.string.downloads_empty),
+//                    retryVisible = false,
+//                    modifier = Modifier.fillParentMaxHeight()
+//                )
+//            }
+//        }
+//    }
+//
+//
+//
+////    Column(modifier = Modifier.fillMaxSize()){
+//    LazyColumn {
+//            itemsIndexed(
+//                items = stateCategories.get(0),
+//                itemContent = { index, item ->
+//                    AnimatedListFavoriteItem(station = item, index, onImageClick)
+//                }
+//            )
+//        }
   //  }
 }
+
+@OptIn(ExperimentalFoundationApi::class)
+private fun LazyListScope.interestsList(
+    stateCategories: List<List<FollowableStation>>,
+    onImageClick: () -> Unit
+) {
+    if (stateCategories.get(0).isNullOrEmpty()) {
+        item {
+            Delayed {
+                EmptyErrorBox(
+                    message = stringResource(R.string.downloads_empty),
+                    retryVisible = false,
+                    modifier = Modifier.fillParentMaxHeight()
+                )
+            }
+        }
+    }
+
+    itemsIndexed(stateCategories.get(0), { _, it -> it.station }) { index, item ->
+        Column {
+                AnimatedListFavoriteItem(station = item, index, onImageClick)
+            }
+        }
+}
+
+
 
 @Composable
 fun AnimatedListFavoriteItem(station: FollowableStation, itemIndex: Int, onImageClick: () -> Unit) {

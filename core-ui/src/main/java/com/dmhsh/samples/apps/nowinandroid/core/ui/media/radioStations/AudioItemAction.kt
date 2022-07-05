@@ -5,7 +5,7 @@
 package com.dmhsh.samples.apps.nowinandroid.core.ui.media.radioStations
 
 import com.dmhsh.samples.apps.nowinandroid.core.model.data.Station
-import com.dmhsh.samples.apps.nowinandroid.core.ui.R
+import tm.alashow.i18n.R
 
 
 sealed class AudioItemAction(open val station: Station) {

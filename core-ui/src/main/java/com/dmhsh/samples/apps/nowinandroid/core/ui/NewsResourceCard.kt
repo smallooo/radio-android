@@ -70,6 +70,7 @@ import java.time.ZoneId
 import java.time.format.DateTimeFormatter
 import kotlinx.datetime.Instant
 import kotlinx.datetime.toJavaInstant
+import tm.alashow.i18n.R
 
 /**
  * [NewsResource] card used on the following screens: For You, Episodes, Saved

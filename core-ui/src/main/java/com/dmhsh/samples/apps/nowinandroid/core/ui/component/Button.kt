@@ -17,12 +17,10 @@
 package com.dmhsh.samples.apps.nowinandroid.core.ui.component
 
 import androidx.compose.foundation.BorderStroke
-import androidx.compose.foundation.layout.Box
-import androidx.compose.foundation.layout.PaddingValues
-import androidx.compose.foundation.layout.RowScope
-import androidx.compose.foundation.layout.heightIn
-import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.layout.sizeIn
+import androidx.compose.foundation.layout.*
+import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.material.Text
+import androidx.compose.material.contentColorFor
 import androidx.compose.material3.Button
 import androidx.compose.material3.ButtonColors
 import androidx.compose.material3.ButtonDefaults
@@ -31,10 +29,16 @@ import androidx.compose.material3.OutlinedButton
 import androidx.compose.material3.ProvideTextStyle
 import androidx.compose.material3.TextButton
 import androidx.compose.runtime.Composable
+import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.graphics.RectangleShape
+import androidx.compose.ui.graphics.Shape
+import androidx.compose.ui.text.TextStyle
+import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
+import androidx.compose.ui.unit.sp
 
 /**
  * Now in Android filled button with generic content slot. Wraps Material 3 [Button].
@@ -447,3 +451,89 @@ object NiaButtonDefaults {
         disabledContentColor = disabledContentColor
     )
 }
+
+@Composable
+fun AppButton(
+    onClick: () -> Unit,
+    modifier: Modifier = Modifier,
+    enabled: Boolean = true,
+    shape: Shape = RoundedCornerShape(percent = 50),
+    backgroundColor: Color = androidx.compose.material.MaterialTheme.colors.secondary,
+    contentColor: Color = contentColorFor(backgroundColor),
+    content: @Composable RowScope.() -> Unit,
+) {
+    androidx.compose.material.Button(
+        colors = androidx.compose.material.ButtonDefaults.buttonColors(
+            backgroundColor = backgroundColor,
+            contentColor = contentColor
+        ),
+        onClick = onClick,
+        shape = shape,
+        enabled = enabled,
+        modifier = modifier,
+        content = content
+    )
+}
+
+@Composable
+fun TextRoundedButton(
+    onClick: () -> Unit,
+    text: String,
+    modifier: Modifier = Modifier,
+    textStyle: TextStyle = androidx.compose.material.MaterialTheme.typography.button,
+    enabled: Boolean = true,
+) {
+    AppButton(onClick = onClick, modifier = modifier, enabled = enabled) {
+        Text(text, style = textStyle)
+    }
+}
+
+//@Preview("buttonList")
+//@Composable
+//fun ButtonListPreview() {
+//    AppTheme {
+//        Column(
+//            Modifier
+//                .fillMaxWidth()
+//                .height(400.dp)
+//                .background(Primary),
+//            horizontalAlignment = Alignment.CenterHorizontally,
+//            verticalArrangement = Arrangement.spacedBy(8.dp)
+//        ) {
+//            RoundButtonPreview()
+//            RectangleButtonPreview()
+//            ThemeShapeButtonPreview()
+//            Spacer(Modifier.height(8.dp))
+//            ColoredRoundButtonPreview(Blue)
+//            ColoredRoundButtonPreview(Orange)
+//            ColoredRoundButtonPreview(Green)
+//        }
+//    }
+//}
+
+@Composable
+fun RoundButtonPreview() {
+    TextRoundedButton(onClick = {}, text = "Action")
+}
+
+@Composable
+fun RectangleButtonPreview() {
+    AppButton(onClick = {}, shape = RectangleShape) {
+        Text("Action")
+    }
+}
+
+@Composable
+fun ThemeShapeButtonPreview() {
+    AppButton(onClick = {}, shape = androidx.compose.material.MaterialTheme.shapes.small) {
+        Text("Action", fontSize = 8.sp)
+    }
+}
+
+@Composable
+fun ColoredRoundButtonPreview(color: Color) {
+    AppButton(onClick = {}, backgroundColor = color) {
+        Text("Action")
+    }
+}
+

@@ -31,6 +31,7 @@ dependencies {
     implementation(project(":core-model"))
     implementation(project(":core-playback"))
     implementation(project(":core-datastore"))
+    implementation(project(":i18n"))
 
     implementation(libs.androidx.core.ktx)
     implementation(libs.coil.kt)
