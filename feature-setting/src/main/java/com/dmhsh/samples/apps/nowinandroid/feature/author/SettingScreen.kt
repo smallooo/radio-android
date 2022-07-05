@@ -29,15 +29,19 @@ import androidx.compose.material.icons.filled.Search
 import androidx.compose.material3.Button
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.getValue
 import androidx.compose.runtime.rememberCoroutineScope
+import androidx.compose.runtime.staticCompositionLocalOf
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import androidx.hilt.navigation.compose.hiltViewModel
 import com.dmhsh.samples.apps.nowinandroid.core.ui.component.AppTopBar
 import com.dmhsh.samples.apps.nowinandroid.core.ui.component.ComingSoon
 import com.dmhsh.samples.apps.nowinandroid.core.ui.component.NiaTopAppBar
+import com.dmhsh.samples.apps.nowinandroid.core.ui.component.rememberFlowWithLifecycle
 import com.dmhsh.samples.apps.nowinandroid.core.ui.theme.*
 import com.dmhsh.samples.apps.nowinandroid.feature.author.ui.SelectableDropdownMenu
 import com.dmhsh.samples.apps.nowinandroid.feature.author.ui.SettingsItem
@@ -46,15 +50,19 @@ import com.dmhsh.samples.apps.nowinandroid.feature.author.ui.SettingsSectionLabe
 import kotlinx.coroutines.launch
 import tm.alashow.i18n.R
 
+val LocalAppVersion = staticCompositionLocalOf { "Unknown" }
+
 @Composable
 fun SettingRoute(
     onBackClick: () -> Unit,
     modifier: Modifier = Modifier,
+    themeViewModel: ThemeViewModel = hiltViewModel(),
+    viewModel: SettingsViewModel = hiltViewModel(),
 ) {
 
-    //val themeState by rememberFlowWithLifecycle(themeViewModel.themeState)
-   // val settingsLinks by rememberFlowWithLifecycle(viewModel.settingsLinks)
-    Settings() //(themeState, themeViewModel::applyThemeState, settingsLinks)
+    val themeState by rememberFlowWithLifecycle(themeViewModel.themeState)
+    //val settingsLinks by rememberFlowWithLifecycle(viewModel.settingsLinks)
+    Settings(themeState) //(themeState, themeViewModel::applyThemeState, settingsLinks)
 }
 
 
@@ -62,7 +70,7 @@ fun SettingRoute(
 
 @Composable
 private fun Settings(
-    //themeState: ThemeState,
+    themeState: ThemeState,
     //setThemeState: (ThemeState) -> Unit,
    // settingsLinks: SettingsLinks = emptyList()
 ) {
@@ -81,8 +89,8 @@ private fun Settings(
         }
     ) { padding ->
         SettingsList(
-//            themeState,
-//            setThemeState,
+            themeState,
+          //  setThemeState,
 //            settingsLinks,
             padding)
     }
@@ -90,8 +98,8 @@ private fun Settings(
 
 @Composable
 fun SettingsList(
-   // themeState: ThemeState,
-    //setThemeState: (ThemeState) -> Unit,
+    themeState: ThemeState,
+   // setThemeState: (ThemeState) -> Unit,
    // settingsLinks: SettingsLinks,
     paddings: PaddingValues,
    // downloader: Downloader = LocalDownloader.current
@@ -101,10 +109,10 @@ fun SettingsList(
         modifier = Modifier.fillMaxWidth(),
         contentPadding = paddings
     ) {
-        settingsGeneralSection()
-        //settingsThemeSection(themeState, setThemeState)
+       // settingsGeneralSection()
+        settingsThemeSection(themeState)
         //settingsDownloadsSection(downloader)
-        settingsDatabaseSection()
+       // settingsDatabaseSection()
         settingsAboutSection()
         //settingsLinksSection(settingsLinks)
     }
@@ -160,14 +168,14 @@ fun LazyListScope.settingsGeneralSection() {
 //    }
 //}
 
-fun LazyListScope.settingsThemeSection(themeState: ThemeState, setThemeState: (ThemeState) -> Unit) {
+fun LazyListScope.settingsThemeSection(themeState: ThemeState) {
     item {
-        SettingsSectionLabel(stringResource(R.string.app_name))
-        SettingsItem(stringResource(R.string.app_name)) {
+        SettingsSectionLabel(stringResource(R.string.settings_theme_selection_title))
+        SettingsItem(stringResource(R.string.settings_theme_dark_mode)) {
             SelectableDropdownMenu(
                 items = DarkModePreference.values().toList(),
                 selectedItem = themeState.darkModePreference,
-                onItemSelect = { setThemeState(themeState.copy(darkModePreference = it)) },
+                onItemSelect = {  },
                 modifier = Modifier.offset(x = 12.dp)
             )
         }
@@ -175,7 +183,7 @@ fun LazyListScope.settingsThemeSection(themeState: ThemeState, setThemeState: (T
             SelectableDropdownMenu(
                 items = ColorPalettePreference.values().toList(),
                 selectedItem = themeState.colorPalettePreference,
-                onItemSelect = { setThemeState(themeState.copy(colorPalettePreference = it)) },
+                onItemSelect = {  },
                 modifier = Modifier.offset(x = 12.dp)
             )
         }
@@ -184,20 +192,22 @@ fun LazyListScope.settingsThemeSection(themeState: ThemeState, setThemeState: (T
 
 fun LazyListScope.settingsAboutSection() {
     item {
-        SettingsSectionLabel(stringResource(R.string.settings_about))
+        SettingsSectionLabel(stringResource(R.string.nav_item_about))
 
         Column(verticalArrangement = Arrangement.spacedBy(16.dp)) {
             SettingsLinkItem(
-                labelRes = R.string.app_name,
-                textRes = R.string.app_name,
-                linkRes = R.string.app_name
+                labelRes = R.string.action_copy_info,
+                textRes = R.string.action_countries,
+                linkRes = R.string.web_page
             )
             SettingsLinkItem(
-                label = stringResource(R.string.app_name),
-                text = "LocalAppVersion.current",
-                link = "Config.PLAYSTORE_URL"
+                label = stringResource(R.string.about_version),
+                text = LocalAppVersion.current,
+                link = "https://m.thebeastshop.com"
             )
         }
+
+        Spacer(modifier = Modifier.height(160.dp))
     }
 }
 
@@ -226,21 +236,5 @@ internal fun LazyListScope.settingsDatabaseSection() {
                 Text("BackupRestoreButton")
             }
         }
-    }
-}
-
-@Preview
-@Composable
-fun SettingsPreview() {
-    AppTheme(DefaultTheme) {
-        Settings()
-    }
-}
-
-@Preview
-@Composable
-fun SettingsPreviewDark() {
-    AppTheme(DefaultThemeDark) {
-        Settings()
     }
 }

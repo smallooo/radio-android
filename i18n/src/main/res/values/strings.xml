@@ -93,6 +93,7 @@
     <string name="searchpreference_search">Search…</string>
     <string name="settings_appearance">Appearance</string>
     <string name="settings_theme_selection_title">Theme</string>
+    <string name="settings_theme_dark_mode">Dark mode</string>
     <string name="theme_light">Light</string>
     <string name="theme_dark">Dark</string>
     <string name="settings_circular_icons">Use circular icons</string>
@@ -356,6 +357,8 @@
     <string name="top_app_bar_preview_title"> History</string>
     <string name="back"> back</string>
     <string name="generic_back"> back</string>
+
+    <string name= "web_page">https://www.radio-browser.info</string>
 
 
 </resources>

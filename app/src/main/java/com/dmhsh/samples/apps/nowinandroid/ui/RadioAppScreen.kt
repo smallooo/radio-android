@@ -49,7 +49,9 @@ fun RadioApp(
     val navBackStackEntry by navController.currentBackStackEntryAsState()
     val currentDestination = navBackStackEntry?.destination
 
-    CompositionLocalProvider() {
+    CompositionLocalProvider(
+
+    ) {
         ProvideWindowInsets(consumeWindowInsets = false) {
             RadioCore(windowSizeClass) {
                 val bottomSheetNavigator = rememberBottomSheetNavigator()

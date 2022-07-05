@@ -26,20 +26,25 @@ import okhttp3.logging.HttpLoggingInterceptor
 import retrofit2.Retrofit
 import retrofit2.adapter.rxjava2.RxJava2CallAdapterFactory
 import retrofit2.converter.gson.GsonConverterFactory
+import java.time.Duration
 
 
 @InstallIn(SingletonComponent::class)
 @Module
 class NetworkModule {
+    val API_TIMEOUT = Duration.ofSeconds(40).toMillis()
+    val DOWNLOADER_TIMEOUT = Duration.ofMinutes(3).toMillis()
+    val PLAYER_TIMEOUT = Duration.ofMinutes(2).toMillis()
+    val PLAYER_TIMEOUT_CONNECT = Duration.ofSeconds(30).toMillis()
 
     private fun getBaseBuilder(cache: Cache): OkHttpClient.Builder {
         return OkHttpClient.Builder()
             .cache(cache)
-//            .readTimeout(Config.API_TIMEOUT, TimeUnit.MILLISECONDS)
-//            .writeTimeout(Config.API_TIMEOUT, TimeUnit.MILLISECONDS)
+            .readTimeout(API_TIMEOUT, TimeUnit.MILLISECONDS)
+            .writeTimeout(API_TIMEOUT, TimeUnit.MILLISECONDS)
             .retryOnConnectionFailure(true)
     }
-//
+
     @Provides
     @Singleton
     fun okHttpCache(app: Application) = Cache(app.cacheDir, (10 * 1024 * 1024).toLong())
@@ -48,7 +53,7 @@ class NetworkModule {
     @Singleton
     fun httpLoggingInterceptor(): HttpLoggingInterceptor {
         val interceptor = HttpLoggingInterceptor()
-        interceptor.level = HttpLoggingInterceptor.Level.BASIC
+        interceptor.level = HttpLoggingInterceptor.Level.HEADERS
         return interceptor
     }
 //
@@ -93,11 +98,11 @@ class NetworkModule {
         cache: Cache,
         @Named("AppHeadersInterceptor") appHeadersInterceptor: Interceptor,
     ) = getBaseBuilder(cache)
-//        .readTimeout(Config.PLAYER_TIMEOUT, TimeUnit.MILLISECONDS)
-//        .writeTimeout(Config.PLAYER_TIMEOUT, TimeUnit.MILLISECONDS)
-//        .connectTimeout(Config.PLAYER_TIMEOUT_CONNECT, TimeUnit.MILLISECONDS)
+        .readTimeout(PLAYER_TIMEOUT, TimeUnit.MILLISECONDS)
+        .writeTimeout(PLAYER_TIMEOUT, TimeUnit.MILLISECONDS)
+        .connectTimeout(PLAYER_TIMEOUT_CONNECT, TimeUnit.MILLISECONDS)
         .addInterceptor(appHeadersInterceptor)
-  //      .addInterceptor(HttpLoggingInterceptor().apply { level = LogLevel.HEADERS })
+        .addInterceptor(HttpLoggingInterceptor().apply { level = HttpLoggingInterceptor.Level.HEADERS })
         .build()
 
 //    @Provides
@@ -108,24 +113,15 @@ class NetworkModule {
     @Singleton
     @ExperimentalSerializationApi
     fun retrofit(client: OkHttpClient, json: Json): Retrofit =
-//        Retrofit.Builder()
-//            .baseUrl("https://at1.api.radio-browser.info/")
-//            .addConverterFactory(GsonConverterFactory.create())
-//            .addCallAdapterFactory(RxJava2CallAdapterFactory.create())
-//            .client(client)
-//            .build()
-
-
-    Retrofit.Builder()
-        .baseUrl("https://at1.api.radio-browser.info/")
-        .addConverterFactory(GsonConverterFactory.create())
-        .addCallAdapterFactory(RxJava2CallAdapterFactory.create())
-        .client(
-            OkHttpClient.Builder()
-                .addInterceptor(
-                    HttpLoggingInterceptor().apply {
+        Retrofit.Builder()
+            .baseUrl("https://at1.api.radio-browser.info/")
+            .addConverterFactory(GsonConverterFactory.create())
+            .addCallAdapterFactory(RxJava2CallAdapterFactory.create())
+            .client(
+                OkHttpClient.Builder()
+                    .addInterceptor(HttpLoggingInterceptor().apply {
                         setLevel(HttpLoggingInterceptor.Level.BASIC)
                     }).build()
-        )
-                .build()
+                    )
+            .build()
 }

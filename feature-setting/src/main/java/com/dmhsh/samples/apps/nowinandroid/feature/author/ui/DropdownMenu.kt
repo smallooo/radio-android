@@ -31,6 +31,7 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.graphics.vector.rememberVectorPainter
 import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.unit.dp
 import com.dmhsh.samples.apps.nowinandroid.core.ui.theme.AppTheme
 import tm.alashow.i18n.R
 
@@ -58,17 +59,17 @@ fun <T> SelectableDropdownMenu(
         OutlinedButton(
             onClick = { expanded = !expanded },
             colors = ButtonDefaults.textButtonColors(contentColor = LocalContentColor.current),
-            contentPadding = PaddingValues(AppTheme.specs.paddingSmall),
+            contentPadding = PaddingValues(8.dp),
             border = border,
         ) {
             if (leadingIcon != null) {
                 Icon(
                     painter = rememberVectorPainter(leadingIcon),
                     contentDescription = null,
-                    modifier = Modifier.width(AppTheme.specs.iconSizeTiny),
+                    modifier = Modifier.width(18.dp),
                     tint = leadingIconColor,
                 )
-                if (!iconOnly) Spacer(Modifier.width(AppTheme.specs.paddingSmall))
+                if (!iconOnly) Spacer(Modifier.width(8.dp))
             }
             if (!iconOnly) {
                 val selectedText = when (selectedItems.size) {
@@ -77,7 +78,7 @@ fun <T> SelectableDropdownMenu(
                     else -> multipleSelectionsLabel(selectedItems)
                 }
                 Text(text = selectedText)
-                Spacer(Modifier.width(AppTheme.specs.paddingSmall))
+                Spacer(Modifier.width(8.dp))
                 Icon(painter = rememberVectorPainter(dropIcon), contentDescription = null)
             }
         }

@@ -102,13 +102,13 @@ class RetrofitNiANetwork @Inject constructor(
     private val networkJson: Json
 ) : NiANetwork {
 
-    private val networkApi = Retrofit.Builder()
-        .baseUrl("https://at1.api.radio-browser.info/")
-        .addConverterFactory(GsonConverterFactory.create())
-        .addCallAdapterFactory(RxJava2CallAdapterFactory.create())
-
-        .client(OkHttpClient())
-        .build()
+//    private val networkApi = Retrofit.Builder()
+//        .baseUrl("https://at1.api.radio-browser.info/")
+//        .addConverterFactory(GsonConverterFactory.create())
+//        .addCallAdapterFactory(RxJava2CallAdapterFactory.create())
+//
+//        .client(OkHttpClient())
+//        .build()
 
     override suspend fun getTopics(ids: List<String>?): List<NetworkTopic> =
         withContext(ioDispatcher) {

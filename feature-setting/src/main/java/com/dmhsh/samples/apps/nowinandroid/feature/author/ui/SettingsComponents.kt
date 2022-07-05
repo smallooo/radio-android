@@ -20,7 +20,9 @@ import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.buildAnnotatedString
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
+import androidx.core.net.toUri
 import com.dmhsh.samples.apps.nowinandroid.core.ui.theme.AppTheme
+import com.dmhsh.samples.apps.nowinandroid.core.util.IntentUtils
 
 
 @Composable
@@ -58,7 +60,7 @@ internal fun SettingsLinkItem(
             ),
             onClick = {
               //  analytics.event("settings.linkClick", mapOf("link" to link))
-             //   IntentUtils.openUrl(context, link)
+                IntentUtils.openUrl(context, link.toUri())
             }
         )
     }
