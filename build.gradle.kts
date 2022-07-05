@@ -28,7 +28,7 @@ buildscript {
         classpath(libs.secrets.gradlePlugin)
         classpath("org.jetbrains.kotlin:kotlin-gradle-plugin:1.6.21")
         classpath("org.jetbrains.kotlin:kotlin-serialization:1.6.21")
-
+        classpath(libs.google.services)
 
 
     }

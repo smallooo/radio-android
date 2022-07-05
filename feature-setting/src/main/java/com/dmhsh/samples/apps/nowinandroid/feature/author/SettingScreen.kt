@@ -60,9 +60,9 @@ fun SettingRoute(
     viewModel: SettingsViewModel = hiltViewModel(),
 ) {
 
-    val themeState by rememberFlowWithLifecycle(themeViewModel.themeState)
+    //val themeState by rememberFlowWithLifecycle(themeViewModel.themeState)
     //val settingsLinks by rememberFlowWithLifecycle(viewModel.settingsLinks)
-    Settings(themeState) //(themeState, themeViewModel::applyThemeState, settingsLinks)
+    Settings() //(themeState, themeViewModel::applyThemeState, settingsLinks)
 }
 
 
@@ -70,7 +70,7 @@ fun SettingRoute(
 
 @Composable
 private fun Settings(
-    themeState: ThemeState,
+   // themeState: ThemeState,
     //setThemeState: (ThemeState) -> Unit,
    // settingsLinks: SettingsLinks = emptyList()
 ) {
@@ -89,7 +89,7 @@ private fun Settings(
         }
     ) { padding ->
         SettingsList(
-            themeState,
+           // themeState,
           //  setThemeState,
 //            settingsLinks,
             padding)
@@ -98,7 +98,7 @@ private fun Settings(
 
 @Composable
 fun SettingsList(
-    themeState: ThemeState,
+   // themeState: ThemeState,
    // setThemeState: (ThemeState) -> Unit,
    // settingsLinks: SettingsLinks,
     paddings: PaddingValues,
@@ -110,7 +110,7 @@ fun SettingsList(
         contentPadding = paddings
     ) {
        // settingsGeneralSection()
-        settingsThemeSection(themeState)
+        settingsThemeSection()
         //settingsDownloadsSection(downloader)
        // settingsDatabaseSection()
         settingsAboutSection()
@@ -168,13 +168,13 @@ fun LazyListScope.settingsGeneralSection() {
 //    }
 //}
 
-fun LazyListScope.settingsThemeSection(themeState: ThemeState) {
+fun LazyListScope.settingsThemeSection() {
     item {
         SettingsSectionLabel(stringResource(R.string.settings_theme_selection_title))
         SettingsItem(stringResource(R.string.settings_theme_dark_mode)) {
             SelectableDropdownMenu(
                 items = DarkModePreference.values().toList(),
-                selectedItem = themeState.darkModePreference,
+                selectedItem = "",
                 onItemSelect = {  },
                 modifier = Modifier.offset(x = 12.dp)
             )
@@ -182,7 +182,7 @@ fun LazyListScope.settingsThemeSection(themeState: ThemeState) {
         SettingsItem(stringResource(R.string.app_name)) {
             SelectableDropdownMenu(
                 items = ColorPalettePreference.values().toList(),
-                selectedItem = themeState.colorPalettePreference,
+                selectedItem = "",
                 onItemSelect = {  },
                 modifier = Modifier.offset(x = 12.dp)
             )

@@ -6,7 +6,7 @@ package com.dmhsh.samples.apps.nowinandroid.core.ui.theme
 
 import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.ViewModel
-import androidx.lifecycle.viewModelScope
+
 
 import com.dmhsh.samples.apps.nowinandroid.core.datastore.NiaPreferences
 import com.dmhsh.samples.apps.nowinandroid.core.datastore.PreferencesStore
@@ -26,14 +26,13 @@ object PreferenceKeys {
 @HiltViewModel
 class ThemeViewModel @Inject constructor(
     private val handle: SavedStateHandle,
-    //private val preferences: NiaPreferences,
     private val preferences: PreferencesStore,
     //private val analytics: FirebaseAnalytics
 ) : ViewModel() {
 
     val themeState = preferences.get(PreferenceKeys.THEME_STATE_KEY, ThemeState.serializer(), DefaultTheme)
-        .stateInDefault(viewModelScope, DefaultTheme)
-//
+        //.stateInDefault(viewModelScope, DefaultTheme)
+
 //    fun applyThemeState(themeState: ThemeState) {
 //       // analytics.event("theme.apply", mapOf("darkMode" to themeState.isDarkMode, "palette" to themeState.colorPalettePreference.name))
 //        viewModelScope.launch {

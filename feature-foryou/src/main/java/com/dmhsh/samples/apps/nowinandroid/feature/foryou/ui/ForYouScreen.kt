@@ -1,6 +1,5 @@
 package com.dmhsh.samples.apps.nowinandroid.feature.foryou
 
-
 import androidx.compose.foundation.layout.*
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Search
@@ -9,22 +8,16 @@ import androidx.compose.material3.*
 import androidx.compose.runtime.*
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
-
 import com.dmhsh.samples.apps.nowinandroid.components.Pager
 import com.dmhsh.samples.apps.nowinandroid.components.PagerState
-import com.dmhsh.samples.apps.nowinandroid.core.datastore.PreferencesStore
-import com.dmhsh.samples.apps.nowinandroid.core.model.data.StationsTag
 import com.dmhsh.samples.apps.nowinandroid.core.navigation.LocalNavigator
-
 import com.dmhsh.samples.apps.nowinandroid.core.navigation.Navigator
 import com.dmhsh.samples.apps.nowinandroid.core.navigation.Screens.LeafScreen
 import com.dmhsh.samples.apps.nowinandroid.core.ui.component.NiaGradientBackground
 import com.dmhsh.samples.apps.nowinandroid.core.ui.component.NiaTopAppBar
-import com.dmhsh.samples.apps.nowinandroid.feature.foryou.SearchListViewModel
 import kotlinx.coroutines.DelicateCoroutinesApi
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.GlobalScope

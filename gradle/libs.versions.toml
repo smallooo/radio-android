@@ -59,9 +59,11 @@ rxjavaAdapter = "2.9.0"
 lottie = "4.2.0"
 
 playServicesAds = "21.0.0"
+googleServices = "4.3.13"
 
 
 [libraries]
+google-services = { group = "com.google.gms", name = "google-services", version.ref = "googleServices"}
 accompanist-flowlayout = { group = "com.google.accompanist", name = "accompanist-flowlayout", version.ref = "accompanist" }
 accompanist-navigation-animation = { group = "com.google.accompanist", name = "accompanist-navigation-animation", version.ref = "accompanist" }
 accompanist-systemuicontroller = { group = "com.google.accompanist", name = "accompanist-systemuicontroller", version.ref = "accompanist" }
@@ -167,3 +169,5 @@ timber = { group = "com.jakewharton.timber", name = "timber", version.ref = "tim
 [plugins]
 protobuf = { id = "com.google.protobuf", version.ref = "protobufPlugin" }
 ksp = { id = "com.google.devtools.ksp", version.ref = "ksp" }
+
+

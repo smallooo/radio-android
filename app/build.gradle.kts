@@ -15,6 +15,9 @@
  */
 plugins {
     id("nowinandroid.android.application")
+
+   // id("nowinandroid.android.gms.googleservices")
+    id("com.google.gms.google-services")
     id("nowinandroid.android.application.compose")
     id("nowinandroid.android.application.jacoco")
     kotlin("kapt")
@@ -141,6 +144,12 @@ dependencies {
     implementation(libs.androidx.dataStore.preferences)
     implementation(libs.play.services.ads)
 
+//    implementation( platform("com.google.firebase:firebase-bom:30.2.0"))
+//    implementation("com.google.firebase:firebase-analytics-ktx")
+
+    implementation(platform("com.google.firebase:firebase-bom:30.2.0"))
+    implementation("com.google.firebase:firebase-analytics-ktx")
+
     // androidx.test is forcing JUnit, 4.12. This forces it to use 4.13
     configurations.configureEach {
         resolutionStrategy {
@@ -150,3 +159,5 @@ dependencies {
         }
     }
 }
+
+
