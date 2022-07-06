@@ -50,11 +50,11 @@ class TopClickViewModel @Inject constructor(
                 stations.add(item.asExternalModel())
             }
             stationDao.upsertStations(entities = stations)
-        }
 
-        viewModelScope.launch {
-            state = categories?.let { state.copy(localStations = it, isLoading = false) }!!
-            effects.send(CountryCategoriesContract.Effect.DataWasLoaded)
+            viewModelScope.launch {
+                state = categories?.let { state.copy(localStations = it, isLoading = false) }!!
+                effects.send(CountryCategoriesContract.Effect.DataWasLoaded)
+            }
         }
     }
 

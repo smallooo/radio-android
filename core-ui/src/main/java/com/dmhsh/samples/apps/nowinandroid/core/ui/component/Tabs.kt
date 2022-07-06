@@ -16,9 +16,11 @@
 
 package com.dmhsh.samples.apps.nowinandroid.core.ui.component
 
+import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.padding
-import androidx.compose.material3.MaterialTheme
+import androidx.compose.material.MaterialTheme
+
 import androidx.compose.material3.ProvideTextStyle
 import androidx.compose.material3.Tab
 import androidx.compose.material3.TabRow
@@ -29,7 +31,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
-import com.dmhsh.samples.apps.nowinandroid.core.ui.backgroundGradient
+
 
 /**
  * Now in Android tab. Wraps Material 3 [Tab] and shifts text label down.
@@ -42,7 +44,7 @@ import com.dmhsh.samples.apps.nowinandroid.core.ui.backgroundGradient
  * @param text The text label content.
  */
 @Composable
-fun NiaTab(
+fun RadioTab(
     selected: Boolean,
     onClick: () -> Unit,
     modifier: Modifier = Modifier,
@@ -52,13 +54,13 @@ fun NiaTab(
     Tab(
         selected = selected,
         onClick = onClick,
-        modifier = modifier,
+        modifier = modifier.background(MaterialTheme.colors.background),
         enabled = enabled,
-        selectedContentColor = androidx.compose.material.MaterialTheme.colors.secondary,
-        unselectedContentColor = androidx.compose.material.MaterialTheme.colors.onSurface,
+        selectedContentColor = MaterialTheme.colors.secondary,
+        unselectedContentColor = MaterialTheme.colors.onSurface,
         
         text = {
-            val style = MaterialTheme.typography.labelLarge.copy(textAlign = TextAlign.Center)
+            val style = MaterialTheme.typography.body2.copy(textAlign = TextAlign.Center)
             ProvideTextStyle(
                 value = style,
                 content = {
@@ -76,11 +78,11 @@ fun NiaTab(
  *
  * @param selectedTabIndex The index of the currently selected tab.
  * @param modifier Modifier to be applied to the tab row.
- * @param tabs The tabs inside this tab row. Typically this will be multiple [NiaTab]s. Each element
+ * @param tabs The tabs inside this tab row. Typically this will be multiple [RadioTab]s. Each element
  * inside this lambda will be measured and placed evenly across the row, each taking up equal space.
  */
 @Composable
-fun NiaTabRow(
+fun RadioTabRow(
     selectedTabIndex: Int,
     modifier: Modifier = Modifier,
     tabs: @Composable () -> Unit
@@ -89,12 +91,12 @@ fun NiaTabRow(
         selectedTabIndex = selectedTabIndex,
         modifier = modifier,
         containerColor = Color.Transparent,
-        contentColor = MaterialTheme.colorScheme.onSurface,
+        contentColor = MaterialTheme.colors.onSurface,
         indicator = { tabPositions ->
             TabRowDefaults.Indicator(
                 modifier = Modifier.tabIndicatorOffset(tabPositions[selectedTabIndex]),
                 height = 2.dp,
-                color = MaterialTheme.colorScheme.onSurface
+                color = MaterialTheme.colors.onSurface
             )
         },
         tabs = tabs

@@ -33,7 +33,14 @@ class NetSource @Inject constructor(private val stationDao: StationDao, private 
     }
 
     suspend fun getTopClickList() = withContext(Dispatchers.IO){
-        if(_topVisitRadioList == null) _topVisitRadioList = radioListApi.getTopClick() 
+        if(_topVisitRadioList == null) {
+            try {
+
+                _topVisitRadioList = radioListApi.getTopClick()
+            }catch (e : Exception){
+                Log.e("aaa Network", e.toString())
+            }
+        }
         return@withContext _topVisitRadioList
     }
 

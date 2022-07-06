@@ -1,20 +1,16 @@
 package com.dmhsh.samples.apps.nowinandroid.feature.foryou
 
 import android.annotation.SuppressLint
-import android.util.Log
 import androidx.compose.animation.animateColor
 import androidx.compose.animation.core.*
-import androidx.compose.foundation.Image
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.itemsIndexed
-import androidx.compose.foundation.rememberScrollState
-import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.MoreVert
 import androidx.compose.material3.Icon
-import androidx.compose.material3.MaterialTheme
+import androidx.compose.material.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
@@ -143,13 +139,14 @@ fun AnimatedListItem111(station: Station, itemIndex: Int, playbackConnection: Pl
         ) {
             Text(
                 text = station.name,
-                style = MaterialTheme.typography.bodyLarge,
-                color = MaterialTheme.colorScheme.onSurface
+                style = MaterialTheme.typography.body1,
+                color = MaterialTheme.colors.onSurface
             )
             Text(
                 text = station.bitrate + "kbps",
-                style = MaterialTheme.typography.bodyLarge,
+                style = MaterialTheme.typography.body1,
                 maxLines = 1,
+                color = MaterialTheme.colors.onSurface,
                 overflow = TextOverflow.Ellipsis
             )
         }

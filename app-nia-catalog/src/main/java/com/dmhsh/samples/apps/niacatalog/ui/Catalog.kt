@@ -43,8 +43,8 @@ import com.dmhsh.samples.apps.nowinandroid.core.ui.component.NiaFilterChip
 import com.dmhsh.samples.apps.nowinandroid.core.ui.component.NiaNavigationBar
 import com.dmhsh.samples.apps.nowinandroid.core.ui.component.NiaNavigationBarItem
 import com.dmhsh.samples.apps.nowinandroid.core.ui.component.NiaOutlinedButton
-import com.dmhsh.samples.apps.nowinandroid.core.ui.component.NiaTab
-import com.dmhsh.samples.apps.nowinandroid.core.ui.component.NiaTabRow
+import com.dmhsh.samples.apps.nowinandroid.core.ui.component.RadioTab
+import com.dmhsh.samples.apps.nowinandroid.core.ui.component.RadioTabRow
 import com.dmhsh.samples.apps.nowinandroid.core.ui.component.NiaTextButton
 import com.dmhsh.samples.apps.nowinandroid.core.ui.component.NiaToggleButton
 import com.dmhsh.samples.apps.nowinandroid.core.ui.component.NiaTopicTag
@@ -546,9 +546,9 @@ fun NiaCatalog() {
                 item {
                     var selectedTabIndex by remember { mutableStateOf(0) }
                     val titles = listOf("Topics", "People")
-                    NiaTabRow(selectedTabIndex = selectedTabIndex) {
+                    RadioTabRow(selectedTabIndex = selectedTabIndex) {
                         titles.forEachIndexed { index, title ->
-                            NiaTab(
+                            RadioTab(
                                 selected = selectedTabIndex == index,
                                 onClick = { selectedTabIndex = index },
                                 text = { Text(text = title) }

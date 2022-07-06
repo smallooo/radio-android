@@ -9,10 +9,11 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.itemsIndexed
+import androidx.compose.material.MaterialTheme
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.MoreVert
 import androidx.compose.material3.Icon
-import androidx.compose.material3.MaterialTheme
+
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
@@ -77,13 +78,14 @@ fun AnimatedListItem(station: Station, itemIndex: Int, onImageClick: (station: S
         ) {
             Text(
                 text = station.name,
-                style = MaterialTheme.typography.bodyLarge,
-                color = MaterialTheme.colorScheme.onSurface
+                style = MaterialTheme.typography.body1,
+                color = MaterialTheme.colors.onSurface
             )
             Text(
                 text = station.bitrate + "kbps",
-                style = MaterialTheme.typography.bodyLarge,
+                style = MaterialTheme.typography.body1,
                 maxLines = 1,
+                color = MaterialTheme.colors.onSurface,
                 overflow = TextOverflow.Ellipsis
             )
         }

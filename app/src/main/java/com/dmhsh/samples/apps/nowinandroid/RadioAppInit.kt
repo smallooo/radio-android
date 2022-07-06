@@ -27,18 +27,18 @@ import dagger.hilt.android.HiltAndroidApp
  */
 @HiltAndroidApp
 class RadioAppInit : Application() {
-    private var appOpenManager: AppOpenManager? = null
+   // private var appOpenManager: AppOpenManager? = null
 
     override fun onCreate() {
         super.onCreate()
         // Initialize Sync; the system responsible for keeping data in the app up to date.
         Sync.initialize(context = this)
 
-        MobileAds.initialize(
-            this
-        ) { }
+//        MobileAds.initialize(
+//            this
+//        ) { }
 
-        appOpenManager = AppOpenManager(this);
+       // appOpenManager = AppOpenManager(this);
 
     }
 

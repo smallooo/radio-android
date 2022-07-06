@@ -14,7 +14,6 @@ import androidx.compose.material3.TopAppBarDefaults
 
 import androidx.compose.runtime.*
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
@@ -23,8 +22,7 @@ import com.dmhsh.samples.apps.nowinandroid.components.PagerState
 import com.dmhsh.samples.apps.nowinandroid.core.navigation.LocalNavigator
 import com.dmhsh.samples.apps.nowinandroid.core.navigation.Navigator
 import com.dmhsh.samples.apps.nowinandroid.core.navigation.Screens.LeafScreen
-import com.dmhsh.samples.apps.nowinandroid.core.ui.component.NiaGradientBackground
-import com.dmhsh.samples.apps.nowinandroid.core.ui.component.NiaTab
+import com.dmhsh.samples.apps.nowinandroid.core.ui.component.RadioTab
 import com.dmhsh.samples.apps.nowinandroid.core.ui.component.RadioTopAppBar
 import kotlinx.coroutines.DelicateCoroutinesApi
 import kotlinx.coroutines.Dispatchers
@@ -42,12 +40,6 @@ fun ForYouRoute() {
 fun ForYouScreen(
     navigation: Navigator = LocalNavigator.current
 ) {
-//    Scaffold(modifier = Modifier.fillMaxSize()) { padding ->
-//        val pad = padding
-//
-//    }
-
-
     Scaffold(
         modifier = Modifier.fillMaxSize(),
         topBar = {
@@ -101,15 +93,16 @@ fun AdvanceListContent(viewModel: SearchListViewModel = hiltViewModel()) {
         //Spacer(modifier = Modifier.height(88.dp))
         ScrollableTabRow(
             selectedTabIndex = selectedIndex,
-            edgePadding = 12.dp
+            edgePadding = 0.dp
         ) {
             tabs.forEachIndexed { index, title ->
-                NiaTab(
+                RadioTab(
                     selected = index == selectedIndex,
                     onClick = {
                         selectedIndex = tabs.indexOf(title)
                         pagerState.currentPage = tabs.indexOf(title)
                     },
+
                     text = { Text(text = title) }
                 )
             }
