@@ -16,14 +16,11 @@
 
 package com.dmhsh.samples.apps.nowinandroid.feature.interests
 
-import android.content.Context
-import android.util.Log
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.WindowInsets
 import androidx.compose.foundation.layout.WindowInsetsSides
 import androidx.compose.foundation.layout.only
-import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.safeDrawing
 import androidx.compose.foundation.layout.windowInsetsPadding
 import androidx.compose.material.icons.Icons
@@ -35,23 +32,12 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalLifecycleOwner
 import androidx.compose.ui.res.stringResource
-import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.flowWithLifecycle
-import com.dmhsh.samples.apps.nowinandroid.core.model.data.FollowableStation
-import com.dmhsh.samples.apps.nowinandroid.core.model.data.Station
 import com.dmhsh.samples.apps.nowinandroid.core.ui.LoadingWheel
 import com.dmhsh.samples.apps.nowinandroid.core.ui.component.*
-import com.dmhsh.samples.apps.nowinandroid.feature.interests.R
-import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.flow.Flow
-import kotlinx.coroutines.flow.collect
-import kotlinx.coroutines.flow.collectLatest
-import kotlinx.coroutines.flow.first
-import kotlinx.coroutines.launch
-import kotlinx.coroutines.runBlocking
 
 @Composable
 fun <T> rememberFlowWithLifecycle(
@@ -102,7 +88,7 @@ fun InterestsScreen(
             )
         )
 
-        NiaTopAppBar(
+        RadioTopAppBar(
             titleRes = R.string.interests,
             navigationIcon = Icons.Filled.Search,
             navigationIconContentDescription = stringResource(

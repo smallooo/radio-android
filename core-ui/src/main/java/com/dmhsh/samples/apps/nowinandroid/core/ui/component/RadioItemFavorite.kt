@@ -11,7 +11,7 @@ import androidx.compose.material.Divider
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.MoreVert
 import androidx.compose.material3.Icon
-import androidx.compose.material3.MaterialTheme
+import androidx.compose.material.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
@@ -100,13 +100,17 @@ private fun LazyListScope.interestsList(
                 )
             }
         }
-    }
-
-    itemsIndexed(stateCategories.get(0), { _, it -> it.station }) { index, item ->
-        Column {
+    }else {
+        itemsIndexed(stateCategories.get(0), { _, it -> it.station }) { index, item ->
+            Column {
                 AnimatedListFavoriteItem(station = item, index, onImageClick)
             }
         }
+
+        item {
+            Spacer(modifier = Modifier.height(160.dp))
+        }
+    }
 }
 
 
@@ -125,7 +129,8 @@ fun AnimatedListFavoriteItem(station: FollowableStation, itemIndex: Int, onImage
             contentScale = ContentScale.Crop,
             modifier = Modifier
                 .size(55.dp)
-                .padding(4.dp).clickable {
+                .padding(4.dp)
+                .clickable {
                     Log.e("aaa", "onImageClick3")
                     onImageClick
 
@@ -139,14 +144,15 @@ fun AnimatedListFavoriteItem(station: FollowableStation, itemIndex: Int, onImage
         ) {
             Text(
                 text = station.station.name,
-                style = MaterialTheme.typography.bodyLarge,
-                color = MaterialTheme.colorScheme.onSurface
+                style = MaterialTheme.typography.body1,
+                color = MaterialTheme.colors.onSurface
             )
             Text(
                 text = station.station.bitrate + "kbps",
-                style = MaterialTheme.typography.bodyLarge,
+                style = MaterialTheme.typography.body1,
                 maxLines = 1,
-                overflow = TextOverflow.Ellipsis
+                overflow = TextOverflow.Ellipsis,
+                color = MaterialTheme.colors.onSurface
             )
         }
         Icon(

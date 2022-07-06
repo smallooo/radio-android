@@ -16,7 +16,6 @@
 
 package com.dmhsh.samples.apps.nowinandroid.core.ui.component
 
-import android.util.Log
 import androidx.annotation.StringRes
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.MoreVert
@@ -24,29 +23,32 @@ import androidx.compose.material.icons.filled.Search
 import androidx.compose.material3.CenterAlignedTopAppBar
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
-import androidx.compose.material3.MaterialTheme
+import androidx.compose.material.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.material3.TopAppBarColors
 import androidx.compose.material3.TopAppBarDefaults
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
 import tm.alashow.i18n.R
 
 @Composable
-fun NiaTopAppBar(
+fun RadioTopAppBar(
     @StringRes titleRes: Int,
     navigationIcon: ImageVector,
     navigationIconContentDescription: String?,
     actionIcon: ImageVector,
     actionIconContentDescription: String?,
     modifier: Modifier = Modifier,
-    colors: TopAppBarColors = TopAppBarDefaults.centerAlignedTopAppBarColors(),
+    colors: TopAppBarColors = TopAppBarDefaults.centerAlignedTopAppBarColors(
+        containerColor = MaterialTheme.colors.background,
+        titleContentColor = MaterialTheme.colors.onSurface,
+    ),
     onNavigationClick: () -> Unit = {
-
-    },
+                                    },
     onActionClick: () -> Unit = {}
 ) {
     CenterAlignedTopAppBar(
@@ -56,7 +58,7 @@ fun NiaTopAppBar(
                 Icon(
                     imageVector = navigationIcon,
                     contentDescription = navigationIconContentDescription,
-                    tint = MaterialTheme.colorScheme.onSurface
+                    tint = MaterialTheme.colors.onSurface
                 )
             }
         },
@@ -65,7 +67,7 @@ fun NiaTopAppBar(
                 Icon(
                     imageVector = actionIcon,
                     contentDescription = actionIconContentDescription,
-                    tint = MaterialTheme.colorScheme.onSurface
+                    tint = MaterialTheme.colors.onSurface
                 )
             }
         },
@@ -77,7 +79,7 @@ fun NiaTopAppBar(
 @Preview("Top App Bar")
 @Composable
 fun NiaTopAppBarPreview() {
-    NiaTopAppBar(
+    RadioTopAppBar(
         titleRes = R.string.top_app_bar_preview_title,
         navigationIcon = Icons.Default.Search,
         navigationIconContentDescription = "Navigation icon",

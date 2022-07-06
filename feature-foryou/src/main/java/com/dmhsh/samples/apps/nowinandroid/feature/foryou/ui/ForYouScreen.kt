@@ -18,7 +18,7 @@ import com.dmhsh.samples.apps.nowinandroid.core.navigation.Navigator
 import com.dmhsh.samples.apps.nowinandroid.core.navigation.Screens.LeafScreen
 import com.dmhsh.samples.apps.nowinandroid.core.ui.component.NiaGradientBackground
 import com.dmhsh.samples.apps.nowinandroid.core.ui.component.NiaTab
-import com.dmhsh.samples.apps.nowinandroid.core.ui.component.NiaTopAppBar
+import com.dmhsh.samples.apps.nowinandroid.core.ui.component.RadioTopAppBar
 import kotlinx.coroutines.DelicateCoroutinesApi
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.GlobalScope
@@ -38,7 +38,7 @@ fun ForYouScreen(
     NiaGradientBackground {
         Scaffold(
             topBar = {
-                NiaTopAppBar(
+                RadioTopAppBar(
                     titleRes = R.string.app_name,
                     navigationIcon = Icons.Filled.Search,
                     navigationIconContentDescription = stringResource(
