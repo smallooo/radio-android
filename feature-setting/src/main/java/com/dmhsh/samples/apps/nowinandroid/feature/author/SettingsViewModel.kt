@@ -13,16 +13,16 @@ import kotlinx.coroutines.flow.flow
 import javax.inject.Inject
 
 
-@HiltViewModel
-class SettingsViewModel @Inject constructor(
-    handle: SavedStateHandle,
-    remoteConfig: RemoteConfig,
-) : ViewModel() {
-
-    val settingsLinks = flow {
-        // initially fetch once then one more time when there might be an update
-        emit(remoteConfig.getSettingsLinks())
-        delay(REMOTE_CONFIG_FETCH_DELAY)
-        emit(remoteConfig.getSettingsLinks())
-    }.stateInDefault(viewModelScope, emptyList())
-}
+//@HiltViewModel
+//class SettingsViewModel @Inject constructor(
+//    handle: SavedStateHandle,
+//    remoteConfig: RemoteConfig,
+//) : ViewModel() {
+//
+//    val settingsLinks = flow {
+//        // initially fetch once then one more time when there might be an update
+//        emit(remoteConfig.getSettingsLinks())
+//        delay(REMOTE_CONFIG_FETCH_DELAY)
+//        emit(remoteConfig.getSettingsLinks())
+//    }.stateInDefault(viewModelScope, emptyList())
+//}

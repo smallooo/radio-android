@@ -26,6 +26,7 @@ import com.dmhsh.samples.apps.nowinandroid.core.navigation.NavigatorHost
 import com.dmhsh.samples.apps.nowinandroid.core.navigation.rememberBottomSheetNavigator
 
 import com.dmhsh.samples.apps.nowinandroid.core.ui.component.NiaBackground
+import com.dmhsh.samples.apps.nowinandroid.core.ui.component.rememberFlowWithLifecycle
 import com.dmhsh.samples.apps.nowinandroid.core.ui.media.radioStations.LocalAudioActionHandler
 import com.dmhsh.samples.apps.nowinandroid.core.ui.media.radioStations.audioActionHandler
 import com.dmhsh.samples.apps.nowinandroid.core.ui.theme.AppTheme
@@ -71,7 +72,7 @@ private fun RadioCore(
     scaffoldState: ScaffoldState = rememberScaffoldState(),
     content: @Composable () -> Unit
 ) {
-    val themeState = DefaultTheme
+    val themeState by rememberFlowWithLifecycle( themeViewModel.themeState)
     CompositionLocalProvider(LocalScaffoldState provides scaffoldState) {
         NiaTheme {
            // AppTheme(themeState) {

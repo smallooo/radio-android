@@ -57,12 +57,12 @@ fun SettingRoute(
     onBackClick: () -> Unit,
     modifier: Modifier = Modifier,
     themeViewModel: ThemeViewModel = hiltViewModel(),
-    viewModel: SettingsViewModel = hiltViewModel(),
+    //viewModel: SettingsViewModel = hiltViewModel(),
 ) {
 
     val themeState by rememberFlowWithLifecycle(themeViewModel.themeState)
-    val settingsLinks by rememberFlowWithLifecycle(viewModel.settingsLinks)
-    Settings(themeState, themeViewModel::applyThemeState, settingsLinks)
+    //val settingsLinks by rememberFlowWithLifecycle(viewModel.settingsLinks)
+    Settings(themeState, themeViewModel::applyThemeState)
 }
 
 
