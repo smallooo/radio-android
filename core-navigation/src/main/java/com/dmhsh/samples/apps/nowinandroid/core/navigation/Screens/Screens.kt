@@ -47,7 +47,7 @@ sealed class RootScreen(
 ) : Screen {
     object Search : RootScreen("search_root", LeafScreen.Search(rootRoute = "search_root"))
     object Downloads : RootScreen("downloads_root", LeafScreen.Downloads())
-    object Library : RootScreen("library_root", LeafScreen.Library())
+    object Library : RootScreen("library_root", LeafScreen.History())
     object Alarm : RootScreen("alarm_root", LeafScreen.Alarm())
     object Settings : RootScreen("settings_root", LeafScreen.Settings(rootRoute = "settings_root"))
 }
@@ -107,7 +107,7 @@ sealed class LeafScreen(
         override val rootRoute: String = "alarm_root"
     ) : LeafScreen(route, rootRoute)
 
-    data class Library(
+    data class History(
         override val route: String = "library",
         override val rootRoute: String = "library_root"
     ) : LeafScreen(route, rootRoute)
