@@ -29,6 +29,7 @@ import com.dmhsh.samples.apps.nowinandroid.feature.author.SettingRoute
 import com.dmhsh.samples.apps.nowinandroid.feature.foryou.ForYouScreen
 import com.dmhsh.samples.apps.nowinandroid.feature.interests.InterestsRoute
 import com.dmhsh.samples.apps.nowinandroid.feature.alarm.AlarmRoute
+import com.dmhsh.samples.apps.nowinandroid.feature.foryou.ForYouRoute
 import com.hdmsh.common_compose.collectEvent
 import com.hdmsh.core_ui_playback.PlaybackSheet
 
@@ -119,7 +120,7 @@ private fun NavGraphBuilder.addSettingsRoot() {
     ) { addSettings() } }
 
 private fun NavGraphBuilder.addSearch() {
-    composableScreen(LeafScreen.Search()) { ForYouScreen() } }
+    composableScreen(LeafScreen.Search()) { ForYouRoute() } }
 
 private fun NavGraphBuilder.addAlarm() {
     composableScreen(LeafScreen.Alarm()){ AlarmRoute(onBackClick = { /*TODO*/ }) } }

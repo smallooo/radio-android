@@ -16,19 +16,18 @@
 
 package com.dmhsh.samples.apps.nowinandroid.feature.interests
 
-import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.WindowInsets
 import androidx.compose.foundation.layout.WindowInsetsSides
 import androidx.compose.foundation.layout.only
 import androidx.compose.foundation.layout.safeDrawing
 import androidx.compose.foundation.layout.windowInsetsPadding
+import androidx.compose.material.Scaffold
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.MoreVert
 import androidx.compose.material.icons.filled.Search
 import androidx.compose.material3.Text
 import androidx.compose.runtime.*
-import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalLifecycleOwner
 import androidx.compose.ui.res.stringResource
@@ -58,14 +57,13 @@ fun InterestsRoute(
     navigateToTopic: (String) -> Unit = {},
     favoriteStationstViewModel: FavoriteStationstViewModel = hiltViewModel()
 ) {
-
     val uiState1 by favoriteStationstViewModel.favoriteStationsState.collectAsState()
 
     InterestsScreen(
         uiState1 = uiState1,
         navigateToAuthor = navigateToAuthor,
         navigateToTopic = navigateToTopic,
-        modifier = modifier
+        //modifier = modifier
     )
 }
 
@@ -74,43 +72,33 @@ fun InterestsScreen(
     uiState1: StationsUiState,
     navigateToAuthor: (String) -> Unit,
     navigateToTopic: (String) -> Unit,
-    modifier: Modifier = Modifier,
+    //modifier: Modifier = Modifier,
 ) {
-    Column(
-        modifier = modifier,
-        horizontalAlignment = Alignment.CenterHorizontally
-    ) {
-        Spacer(
-            // TODO: Replace with windowInsetsTopHeight after
-            //       https://issuetracker.google.com/issues/230383055
-            Modifier.windowInsetsPadding(
-                WindowInsets.safeDrawing.only(WindowInsetsSides.Top)
-            )
-        )
 
-        RadioTopAppBar(
-            titleRes = R.string.interests,
-            navigationIcon = Icons.Filled.Search,
-            navigationIconContentDescription = stringResource(
-                id = R.string.top_app_bar_navigation_button_content_desc
-            ),
-            actionIcon = Icons.Filled.MoreVert,
-            actionIconContentDescription = stringResource(
-                id = R.string.top_app_bar_navigation_button_content_desc
-            )
-        )
+//    Spacer(
+//        // TODO: Replace with windowInsetsTopHeight after
+//        //       https://issuetracker.google.com/issues/230383055
+//        Modifier.windowInsetsPadding(
+//            WindowInsets.safeDrawing.only(WindowInsetsSides.Top)
+//        )
+//    )
 
-        
+    Scaffold(
+       // modifier = modifier,
+        topBar = {
+            RadioTopAppBar(
+                titleRes = R.string.interests,
+                navigationIcon = Icons.Filled.Search,
+                navigationIconContentDescription = stringResource(id = R.string.top_app_bar_navigation_button_content_desc),
+                actionIcon = Icons.Filled.MoreVert,
+                actionIconContentDescription = stringResource(id = R.string.top_app_bar_navigation_button_content_desc),
+                modifier = Modifier.windowInsetsPadding(WindowInsets.safeDrawing.only(WindowInsetsSides.Top)))
+        }
+    ) { padding ->
+        val pad = padding
         when (uiState1) {
-            StationsUiState.Loading ->
-                LoadingWheel(
-                    modifier = modifier,
-                    contentDesc = stringResource(id = R.string.interests_loading),
-                )
-            is StationsUiState.Stations ->
-               // Text(favoriteState.stations.get(0).station.name.toString())
-                RadioItemFavorite(listOf((uiState1 as StationsUiState.Stations).stations), onImageClick = {})
-               // RadioItem(listOf(favoriteState .stations))
+            is StationsUiState.Loading -> LoadingWheel(modifier = Modifier, contentDesc = stringResource(id = R.string.interests_loading),)
+            is StationsUiState.Stations -> RadioItemFavorite(listOf(uiState1.stations), onImageClick = {})
             is StationsUiState.Empty -> InterestsEmptyScreen()
         }
     }

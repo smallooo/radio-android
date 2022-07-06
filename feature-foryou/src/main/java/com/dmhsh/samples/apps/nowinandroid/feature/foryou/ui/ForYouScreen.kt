@@ -1,10 +1,17 @@
 package com.dmhsh.samples.apps.nowinandroid.feature.foryou
 
 import androidx.compose.foundation.layout.*
+import androidx.compose.material.MaterialTheme
+import androidx.compose.material.Scaffold
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Search
 import androidx.compose.material.icons.outlined.Timer
-import androidx.compose.material3.*
+import androidx.compose.material3.ExperimentalMaterial3Api
+import androidx.compose.material3.ScrollableTabRow
+import androidx.compose.material3.Text
+import androidx.compose.material3.TopAppBarDefaults
+
+
 import androidx.compose.runtime.*
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
@@ -35,42 +42,48 @@ fun ForYouRoute() {
 fun ForYouScreen(
     navigation: Navigator = LocalNavigator.current
 ) {
-    NiaGradientBackground {
-        Scaffold(
-            topBar = {
-                RadioTopAppBar(
-                    titleRes = R.string.app_name,
-                    navigationIcon = Icons.Filled.Search,
-                    navigationIconContentDescription = stringResource(
-                        id = R.string.app_name
-                    ),
-                    actionIcon = Icons.Outlined.Timer,
-                    actionIconContentDescription = stringResource(
-                        id = R.string.app_name
-                    ),
-                    colors = TopAppBarDefaults.centerAlignedTopAppBarColors(
-                        containerColor = Color.Transparent
-                    ),
-                    modifier = Modifier.windowInsetsPadding(
-                        WindowInsets.safeDrawing.only(WindowInsetsSides.Top)
-                    ),
-                    onNavigationClick = {
-                        navigation.navigate(LeafScreen.PlaybackSheet().createRoute())
-                    }
-                )
-            },
-            containerColor = Color.Transparent
-        ) { innerPadding ->
-            val padding = innerPadding
-            AdvanceListContent()
-        }
+//    Scaffold(modifier = Modifier.fillMaxSize()) { padding ->
+//        val pad = padding
+//
+//    }
+
+
+    Scaffold(
+        modifier = Modifier.fillMaxSize(),
+        topBar = {
+            RadioTopAppBar(
+                titleRes = R.string.app_name,
+                navigationIcon = Icons.Filled.Search,
+                navigationIconContentDescription = stringResource(
+                    id = R.string.app_name
+                ),
+                actionIcon = Icons.Outlined.Timer,
+                actionIconContentDescription = stringResource(
+                    id = R.string.app_name
+                ),
+                colors = TopAppBarDefaults.centerAlignedTopAppBarColors(
+                    containerColor = MaterialTheme.colors.background,
+                    titleContentColor = MaterialTheme.colors.onSurface,
+                ),
+                modifier = Modifier.windowInsetsPadding(
+                    WindowInsets.safeDrawing.only(WindowInsetsSides.Top)
+                ),
+                onNavigationClick = {
+                    navigation.navigate(LeafScreen.PlaybackSheet().createRoute())
+                }
+            )
+        },
+    ) { innerPadding ->
+        val padding = innerPadding
+        AdvanceListContent()
     }
 }
 
 @Composable
 fun AdvanceListContent(viewModel: SearchListViewModel = hiltViewModel()) {
     var selectedIndex by remember { mutableStateOf(0) }
-    val tabs = listOf(stringResource(R.string.action_local),
+    val tabs = listOf(
+        stringResource(R.string.action_local),
         stringResource(R.string.action_top_click),
         stringResource(R.string.action_top_vote),
         stringResource(R.string.action_changed_lately),
@@ -85,12 +98,12 @@ fun AdvanceListContent(viewModel: SearchListViewModel = hiltViewModel()) {
     }
 
     Column {
-        Spacer(modifier = Modifier.height(88.dp))
+        //Spacer(modifier = Modifier.height(88.dp))
         ScrollableTabRow(
             selectedTabIndex = selectedIndex,
             edgePadding = 12.dp
         ) {
-            tabs.forEachIndexed{ index, title ->
+            tabs.forEachIndexed { index, title ->
                 NiaTab(
                     selected = index == selectedIndex,
                     onClick = {
@@ -109,9 +122,30 @@ fun AdvanceListContent(viewModel: SearchListViewModel = hiltViewModel()) {
                 2 -> TopVoteRadios()
                 3 -> LateUpdateRadios()
                 4 -> NowPlayingRadios()
-                5 -> TagListScreen(onTagSelect = {stationTag -> LaunchSearchScreen(pagerState, viewModel,"bytag", stationTag.name) }) //0
-                6 -> CountryList(onCountrySelect = {Country -> LaunchSearchScreen( pagerState, viewModel,"bycountry", Country.name) })
-                7 -> LanguageListScreen(onTagSelect = { LaunchSearchScreen(pagerState, viewModel,"bylanguage", it.name) })  //0
+                5 -> TagListScreen(onTagSelect = { stationTag ->
+                    LaunchSearchScreen(
+                        pagerState,
+                        viewModel,
+                        "bytag",
+                        stationTag.name
+                    )
+                }) //0
+                6 -> CountryList(onCountrySelect = { Country ->
+                    LaunchSearchScreen(
+                        pagerState,
+                        viewModel,
+                        "bycountry",
+                        Country.name
+                    )
+                })
+                7 -> LanguageListScreen(onTagSelect = {
+                    LaunchSearchScreen(
+                        pagerState,
+                        viewModel,
+                        "bylanguage",
+                        it.name
+                    )
+                })  //0
                 8 -> SearchStationsScreen()
             }
         }
