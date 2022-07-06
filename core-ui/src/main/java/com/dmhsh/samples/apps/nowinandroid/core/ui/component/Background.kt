@@ -35,7 +35,7 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
 import com.dmhsh.samples.apps.nowinandroid.core.ui.theme.LocalBackgroundTheme
-import com.dmhsh.samples.apps.nowinandroid.core.ui.theme.NiaTheme
+import com.dmhsh.samples.apps.nowinandroid.core.ui.theme.RadioTheme
 import kotlin.math.tan
 
 /**
@@ -136,7 +136,7 @@ fun NiaGradientBackground(
 @Preview(uiMode = Configuration.UI_MODE_NIGHT_YES, name = "Dark theme")
 @Composable
 fun BackgroundDefault() {
-    NiaTheme {
+    RadioTheme {
         NiaBackground(Modifier.size(100.dp), content = {})
     }
 }
@@ -145,7 +145,7 @@ fun BackgroundDefault() {
 @Preview(uiMode = Configuration.UI_MODE_NIGHT_YES, name = "Dark theme")
 @Composable
 fun BackgroundDynamic() {
-    NiaTheme(dynamicColor = true) {
+    RadioTheme() {
         NiaBackground(Modifier.size(100.dp), content = {})
     }
 }
@@ -154,7 +154,7 @@ fun BackgroundDynamic() {
 @Preview(uiMode = Configuration.UI_MODE_NIGHT_YES, name = "Dark theme")
 @Composable
 fun BackgroundAndroid() {
-    NiaTheme(androidTheme = true) {
+    RadioTheme() {
         NiaBackground(Modifier.size(100.dp), content = {})
     }
 }
@@ -163,7 +163,7 @@ fun BackgroundAndroid() {
 @Preview(uiMode = Configuration.UI_MODE_NIGHT_YES, name = "Dark theme")
 @Composable
 fun GradientBackgroundDefault() {
-    NiaTheme {
+    RadioTheme {
         NiaGradientBackground(Modifier.size(100.dp), content = {})
     }
 }
@@ -172,7 +172,7 @@ fun GradientBackgroundDefault() {
 @Preview(uiMode = Configuration.UI_MODE_NIGHT_YES, name = "Dark theme")
 @Composable
 fun GradientBackgroundDynamic() {
-    NiaTheme(dynamicColor = true) {
+    RadioTheme() {
         NiaGradientBackground(Modifier.size(100.dp), content = {})
     }
 }
@@ -181,7 +181,7 @@ fun GradientBackgroundDynamic() {
 @Preview(uiMode = Configuration.UI_MODE_NIGHT_YES, name = "Dark theme")
 @Composable
 fun GradientBackgroundAndroid() {
-    NiaTheme(androidTheme = true) {
+    RadioTheme() {
         NiaGradientBackground(Modifier.size(100.dp), content = {})
     }
 }

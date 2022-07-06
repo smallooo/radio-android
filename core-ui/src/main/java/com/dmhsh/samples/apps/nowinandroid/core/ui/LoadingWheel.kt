@@ -46,7 +46,7 @@ import androidx.compose.ui.semantics.contentDescription
 import androidx.compose.ui.semantics.semantics
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
-import com.dmhsh.samples.apps.nowinandroid.core.ui.theme.NiaTheme
+import com.dmhsh.samples.apps.nowinandroid.core.ui.theme.RadioTheme
 import kotlinx.coroutines.launch
 
 @Composable
@@ -135,7 +135,7 @@ fun LoadingWheel(
 )
 @Composable
 fun LoadingWheelPreview() {
-    NiaTheme {
+    RadioTheme {
         Surface {
             LoadingWheel(contentDesc = "LoadingWheel")
         }

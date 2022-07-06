@@ -52,8 +52,6 @@ import androidx.compose.ui.draw.clip
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.platform.LocalConfiguration
 import androidx.compose.ui.platform.LocalContext
-import androidx.compose.ui.platform.LocalInspectionMode
-import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.semantics.onClick
 import androidx.compose.ui.semantics.semantics
@@ -65,7 +63,7 @@ import com.dmhsh.samples.apps.nowinandroid.core.model.data.Author
 import com.dmhsh.samples.apps.nowinandroid.core.model.data.NewsResource
 import com.dmhsh.samples.apps.nowinandroid.core.model.data.NewsResourceType.Article
 import com.dmhsh.samples.apps.nowinandroid.core.model.data.Topic
-import com.dmhsh.samples.apps.nowinandroid.core.ui.theme.NiaTheme
+import com.dmhsh.samples.apps.nowinandroid.core.ui.theme.RadioTheme
 import java.time.ZoneId
 import java.time.format.DateTimeFormatter
 import kotlinx.datetime.Instant
@@ -277,7 +275,7 @@ fun NewsResourceTopics(
 @Preview("Bookmark Button")
 @Composable
 fun BookmarkButtonPreview() {
-    NiaTheme {
+    RadioTheme {
         Surface {
             BookmarkButton(isBookmarked = false, onClick = { })
         }
@@ -287,7 +285,7 @@ fun BookmarkButtonPreview() {
 @Preview("Bookmark Button Bookmarked")
 @Composable
 fun BookmarkButtonBookmarkedPreview() {
-    NiaTheme {
+    RadioTheme {
         Surface {
             BookmarkButton(isBookmarked = true, onClick = { })
         }
@@ -297,7 +295,7 @@ fun BookmarkButtonBookmarkedPreview() {
 @Preview("NewsResourceCardExpanded")
 @Composable
 fun ExpandedNewsResourcePreview() {
-    NiaTheme {
+    RadioTheme {
         Surface {
             NewsResourceCardExpanded(newsResource, true, {}, {})
         }

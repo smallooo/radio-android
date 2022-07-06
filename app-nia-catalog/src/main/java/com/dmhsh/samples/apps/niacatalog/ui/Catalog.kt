@@ -50,14 +50,14 @@ import com.dmhsh.samples.apps.nowinandroid.core.ui.component.NiaToggleButton
 import com.dmhsh.samples.apps.nowinandroid.core.ui.component.NiaTopicTag
 import com.dmhsh.samples.apps.nowinandroid.core.ui.component.NiaViewToggleButton
 import com.dmhsh.samples.apps.nowinandroid.core.ui.icon.NiaIcons
-import com.dmhsh.samples.apps.nowinandroid.core.ui.theme.NiaTheme
+import com.dmhsh.samples.apps.nowinandroid.core.ui.theme.RadioTheme
 
 /**
  * Now in Android component catalog.
  */
 @Composable
 fun NiaCatalog() {
-    NiaTheme {
+    RadioTheme {
         Surface {
             val contentPadding = WindowInsets
                 .systemBars

@@ -54,6 +54,7 @@ import com.dmhsh.samples.apps.nowinandroid.core.ui.media.radioStations.AudioActi
 import com.dmhsh.samples.apps.nowinandroid.core.ui.media.radioStations.LocalAudioActionHandler
 import com.dmhsh.samples.apps.nowinandroid.core.ui.media.radioStations.audioActionHandler
 import com.dmhsh.samples.apps.nowinandroid.core.ui.theme.AppTheme
+import com.dmhsh.samples.apps.nowinandroid.core.ui.theme.RadioTheme
 import com.dmhsh.samples.apps.nowinandroid.core.ui.theme.plainBackgroundColor
 import com.dmhsh.samples.apps.nowinandroid.playback.PlaybackConnection
 import com.hdmsh.common_compose.rememberFlowWithLifecycle
@@ -81,7 +82,7 @@ fun PlaybackSheet(
 
     val audioActionHandler = audioActionHandler()
     CompositionLocalProvider(LocalAudioActionHandler provides audioActionHandler) {
-        AppTheme( changeSystemBar = false) {
+        RadioTheme( changeSystemBar = false) {
             PlaybackSheetContent(
                 onClose = { navigator.goBack() },
                 scrollToTop = scrollToTop,

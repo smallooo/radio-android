@@ -40,7 +40,7 @@ import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
 import coil.compose.AsyncImage
 import com.dmhsh.samples.apps.nowinandroid.core.ui.FollowButton
-import com.dmhsh.samples.apps.nowinandroid.core.ui.theme.NiaTheme
+import com.dmhsh.samples.apps.nowinandroid.core.ui.theme.RadioTheme
 import com.dmhsh.samples.apps.nowinandroid.feature.interests.R.string
 
 @Composable
@@ -123,7 +123,7 @@ private fun InterestsIcon(topicImageUrl: String, modifier: Modifier = Modifier) 
 @Preview
 @Composable
 private fun InterestsCardPreview() {
-    NiaTheme {
+    RadioTheme {
         Surface {
             InterestsItem(
                 name = "Compose",
@@ -140,7 +140,7 @@ private fun InterestsCardPreview() {
 @Preview
 @Composable
 private fun InterestsCardLongNamePreview() {
-    NiaTheme {
+    RadioTheme {
         Surface {
             InterestsItem(
                 name = "This is a very very very very long name",
@@ -157,7 +157,7 @@ private fun InterestsCardLongNamePreview() {
 @Preview
 @Composable
 private fun InterestsCardLongDescriptionPreview() {
-    NiaTheme {
+    RadioTheme {
         Surface {
             InterestsItem(
                 name = "Compose",
@@ -175,7 +175,7 @@ private fun InterestsCardLongDescriptionPreview() {
 @Preview
 @Composable
 private fun InterestsCardWithEmptyDescriptionPreview() {
-    NiaTheme {
+    RadioTheme {
         Surface {
             InterestsItem(
                 name = "Compose",

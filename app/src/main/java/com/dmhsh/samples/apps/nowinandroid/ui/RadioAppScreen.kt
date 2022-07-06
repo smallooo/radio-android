@@ -8,12 +8,9 @@ import androidx.compose.material3.windowsizeclass.WindowSizeClass
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.CompositionLocalProvider
 import androidx.compose.runtime.getValue
-import androidx.compose.runtime.remember
-import androidx.compose.ui.input.key.Key.Companion.Home
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.currentBackStackEntryAsState
-import androidx.navigation.compose.rememberNavController
 import androidx.navigation.plusAssign
 import com.dmhsh.samples.apps.nowinandroid.ui.home.Home
 import com.google.accompanist.insets.ProvideWindowInsets
@@ -29,10 +26,8 @@ import com.dmhsh.samples.apps.nowinandroid.core.ui.component.NiaBackground
 import com.dmhsh.samples.apps.nowinandroid.core.ui.component.rememberFlowWithLifecycle
 import com.dmhsh.samples.apps.nowinandroid.core.ui.media.radioStations.LocalAudioActionHandler
 import com.dmhsh.samples.apps.nowinandroid.core.ui.media.radioStations.audioActionHandler
-import com.dmhsh.samples.apps.nowinandroid.core.ui.theme.AppTheme
-import com.dmhsh.samples.apps.nowinandroid.core.ui.theme.DefaultTheme
 
-import com.dmhsh.samples.apps.nowinandroid.core.ui.theme.NiaTheme
+import com.dmhsh.samples.apps.nowinandroid.core.ui.theme.RadioTheme
 import com.dmhsh.samples.apps.nowinandroid.core.ui.theme.ThemeViewModel
 
 
@@ -74,8 +69,8 @@ private fun RadioCore(
 ) {
     val themeState by rememberFlowWithLifecycle( themeViewModel.themeState)
     CompositionLocalProvider(LocalScaffoldState provides scaffoldState) {
-        NiaTheme {
-           // AppTheme(themeState) {
+       // NiaTheme(themeState) {
+            RadioTheme(themeState) {
                 NavigatorHost {
                     NiaBackground {
                         PlaybackHost {
@@ -85,8 +80,8 @@ private fun RadioCore(
                         }
                     }
                 }
-        //    }
-        }
+            }
+    //    }
     }
 }
 
