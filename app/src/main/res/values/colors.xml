@@ -23,4 +23,10 @@
 
     <!-- Status bar -->
     <color name="black30">#4D000000</color>
+
+    <color name="primary">#16053D</color>
+    <color name="secondary">#FF3C8F</color>
+
+    <color name="system_ui_scrim_light">#B3FFFFFF</color> <!-- 70% white -->
+    <color name="system_ui_scrim_dark">#30000000</color> <!-- 19% black -->
 </resources>

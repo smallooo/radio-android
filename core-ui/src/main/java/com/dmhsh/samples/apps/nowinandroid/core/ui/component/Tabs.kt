@@ -29,6 +29,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
+import com.dmhsh.samples.apps.nowinandroid.core.ui.backgroundGradient
 
 /**
  * Now in Android tab. Wraps Material 3 [Tab] and shifts text label down.
@@ -53,6 +54,9 @@ fun NiaTab(
         onClick = onClick,
         modifier = modifier,
         enabled = enabled,
+        selectedContentColor = androidx.compose.material.MaterialTheme.colors.secondary,
+        unselectedContentColor = androidx.compose.material.MaterialTheme.colors.onSurface,
+        
         text = {
             val style = MaterialTheme.typography.labelLarge.copy(textAlign = TextAlign.Center)
             ProvideTextStyle(

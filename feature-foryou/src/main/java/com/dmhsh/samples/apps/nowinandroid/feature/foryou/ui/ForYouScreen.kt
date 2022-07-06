@@ -17,6 +17,7 @@ import com.dmhsh.samples.apps.nowinandroid.core.navigation.LocalNavigator
 import com.dmhsh.samples.apps.nowinandroid.core.navigation.Navigator
 import com.dmhsh.samples.apps.nowinandroid.core.navigation.Screens.LeafScreen
 import com.dmhsh.samples.apps.nowinandroid.core.ui.component.NiaGradientBackground
+import com.dmhsh.samples.apps.nowinandroid.core.ui.component.NiaTab
 import com.dmhsh.samples.apps.nowinandroid.core.ui.component.NiaTopAppBar
 import kotlinx.coroutines.DelicateCoroutinesApi
 import kotlinx.coroutines.Dispatchers
@@ -90,13 +91,13 @@ fun AdvanceListContent(viewModel: SearchListViewModel = hiltViewModel()) {
             edgePadding = 12.dp
         ) {
             tabs.forEachIndexed{ index, title ->
-                Tab(
+                NiaTab(
                     selected = index == selectedIndex,
                     onClick = {
                         selectedIndex = tabs.indexOf(title)
                         pagerState.currentPage = tabs.indexOf(title)
                     },
-                    text = { Text(title) }
+                    text = { Text(text = title) }
                 )
             }
         }

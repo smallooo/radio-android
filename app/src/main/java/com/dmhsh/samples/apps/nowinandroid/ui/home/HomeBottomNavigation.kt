@@ -59,7 +59,7 @@ internal fun HomeBottomNavigation(
                     selected = selectedTab == item.screen,
                     onClick = { onNavigationSelected(item.screen) },
                     selectedContentColor = MaterialTheme.colors.secondary,
-                    unselectedContentColor = MaterialTheme.colors.onSurface
+                    unselectedContentColor = MaterialTheme.colors.onSurface,
                 )
             }
         }

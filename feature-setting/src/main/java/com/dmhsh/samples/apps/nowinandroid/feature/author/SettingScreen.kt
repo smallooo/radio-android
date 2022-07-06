@@ -65,9 +65,6 @@ fun SettingRoute(
     Settings(themeState, themeViewModel::applyThemeState)
 }
 
-
-
-
 @Composable
 private fun Settings(
     themeState: ThemeState,
@@ -76,15 +73,6 @@ private fun Settings(
 ) {
     Scaffold(
         topBar = {
-//            NiaTopAppBar(titleRes = R.string.app_name,
-//                navigationIcon = Icons.Filled.Search,
-//                navigationIconContentDescription = stringResource(
-//                    id = R.string.app_name
-//                ),
-//                actionIcon = Icons.Filled.MoreVert,
-//                actionIconContentDescription = stringResource(
-//                    id = R.string.app_name
-//                ))
             AppTopBar(title = "Settings")
         }
     ) { padding ->
@@ -182,8 +170,8 @@ fun LazyListScope.settingsThemeSection(themeState: ThemeState, setThemeState: (T
         SettingsItem(stringResource(R.string.settings_theme_colorPalette)) {
             SelectableDropdownMenu(
                 items = ColorPalettePreference.values().toList(),
-                selectedItem = "",
-                onItemSelect = {  },
+                selectedItem = themeState.colorPalettePreference,
+                onItemSelect = { setThemeState(themeState.copy(colorPalettePreference = it))  },
                 modifier = Modifier.offset(x = 12.dp)
             )
         }
