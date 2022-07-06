@@ -8,10 +8,12 @@ import androidx.compose.material3.windowsizeclass.WindowSizeClass
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.CompositionLocalProvider
 import androidx.compose.runtime.getValue
+import androidx.compose.ui.platform.LocalContext
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.currentBackStackEntryAsState
 import androidx.navigation.plusAssign
+import com.dmhsh.samples.apps.nowinandroid.BuildConfig
 import com.dmhsh.samples.apps.nowinandroid.ui.home.Home
 import com.google.accompanist.insets.ProvideWindowInsets
 import com.google.accompanist.navigation.animation.rememberAnimatedNavController
@@ -29,6 +31,8 @@ import com.dmhsh.samples.apps.nowinandroid.core.ui.media.radioStations.audioActi
 
 import com.dmhsh.samples.apps.nowinandroid.core.ui.theme.RadioTheme
 import com.dmhsh.samples.apps.nowinandroid.core.ui.theme.ThemeViewModel
+import com.dmhsh.samples.apps.nowinandroid.feature.author.LocalAppVersion
+import com.google.firebase.analytics.FirebaseAnalytics
 
 
 import com.hdmsh.core_ui_playback.PlaybackConnectionViewModel
@@ -40,13 +44,17 @@ import kotlinx.coroutines.InternalCoroutinesApi
 @Composable
 fun RadioApp(
     windowSizeClass: WindowSizeClass,
+    scaffoldState: ScaffoldState = rememberScaffoldState(),
     navController: NavHostController = rememberAnimatedNavController(),
+    analytics: FirebaseAnalytics = FirebaseAnalytics.getInstance(LocalContext.current),
 ) {
     val navBackStackEntry by navController.currentBackStackEntryAsState()
     val currentDestination = navBackStackEntry?.destination
 
     CompositionLocalProvider(
-
+        LocalScaffoldState provides scaffoldState,
+       // LocalAnalytics provides analytics,
+        LocalAppVersion provides BuildConfig.VERSION_NAME
     ) {
         ProvideWindowInsets(consumeWindowInsets = false) {
             RadioCore(windowSizeClass) {
@@ -69,7 +77,6 @@ private fun RadioCore(
 ) {
     val themeState by rememberFlowWithLifecycle( themeViewModel.themeState)
     CompositionLocalProvider(LocalScaffoldState provides scaffoldState) {
-       // NiaTheme(themeState) {
             RadioTheme(themeState) {
                 NavigatorHost {
                     NiaBackground {
@@ -81,7 +88,6 @@ private fun RadioCore(
                     }
                 }
             }
-    //    }
     }
 }
 

@@ -19,7 +19,6 @@ import com.google.accompanist.navigation.animation.composable
 import com.google.accompanist.navigation.material.ExperimentalMaterialNavigationApi
 import com.google.accompanist.navigation.material.bottomSheet
 
-
 const val QUERY_KEY = "query"
 const val SEARCH_BACKENDS_KEY = "backends"
 const val ARTIST_ID_KEY = "artist_id"
@@ -36,6 +35,7 @@ val ROOT_SCREENS = listOf(
     RootScreen.Search,
     RootScreen.Downloads,
     RootScreen.Library,
+    RootScreen.Alarm,
     RootScreen.Settings
 )
 

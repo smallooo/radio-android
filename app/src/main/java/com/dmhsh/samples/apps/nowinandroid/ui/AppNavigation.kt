@@ -256,7 +256,7 @@ private fun NavGraphBuilder.addPlaybackSheet() {
 @Composable
 internal fun NavController.currentScreenAsState(): State<RootScreen> {
     val selectedItem = remember { mutableStateOf<RootScreen>(RootScreen.Search) }
-    val rootScreens = listOf(RootScreen.Search, RootScreen.Downloads, RootScreen.Library, RootScreen.Settings)
+    val rootScreens = listOf(RootScreen.Search, RootScreen.Downloads, RootScreen.Library, RootScreen.Alarm, RootScreen.Settings)
     DisposableEffect(this) {
         val listener = NavController.OnDestinationChangedListener { _, destination, _ ->
             rootScreens.firstOrNull { rs -> destination.hierarchy.any { it.route == rs.route } }?.let {
