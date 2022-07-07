@@ -3,6 +3,8 @@ package com.dmhsh.samples.apps.nowinandroid.feature.foryou
 import androidx.compose.foundation.layout.*
 import androidx.compose.material.MaterialTheme
 import androidx.compose.material.Scaffold
+import androidx.compose.material.TabRowDefaults
+import androidx.compose.material3.TabRowDefaults.tabIndicatorOffset
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Search
 import androidx.compose.material.icons.outlined.Timer
@@ -10,8 +12,6 @@ import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.ScrollableTabRow
 import androidx.compose.material3.Text
 import androidx.compose.material3.TopAppBarDefaults
-
-
 import androidx.compose.runtime.*
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
@@ -37,9 +37,7 @@ fun ForYouRoute() {
 
 @OptIn(ExperimentalMaterial3Api::class, ExperimentalLayoutApi::class)
 @Composable
-fun ForYouScreen(
-    navigation: Navigator = LocalNavigator.current
-) {
+fun ForYouScreen(navigation: Navigator = LocalNavigator.current) {
     Scaffold(
         modifier = Modifier.fillMaxSize(),
         topBar = {
@@ -85,15 +83,20 @@ fun AdvanceListContent(viewModel: SearchListViewModel = hiltViewModel()) {
         stringResource(R.string.action_languages),
         stringResource(R.string.action_search)
     )
-    val pagerState: PagerState = run {
-        remember { PagerState(0, 0, tabs.size - 1) }
-    }
+    val pagerState: PagerState = run { remember { PagerState(0, 0, tabs.size - 1) } }
 
     Column {
-        //Spacer(modifier = Modifier.height(88.dp))
         ScrollableTabRow(
             selectedTabIndex = selectedIndex,
-            edgePadding = 0.dp
+            edgePadding = 0.dp,
+            indicator = { tabPositions ->
+                TabRowDefaults.Indicator(
+                    color = MaterialTheme.colors.secondary,
+                    height = 3.dp,
+                    modifier = Modifier
+                        .tabIndicatorOffset(tabPositions[selectedIndex])
+                )
+            }
         ) {
             tabs.forEachIndexed { index, title ->
                 RadioTab(
@@ -102,11 +105,11 @@ fun AdvanceListContent(viewModel: SearchListViewModel = hiltViewModel()) {
                         selectedIndex = tabs.indexOf(title)
                         pagerState.currentPage = tabs.indexOf(title)
                     },
-
                     text = { Text(text = title) }
                 )
             }
         }
+
         Pager(state = pagerState, modifier = Modifier.weight(1f)) {
             selectedIndex = pagerState.currentPage
             when (commingPage) {
@@ -116,29 +119,11 @@ fun AdvanceListContent(viewModel: SearchListViewModel = hiltViewModel()) {
                 3 -> LateUpdateRadios()
                 4 -> NowPlayingRadios()
                 5 -> TagListScreen(onTagSelect = { stationTag ->
-                    LaunchSearchScreen(
-                        pagerState,
-                        viewModel,
-                        "bytag",
-                        stationTag.name
-                    )
-                }) //0
+                    LaunchSearchScreen(pagerState, viewModel, "bytag", stationTag.name) }) //0
                 6 -> CountryList(onCountrySelect = { Country ->
-                    LaunchSearchScreen(
-                        pagerState,
-                        viewModel,
-                        "bycountry",
-                        Country.name
-                    )
-                })
+                    LaunchSearchScreen(pagerState, viewModel, "bycountry", Country.name) })
                 7 -> LanguageListScreen(onTagSelect = {
-                    LaunchSearchScreen(
-                        pagerState,
-                        viewModel,
-                        "bylanguage",
-                        it.name
-                    )
-                })  //0
+                    LaunchSearchScreen(pagerState, viewModel, "bylanguage", it.name) })  //0
                 8 -> SearchStationsScreen()
             }
         }
