@@ -43,61 +43,95 @@ import kotlinx.coroutines.runBlocking
 @Composable
 fun TopVoteRadios(
     viewModel: TopVoteViewModel = hiltViewModel(),
-    playbackConnection: PlaybackConnection = LocalPlaybackConnection.current,
+  //  playbackConnection: PlaybackConnection = LocalPlaybackConnection.current,
 ) {
-    val uiState = remember{viewModel.state}
-    val shimmerAnimationType by remember { mutableStateOf(ShimmerAnimationType.FADE) }
-    val transition = rememberInfiniteTransition()
-    val playbackState by rememberFlowWithLifecycle(playbackConnection.playbackState)
-    val nowPlaying by rememberFlowWithLifecycle(playbackConnection.nowPlaying)
-    val isPlayerActive = (playbackState to nowPlaying).isActive
+    val uiState: StationsUiState1 by viewModel.topVoteState.collectAsState()
 
-    val translateAnim by transition.animateFloat(
-        initialValue = 100f,
-        targetValue = 600f,
-        animationSpec = infiniteRepeatable(
-            tween(durationMillis = 1200, easing = LinearEasing),
-            RepeatMode.Restart
-        )
-    )
 
-    val colorAnim by transition.animateColor(
-        initialValue = Color.LightGray.copy(alpha = 0.6f),
-        targetValue = Color.LightGray,
-        animationSpec = infiniteRepeatable(
-            tween(durationMillis = 1200, easing = FastOutSlowInEasing),
-            RepeatMode.Restart
-        )
-    )
+//    val shimmerAnimationType by remember { mutableStateOf(ShimmerAnimationType.FADE) }
+//    val transition = rememberInfiniteTransition()
+//    val playbackState by rememberFlowWithLifecycle(playbackConnection.playbackState)
+//    val nowPlaying by rememberFlowWithLifecycle(playbackConnection.nowPlaying)
+  //  val isPlayerActive = (playbackState to nowPlaying).isActive
 
-    val list = if (shimmerAnimationType != ShimmerAnimationType.TRANSLATE) {
-        listOf(colorAnim, colorAnim.copy(alpha = 0.5f))
-    } else {
-        listOf(Color.LightGray.copy(alpha = 0.6f), Color.LightGray)
-    }
+//    val translateAnim by transition.animateFloat(
+//        initialValue = 100f,
+//        targetValue = 600f,
+//        animationSpec = infiniteRepeatable(
+//            tween(durationMillis = 1200, easing = LinearEasing),
+//            RepeatMode.Restart
+//        )
+//    )
 
-    val dpValue = if (shimmerAnimationType != ShimmerAnimationType.FADE) {
-        translateAnim.dp
-    } else {
-        2000.dp
-    }
+//    val colorAnim by transition.animateColor(
+//        initialValue = Color.LightGray.copy(alpha = 0.6f),
+//        targetValue = Color.LightGray,
+//        animationSpec = infiniteRepeatable(
+//            tween(durationMillis = 1200, easing = FastOutSlowInEasing),
+//            RepeatMode.Restart
+//        )
+//    )
 
-    if (uiState.isLoading) {
-        for (i in 1..5) ShimmerItem(list, dpValue.value, shimmerAnimationType == ShimmerAnimationType.VERTICAL)
-    } else {
-        RadioItem111(viewModel,
-            listOf(uiState.localStations),
-            onImageClick = { Station ->
-                Station.favorited = !Station.favorited
-                viewModel.setFavoritedStation(Station)
-            },
-            onPlayClick = { Station ->
-                Station.lastPlayedTime = System.currentTimeMillis().toString()
-                viewModel.setPlayHistory(Station)
+//    val list = if (shimmerAnimationType != ShimmerAnimationType.TRANSLATE) {
+//        listOf(colorAnim, colorAnim.copy(alpha = 0.5f))
+//    } else {
+//        listOf(Color.LightGray.copy(alpha = 0.6f), Color.LightGray)
+//    }
+//
+//    val dpValue = if (shimmerAnimationType != ShimmerAnimationType.FADE) {
+//        translateAnim.dp
+//    } else {
+//        2000.dp
+//    }
 
+
+    when (uiState) {
+        StationsUiState1.Loading -> {
+//            uiState.let { it ->
+//                Text(it.toString())
+//            }
+
+            Box(modifier = Modifier.fillMaxSize()) {
+                Text("Loading...")
             }
-        )
+
+        }
+
+        is StationsUiState1.Stations -> {
+            if (uiState is StationsUiState1.Stations) {
+                RadioItem(viewModel,
+                    (uiState as StationsUiState1.Stations).stations1,
+                    onImageClick = { Station ->
+                        Station.favorited = !Station.favorited
+                        viewModel.setFavoritedStation(Station)
+                    },
+                    onPlayClick = { Station ->
+                        Station.lastPlayedTime = System.currentTimeMillis().toString()
+                        viewModel.setFavoritedStation(Station)
+
+                    }
+                )
+            }
+        }
+        //is StationsUiState1.Empty -> ShimmerItem(list, dpValue.value, shimmerAnimationType == ShimmerAnimationType.VERTICAL)
     }
+
+//    if (isLoading) {
+//        for (i in 1..5) ShimmerItem(list, dpValue.value, shimmerAnimationType == ShimmerAnimationType.VERTICAL)
+//    } else {
+//        RadioItem111(viewModel,
+//            listOf(uiState.localStations),
+//            onImageClick = { Station ->
+//                Station.favorited = !Station.favorited
+//                viewModel.setFavoritedStation(Station)
+//            },
+//            onPlayClick = { Station ->
+//                Station.lastPlayedTime = System.currentTimeMillis().toString()
+//                viewModel.setPlayHistory(Station)
+//
+//            }
+//        )
+//    }
 }
 
 

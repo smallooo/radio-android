@@ -76,8 +76,17 @@ fun LanguageListScreen( viewModel: LanguageListViewModel = hiltViewModel(),onTag
     )
 
     when (uiState.value) {
-        LanguageUiState.Loading ->
-            for(i in 1..5) ShimmerItem(list, dpValue.value, shimmerAnimationType == ShimmerAnimationType.VERTICAL)
+        LanguageUiState.Loading -> {
+//            for (i in 1..5) ShimmerItem(
+//                list,
+//                dpValue.value,
+//                shimmerAnimationType == ShimmerAnimationType.VERTICAL
+//            )
+
+            Box(modifier = Modifier.fillMaxSize()) {
+                Text("Loading...")
+            }
+        }
         is LanguageUiState.Tags -> {
             LanguageItems(
                (uiState.value as LanguageUiState.Tags).tags,
@@ -87,7 +96,12 @@ fun LanguageListScreen( viewModel: LanguageListViewModel = hiltViewModel(),onTag
                 }
             )
         }
-        is LanguageUiState.Empty -> ShimmerItem(list, dpValue.value, shimmerAnimationType == ShimmerAnimationType.VERTICAL)
+        is LanguageUiState.Empty -> {
+            //ShimmerItem(list, dpValue.value, shimmerAnimationType == ShimmerAnimationType.VERTICAL)
+            Box(modifier = Modifier.fillMaxSize()) {
+                Text("Loading...")
+            }
+        }
     }
 }
 

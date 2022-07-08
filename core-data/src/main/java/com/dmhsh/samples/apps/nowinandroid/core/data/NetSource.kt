@@ -18,7 +18,7 @@ import javax.inject.Singleton
 class NetSource @Inject constructor(private val stationDao: StationDao, private val radioListApi: RadioListApi) {
     private var _localRadioList: List<NetworkStation>? = null
     private var _topVisitRadioList: List<Station>? = null
-    private var _topVotedRadioList: List<Station>? = null
+    private var _topVotedRadioList: ArrayList<Station>? = null
     private var _lateUpdateRadioList: List<Station>? = null
     private var _lastClickRadioList: List<Station>? = null
     private var _stationsTagList: List<StationsTag>? = null
@@ -45,7 +45,9 @@ class NetSource @Inject constructor(private val stationDao: StationDao, private 
     }
 
     suspend fun gettopVotedList() = withContext(Dispatchers.IO){
-        if(_topVotedRadioList == null) _topVotedRadioList = radioListApi.getTopVote() 
+        Log.e("aaa topvode", "start to request")
+        if(_topVotedRadioList == null) _topVotedRadioList = radioListApi.getTopVote()
+        Log.e("aaa topvode", _topVotedRadioList?.size.toString())
         return@withContext _topVotedRadioList
     }
 

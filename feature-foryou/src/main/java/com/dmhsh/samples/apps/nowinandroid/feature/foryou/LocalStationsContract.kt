@@ -7,10 +7,10 @@ class LocalStationsContract {
 
     data class State(
         val localStations: List<Station> = listOf(),
-        val isLoading: Boolean = false
+        var isLoading: Boolean = false
     )
 
     sealed class Effect {
-        object DataWasLoaded : Effect()
+        object DataWasLoaded : LocalStationsContract.Effect()
     }
 }

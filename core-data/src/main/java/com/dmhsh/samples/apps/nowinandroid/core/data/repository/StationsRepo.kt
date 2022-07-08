@@ -30,7 +30,7 @@ interface StationsRepo : Syncable {
 
     fun getTopVisitedStream(): Flow<List<Station>>
 
-    fun gettopVotedStream(): Flow<List<Station>>
+    val gettopVotedStream: Flow<ArrayList<Station>>
 
     fun getLateUpdateStream(): Flow<List<Station>>
 

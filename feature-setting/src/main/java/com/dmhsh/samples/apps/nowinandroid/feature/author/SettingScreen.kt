@@ -48,15 +48,15 @@ fun SettingRoute(
     //viewModel: SettingsViewModel = hiltViewModel(),
 ) {
 
-    val themeState by rememberFlowWithLifecycle(themeViewModel.themeState)
+    //val themeState by rememberFlowWithLifecycle(themeViewModel.themeState)
     //val settingsLinks by rememberFlowWithLifecycle(viewModel.settingsLinks)
-    Settings(themeState, themeViewModel::applyThemeState)
+    Settings()
 }
 
 @Composable
 private fun Settings(
-    themeState: ThemeState,
-    setThemeState: (ThemeState) -> Unit,
+  //  themeState: ThemeState,
+  //  setThemeState: (ThemeState) -> Unit,
    // settingsLinks: SettingsLinks = emptyList()
 ) {
     Scaffold(
@@ -65,8 +65,8 @@ private fun Settings(
         }
     ) { padding ->
         SettingsList(
-            themeState,
-            setThemeState,
+          //  themeState,
+         //   setThemeState,
 //            settingsLinks,
             padding)
     }
@@ -74,8 +74,8 @@ private fun Settings(
 
 @Composable
 fun SettingsList(
-    themeState: ThemeState,
-    setThemeState: (ThemeState) -> Unit,
+   // themeState: ThemeState,
+   // setThemeState: (ThemeState) -> Unit,
    // settingsLinks: SettingsLinks,
     paddings: PaddingValues,
    // downloader: Downloader = LocalDownloader.current
@@ -86,7 +86,7 @@ fun SettingsList(
         contentPadding = paddings
     ) {
        // settingsGeneralSection()
-        settingsThemeSection(themeState, setThemeState)
+       // settingsThemeSection(themeState, setThemeState)
         //settingsDownloadsSection(downloader)
        // settingsDatabaseSection()
         settingsAboutSection()

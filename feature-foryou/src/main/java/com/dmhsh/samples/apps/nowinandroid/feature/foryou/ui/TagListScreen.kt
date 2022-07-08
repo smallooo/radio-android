@@ -34,48 +34,51 @@ import com.dmhsh.samples.apps.nowinandroid.feature.foryou.ui.ShimmerAnimationTyp
 fun TagListScreen( viewModel: TagListViewModel = hiltViewModel(), viewModel1: SearchListViewModel = hiltViewModel(),onTagSelect:(stationsTag: StationsTag) -> Unit) {
 
     val uiState = viewModel.tagListState.collectAsState()
-    val shimmerAnimationType by remember { mutableStateOf(ShimmerAnimationType.FADE) }
+//    val shimmerAnimationType by remember { mutableStateOf(ShimmerAnimationType.FADE) }
+//
+//    val transition = rememberInfiniteTransition()
+//    val translateAnim by transition.animateFloat(
+//        initialValue = 100f,
+//        targetValue = 600f,
+//        animationSpec = infiniteRepeatable(
+//            tween(durationMillis = 1200, easing = LinearEasing),
+//            RepeatMode.Restart
+//        )
+//    )
+//
+//    val colorAnim by transition.animateColor(
+//        initialValue = Color.LightGray.copy(alpha = 0.6f),
+//        targetValue = Color.LightGray,
+//        animationSpec = infiniteRepeatable(
+//            tween(durationMillis = 1200, easing = FastOutSlowInEasing),
+//            RepeatMode.Restart
+//        )
+//    )
 
-    val transition = rememberInfiniteTransition()
-    val translateAnim by transition.animateFloat(
-        initialValue = 100f,
-        targetValue = 600f,
-        animationSpec = infiniteRepeatable(
-            tween(durationMillis = 1200, easing = LinearEasing),
-            RepeatMode.Restart
-        )
-    )
-
-    val colorAnim by transition.animateColor(
-        initialValue = Color.LightGray.copy(alpha = 0.6f),
-        targetValue = Color.LightGray,
-        animationSpec = infiniteRepeatable(
-            tween(durationMillis = 1200, easing = FastOutSlowInEasing),
-            RepeatMode.Restart
-        )
-    )
-
-    val list = if (shimmerAnimationType != ShimmerAnimationType.TRANSLATE) {
-        listOf(colorAnim, colorAnim.copy(alpha = 0.5f))
-    } else {
-        listOf(Color.LightGray.copy(alpha = 0.6f), Color.LightGray)
-    }
-
-    val dpValue = if (shimmerAnimationType != ShimmerAnimationType.FADE) {
-        translateAnim.dp
-    } else {
-        2000.dp
-    }
-
-    @Composable
-    fun buttonColors(type: ShimmerAnimationType) = ButtonDefaults.buttonColors(
-        containerColor = if (shimmerAnimationType == type)
-            MaterialTheme.colorScheme.primary else Color.LightGray
-    )
+//    val list = if (shimmerAnimationType != ShimmerAnimationType.TRANSLATE) {
+//        listOf(colorAnim, colorAnim.copy(alpha = 0.5f))
+//    } else {
+//        listOf(Color.LightGray.copy(alpha = 0.6f), Color.LightGray)
+//    }
+//
+//    val dpValue = if (shimmerAnimationType != ShimmerAnimationType.FADE) {
+//        translateAnim.dp
+//    } else {
+//        2000.dp
+//    }
+//
+//    @Composable
+//    fun buttonColors(type: ShimmerAnimationType) = ButtonDefaults.buttonColors(
+//        containerColor = if (shimmerAnimationType == type)
+//            MaterialTheme.colorScheme.primary else Color.LightGray
+//    )
 
     when (uiState.value) {
         TagUiState.Loading ->
-            for(i in 1..5) ShimmerItem(list, dpValue.value, shimmerAnimationType == ShimmerAnimationType.VERTICAL)
+            //for(i in 1..5) ShimmerItem(list, dpValue.value, shimmerAnimationType == ShimmerAnimationType.VERTICAL)
+            Box(modifier = Modifier.fillMaxSize()) {
+                Text("Loading...")
+            }
         is TagUiState.Tags -> {
             TagItems(
                 (uiState.value as TagUiState.Tags).tags,
@@ -85,7 +88,14 @@ fun TagListScreen( viewModel: TagListViewModel = hiltViewModel(), viewModel1: Se
                 }
             )
         }
-        is TagUiState.Empty -> ShimmerItem(list, dpValue.value, shimmerAnimationType == ShimmerAnimationType.VERTICAL)
+        is TagUiState.Empty -> {
+
+            Box(modifier = Modifier.fillMaxSize()) {
+                Text("Loading...")
+            }
+
+            //ShimmerItem(list, dpValue.value, shimmerAnimationType == ShimmerAnimationType.VERTICAL)
+        }
     }
 }
 

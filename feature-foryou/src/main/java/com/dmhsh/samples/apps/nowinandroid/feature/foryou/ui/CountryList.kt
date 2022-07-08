@@ -27,48 +27,52 @@ import com.dmhsh.samples.apps.nowinandroid.feature.foryou.ui.ShimmerAnimationTyp
 
 @Composable
 fun CountryList( viewModel: CountryViewModel = hiltViewModel(), onCountrySelect:(country: Country) -> Unit) {
-    val state = remember{ viewModel.state }
-    val shimmerAnimationType by remember { mutableStateOf(ShimmerAnimationType.FADE) }
+    val state =  viewModel.state
+    val loading = state.isLoading
+//    val shimmerAnimationType by remember { mutableStateOf(ShimmerAnimationType.FADE) }
 
-    val transition = rememberInfiniteTransition()
-    val translateAnim by transition.animateFloat(
-        initialValue = 100f,
-        targetValue = 600f,
-        animationSpec = infiniteRepeatable(
-            tween(durationMillis = 1200, easing = LinearEasing),
-            RepeatMode.Restart
-        )
-    )
+ //   val transition = rememberInfiniteTransition()
+//    val translateAnim by transition.animateFloat(
+//        initialValue = 100f,
+//        targetValue = 600f,
+//        animationSpec = infiniteRepeatable(
+//            tween(durationMillis = 1200, easing = LinearEasing),
+//            RepeatMode.Restart
+//        )
+//    )
+//
+//    val colorAnim by transition.animateColor(
+//        initialValue = Color.LightGray.copy(alpha = 0.6f),
+//        targetValue = Color.LightGray,
+//        animationSpec = infiniteRepeatable(
+//            tween(durationMillis = 1200, easing = FastOutSlowInEasing),
+//            RepeatMode.Restart
+//        )
+//    )
 
-    val colorAnim by transition.animateColor(
-        initialValue = Color.LightGray.copy(alpha = 0.6f),
-        targetValue = Color.LightGray,
-        animationSpec = infiniteRepeatable(
-            tween(durationMillis = 1200, easing = FastOutSlowInEasing),
-            RepeatMode.Restart
-        )
-    )
+//    val list = if (shimmerAnimationType != ShimmerAnimationType.TRANSLATE) {
+//        listOf(colorAnim, colorAnim.copy(alpha = 0.5f))
+//    } else {
+//        listOf(Color.LightGray.copy(alpha = 0.6f), Color.LightGray)
+//    }
+//
+//    val dpValue = if (shimmerAnimationType != ShimmerAnimationType.FADE) {
+//        translateAnim.dp
+//    } else {
+//        2000.dp
+//    }
 
-    val list = if (shimmerAnimationType != ShimmerAnimationType.TRANSLATE) {
-        listOf(colorAnim, colorAnim.copy(alpha = 0.5f))
-    } else {
-        listOf(Color.LightGray.copy(alpha = 0.6f), Color.LightGray)
-    }
+//    @Composable
+//    fun buttonColors(type: ShimmerAnimationType) = ButtonDefaults.buttonColors(
+//        containerColor = if (shimmerAnimationType == type)
+//            MaterialTheme.colorScheme.primary else Color.LightGray
+//    )
 
-    val dpValue = if (shimmerAnimationType != ShimmerAnimationType.FADE) {
-        translateAnim.dp
-    } else {
-        2000.dp
-    }
-
-    @Composable
-    fun buttonColors(type: ShimmerAnimationType) = ButtonDefaults.buttonColors(
-        containerColor = if (shimmerAnimationType == type)
-            MaterialTheme.colorScheme.primary else Color.LightGray
-    )
-
-    if(state.isLoading) {
-        for (i in 1..5) ShimmerItem(list, dpValue.value, shimmerAnimationType == ShimmerAnimationType.VERTICAL)
+    if(loading) {
+        //for (i in 1..5) ShimmerItem(list, dpValue.value, shimmerAnimationType == ShimmerAnimationType.VERTICAL)
+        Box(modifier = Modifier.fillMaxSize()) {
+            Text("Loading...")
+        }
     }else{
 //        Button(onClick = {onCountrySelect(state.categories.get(1)) }) {
 //

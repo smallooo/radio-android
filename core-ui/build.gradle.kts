@@ -65,6 +65,11 @@ dependencies {
     api(libs.androidx.compose.runtime)
     api(libs.androidx.compose.runtime.livedata)
 
+    implementation(libs.androidx.lifecycle.compiler)
+    implementation(libs.androidx.lifecycle.extensions)
+    implementation(libs.androidx.lifecycle.runtime)
+    implementation(libs.androidx.lifecycle.runtimeKtx)
+
 
 
 

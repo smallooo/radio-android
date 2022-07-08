@@ -18,13 +18,13 @@ class CountryViewModel @Inject constructor(private val remoteSource: CountrySour
     ViewModel() {
 
     var state by mutableStateOf(
-        com.dmhsh.samples.apps.nowinandroid.feature.foryou.CountryCategoriesContract.State(
+        CountryCategoriesContract.State(
             categories = listOf(),
             isLoading = true
         )
     )
 
-    var effects = Channel<com.dmhsh.samples.apps.nowinandroid.feature.foryou.CountryCategoriesContract.Effect>(UNLIMITED)
+    var effects = Channel<CountryCategoriesContract.Effect>(UNLIMITED)
         private set
 
     init {
@@ -37,7 +37,7 @@ class CountryViewModel @Inject constructor(private val remoteSource: CountrySour
         val categories = remoteSource.getCountryList()
         viewModelScope.launch {
             state = categories?.let { state.copy(categories = it, isLoading = false) }!!
-            effects.send(com.dmhsh.samples.apps.nowinandroid.feature.foryou.CountryCategoriesContract.Effect.DataWasLoaded)
+            effects.send(CountryCategoriesContract.Effect.DataWasLoaded)
         }
     }
 }

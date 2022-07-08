@@ -11,6 +11,6 @@ class CountryCategoriesContract {
     )
 
     sealed class Effect {
-        object DataWasLoaded : com.dmhsh.samples.apps.nowinandroid.feature.foryou.CountryCategoriesContract.Effect()
+        object DataWasLoaded : CountryCategoriesContract.Effect()
     }
 }

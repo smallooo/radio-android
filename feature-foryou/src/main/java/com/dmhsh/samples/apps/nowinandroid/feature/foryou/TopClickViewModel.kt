@@ -1,5 +1,6 @@
 package com.dmhsh.samples.apps.nowinandroid.feature.foryou
 
+import android.util.Log
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.setValue
@@ -21,19 +22,18 @@ import javax.inject.Inject
 @HiltViewModel
 class TopClickViewModel @Inject constructor(
     private val remoteSource: NetSource,
-    private val stationsRepo: StationsRepo,
+    //private val stationsRepo: StationsRepo,
     private val stationDao: StationDao,
-    ) :
-    ViewModel() {
+    ) : ViewModel() {
 
     var state by mutableStateOf(
         LocalStationsContract.State(
              localStations = listOf(),
-            isLoading = true
+                isLoading = true
         )
     )
 
-    var effects = Channel<com.dmhsh.samples.apps.nowinandroid.feature.foryou.CountryCategoriesContract.Effect>(UNLIMITED)
+    var effects = Channel<LocalStationsContract.Effect>(UNLIMITED)
         private set
 
     init {
@@ -45,23 +45,26 @@ class TopClickViewModel @Inject constructor(
     private suspend fun getTopClickStationList() {
         val categories = remoteSource.getTopClickList()
         if (categories != null) {
-            val stations = ArrayList<StationEntity>()
-            for(item in categories){
-                stations.add(item.asExternalModel())
-            }
-            stationDao.upsertStations(entities = stations)
+//            val stations = ArrayList<StationEntity>()
+//            for(item in categories){
+//                stations.add(item.asExternalModel())
+//            }
+//            stationDao.upsertStations(entities = stations)
 
+            Log.e("aaa cate0", categories?.size.toString())
             viewModelScope.launch {
+                Log.e("aaa cate1", categories?.size.toString())
                 state = categories?.let { state.copy(localStations = it, isLoading = false) }!!
-                effects.send(CountryCategoriesContract.Effect.DataWasLoaded)
+                state.isLoading = false
+                effects.send(LocalStationsContract.Effect.DataWasLoaded)
             }
         }
     }
 
 
-    fun setFavoritedStation(station: Station) = stationsRepo.setFavorite(station)
-
-    fun setPlayHistory(station: Station) = stationsRepo.setPlayHistory(station)
+//    fun setFavoritedStation(station: Station) = stationsRepo.setFavorite(station)
+//
+//    fun setPlayHistory(station: Station) = stationsRepo.setPlayHistory(station)
 }
 
 

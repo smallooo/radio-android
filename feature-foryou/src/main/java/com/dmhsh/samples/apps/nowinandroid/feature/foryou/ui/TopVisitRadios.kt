@@ -1,8 +1,6 @@
 package com.dmhsh.samples.apps.nowinandroid.feature.foryou
 
 import android.annotation.SuppressLint
-import androidx.compose.animation.animateColor
-import androidx.compose.animation.core.*
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
@@ -21,78 +19,75 @@ import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.ViewModel
-import coil.compose.rememberImagePainter
-import com.dmhsh.samples.app.nowinandroid.core.playback.isActive
 import com.dmhsh.samples.apps.nowinandroid.common.compose.LocalPlaybackConnection
-import com.dmhsh.samples.apps.nowinandroid.core.model.data.FollowableStation
 import com.dmhsh.samples.apps.nowinandroid.core.model.data.Station
 import com.dmhsh.samples.apps.nowinandroid.core.ui.component.CoverImage
-import com.dmhsh.samples.apps.nowinandroid.core.ui.component.RadioItem
-import com.dmhsh.samples.apps.nowinandroid.core.ui.theme.AppTheme.state
 
-import com.dmhsh.samples.apps.nowinandroid.feature.foryou.ui.ShimmerAnimationType
 import com.dmhsh.samples.apps.nowinandroid.playback.PlaybackConnection
-import com.hdmsh.common_compose.rememberFlowWithLifecycle
-import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.flow.first
-import kotlinx.coroutines.runBlocking
 
 @SuppressLint("StateFlowValueCalledInComposition")
 @Composable
-fun TopVisitRadios(
+fun TopClickRadios(
     viewModel: TopClickViewModel = hiltViewModel(),
-    playbackConnection: PlaybackConnection = LocalPlaybackConnection.current,
+   // playbackConnection: PlaybackConnection = LocalPlaybackConnection.current,
 ) {
-    val topVisitsState = remember{ viewModel.state }
-    val shimmerAnimationType by remember { mutableStateOf(ShimmerAnimationType.FADE) }
-    val transition = rememberInfiniteTransition()
-    val playbackState by rememberFlowWithLifecycle(playbackConnection.playbackState)
-    val nowPlaying by rememberFlowWithLifecycle(playbackConnection.nowPlaying)
-    val isPlayerActive = (playbackState to nowPlaying).isActive
+    val topVisitsState = viewModel.state
+    //val isLoa = remember{  mutableStateOf(viewModel.state) }
+    val isLoading  = topVisitsState.isLoading
+  //  val shimmerAnimationType by remember { mutableStateOf(ShimmerAnimationType.FADE) }
+  //  val transition = rememberInfiniteTransition()
+   // val playbackState by rememberFlowWithLifecycle(playbackConnection.playbackState)
+   // val nowPlaying by rememberFlowWithLifecycle(playbackConnection.nowPlaying)
+   // val isPlayerActive = (playbackState to nowPlaying).isActive
 
-    val translateAnim by transition.animateFloat(
-        initialValue = 100f,
-        targetValue = 600f,
-        animationSpec = infiniteRepeatable(
-            tween(durationMillis = 1200, easing = LinearEasing),
-            RepeatMode.Restart
-        )
-    )
+//    val translateAnim by transition.animateFloat(
+//        initialValue = 100f,
+//        targetValue = 600f,
+//        animationSpec = infiniteRepeatable(
+//            tween(durationMillis = 1200, easing = LinearEasing),
+//            RepeatMode.Restart
+//        )
+//    )
+//
+//    val colorAnim by transition.animateColor(
+//        initialValue = Color.LightGray.copy(alpha = 0.6f),
+//        targetValue = Color.LightGray,
+//        animationSpec = infiniteRepeatable(
+//            tween(durationMillis = 1200, easing = FastOutSlowInEasing),
+//            RepeatMode.Restart
+//        )
+//    )
 
-    val colorAnim by transition.animateColor(
-        initialValue = Color.LightGray.copy(alpha = 0.6f),
-        targetValue = Color.LightGray,
-        animationSpec = infiniteRepeatable(
-            tween(durationMillis = 1200, easing = FastOutSlowInEasing),
-            RepeatMode.Restart
-        )
-    )
-
-    val list = if (shimmerAnimationType != ShimmerAnimationType.TRANSLATE) {
-        listOf(colorAnim, colorAnim.copy(alpha = 0.5f))
-    } else {
-        listOf(Color.LightGray.copy(alpha = 0.6f), Color.LightGray)
-    }
-
-    val dpValue = if (shimmerAnimationType != ShimmerAnimationType.FADE) {
-        translateAnim.dp
-    } else {
-        2000.dp
-    }
+//    val list = if (shimmerAnimationType != ShimmerAnimationType.TRANSLATE) {
+//        listOf(colorAnim, colorAnim.copy(alpha = 0.5f))
+//    } else {
+//        listOf(Color.LightGray.copy(alpha = 0.6f), Color.LightGray)
+//    }
+//
+//    val dpValue = if (shimmerAnimationType != ShimmerAnimationType.FADE) {
+//        translateAnim.dp
+//    } else {
+//        2000.dp
+//    }
 
     if (topVisitsState.isLoading) {
-        for (i in 1..5) ShimmerItem(list, dpValue.value, shimmerAnimationType == ShimmerAnimationType.VERTICAL)
+      //  Log.e("aaa", "isLoading")
+     //   Text("loading" + topVisitsState.isLoading + isLoading)
+        //for (i in 1..5) ShimmerItem(list, dpValue.value, shimmerAnimationType == ShimmerAnimationType.VERTICAL)
+        Box(modifier = Modifier.fillMaxSize()) {
+            Text("Loading...")
+        }
     } else {
-        RadioItem111(viewModel,
+        RadioItemList(viewModel,
             listOf(topVisitsState.localStations),
             onImageClick = { Station ->
 
                 Station.favorited = !Station.favorited
-                viewModel.setFavoritedStation(Station)
+                //viewModel.setFavoritedStation(Station)
             },
             onPlayClick = { Station ->
                 Station.lastPlayedTime = System.currentTimeMillis().toString()
-                viewModel.setPlayHistory(Station)
+               // viewModel.setPlayHistory(Station)
 
             }
         )
@@ -100,7 +95,7 @@ fun TopVisitRadios(
 }
 
 @Composable
-fun RadioItem111(viewModel: ViewModel, stateCategories: List<List<Station>>, onImageClick: (station: Station) -> Unit, onPlayClick: (station: Station) -> Unit) {
+fun RadioItemList(viewModel: ViewModel, stateCategories: List<List<Station>>, onImageClick: (station: Station) -> Unit, onPlayClick: (station: Station) -> Unit) {
     LazyColumn {
         itemsIndexed(
             items = stateCategories.get(0),

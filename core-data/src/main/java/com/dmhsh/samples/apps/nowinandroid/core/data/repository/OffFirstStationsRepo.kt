@@ -34,7 +34,7 @@ class OffFirstStationsRepo @Inject constructor(
 
     override fun getTopVisitedStream(): Flow<List<Station>> = flow { netSource.getTopClickList()}
 
-    override fun gettopVotedStream(): Flow<List<Station>> = flow { netSource.gettopVotedList()}
+    override val gettopVotedStream : Flow<ArrayList<Station>> =  flow { netSource.gettopVotedList()?.let { emit(it)}}
 
     override fun getLateUpdateStream(): Flow<List<Station>> = flow { netSource.getLateUpdateStationsList()}
 

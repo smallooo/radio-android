@@ -39,25 +39,55 @@ data class StationEntity(
     val languagecodes: String = "",
     val votes: String = "",
     val lastchangetime: String = "",
+    @Nullable
     val lastchangetime_iso8601: String = "",
     val codec: String = "",
     val bitrate: String = "",
     val hls: String = "",
     @Nullable
+    @ColumnInfo(defaultValue = "")
     val lastcheckok: String = "",
+    @Nullable
+    @ColumnInfo(defaultValue = "")
     val lastchecktime: String = "",
+    @Nullable
+    @ColumnInfo(defaultValue = "")
     val lastchecktime_iso8601: String = "",
+    @Nullable
+    @ColumnInfo(defaultValue = "")
     val lastcheckoktime: String = "",
+    @Nullable
+    @ColumnInfo(defaultValue = "")
     val lastcheckoktime_iso8601: String = "",
+    @Nullable
+    @ColumnInfo(defaultValue = "")
     val lastlocalchecktime: String = "",
+    @Nullable
+    @ColumnInfo(defaultValue = "")
     val lastlocalchecktime_iso8601: String = "",
+    @Nullable
+    @ColumnInfo(defaultValue = "")
     val clicktimestamp: String = "",
+    @Nullable
+    @ColumnInfo(defaultValue = "")
     val clicktimestamp_iso8601: String = "",
+    @Nullable
+    @ColumnInfo(defaultValue = "")
     val clickcount: String = "",
+    @Nullable
+    @ColumnInfo(defaultValue = "")
     val clicktrend: String = "",
+    @Nullable
+    @ColumnInfo(defaultValue = "")
     val ssl_error: String = "",
+    @Nullable
+    @ColumnInfo(defaultValue = "")
     val geo_lat: String = "",
+    @Nullable
+    @ColumnInfo(defaultValue = "")
     val geo_long: String = "",
+    @Nullable
+    @ColumnInfo(defaultValue = "")
     val has_extended_info: String = "",
     @Nullable
     @ColumnInfo(defaultValue = false.toString())

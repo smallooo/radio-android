@@ -75,9 +75,9 @@ private fun RadioCore(
     scaffoldState: ScaffoldState = rememberScaffoldState(),
     content: @Composable () -> Unit
 ) {
-    val themeState by rememberFlowWithLifecycle( themeViewModel.themeState)
+   // val themeState by rememberFlowWithLifecycle( themeViewModel.themeState)
     CompositionLocalProvider(LocalScaffoldState provides scaffoldState) {
-            RadioTheme(themeState) {
+            RadioTheme() {
                 NavigatorHost {
                     NiaBackground {
                         PlaybackHost {

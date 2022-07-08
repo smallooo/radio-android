@@ -2,7 +2,7 @@
   "formatVersion": 1,
   "database": {
     "version": 10,
-    "identityHash": "fb1e12bd82cb0c26a360b076dd9a57af",
+    "identityHash": "7e6088886d4ed4d79be14f6fe0c6fd30",
     "entities": [
       {
         "tableName": "authors",
@@ -437,7 +437,7 @@
       },
       {
         "tableName": "stations",
-        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`changeuuid` TEXT NOT NULL, `stationuuid` TEXT NOT NULL, `serveruuid` TEXT NOT NULL, `name` TEXT NOT NULL, `url` TEXT NOT NULL, `url_resolved` TEXT NOT NULL, `homepage` TEXT NOT NULL, `favicon` TEXT NOT NULL, `tags` TEXT NOT NULL, `country` TEXT NOT NULL, `countrycode` TEXT NOT NULL, `iso_3166_2` TEXT NOT NULL, `state` TEXT NOT NULL, `language` TEXT NOT NULL, `languagecodes` TEXT NOT NULL, `votes` TEXT NOT NULL, `lastchangetime` TEXT NOT NULL, `lastchangetime_iso8601` TEXT NOT NULL, `codec` TEXT NOT NULL, `bitrate` TEXT NOT NULL, `hls` TEXT NOT NULL, `lastcheckok` TEXT NOT NULL, `lastchecktime` TEXT NOT NULL, `lastchecktime_iso8601` TEXT NOT NULL, `lastcheckoktime` TEXT NOT NULL, `lastcheckoktime_iso8601` TEXT NOT NULL, `lastlocalchecktime` TEXT NOT NULL, `lastlocalchecktime_iso8601` TEXT NOT NULL, `clicktimestamp` TEXT NOT NULL, `clicktimestamp_iso8601` TEXT NOT NULL, `clickcount` TEXT NOT NULL, `clicktrend` TEXT NOT NULL, `ssl_error` TEXT NOT NULL, `geo_lat` TEXT NOT NULL, `geo_long` TEXT NOT NULL, `has_extended_info` TEXT NOT NULL, `favorited` INTEGER NOT NULL DEFAULT false, `lastPlayedTime` TEXT NOT NULL DEFAULT '', PRIMARY KEY(`stationuuid`))",
+        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`changeuuid` TEXT NOT NULL, `stationuuid` TEXT NOT NULL, `serveruuid` TEXT NOT NULL, `name` TEXT NOT NULL, `url` TEXT NOT NULL, `url_resolved` TEXT NOT NULL, `homepage` TEXT NOT NULL, `favicon` TEXT NOT NULL, `tags` TEXT NOT NULL, `country` TEXT NOT NULL, `countrycode` TEXT NOT NULL, `iso_3166_2` TEXT NOT NULL, `state` TEXT NOT NULL, `language` TEXT NOT NULL, `languagecodes` TEXT NOT NULL, `votes` TEXT NOT NULL, `lastchangetime` TEXT NOT NULL, `lastchangetime_iso8601` TEXT NOT NULL, `codec` TEXT NOT NULL, `bitrate` TEXT NOT NULL, `hls` TEXT NOT NULL, `lastcheckok` TEXT NOT NULL DEFAULT '', `lastchecktime` TEXT NOT NULL DEFAULT '', `lastchecktime_iso8601` TEXT NOT NULL DEFAULT '', `lastcheckoktime` TEXT NOT NULL DEFAULT '', `lastcheckoktime_iso8601` TEXT NOT NULL DEFAULT '', `lastlocalchecktime` TEXT NOT NULL DEFAULT '', `lastlocalchecktime_iso8601` TEXT NOT NULL DEFAULT '', `clicktimestamp` TEXT NOT NULL DEFAULT '', `clicktimestamp_iso8601` TEXT NOT NULL DEFAULT '', `clickcount` TEXT NOT NULL DEFAULT '', `clicktrend` TEXT NOT NULL DEFAULT '', `ssl_error` TEXT NOT NULL DEFAULT '', `geo_lat` TEXT NOT NULL DEFAULT '', `geo_long` TEXT NOT NULL DEFAULT '', `has_extended_info` TEXT NOT NULL DEFAULT '', `favorited` INTEGER NOT NULL DEFAULT false, `lastPlayedTime` TEXT NOT NULL DEFAULT '', PRIMARY KEY(`stationuuid`))",
         "fields": [
           {
             "fieldPath": "changeuuid",
@@ -569,91 +569,106 @@
             "fieldPath": "lastcheckok",
             "columnName": "lastcheckok",
             "affinity": "TEXT",
-            "notNull": true
+            "notNull": true,
+            "defaultValue": "''"
           },
           {
             "fieldPath": "lastchecktime",
             "columnName": "lastchecktime",
             "affinity": "TEXT",
-            "notNull": true
+            "notNull": true,
+            "defaultValue": "''"
           },
           {
             "fieldPath": "lastchecktime_iso8601",
             "columnName": "lastchecktime_iso8601",
             "affinity": "TEXT",
-            "notNull": true
+            "notNull": true,
+            "defaultValue": "''"
           },
           {
             "fieldPath": "lastcheckoktime",
             "columnName": "lastcheckoktime",
             "affinity": "TEXT",
-            "notNull": true
+            "notNull": true,
+            "defaultValue": "''"
           },
           {
             "fieldPath": "lastcheckoktime_iso8601",
             "columnName": "lastcheckoktime_iso8601",
             "affinity": "TEXT",
-            "notNull": true
+            "notNull": true,
+            "defaultValue": "''"
           },
           {
             "fieldPath": "lastlocalchecktime",
             "columnName": "lastlocalchecktime",
             "affinity": "TEXT",
-            "notNull": true
+            "notNull": true,
+            "defaultValue": "''"
           },
           {
             "fieldPath": "lastlocalchecktime_iso8601",
             "columnName": "lastlocalchecktime_iso8601",
             "affinity": "TEXT",
-            "notNull": true
+            "notNull": true,
+            "defaultValue": "''"
           },
           {
             "fieldPath": "clicktimestamp",
             "columnName": "clicktimestamp",
             "affinity": "TEXT",
-            "notNull": true
+            "notNull": true,
+            "defaultValue": "''"
           },
           {
             "fieldPath": "clicktimestamp_iso8601",
             "columnName": "clicktimestamp_iso8601",
             "affinity": "TEXT",
-            "notNull": true
+            "notNull": true,
+            "defaultValue": "''"
           },
           {
             "fieldPath": "clickcount",
             "columnName": "clickcount",
             "affinity": "TEXT",
-            "notNull": true
+            "notNull": true,
+            "defaultValue": "''"
           },
           {
             "fieldPath": "clicktrend",
             "columnName": "clicktrend",
             "affinity": "TEXT",
-            "notNull": true
+            "notNull": true,
+            "defaultValue": "''"
           },
           {
             "fieldPath": "ssl_error",
             "columnName": "ssl_error",
             "affinity": "TEXT",
-            "notNull": true
+            "notNull": true,
+            "defaultValue": "''"
           },
           {
             "fieldPath": "geo_lat",
             "columnName": "geo_lat",
             "affinity": "TEXT",
-            "notNull": true
+            "notNull": true,
+            "defaultValue": "''"
           },
           {
             "fieldPath": "geo_long",
             "columnName": "geo_long",
             "affinity": "TEXT",
-            "notNull": true
+            "notNull": true,
+            "defaultValue": "''"
           },
           {
             "fieldPath": "has_extended_info",
             "columnName": "has_extended_info",
             "affinity": "TEXT",
-            "notNull": true
+            "notNull": true,
+            "defaultValue": "''"
           },
           {
             "fieldPath": "favorited",
@@ -683,7 +698,7 @@
     "views": [],
     "setupQueries": [
       "CREATE TABLE IF NOT EXISTS room_master_table (id INTEGER PRIMARY KEY,identity_hash TEXT)",
-      "INSERT OR REPLACE INTO room_master_table (id,identity_hash) VALUES(42, 'fb1e12bd82cb0c26a360b076dd9a57af')"
+      "INSERT OR REPLACE INTO room_master_table (id,identity_hash) VALUES(42, '7e6088886d4ed4d79be14f6fe0c6fd30')"
     ]
   }
 }

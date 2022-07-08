@@ -114,7 +114,7 @@ fun AdvanceListContent(viewModel: SearchListViewModel = hiltViewModel()) {
             selectedIndex = pagerState.currentPage
             when (commingPage) {
                 0 -> LocalRadioList()  //0
-                1 -> TopVisitRadios()
+                1 -> TopClickRadios()
                 2 -> TopVoteRadios()
                 3 -> LateUpdateRadios()
                 4 -> NowPlayingRadios()
