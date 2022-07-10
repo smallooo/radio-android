@@ -39,21 +39,21 @@ import com.hdmsh.core_ui_playback.PlaybackConnectionViewModel
 import kotlinx.coroutines.InternalCoroutinesApi
 
 
-@OptIn(ExperimentalMaterialApi::class, ExperimentalMaterialNavigationApi::class, InternalCoroutinesApi::class,
+@OptIn(ExperimentalMaterialNavigationApi::class, InternalCoroutinesApi::class,
     ExperimentalAnimationApi::class)
 @Composable
 fun RadioApp(
     windowSizeClass: WindowSizeClass,
     scaffoldState: ScaffoldState = rememberScaffoldState(),
     navController: NavHostController = rememberAnimatedNavController(),
-    analytics: FirebaseAnalytics = FirebaseAnalytics.getInstance(LocalContext.current),
+   // analytics: FirebaseAnalytics = FirebaseAnalytics.getInstance(LocalContext.current),
 ) {
     val navBackStackEntry by navController.currentBackStackEntryAsState()
     val currentDestination = navBackStackEntry?.destination
 
     CompositionLocalProvider(
         LocalScaffoldState provides scaffoldState,
-       // LocalAnalytics provides analytics,
+        //LocalAnalytics provides analytics,
         LocalAppVersion provides BuildConfig.VERSION_NAME
     ) {
         ProvideWindowInsets(consumeWindowInsets = false) {
@@ -62,6 +62,7 @@ fun RadioApp(
                 navController.navigatorProvider += bottomSheetNavigator
                 ModalBottomSheetLayout(bottomSheetNavigator) {
                     Home(windowSizeClass, currentDestination, navController)
+
                 }
             }
         }

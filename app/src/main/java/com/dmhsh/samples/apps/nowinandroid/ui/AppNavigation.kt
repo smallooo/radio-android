@@ -32,6 +32,7 @@ import com.dmhsh.samples.apps.nowinandroid.feature.alarm.AlarmRoute
 import com.dmhsh.samples.apps.nowinandroid.feature.foryou.ForYouRoute
 import com.hdmsh.common_compose.collectEvent
 import com.hdmsh.core_ui_playback.PlaybackSheet
+import com.hdmsh.core_ui_playback.searching.SearchingSheet
 
 @OptIn(ExperimentalAnimationApi::class)
 @Composable
@@ -75,6 +76,7 @@ internal fun AppNavigation(
         addAlarmRoot()
         addSettingsRoot()
         addPlaybackSheet()
+        addSearchingSheet()
 
     }
 }
@@ -138,6 +140,8 @@ private fun NavGraphBuilder.addHistory() {
 private fun NavGraphBuilder.addPlaybackSheet() {
     bottomSheetScreen(LeafScreen.PlaybackSheet()) { PlaybackSheet() } }
 
+private fun NavGraphBuilder.addSearchingSheet() {
+    bottomSheetScreen(LeafScreen.SearchingSheet()) { SearchingSheet() } }
 /**
  * Adds an [NavController.OnDestinationChangedListener] to this [NavController] and updates the
  * returned [State] which is updated as the destination changes.
