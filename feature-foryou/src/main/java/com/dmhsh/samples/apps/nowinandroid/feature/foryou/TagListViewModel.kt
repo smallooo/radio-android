@@ -14,16 +14,12 @@ import javax.inject.Inject
 
 @HiltViewModel
 class TagListViewModel @Inject constructor(
-    savedStateHandle: SavedStateHandle,
-    private val netSource: NetSource,
-    private val stationsRepo: StationsRepo,
-) : ViewModel() {
+    stationsRepo: StationsRepo, ) : ViewModel() {
 
-    val tagListState: StateFlow<TagUiState> = combine(
-        stationsRepo.getTagList()
-    ) { availableTags ->
-        TagUiState.Tags(tags = availableTags.get(0))
-    }.stateIn(
+    var tagListState: StateFlow<TagUiState> =
+        stationsRepo.getTagList().map{ availableTags ->
+        TagUiState.Tags(tags = availableTags)
+        }.stateIn(
             scope = viewModelScope,
             started = SharingStarted.WhileSubscribed(5_000),
             initialValue = TagUiState.Loading)

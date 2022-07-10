@@ -23,8 +23,7 @@ import javax.inject.Inject
 @HiltViewModel
 class TopVoteViewModel @Inject constructor(private val remoteSource: NetSource,
                                            private val stationsRepo: StationsRepo,
-                                           private val stationDao: StationDao,) :
-    ViewModel() {
+                                           private val stationDao: StationDao,) : ViewModel() {
 
 
     var topVoteState: StateFlow<StationsUiState1> =
@@ -37,8 +36,6 @@ class TopVoteViewModel @Inject constructor(private val remoteSource: NetSource,
             }
             stationDao.upsertStations(stations)
             StationsUiState1.Stations(stations1 = availableStations as ArrayList<Station>)
-
-
     }.stateIn(
         scope = viewModelScope,
         started = SharingStarted.WhileSubscribed(5_000),

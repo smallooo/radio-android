@@ -92,6 +92,7 @@ fun InterestsScreen(
                 navigationIconContentDescription = stringResource(id = R.string.top_app_bar_navigation_button_content_desc),
                 actionIcon = Icons.Filled.MoreVert,
                 actionIconContentDescription = stringResource(id = R.string.top_app_bar_navigation_button_content_desc),
+
                 modifier = Modifier.windowInsetsPadding(WindowInsets.safeDrawing.only(WindowInsetsSides.Top)))
         }
     ) { padding ->

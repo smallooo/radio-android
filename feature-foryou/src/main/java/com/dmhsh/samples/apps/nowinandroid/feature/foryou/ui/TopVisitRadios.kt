@@ -21,6 +21,7 @@ import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.ViewModel
 import com.dmhsh.samples.apps.nowinandroid.common.compose.LocalPlaybackConnection
 import com.dmhsh.samples.apps.nowinandroid.core.model.data.Station
+import com.dmhsh.samples.apps.nowinandroid.core.ui.component.AnimatedListItem
 import com.dmhsh.samples.apps.nowinandroid.core.ui.component.CoverImage
 
 import com.dmhsh.samples.apps.nowinandroid.playback.PlaybackConnection
@@ -100,59 +101,59 @@ fun RadioItemList(viewModel: ViewModel, stateCategories: List<List<Station>>, on
         itemsIndexed(
             items = stateCategories.get(0),
             itemContent = { index, item ->
-                AnimatedListItem111(station = item, index, onImageClick = onImageClick, onPlayClick = onPlayClick)
+                AnimatedListItem(station = item, index, onImageClick = onImageClick, onPlayClick = onPlayClick)
             }
         )
     }
 }
 
 
-@Composable
-fun AnimatedListItem111(station: Station, itemIndex: Int, playbackConnection: PlaybackConnection = LocalPlaybackConnection.current, onImageClick: (station: Station) -> Unit, onPlayClick: (station: Station) -> Unit) {
-    Row(
-        verticalAlignment = Alignment.CenterVertically,
-        modifier = Modifier.clickable {
-            playbackConnection.playAudio(station)
-            onPlayClick(station)
-        }
-    ) {
-        CoverImage(
-            data = station.favicon,
-            contentDescription = null,
-            contentScale = ContentScale.Crop,
-            modifier = Modifier
-                .size(55.dp)
-                .padding(4.dp).clickable {
-                    onImageClick(station)
-
-                }
-        )
-        Column(
-            modifier = Modifier
-                .padding(horizontal = 4.dp)
-                .weight(1f)
-        ) {
-            Text(
-                text = station.name,
-                style = MaterialTheme.typography.body1,
-                color = MaterialTheme.colors.onSurface
-            )
-            Text(
-                text = station.bitrate + "kbps",
-                style = MaterialTheme.typography.body1,
-                maxLines = 1,
-                color = MaterialTheme.colors.onSurface,
-                overflow = TextOverflow.Ellipsis
-            )
-        }
-        Icon(
-            imageVector = Icons.Default.MoreVert,
-            contentDescription = null,
-            tint = Color.LightGray,
-            modifier = Modifier.padding(4.dp)
-        )
-    }
-}
+//@Composable
+//fun AnimatedListItem1(station: Station, itemIndex: Int, playbackConnection: PlaybackConnection = LocalPlaybackConnection.current, onImageClick: (station: Station) -> Unit, onPlayClick: (station: Station) -> Unit) {
+//    Row(
+//        verticalAlignment = Alignment.CenterVertically,
+//        modifier = Modifier.clickable {
+//            playbackConnection.playAudio(station)
+//            onPlayClick(station)
+//        }
+//    ) {
+//        CoverImage(
+//            data = station.favicon,
+//            contentDescription = null,
+//            contentScale = ContentScale.Crop,
+//            modifier = Modifier
+//                .size(55.dp)
+//                .padding(4.dp).clickable {
+//                    onImageClick(station)
+//
+//                }
+//        )
+//        Column(
+//            modifier = Modifier
+//                .padding(horizontal = 4.dp)
+//                .weight(1f)
+//        ) {
+//            Text(
+//                text = station.name,
+//                style = MaterialTheme.typography.body1,
+//                color = MaterialTheme.colors.onSurface
+//            )
+//            Text(
+//                text = station.bitrate + "kbps",
+//                style = MaterialTheme.typography.body1,
+//                maxLines = 1,
+//                color = MaterialTheme.colors.onSurface,
+//                overflow = TextOverflow.Ellipsis
+//            )
+//        }
+//        Icon(
+//            imageVector = Icons.Default.MoreVert,
+//            contentDescription = null,
+//            tint = Color.LightGray,
+//            modifier = Modifier.padding(4.dp)
+//        )
+//    }
+//}
 
 
 

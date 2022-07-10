@@ -1,17 +1,18 @@
 package com.dmhsh.samples.apps.nowinandroid.feature.foryou
 
-import androidx.compose.animation.animateColor
-import androidx.compose.animation.core.*
-import androidx.compose.foundation.Image
+
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.itemsIndexed
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.verticalScroll
+import androidx.compose.material.Icon
+import androidx.compose.material.MaterialTheme
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.MoreVert
-import androidx.compose.material3.*
+import androidx.compose.material3.Text
+
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -115,13 +116,14 @@ fun AnimatedCountryListItem(tweet: Country, itemIndex: Int, onCountrySelect: (co
             Text(
                 text = tweet.name?:"",
                // style = typography.h6.copy(fontSize = 16.sp),
-                color = MaterialTheme.colorScheme.onSurface
+                color = MaterialTheme.colors.onSurface
             )
             Text(
                 text = tweet.stationcount?:"",
                // style = typography.subtitle2,
                 maxLines = 1,
-                overflow = TextOverflow.Ellipsis
+                color = MaterialTheme.colors.onSurface
+                //overflow = TextOverflow.Ellipsis
             )
         }
         Icon(

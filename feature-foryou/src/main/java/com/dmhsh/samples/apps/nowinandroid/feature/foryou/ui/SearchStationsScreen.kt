@@ -5,6 +5,7 @@ import androidx.compose.animation.animateColor
 import androidx.compose.animation.core.*
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.material.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.*
 import androidx.compose.ui.Modifier
@@ -56,13 +57,12 @@ fun SearchStationsScreen(viewModel: SearchListViewModel = hiltViewModel()) {
     if (isLoading) {
         //for (i in 1..5) ShimmerItem(list, dpValue.value, shimmerAnimationType == ShimmerAnimationType.VERTICAL)
         Box(modifier = Modifier.fillMaxSize()) {
-            Text("Loading...")
+            Text("Loading...", color = MaterialTheme.colors.onSurface)
         }
     } else {
         RadioItemList(viewModel,
             listOf(uiState.localStations),
             onImageClick = { Station ->
-
                 Station.favorited = !Station.favorited
                 viewModel.setFavoritedStation(Station)
             },

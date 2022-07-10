@@ -13,6 +13,7 @@ import com.dmhsh.samples.apps.nowinandroid.core.database.model.asExternalModel
 import com.dmhsh.samples.apps.nowinandroid.core.model.data.Station
 
 import dagger.hilt.android.lifecycle.HiltViewModel
+import kotlinx.coroutines.DelicateCoroutinesApi
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.channels.Channel
@@ -41,7 +42,7 @@ class  SearchListViewModel @Inject constructor(
 
     init {
         viewModelScope.launch {
-            getSearchStationList(type, param)
+           // getSearchStationList(type, param)
         }
     }
 
@@ -59,6 +60,7 @@ class  SearchListViewModel @Inject constructor(
         }
     }
 
+    @OptIn(DelicateCoroutinesApi::class)
     fun upDateSearch(type: String, param: String){
         GlobalScope.launch(Dispatchers.IO) {
             state =  state.copy(localStations = emptyList(), isLoading = true)

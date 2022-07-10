@@ -9,12 +9,11 @@ import androidx.lifecycle.ViewModel
 
 
 
-
-
 import com.dmhsh.samples.apps.nowinandroid.core.datastore.PreferencesStore
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.SharingStarted
 import kotlinx.coroutines.flow.stateIn
@@ -34,15 +33,16 @@ class ThemeViewModel @Inject constructor(
 ) : ViewModel() {
 
     val themeState = preferences.get(PreferenceKeys.THEME_STATE_KEY, ThemeState.serializer(), DefaultTheme)
-        //.stateInDefault(viewModelScope, DefaultTheme)
+        .stateInDefault(GlobalScope, DefaultTheme)
 
-//    fun applyThemeState(themeState: ThemeState) {
-//       // analytics.event("theme.apply", mapOf("darkMode" to themeState.isDarkMode, "palette" to themeState.colorPalettePreference.name))
-//        viewModelScope.launch(Dispatchers.IO) {
-//            preferences.save(PreferenceKeys.THEME_STATE_KEY, themeState, ThemeState.serializer())
-//        }
-//    }
+    fun applyThemeState(themeState: ThemeState) {
+        // analytics.event("theme.apply", mapOf("darkMode" to themeState.isDarkMode, "palette" to themeState.colorPalettePreference.name))
+        GlobalScope.launch(Dispatchers.IO) {
+            preferences.save(PreferenceKeys.THEME_STATE_KEY, themeState, ThemeState.serializer())
+        }
+    }
 }
+
 
 /**
  * Alias to stateIn with defaults

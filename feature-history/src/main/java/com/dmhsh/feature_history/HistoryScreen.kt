@@ -59,6 +59,7 @@ internal fun HistoryScreen(
                 actionIconContentDescription = stringResource(
                     id = R.string.top_app_bar_preview_title
                 ),
+
                 modifier = Modifier.windowInsetsPadding(
                 WindowInsets.safeDrawing.only(WindowInsetsSides.Top)
             )
