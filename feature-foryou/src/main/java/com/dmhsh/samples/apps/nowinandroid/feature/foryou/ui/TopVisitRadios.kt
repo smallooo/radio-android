@@ -101,7 +101,7 @@ fun RadioItemList(viewModel: ViewModel, stateCategories: List<List<Station>>, on
         itemsIndexed(
             items = stateCategories.get(0),
             itemContent = { index, item ->
-                AnimatedListItem(station = item, index, onImageClick = onImageClick, onPlayClick = onPlayClick)
+                AnimatedListItem(viewModel, station = item, index, onImageClick = onImageClick, onPlayClick = onPlayClick)
             }
         )
     }

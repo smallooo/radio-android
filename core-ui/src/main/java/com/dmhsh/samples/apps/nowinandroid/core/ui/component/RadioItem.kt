@@ -1,13 +1,9 @@
 package com.dmhsh.samples.apps.nowinandroid.core.ui.component
 
-import android.util.Log
+import android.content.Intent
+import android.net.Uri
+import android.widget.Toast
 import androidx.compose.animation.AnimatedVisibility
-import androidx.compose.animation.ExitTransition
-import androidx.compose.animation.ExperimentalAnimationApi
-import androidx.compose.animation.core.Spring
-import androidx.compose.animation.core.spring
-import androidx.compose.animation.slideInHorizontally
-import androidx.compose.foundation.Image
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
@@ -16,7 +12,6 @@ import androidx.compose.material.MaterialTheme
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.*
 import androidx.compose.material3.Icon
-
 import androidx.compose.material3.Text
 import androidx.compose.runtime.*
 import androidx.compose.runtime.R
@@ -25,23 +20,13 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.platform.LocalContext
-import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.style.TextOverflow
-import androidx.compose.ui.unit.IntOffset
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.ViewModel
-import coil.compose.rememberImagePainter
 import com.dmhsh.samples.apps.nowinandroid.common.compose.LocalPlaybackConnection
-import com.dmhsh.samples.apps.nowinandroid.core.datastore.PreferencesStore
-import com.dmhsh.samples.apps.nowinandroid.core.model.data.FollowableStation
 import com.dmhsh.samples.apps.nowinandroid.core.model.data.Station
+import com.dmhsh.samples.apps.nowinandroid.core.util.IntentUtils.startActivity
 import com.dmhsh.samples.apps.nowinandroid.playback.PlaybackConnection
-import com.hdmsh.common_compose.rememberFlowWithLifecycle
-import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.GlobalScope
-import kotlinx.coroutines.flow.collect
-import kotlinx.coroutines.flow.toList
-import kotlinx.coroutines.launch
 
 @Composable
 fun RadioItem(viewModel: ViewModel, stateCategories : List<Station>, onImageClick: (station: Station) -> Unit, onPlayClick: (station: Station) -> Unit){
@@ -50,6 +35,7 @@ fun RadioItem(viewModel: ViewModel, stateCategories : List<Station>, onImageClic
             items = stateCategories,
             itemContent = {index, item ->
                 AnimatedListItem(
+                    viewModel,
                     station = item,
                     index,
                     onImageClick = onImageClick,
@@ -59,9 +45,8 @@ fun RadioItem(viewModel: ViewModel, stateCategories : List<Station>, onImageClic
     }
 }
 
-@OptIn(ExperimentalAnimationApi::class)
 @Composable
-fun AnimatedListItem(station: Station, itemIndex: Int, onImageClick: (station: Station) -> Unit, onPlayClick: (station: Station) -> Unit) {
+fun AnimatedListItem(viewModel: ViewModel, station: Station, itemIndex: Int, onImageClick: (station: Station) -> Unit, onPlayClick: (station: Station) -> Unit) {
     val playbackConnection: PlaybackConnection = LocalPlaybackConnection.current
     var expanded by remember { mutableStateOf(false) }
     Row(
@@ -114,93 +99,86 @@ fun AnimatedListItem(station: Station, itemIndex: Int, onImageClick: (station: S
         Column(
             horizontalAlignment = Alignment.Start
         ) {
-
-
-            Row(modifier = Modifier.padding(start = 8.dp, top = 8.dp)) {
+            Row(modifier = Modifier.padding(start = 8.dp, top = 0.dp)) {
                 listOf(station.tags).forEach{ tag ->
                     InterestTag(text = tag)
                 }
             }
 
-
-            Row() {
-                Icon(imageVector = Icons.Default.Home, contentDescription = "")
-                Icon(imageVector = Icons.Default.Share, contentDescription = "")
-                Icon(imageVector = Icons.Default.Star, contentDescription = "")
-                Icon(imageVector = Icons.Default.PunchClock, contentDescription = "")
-                Icon(imageVector = Icons.Default.Add, contentDescription = "")
-
-                Icon(imageVector = Icons.Default.PlayArrow, contentDescription = "")
-            }
-
-            @Composable
-            fun SocialRow() {
-                Material3Card(elevation = 8.dp, modifier = Modifier.padding(8.dp), backgroundColor = androidx.compose.material3.MaterialTheme.colorScheme.surface) {
-                    val context = LocalContext.current
-                    Row(
-                        horizontalArrangement = Arrangement.SpaceAround,
-                        modifier = Modifier
-                            .fillMaxWidth()
-                            .padding(horizontal = 32.dp, vertical = 16.dp)
-                    ) {
-                        androidx.compose.material3.IconButton(onClick = {
-                            launchSocialActivity(
-                                context,
-                                "github"
-                            )
-                        }) {
-                            Icon(
-                                painter = painterResource(id = R.drawable.ic_github_square_brands),
-                                contentDescription = null,
-                                tint = androidx.compose.material3.MaterialTheme.colorScheme.primary
-                            )
-                        }
-                        androidx.compose.material3.IconButton(onClick = {
-                            launchSocialActivity(
-                                context,
-                                "twitter"
-                            )
-                        }) {
-                            Icon(
-                                painter = painterResource(id = R.drawable.ic_twitter_square_brands),
-                                contentDescription = null,
-                                tint = androidx.compose.material3.MaterialTheme.colorScheme.primary
-                            )
-                        }
-                        androidx.compose.material3.IconButton(onClick = {
-                            launchSocialActivity(
-                                context,
-                                "linkedin"
-                            )
-                        }) {
-                            Icon(
-                                painter = painterResource(id = R.drawable.ic_linkedin_brands),
-                                contentDescription = null,
-                                tint = androidx.compose.material3.MaterialTheme.colorScheme.primary
-                            )
-                        }
-                    }
-                }
-            }
-
-
-//
-//
-//
-//
-//                Material3Card(
-//                    backgroundColor = MaterialTheme.colors.background, modifier = Modifier
-//                        .size(80.dp)
-//                        .padding
-//                            (8.dp)
-//                        .animateEnterExit(
-//                            enter = slideInHorizontally { it },
-//                            exit = ExitTransition.None
-//                        )
-//                ) {
-//
-//                }
+            SocialRow(viewModel,station)
         }
     }
+}
 
+@Composable
+fun SocialRow(viewModel : ViewModel , station: Station) {
+    Material3Card(elevation = 1.dp, modifier = Modifier.padding(0.dp), backgroundColor = MaterialTheme.colors.surface) {
+        val context = LocalContext.current
+        Row(
+            horizontalArrangement = Arrangement.SpaceAround,
+            modifier = Modifier
+                .fillMaxWidth()
+                .padding(horizontal = 16.dp, vertical = 8.dp)
+        ) {
+            IconButton(onClick = {
+                if(station.homepage.isNotBlank())
+
+                    context.startActivity(Intent(Intent.ACTION_VIEW, Uri.parse(station.homepage)))
+            }) {
+                Icon(
+                    imageVector = Icons.Default.Home,
+                    contentDescription = null,
+                    tint = androidx.compose.material3.MaterialTheme.colorScheme.primary
+                )
+            }
+
+            IconButton(onClick = {
+                    val share = Intent(Intent.ACTION_SEND)
+                    share.type = "text/plain"
+                    share.putExtra(Intent.EXTRA_SUBJECT, station.name)
+                    share.putExtra(Intent.EXTRA_TEXT, station.describeContents())
+                    val title: String = "Share a really cool station to you"
+                    val chooser = Intent.createChooser(share, title)
+                    startActivity(context,chooser)
+            }) {
+                Icon(
+                    imageVector = Icons.Default.Share,
+                    contentDescription = null,
+                    tint = androidx.compose.material3.MaterialTheme.colorScheme.primary
+                )
+            }
+
+            IconButton(onClick = {
+
+            }) {
+                Icon(
+                    imageVector = if (station.favorited) Icons.Default.Star else Icons.Default.StarBorder,
+                    contentDescription = null,
+                    tint = androidx.compose.material3.MaterialTheme.colorScheme.primary
+                )
+            }
+
+            IconButton(onClick = {
+
+            }) {
+                Icon(
+                    imageVector = Icons.Default.PunchClock,
+                    contentDescription = null,
+                    tint = androidx.compose.material3.MaterialTheme.colorScheme.primary
+                )
+            }
+
+            IconButton(onClick = {
+
+            }) {
+                Icon(
+                    imageVector = Icons.Default.Add,
+                    contentDescription = null,
+                    tint = androidx.compose.material3.MaterialTheme.colorScheme.primary
+                )
+            }
+
+
+        }
+    }
 }
