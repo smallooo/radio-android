@@ -126,23 +126,28 @@ fun AnimatedListItem(station: Station, itemIndex: Int, onImageClick: (station: S
             Row() {
                 Icon(imageVector = Icons.Default.Home, contentDescription = "")
                 Icon(imageVector = Icons.Default.Share, contentDescription = "")
+                Icon(imageVector = Icons.Default.Star, contentDescription = "")
+                Icon(imageVector = Icons.Default.PunchClock, contentDescription = "")
+                Icon(imageVector = Icons.Default.Add, contentDescription = "")
+
+                Icon(imageVector = Icons.Default.PlayArrow, contentDescription = "")
             }
-
-
-
-
-                Material3Card(
-                    backgroundColor = MaterialTheme.colors.background, modifier = Modifier
-                        .size(80.dp)
-                        .padding
-                            (8.dp)
-                        .animateEnterExit(
-                            enter = slideInHorizontally { it },
-                            exit = ExitTransition.None
-                        )
-                ) {
-
-                }
+//
+//
+//
+//
+//                Material3Card(
+//                    backgroundColor = MaterialTheme.colors.background, modifier = Modifier
+//                        .size(80.dp)
+//                        .padding
+//                            (8.dp)
+//                        .animateEnterExit(
+//                            enter = slideInHorizontally { it },
+//                            exit = ExitTransition.None
+//                        )
+//                ) {
+//
+//                }
         }
     }
 

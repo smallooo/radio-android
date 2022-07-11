@@ -39,13 +39,6 @@ fun SpotifySearchBar() {
                 tint = Color.LightGray,
                 contentDescription = null
             )
-//            Text(
-//                text = "Artists, songs, or podcasts",
-//                color = MaterialTheme.colors.surface,
-//                modifier = Modifier.padding(8.dp),
-//                style = typography.h6.copy(fontSize = 14.sp),
-//            )
-
             TextField(
                 value = TextFieldValue(""),
                 placeholder = { Text("Search in stations") },

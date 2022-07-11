@@ -4,10 +4,13 @@ plugins {
     id("nowinandroid.android.library")
     id("nowinandroid.android.library.jacoco")
     kotlin("kapt")
+    id("kotlin-parcelize")
     id("kotlinx-serialization")
     id("dagger.hilt.android.plugin")
     id("nowinandroid.spotless")
     id("com.google.android.libraries.mapsplatform.secrets-gradle-plugin")
+
+
 }
 
 android {
@@ -47,6 +50,15 @@ dependencies {
 
     implementation(libs.androidx.palette)
 
+   // implementation(libs.kotlinx.coroutines.android)
+    implementation(libs.kotlinx.serialization.json)
+
+//    implementation("org.jetbrains.kotlin:kotlin-gradle-plugin:1.6.21")
+//    implementation("org.jetbrains.kotlin:kotlin-serialization:1.6.21")
+
     implementation(libs.accompanist.pager)
+    implementation(libs.accompanist.insets)
+
     implementation(libs.androidx.compose.ui.util)
+
 }
