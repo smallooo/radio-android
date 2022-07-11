@@ -7,16 +7,25 @@ package com.hdmsh.core_ui_playback.searching
 import android.annotation.SuppressLint
 import androidx.compose.animation.animateColorAsState
 import androidx.compose.foundation.background
+import androidx.compose.foundation.isSystemInDarkTheme
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.LazyListState
 import androidx.compose.foundation.lazy.rememberLazyListState
+import androidx.compose.foundation.rememberScrollState
+import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.*
+import androidx.compose.material.MaterialTheme.typography
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.KeyboardArrowDown
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.composed
+import androidx.compose.ui.draw.alpha
+import androidx.compose.ui.draw.drawWithContent
+import androidx.compose.ui.geometry.Size
+import androidx.compose.ui.graphics.Brush
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.vector.rememberVectorPainter
 import androidx.compose.ui.platform.LocalContext
@@ -56,23 +65,17 @@ import kotlinx.coroutines.launch
 
 
 @Composable
-fun SearchingSheet(
-    navigator: Navigator = LocalNavigator.current,
-) {
+fun SearchingSheet(navigator: Navigator = LocalNavigator.current) {
     val listState = rememberLazyListState()
     val queueListState = rememberLazyListState()
     val coroutine = rememberCoroutineScope()
 
-    val scrollToTop: Callback = {
-        coroutine.launch {
-            listState.animateScrollToItem(0)
-        }
-    }
+    val scrollToTop: Callback = { coroutine.launch { listState.animateScrollToItem(0) } }
 
     val audioActionHandler = audioActionHandler()
     CompositionLocalProvider(LocalAudioActionHandler provides audioActionHandler) {
-        RadioTheme( changeSystemBar = false) {
-            PlaybackSheetContent(
+        RadioTheme(changeSystemBar = false) {
+            SearchingSheetContent(
                 onClose = { navigator.goBack() },
                 scrollToTop = scrollToTop,
                 listState = listState,
@@ -85,7 +88,7 @@ fun SearchingSheet(
 @SuppressLint("UnusedMaterialScaffoldPaddingParameter")
 @OptIn(ExperimentalPagerApi::class)
 @Composable
-internal fun PlaybackSheetContent(
+internal fun SearchingSheetContent(
     onClose: Callback,
     scrollToTop: Callback,
     listState: LazyListState,
@@ -95,14 +98,8 @@ internal fun PlaybackSheetContent(
     viewModel: PlaybackViewModel = hiltViewModel(),
 ) {
     val playbackState by rememberFlowWithLifecycle(playbackConnection.playbackState)
-
     val nowPlaying by rememberFlowWithLifecycle(playbackConnection.nowPlaying)
-    // val pagerState = rememberPagerState(playbackQueue.currentIndex)
-
-    val adaptiveColor by adaptiveColor(
-        nowPlaying.artwork,
-        initial = MaterialTheme.colors.onBackground
-    )
+    val adaptiveColor by adaptiveColor(nowPlaying.artwork, initial = MaterialTheme.colors.onBackground)
     val contentColor by animateColorAsState(adaptiveColor.color, ADAPTIVE_COLOR_ANIMATION)
 
     LaunchedEffect(playbackConnection) {
@@ -111,114 +108,95 @@ internal fun PlaybackSheetContent(
             .collectLatest { if (it.isIdle) onClose() }
     }
 
-
-
-        BoxWithConstraints {
+    BoxWithConstraints {
         val isWideLayout = isWideLayout()
         val maxWidth = maxWidth
         Row(Modifier.fillMaxSize()) {
-            if (isWideLayout) { }
+            if (isWideLayout) {
+            }
             Scaffold(
                 backgroundColor = Color.Transparent,
                 modifier = Modifier
                     .background(adaptiveColor.gradient)
                     .weight(1f),
                 scaffoldState = scaffoldState,
-                snackbarHost = { DismissableSnackbarHost(it, modifier = Modifier.navigationBarsPadding()) },
+                snackbarHost = {
+                    DismissableSnackbarHost(
+                        it,
+                        modifier = Modifier.navigationBarsPadding()
+                    )
+                },
             ) {
-                LazyColumn(
-                    state = listState,
-                    contentPadding = PaddingValues(8.dp),
-                ) {
-                    item {
-                        PlaybackSheetTopBar(
-                            viewModel,
-                            onClose = onClose,
-                            onTitleClick = {},
-                        )
-                        Spacer(Modifier.height(4.dp))
-                    }
+//                LazyColumn(
+//                    state = listState,
+//                    contentPadding = PaddingValues(8.dp),
+//                ) {
+//
+//
+//
+//                }
 
-
-                    item {
-                        PlaybackArtworkPagerWithNowPlayingAndControls(
-                            nowPlaying = nowPlaying,
-                            playbackState = playbackState,
-                            //pagerState = pagerState,
-                            contentColor = contentColor,
-                           // viewModel = viewModel,
-                            modifier = Modifier.fillParentMaxHeight(0.8f),
-                        )
-                    }
-                }
+                SpotifySearchScreen()
             }
         }
     }
 }
 
-@Composable
-private fun PlaybackSheetTopBar(
-    viewModel: PlaybackViewModel,
-    onClose: Callback,
-    onTitleClick: Callback,
-) {
-    TopAppBar(
-        elevation = 0.dp,
-        backgroundColor = Color.Transparent,
-        title = {
-            PlaybackSheetTopBarTitle(viewModel)
-                },
-        actions = {
-            PlaybackSheetTopBarActions()
-                  },
-        navigationIcon = {
-            IconButton(onClick = onClose ) {
-                Icon(
-                    rememberVectorPainter(Icons.Default.KeyboardArrowDown),
-                    modifier = Modifier.size(36.dp),
-                    contentDescription = null,
-                )
-            }
-        },
+fun Modifier.gradientBackground(
+    colors: List<Color>,
+    brushProvider: (List<Color>, Size) -> Brush
+): Modifier = composed {
+    var size by remember { mutableStateOf(Size.Zero) }
+    val gradient = remember(colors, size) { brushProvider(colors, size) }
+    drawWithContent {
+        size = this.size
+        drawRect(brush = gradient)
+        drawContent()
+    }
+}
+
+
+
+fun Modifier.horizontalGradientBackground(
+    colors: List<Color>
+) = gradientBackground(colors) { gradientColors, size ->
+    Brush.horizontalGradient(
+        colors = gradientColors,
+        startX = 0f,
+        endX = size.width
     )
 }
 
 @Composable
-private fun PlaybackSheetTopBarTitle(
-    viewModel: PlaybackViewModel,
-    modifier: Modifier = Modifier
-) {
-    Column(
-        horizontalAlignment = Alignment.CenterHorizontally,
-        modifier = modifier
-            .fillMaxWidth()
-            .offset(x = -8.dp) // idk why this is needed for centering
-            .simpleClickable(onClick = {})
-    ) {
-        val context = LocalContext.current
-        val queueTitle = viewModel.getPlayBackConnection().homepage
-        Text(
-            text = queueTitle,
-            style = MaterialTheme.typography.overline.copy(fontWeight = FontWeight.Light),
-            maxLines = 1,
-        )
-        Text(
-            text = viewModel.getPlayBackConnection().name.uppercase(),
-            style = MaterialTheme.typography.body1,
-            textAlign = TextAlign.Center,
-            overflow = TextOverflow.Ellipsis,
-            maxLines = 2,
-        )
-    }
-}
+fun SpotifySearchScreen() {
+    val scrollState = rememberScrollState(0)
+    val surfaceGradient = SpotifyDataProvider.spotifySurfaceGradient(isSystemInDarkTheme())
 
-@Composable
-private fun PlaybackSheetTopBarActions(
-    actionHandler: AudioActionHandler = LocalAudioActionHandler.current,
-) {
-    val (expanded, setExpanded) = remember { mutableStateOf(false) }
-    CompositionLocalProvider(LocalContentAlpha provides ContentAlpha.high) {
-    MoreVerticalIcon()
+    Box(
+        modifier = Modifier
+            .fillMaxSize()
+            .horizontalGradientBackground(surfaceGradient)
+    ) {
+        Text(
+            text = "Search",
+            style = typography.h3.copy(fontWeight = FontWeight.ExtraBold),
+            textAlign = TextAlign.Center,
+            modifier = Modifier
+                .padding(top = 80.dp, bottom = 40.dp)
+                .fillMaxSize()
+                .alpha(1f - scrollState.value / 200)
+            // Just reducing the opacity by small fraction when scroll happens
+        )
+        Column(
+            modifier = Modifier.verticalScroll(scrollState)
+        ) {
+            Spacer(modifier = Modifier.height(180.dp))
+            Column(modifier = Modifier.horizontalGradientBackground(surfaceGradient)) {
+                SpotifySearchBar()
+                SpotifySearchGrid()
+            }
+            Spacer(modifier = Modifier.height(200.dp))
+        }
     }
 }
 

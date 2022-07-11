@@ -45,6 +45,8 @@ dependencies {
 
     implementation(libs.androidx.media)
 
+    implementation(libs.androidx.palette)
+
     implementation(libs.accompanist.pager)
     implementation(libs.androidx.compose.ui.util)
 }
