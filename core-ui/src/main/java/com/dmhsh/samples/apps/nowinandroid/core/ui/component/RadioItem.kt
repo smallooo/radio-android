@@ -9,10 +9,7 @@ import androidx.compose.animation.core.spring
 import androidx.compose.animation.slideInHorizontally
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.clickable
-import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.Row
-import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.layout.size
+import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.itemsIndexed
 import androidx.compose.material.MaterialTheme
@@ -22,10 +19,13 @@ import androidx.compose.material3.Icon
 
 import androidx.compose.material3.Text
 import androidx.compose.runtime.*
+import androidx.compose.runtime.R
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.layout.ContentScale
+import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.IntOffset
 import androidx.compose.ui.unit.dp
@@ -116,9 +116,9 @@ fun AnimatedListItem(station: Station, itemIndex: Int, onImageClick: (station: S
         ) {
 
 
-            Row() {
+            Row(modifier = Modifier.padding(start = 8.dp, top = 8.dp)) {
                 listOf(station.tags).forEach{ tag ->
-                    Text(text = tag)
+                    InterestTag(text = tag)
                 }
             }
 
@@ -132,6 +132,58 @@ fun AnimatedListItem(station: Station, itemIndex: Int, onImageClick: (station: S
 
                 Icon(imageVector = Icons.Default.PlayArrow, contentDescription = "")
             }
+
+            @Composable
+            fun SocialRow() {
+                Material3Card(elevation = 8.dp, modifier = Modifier.padding(8.dp), backgroundColor = androidx.compose.material3.MaterialTheme.colorScheme.surface) {
+                    val context = LocalContext.current
+                    Row(
+                        horizontalArrangement = Arrangement.SpaceAround,
+                        modifier = Modifier
+                            .fillMaxWidth()
+                            .padding(horizontal = 32.dp, vertical = 16.dp)
+                    ) {
+                        androidx.compose.material3.IconButton(onClick = {
+                            launchSocialActivity(
+                                context,
+                                "github"
+                            )
+                        }) {
+                            Icon(
+                                painter = painterResource(id = R.drawable.ic_github_square_brands),
+                                contentDescription = null,
+                                tint = androidx.compose.material3.MaterialTheme.colorScheme.primary
+                            )
+                        }
+                        androidx.compose.material3.IconButton(onClick = {
+                            launchSocialActivity(
+                                context,
+                                "twitter"
+                            )
+                        }) {
+                            Icon(
+                                painter = painterResource(id = R.drawable.ic_twitter_square_brands),
+                                contentDescription = null,
+                                tint = androidx.compose.material3.MaterialTheme.colorScheme.primary
+                            )
+                        }
+                        androidx.compose.material3.IconButton(onClick = {
+                            launchSocialActivity(
+                                context,
+                                "linkedin"
+                            )
+                        }) {
+                            Icon(
+                                painter = painterResource(id = R.drawable.ic_linkedin_brands),
+                                contentDescription = null,
+                                tint = androidx.compose.material3.MaterialTheme.colorScheme.primary
+                            )
+                        }
+                    }
+                }
+            }
+
+
 //
 //
 //

@@ -16,10 +16,8 @@ import kotlinx.coroutines.FlowPreview
 import kotlinx.coroutines.channels.Channel
 import kotlinx.coroutines.flow.*
 import kotlinx.coroutines.launch
-
 import tm.alashow.base.util.extensions.getStateFlow
 import tm.alashow.base.util.extensions.stateInDefault
-
 
 const val SEARCH_DEBOUNCE_MILLIS = 400L
 
@@ -27,20 +25,13 @@ const val SEARCH_DEBOUNCE_MILLIS = 400L
 @HiltViewModel
 internal class SearchViewModel @Inject constructor(
     handle: SavedStateHandle,
-
 ) : ViewModel() {
-
     private val initialQuery = handle.get(QUERY_KEY) ?: ""
     private val searchQueryState = handle.getStateFlow(initialQuery, viewModelScope, initialQuery)
     private val searchFilterState = handle.getStateFlow("search_filter", viewModelScope, SearchFilter.from(handle.get(SEARCH_BACKENDS_KEY)))
     private val searchTriggerState = handle.getStateFlow("search_trigger", viewModelScope, SearchTrigger(initialQuery))
-
     private val captchaError = MutableStateFlow<ApiCaptchaError?>(null)
-
     private val pendingActions = MutableSharedFlow<SearchAction>()
-
-
-
     private val onSearchEventChannel = Channel<SearchEvent>(Channel.CONFLATED)
     val onSearchEvent = onSearchEventChannel.receiveAsFlow()
 
@@ -55,7 +46,6 @@ internal class SearchViewModel @Inject constructor(
                 when (action) {
                     is SearchAction.QueryChange -> {
                         searchQueryState.value = action.query
-
                         // trigger search while typing if minerva is the only backend selected
                         if (searchFilterState.value.hasMinervaOnly) {
                             searchTriggerState.value = SearchTrigger(searchQueryState.value)
