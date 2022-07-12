@@ -9,6 +9,7 @@ import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.Icon
 import androidx.compose.material.MaterialTheme
+import androidx.compose.material.MaterialTheme.typography
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.MoreVert
 import androidx.compose.material3.Text
@@ -20,6 +21,7 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
+import androidx.compose.ui.unit.sp
 import androidx.hilt.navigation.compose.hiltViewModel
 import coil.compose.rememberImagePainter
 import com.dmhsh.samples.apps.nowinandroid.core.model.data.Country
@@ -30,54 +32,12 @@ import com.dmhsh.samples.apps.nowinandroid.feature.foryou.ui.ShimmerAnimationTyp
 fun CountryList( viewModel: CountryViewModel = hiltViewModel(), onCountrySelect:(country: Country) -> Unit) {
     val state =  viewModel.state
     val loading = state.isLoading
-//    val shimmerAnimationType by remember { mutableStateOf(ShimmerAnimationType.FADE) }
-
- //   val transition = rememberInfiniteTransition()
-//    val translateAnim by transition.animateFloat(
-//        initialValue = 100f,
-//        targetValue = 600f,
-//        animationSpec = infiniteRepeatable(
-//            tween(durationMillis = 1200, easing = LinearEasing),
-//            RepeatMode.Restart
-//        )
-//    )
-//
-//    val colorAnim by transition.animateColor(
-//        initialValue = Color.LightGray.copy(alpha = 0.6f),
-//        targetValue = Color.LightGray,
-//        animationSpec = infiniteRepeatable(
-//            tween(durationMillis = 1200, easing = FastOutSlowInEasing),
-//            RepeatMode.Restart
-//        )
-//    )
-
-//    val list = if (shimmerAnimationType != ShimmerAnimationType.TRANSLATE) {
-//        listOf(colorAnim, colorAnim.copy(alpha = 0.5f))
-//    } else {
-//        listOf(Color.LightGray.copy(alpha = 0.6f), Color.LightGray)
-//    }
-//
-//    val dpValue = if (shimmerAnimationType != ShimmerAnimationType.FADE) {
-//        translateAnim.dp
-//    } else {
-//        2000.dp
-//    }
-
-//    @Composable
-//    fun buttonColors(type: ShimmerAnimationType) = ButtonDefaults.buttonColors(
-//        containerColor = if (shimmerAnimationType == type)
-//            MaterialTheme.colorScheme.primary else Color.LightGray
-//    )
 
     if(loading) {
-        //for (i in 1..5) ShimmerItem(list, dpValue.value, shimmerAnimationType == ShimmerAnimationType.VERTICAL)
         Box(modifier = Modifier.fillMaxSize()) {
             Text("Loading...")
         }
     }else{
-//        Button(onClick = {onCountrySelect(state.categories.get(1)) }) {
-//
-//        }
         CountryItem(state.categories,onCountrySelect)
     }
 }
@@ -92,16 +52,20 @@ fun CountryItem(stateCategories : List<Country>, onCountrySelect: (country: Coun
             }
         )
     }
+
+    Spacer(modifier = Modifier.height(180.dp))
 }
 
 @Composable
 fun AnimatedCountryListItem(tweet: Country, itemIndex: Int, onCountrySelect: (country: Country) -> Unit) {
     Row(
         verticalAlignment = Alignment.CenterVertically,
-        modifier = Modifier.clickable { onCountrySelect(tweet) }
+        modifier = Modifier
+            .padding(top = 8.dp)
+            .clickable { onCountrySelect(tweet) }
     ) {
         CoverImage(
-            data = "https://picsum.photos/id/${itemIndex + 1}/200/200",
+            data = "https://picsum.photos/id/${itemIndex + 9}/200/200",
             contentDescription = null,
             contentScale = ContentScale.Crop,
             modifier = Modifier
@@ -115,14 +79,16 @@ fun AnimatedCountryListItem(tweet: Country, itemIndex: Int, onCountrySelect: (co
         ) {
             Text(
                 text = tweet.name?:"",
-               // style = typography.h6.copy(fontSize = 16.sp),
+                style = typography.h6.copy(fontSize = 16.sp),
                 color = MaterialTheme.colors.onSurface
             )
+
             Text(
                 text = tweet.stationcount?:"",
-               // style = typography.subtitle2,
+                style = typography.subtitle2,
                 maxLines = 1,
-                color = MaterialTheme.colors.onSurface
+                color = MaterialTheme.colors.onSurface,
+                modifier = Modifier.padding(top = 4.dp)
                 //overflow = TextOverflow.Ellipsis
             )
         }
@@ -133,4 +99,6 @@ fun AnimatedCountryListItem(tweet: Country, itemIndex: Int, onCountrySelect: (co
             modifier = Modifier.padding(4.dp)
         )
     }
+
+
 }

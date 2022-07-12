@@ -57,9 +57,11 @@ fun AnimatedListItem(viewModel: ViewModel, station: Station, itemIndex: Int, onI
     var favorite by remember { mutableStateOf(station.favorited) }
     Row(
         verticalAlignment = Alignment.CenterVertically,
-        modifier = Modifier.clickable {
-            playbackConnection.playAudio(station)
-            onPlayClick(station) },
+        modifier = Modifier
+            .padding(top = 8.dp)
+            .clickable {
+                playbackConnection.playAudio(station)
+                onPlayClick(station) },
     ) {
         CoverImage(
             data =  station.favicon,

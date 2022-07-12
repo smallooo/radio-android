@@ -118,7 +118,7 @@ class SearchViewModel @Inject constructor(
 
         if(query.isNotBlank()) {
             viewModelScope.launch {
-                val categories = remoteSource.getTopClickList()
+                val categories = remoteSource.getSearch("byname", query)
                 if (categories != null) {
                     Log.e("aaa", categories.toString() + "aaa")
                     stateS = categories.let { stateS.copy(localStations = it, isLoading = false) }

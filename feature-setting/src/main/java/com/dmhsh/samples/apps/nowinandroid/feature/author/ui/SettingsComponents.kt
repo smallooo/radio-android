@@ -28,7 +28,8 @@ import com.dmhsh.samples.apps.nowinandroid.core.util.IntentUtils
 @Composable
 internal fun SettingsSectionLabel(text: String, modifier: Modifier = Modifier) {
     Text(
-        text, style = MaterialTheme.typography.h6,
+        text,
+        style = MaterialTheme.typography.h6,
         color = MaterialTheme.colors.secondary,
         modifier = modifier.padding(PaddingValues(horizontal = 16.dp, vertical = 8.dp))
     )

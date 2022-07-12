@@ -171,13 +171,13 @@ fun LazyListScope.settingsAboutSection() {
         SettingsSectionLabel(stringResource(R.string.nav_item_about))
 
         Column(verticalArrangement = Arrangement.spacedBy(16.dp)) {
+//            SettingsLinkItem(
+//                labelRes = R.string.action_copy_info,
+//                textRes = R.string.action_countries,
+//                linkRes = R.string.web_page
+//            )
             SettingsLinkItem(
-                labelRes = R.string.action_copy_info,
-                textRes = R.string.action_countries,
-                linkRes = R.string.web_page
-            )
-            SettingsLinkItem(
-                label = stringResource(R.string.about_version),
+                label = stringResource(R.string.about_version, "pre-release"),
                 text = LocalAppVersion.current,
                 link = "https://m.thebeastshop.com"
             )

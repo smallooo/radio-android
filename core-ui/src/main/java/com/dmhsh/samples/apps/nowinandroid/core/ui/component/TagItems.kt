@@ -32,7 +32,7 @@ fun TagItems(stateCategories : List<StationsTag>, onItemClick: (stationsTag: Sta
 fun AnimatedTagListItem(stationTag: StationsTag, itemIndex: Int, onItemClick: (stationsTag: StationsTag) -> Unit) {
     Row(
         verticalAlignment = Alignment.CenterVertically,
-        modifier = Modifier.fillMaxWidth().clickable { onItemClick(stationTag) }.padding(8.dp, 0.dp, 16.dp, 0.dp),
+        modifier = Modifier.fillMaxWidth().clickable { onItemClick(stationTag) }.padding(8.dp, 8.dp, 16.dp, 0.dp),
     ) {
         Row(modifier = Modifier.fillMaxWidth().padding(horizontal = 8.dp, vertical = 8.dp).weight(1f)) {
             Text(

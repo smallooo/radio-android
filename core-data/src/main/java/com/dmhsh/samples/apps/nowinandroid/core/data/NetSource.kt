@@ -17,6 +17,7 @@ import javax.inject.Singleton
 @Singleton
 class NetSource @Inject constructor(private val stationDao: StationDao, private val radioListApi: RadioListApi) {
     private var _localRadioList: List<NetworkStation>? = null
+    private var _searchRadioList: List<Station>? = null
     private var _topVisitRadioList: List<Station>? = null
     private var _topVotedRadioList: ArrayList<Station>? = null
     private var _lateUpdateRadioList: List<Station>? = null
@@ -30,6 +31,12 @@ class NetSource @Inject constructor(private val stationDao: StationDao, private 
     suspend fun getLocalList(type: String, param : String) = withContext(Dispatchers.IO){
         if(_localRadioList == null) _localRadioList = radioListApi.getListByCountry("bycountrycodeexact", Locale.getDefault().country)
         return@withContext _localRadioList
+    }
+
+    //Local Stations
+    suspend fun getSearch(type: String, param : String) = withContext(Dispatchers.IO){
+        if(_searchRadioList == null) _searchRadioList = radioListApi.searchByTypeList(type, param)
+        return@withContext _searchRadioList
     }
 
     suspend fun getTopClickList() = withContext(Dispatchers.IO){
