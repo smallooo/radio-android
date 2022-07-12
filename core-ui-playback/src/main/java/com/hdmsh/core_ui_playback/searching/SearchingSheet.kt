@@ -35,6 +35,7 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
+import androidx.lifecycle.viewmodel.compose.viewModel
 
 import com.google.accompanist.pager.ExperimentalPagerApi
 import com.dmhsh.samples.app.nowinandroid.core.playback.NONE_PLAYBACK_STATE
@@ -61,7 +62,10 @@ import kotlinx.coroutines.flow.filter
 import kotlinx.coroutines.launch
 
 @Composable
-fun SearchingSheet(navigator: Navigator = LocalNavigator.current) {
+fun SearchingSheet(
+    navigator: Navigator = LocalNavigator.current,
+    viewModel: SearchViewModel = hiltViewModel(),
+) {
     val listState = rememberLazyListState()
     val queueListState = rememberLazyListState()
     val coroutine = rememberCoroutineScope()
@@ -73,9 +77,12 @@ fun SearchingSheet(navigator: Navigator = LocalNavigator.current) {
             scrollToTop = scrollToTop,
             listState = listState,
             queueListState = queueListState,
-        )
+            viewModel = viewModel){
+                action -> viewModel.submitAction(action)
+        }
+        }
     }
-}
+
 
 @SuppressLint("UnusedMaterialScaffoldPaddingParameter")
 @OptIn(ExperimentalPagerApi::class)
@@ -87,7 +94,8 @@ internal fun SearchingSheetContent(
     queueListState: LazyListState,
     scaffoldState: ScaffoldState = rememberScaffoldState(snackbarHostState = LocalScaffoldState.current.snackbarHostState),
     playbackConnection: PlaybackConnection = LocalPlaybackConnection.current,
-    viewModel: SearchViewModel = hiltViewModel()
+    viewModel: SearchViewModel = hiltViewModel(),
+    actioner: (SearchAction) -> Unit
 ) {
     val nowPlaying by rememberFlowWithLifecycle(playbackConnection.nowPlaying)
     val adaptiveColor by adaptiveColor(nowPlaying.artwork, initial = MaterialTheme.colors.onBackground)
@@ -114,12 +122,15 @@ internal fun SearchingSheetContent(
                 },
             ) {
                 RadioSearchScreen(
-                    onQueryChange = { Log.e("aaa", "onQueryChange") },
+                    onQueryChange = {
+                        Log.e("aaa", "onQueryChange")
+                        actioner(SearchAction.QueryChange(it)) },
                     onSearch = {
                         Log.e("aaa", "onSearch")
-                              // viewModel.search("aaa")
-                               },
-                    onBackendTypeSelect = { Log.e("aaa", "onBackendTypeSelect")},
+                        actioner(SearchAction.Search) },
+                    onBackendTypeSelect = {
+                        Log.e("aaa", "onBackendTypeSelect")
+                        actioner(it) },
                     state = viewState,
                 )
             }
@@ -142,7 +153,9 @@ fun RadioSearchScreen(
     val scrollState = rememberScrollState(0)
     val surfaceGradient = SpotifyDataProvider.spotifySurfaceGradient(isSystemInDarkTheme())
     val initialQuery = "".toString()
-    Box(modifier = Modifier.fillMaxSize().horizontalGradientBackground(surfaceGradient)) {
+    Box(modifier = Modifier
+        .fillMaxSize()
+        .horizontalGradientBackground(surfaceGradient)) {
         val keyboardController = LocalSoftwareKeyboardController.current
         val hasWindowFocus = windowInfo.isWindowFocused
         val keyboardVisible = windowInsets.ime.isVisible
@@ -168,7 +181,18 @@ fun RadioSearchScreen(
                     onBackendTypeSelect,
                     triggerSearch
                 )
-                // SpotifySearchGrid()
+
+
+                Spacer(modifier = Modifier.height(60.dp))
+
+                SearchList(
+                    viewModel = viewModel(),
+                    "1"
+                )
+
+
+
+                SpotifySearchGrid()
             }
             Spacer(modifier = Modifier.height(200.dp))
         }
@@ -258,11 +282,6 @@ private fun ColumnScope.SearchFilterPanel(
         )
     }
 }
-
-
-
-
-
 
 
 fun Modifier.gradientBackground(

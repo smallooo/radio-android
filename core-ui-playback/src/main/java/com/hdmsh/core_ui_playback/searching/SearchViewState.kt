@@ -43,6 +43,6 @@ data class SearchViewState(
 }
 
 @Parcelize
-internal data class SearchTrigger(val query: String = "", val captchaSolution: CaptchaSolution? = null) : Parcelable
+data class SearchTrigger(val query: String = "", val captchaSolution: CaptchaSolution? = null) : Parcelable
 
-internal data class SearchEvent(val searchTrigger: SearchTrigger, val searchFilter: SearchFilter)
+data class SearchEvent(val searchTrigger: SearchTrigger, val searchFilter: SearchFilter)

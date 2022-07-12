@@ -4,11 +4,18 @@
  */
 package com.hdmsh.core_ui_playback.searching
 
+import android.util.Log
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.setValue
 import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.dmhsh.samples.apps.nowinandroid.core.data.NetSource
+import com.dmhsh.samples.apps.nowinandroid.core.model.data.Station
 import com.dmhsh.samples.apps.nowinandroid.core.navigation.Screens.QUERY_KEY
 import com.dmhsh.samples.apps.nowinandroid.core.navigation.Screens.SEARCH_BACKENDS_KEY
+import com.dmhsh.samples.apps.nowinandroid.playback.PlaybackConnection
 import com.hdmsh.core_ui_playback.searching.errors.ApiCaptchaError
 import dagger.hilt.android.lifecycle.HiltViewModel
 import javax.inject.Inject
@@ -23,8 +30,11 @@ const val SEARCH_DEBOUNCE_MILLIS = 400L
 
 @OptIn(FlowPreview::class)
 @HiltViewModel
-internal class SearchViewModel @Inject constructor(
+class SearchViewModel @Inject constructor(
     handle: SavedStateHandle,
+    //private val snackbarManager: SnackbarManager,
+    private val remoteSource: NetSource,
+    private val playbackConnection: PlaybackConnection,
 ) : ViewModel() {
     private val initialQuery = handle.get(QUERY_KEY) ?: ""
     private val searchQueryState = handle.getStateFlow(initialQuery, viewModelScope, initialQuery)
@@ -35,10 +45,35 @@ internal class SearchViewModel @Inject constructor(
     private val onSearchEventChannel = Channel<SearchEvent>(Channel.CONFLATED)
     val onSearchEvent = onSearchEventChannel.receiveAsFlow()
 
+
+
     val state = combine(searchFilterState, captchaError, ::SearchViewState)
         .stateInDefault(viewModelScope, SearchViewState.Empty)
 
+    class LocalStationsContract {
+
+        data class State(
+            val localStations: List<Station> = listOf(),
+            var isLoading: Boolean = false
+        )
+
+        sealed class Effect {
+            object DataWasLoaded : LocalStationsContract.Effect()
+        }
+    }
+
+    var stateS by mutableStateOf(
+        LocalStationsContract.State(
+            localStations = listOf(),
+            isLoading = true
+        )
+    )
+
+    var effects = Channel<LocalStationsContract.Effect>(Channel.UNLIMITED)
+        private set
+
     val searchQuery = searchQueryState.asStateFlow()
+
 
     init {
         viewModelScope.launch {
@@ -52,8 +87,12 @@ internal class SearchViewModel @Inject constructor(
                         }
                     }
                     is SearchAction.Search -> searchTriggerState.value = SearchTrigger(searchQueryState.value)
-                   // is SearchAction.SelectBackendType -> selectBackendType(action)
+                    is SearchAction.SelectBackendType -> selectBackendType(action)
                     is SearchAction.SubmitCaptcha -> submitCaptcha(action)
+                    is SearchAction.SubmitCaptcha -> submitCaptcha(action)
+                   // is SearchAction.AddError -> snackbarManager.addError(action.error)
+                  //  is SearchAction.ClearError -> snackbarManager.removeCurrentError()
+                   // is SearchAction.PlayRadio -> playbackConnection.playAudio(station)
                 }
             }
         }
@@ -68,11 +107,29 @@ internal class SearchViewModel @Inject constructor(
         }
     }
 
+
+
+
     fun search(searchEvent: SearchEvent) {
         val (trigger, filter) = searchEvent
         val query = trigger.query
         val searchParams = DatmusicSearchParams(query, trigger.captchaSolution)
         val backends = filter.backends.joinToString { it.type }
+
+        if(query.isNotBlank()) {
+            viewModelScope.launch {
+                val categories = remoteSource.getTopClickList()
+                if (categories != null) {
+                    Log.e("aaa", categories.toString() + "aaa")
+                    stateS = categories.let { stateS.copy(localStations = it, isLoading = false) }
+                    stateS.isLoading = false
+                    effects.send(LocalStationsContract.Effect.DataWasLoaded)
+                }
+//                state = categories?.let { state.copy(localStations = it, isLoading = false) }!!
+//                state.isLoading = false
+//                effects.send(LocalStationsContract.Effect.DataWasLoaded)
+            }
+        }
     }
 
     /**
@@ -89,4 +146,29 @@ internal class SearchViewModel @Inject constructor(
             )
         )
     }
+
+
+    fun submitAction(action: SearchAction) {
+        viewModelScope.launch {
+            pendingActions.emit(action)
+        }
+    }
+
+    /**
+     * Sets search filter to only given backend if [action.selected] otherwise resets to [SearchFilter.DefaultBackends].
+     */
+    private fun selectBackendType(action: SearchAction.SelectBackendType) {
+        //analytics.event("search.selectBackend", mapOf("type" to action.backendType))
+        searchFilterState.value = searchFilterState.value.copy(
+            backends = when (action.selected) {
+                true -> setOf(action.backendType)
+                else -> SearchFilter.DefaultBackends
+            }
+        )
+    }
+
 }
+
+
+
+
