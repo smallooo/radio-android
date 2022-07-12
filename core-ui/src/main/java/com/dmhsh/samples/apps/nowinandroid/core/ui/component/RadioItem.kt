@@ -14,12 +14,12 @@ import androidx.compose.material.icons.filled.*
 import androidx.compose.material3.Icon
 import androidx.compose.material3.Text
 import androidx.compose.runtime.*
-import androidx.compose.runtime.R
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.ViewModel
@@ -27,9 +27,14 @@ import com.dmhsh.samples.apps.nowinandroid.common.compose.LocalPlaybackConnectio
 import com.dmhsh.samples.apps.nowinandroid.core.model.data.Station
 import com.dmhsh.samples.apps.nowinandroid.core.util.IntentUtils.startActivity
 import com.dmhsh.samples.apps.nowinandroid.playback.PlaybackConnection
+import tm.alashow.i18n.R
+import kotlin.jvm.internal.Ref
 
 @Composable
-fun RadioItem(viewModel: ViewModel, stateCategories : List<Station>, onImageClick: (station: Station) -> Unit, onPlayClick: (station: Station) -> Unit){
+fun RadioItem(viewModel: ViewModel,
+              stateCategories : List<Station>,
+              onImageClick: (station: Station) -> Unit,
+              onPlayClick: (station: Station) -> Unit){
     LazyColumn {
         itemsIndexed(
             items = stateCategories,
@@ -49,6 +54,7 @@ fun RadioItem(viewModel: ViewModel, stateCategories : List<Station>, onImageClic
 fun AnimatedListItem(viewModel: ViewModel, station: Station, itemIndex: Int, onImageClick: (station: Station) -> Unit, onPlayClick: (station: Station) -> Unit) {
     val playbackConnection: PlaybackConnection = LocalPlaybackConnection.current
     var expanded by remember { mutableStateOf(false) }
+    var favorite by remember { mutableStateOf(station.favorited) }
     Row(
         verticalAlignment = Alignment.CenterVertically,
         modifier = Modifier.clickable {
@@ -63,7 +69,8 @@ fun AnimatedListItem(viewModel: ViewModel, station: Station, itemIndex: Int, onI
                 .size(55.dp)
                 .padding(4.dp)
                 .clickable {
-                    onImageClick(station)
+                   // onImageClick(station)
+                    // favorite = !favorite
                 }
         )
         Column(
@@ -76,6 +83,7 @@ fun AnimatedListItem(viewModel: ViewModel, station: Station, itemIndex: Int, onI
                 style = MaterialTheme.typography.body1,
                 color = MaterialTheme.colors.onSurface
             )
+
             Text(
                 text = station.bitrate + "kbps",
                 style = MaterialTheme.typography.body1,
@@ -89,55 +97,60 @@ fun AnimatedListItem(viewModel: ViewModel, station: Station, itemIndex: Int, onI
             contentDescription = null,
             tint = Color.LightGray,
             modifier = Modifier
-                .padding(4.dp)
+                .padding(8.dp)
+                .size(32.dp)
                 .clickable { expanded = !expanded }
         )
     }
-
 
     AnimatedVisibility(visible = expanded) {
         Column(
             horizontalAlignment = Alignment.Start
         ) {
-            Row(modifier = Modifier.padding(start = 8.dp, top = 0.dp)) {
-                listOf(station.tags).forEach{ tag ->
-                    InterestTag(text = tag)
+            if(station.tags.isNotBlank()) {
+                Row(modifier = Modifier.padding(start = 8.dp, top = 0.dp)) {
+                    listOf(station.tags).forEach { tag ->
+                        InterestTag(text = tag)
+                    }
                 }
             }
 
-            SocialRow(viewModel,station)
+            SocialRow(viewModel, station, favorite , onImageClick)
         }
     }
 }
 
 @Composable
-fun SocialRow(viewModel : ViewModel , station: Station) {
+fun SocialRow(viewModel : ViewModel , station: Station, favorite: Boolean,  onImageClick: (station: Station) -> Unit) {
     Material3Card(elevation = 1.dp, modifier = Modifier.padding(0.dp), backgroundColor = MaterialTheme.colors.surface) {
         val context = LocalContext.current
+        val shareTitle = stringResource(R.string.share_action)
+        var favorite1 by remember { mutableStateOf(favorite) }
+
         Row(
             horizontalArrangement = Arrangement.SpaceAround,
             modifier = Modifier
                 .fillMaxWidth()
                 .padding(horizontal = 16.dp, vertical = 8.dp)
         ) {
-            IconButton(onClick = {
-                if(station.homepage.isNotBlank())
-
+            if(station.homepage.isNotBlank()) {
+                IconButton(onClick = {
                     context.startActivity(Intent(Intent.ACTION_VIEW, Uri.parse(station.homepage)))
-            }) {
-                Icon(
-                    imageVector = Icons.Default.Home,
-                    contentDescription = null,
-                    tint = androidx.compose.material3.MaterialTheme.colorScheme.primary
-                )
+                }) {
+                    Icon(
+                        imageVector = Icons.Default.Home,
+                        contentDescription = null,
+                        tint = androidx.compose.material3.MaterialTheme.colorScheme.primary
+                    )
+                }
             }
 
             IconButton(onClick = {
                     val share = Intent(Intent.ACTION_SEND)
                     share.type = "text/plain"
                     share.putExtra(Intent.EXTRA_SUBJECT, station.name)
-                    share.putExtra(Intent.EXTRA_TEXT, station.describeContents())
-                    val title: String = "Share a really cool station to you"
+                    share.putExtra(Intent.EXTRA_TEXT, station.name + "        " +  station.url_resolved)
+                    val title: String = shareTitle
                     val chooser = Intent.createChooser(share, title)
                     startActivity(context,chooser)
             }) {
@@ -149,18 +162,17 @@ fun SocialRow(viewModel : ViewModel , station: Station) {
             }
 
             IconButton(onClick = {
-
+                onImageClick(station)
+                favorite1 = !favorite1
             }) {
                 Icon(
-                    imageVector = if (station.favorited) Icons.Default.Star else Icons.Default.StarBorder,
+                    imageVector = if (favorite1) Icons.Default.Star else Icons.Default.StarBorder,
                     contentDescription = null,
                     tint = androidx.compose.material3.MaterialTheme.colorScheme.primary
                 )
             }
 
-            IconButton(onClick = {
-
-            }) {
+            IconButton(onClick = { }) {
                 Icon(
                     imageVector = Icons.Default.PunchClock,
                     contentDescription = null,
@@ -168,17 +180,13 @@ fun SocialRow(viewModel : ViewModel , station: Station) {
                 )
             }
 
-            IconButton(onClick = {
-
-            }) {
+            IconButton(onClick = { }) {
                 Icon(
                     imageVector = Icons.Default.Add,
                     contentDescription = null,
                     tint = androidx.compose.material3.MaterialTheme.colorScheme.primary
                 )
             }
-
-
         }
     }
 }
