@@ -85,7 +85,7 @@ fun AdvanceListContent(viewModel: SearchListViewModel = hiltViewModel()) {
         stringResource(R.string.action_languages),
         stringResource(R.string.action_search)
     )
-    val pagerState: PagerState = run { remember { PagerState(0, 0, tabs.size - 1) } }
+    val pagerState1: PagerState = run { remember { PagerState(0, 0, tabs.size - 1) } }
 
     Column {
         ScrollableTabRow(
@@ -105,15 +105,15 @@ fun AdvanceListContent(viewModel: SearchListViewModel = hiltViewModel()) {
                     selected = index == selectedIndex,
                     onClick = {
                         selectedIndex = tabs.indexOf(title)
-                        pagerState.currentPage = tabs.indexOf(title)
+                        pagerState1.currentPage = tabs.indexOf(title)
                     },
                     text = { Text(text = title) }
                 )
             }
         }
 
-        Pager(state = pagerState, modifier = Modifier.weight(1f)) {
-            selectedIndex = pagerState.currentPage
+        Pager(state = pagerState1, modifier = Modifier.weight(1f)) {
+            selectedIndex = pagerState1.currentPage
             when (commingPage) {
                 0 -> LocalRadioList()  //0
                 1 -> TopClickRadios()
@@ -121,11 +121,11 @@ fun AdvanceListContent(viewModel: SearchListViewModel = hiltViewModel()) {
                 3 -> LateUpdateRadios()
                 4 -> NowPlayingRadios()
                 5 -> TagListScreen(onTagSelect = { stationTag ->
-                    LaunchSearchScreen(pagerState, viewModel, "bytag", stationTag.name) }) //0
+                    LaunchSearchScreen(pagerState1, viewModel, "bytag", stationTag.name) }) //0
                 6 -> CountryList(onCountrySelect = { Country ->
-                    LaunchSearchScreen(pagerState, viewModel, "bycountry", Country.name) })
+                    LaunchSearchScreen(pagerState1, viewModel, "bycountry", Country.name) })
                 7 -> LanguageListScreen(onTagSelect = {
-                    LaunchSearchScreen(pagerState, viewModel, "bylanguage", it.name) })  //0
+                    LaunchSearchScreen(pagerState1, viewModel, "bylanguage", it.name) })  //0
                 8 -> SearchStationsScreen()
             }
         }

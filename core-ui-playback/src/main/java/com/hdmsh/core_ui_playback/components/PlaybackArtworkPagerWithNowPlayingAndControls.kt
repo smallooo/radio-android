@@ -15,15 +15,16 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.TextStyle
 import androidx.constraintlayout.compose.ConstraintLayout
 import androidx.constraintlayout.compose.Dimension
+import androidx.hilt.navigation.compose.hiltViewModel
 
 import com.dmhsh.samples.app.nowinandroid.core.playback.artworkUri
+import com.dmhsh.samples.apps.nowinandroid.core.ui.extensions.Callback
 
 import com.google.accompanist.pager.ExperimentalPagerApi
 import com.google.accompanist.pager.PagerState
 import com.google.accompanist.pager.rememberPagerState
-import com.hdmsh.core_ui_playback.PlaybackMiniControlsDefaults.height
-import kotlinx.coroutines.NonDisposableHandle.parent
-import javax.security.auth.callback.Callback
+import com.hdmsh.core_ui_playback.PlaybackViewModel
+
 
 
 @OptIn(ExperimentalPagerApi::class)
@@ -37,14 +38,13 @@ fun PlaybackArtworkPagerWithNowPlayingAndControls(
     artistTextStyle: TextStyle = PlaybackNowPlayingDefaults.artistTextStyle,
     pagerState: PagerState = rememberPagerState(),
     onArtworkClick: Callback? = null,
-    //viewModel: PlaybackViewModel = hiltViewModel(),
+    viewModel: PlaybackViewModel = hiltViewModel(),
 ) {
     ConstraintLayout(modifier = modifier) {
         val (pager, nowPlayingControls) = createRefs()
         PlaybackPager(
-           // nowPlaying = nowPlaying,
+            nowPlaying = nowPlaying,
             pagerState = pagerState,
-
             modifier = Modifier.constrainAs(pager) {
                 centerHorizontallyTo(parent)
                 top.linkTo(parent.top)

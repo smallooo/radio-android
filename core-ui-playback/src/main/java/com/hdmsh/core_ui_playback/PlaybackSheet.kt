@@ -29,6 +29,7 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.text.style.TextOverflow
+import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.hilt.navigation.compose.hiltViewModel
@@ -37,6 +38,7 @@ import com.google.accompanist.pager.ExperimentalPagerApi
 import com.dmhsh.samples.app.nowinandroid.core.playback.NONE_PLAYBACK_STATE
 import com.dmhsh.samples.app.nowinandroid.core.playback.artwork
 import com.dmhsh.samples.app.nowinandroid.core.playback.isIdle
+import com.dmhsh.samples.app.nowinandroid.core.playback.models.PlaybackQueue
 import com.dmhsh.samples.apps.nowinandroid.common.compose.LocalPlaybackConnection
 import com.dmhsh.samples.apps.nowinandroid.common.compose.LocalScaffoldState
 import com.dmhsh.samples.apps.nowinandroid.core.model.data.Station
@@ -44,30 +46,30 @@ import com.dmhsh.samples.apps.nowinandroid.core.navigation.LocalNavigator
 import com.dmhsh.samples.apps.nowinandroid.core.navigation.Navigator
 import com.dmhsh.samples.apps.nowinandroid.core.ui.ADAPTIVE_COLOR_ANIMATION
 import com.dmhsh.samples.apps.nowinandroid.core.ui.adaptiveColor
-import com.dmhsh.samples.apps.nowinandroid.core.ui.component.DismissableSnackbarHost
-import com.dmhsh.samples.apps.nowinandroid.core.ui.component.MoreVerticalIcon
+import com.dmhsh.samples.apps.nowinandroid.core.ui.component.*
 
-import com.dmhsh.samples.apps.nowinandroid.core.ui.component.isWideLayout
-import com.dmhsh.samples.apps.nowinandroid.core.ui.component.simpleClickable
 import com.dmhsh.samples.apps.nowinandroid.core.ui.extensions.Callback
 import com.dmhsh.samples.apps.nowinandroid.core.ui.media.radioStations.AudioActionHandler
 import com.dmhsh.samples.apps.nowinandroid.core.ui.media.radioStations.LocalAudioActionHandler
 import com.dmhsh.samples.apps.nowinandroid.core.ui.media.radioStations.audioActionHandler
-import com.dmhsh.samples.apps.nowinandroid.core.ui.theme.AppTheme
-import com.dmhsh.samples.apps.nowinandroid.core.ui.theme.RadioTheme
-import com.dmhsh.samples.apps.nowinandroid.core.ui.theme.plainBackgroundColor
+import com.dmhsh.samples.apps.nowinandroid.core.ui.theme.*
 import com.dmhsh.samples.apps.nowinandroid.playback.PlaybackConnection
+import com.google.accompanist.pager.rememberPagerState
 import com.hdmsh.common_compose.rememberFlowWithLifecycle
 import com.hdmsh.core_ui_playback.components.PlaybackArtworkPagerWithNowPlayingAndControls
 import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.flow.filter
 import kotlinx.coroutines.launch
 
+private val RemoveFromPlaylist = R.string.nav_item_load_playlist
+private val AddQueueToPlaylist = R.string.nav_item_load_playlist
+private val SaveQueueAsPlaylist = R.string.nav_item_load_playlist
+
 
 @Composable
 fun PlaybackSheet(
     // override local theme color palette because we want simple colors for menus n' stuff
-    //sheetTheme: ThemeState = LocalThemeState.current.copy(colorPalettePreference = ColorPalettePreference.Black),
+    sheetTheme: ThemeState = LocalThemeState.current.copy(colorPalettePreference = ColorPalettePreference.Black),
     navigator: Navigator = LocalNavigator.current,
 ) {
     val listState = rememberLazyListState()
@@ -108,7 +110,7 @@ internal fun PlaybackSheetContent(
     val playbackState by rememberFlowWithLifecycle(playbackConnection.playbackState)
 
     val nowPlaying by rememberFlowWithLifecycle(playbackConnection.nowPlaying)
-    // val pagerState = rememberPagerState(playbackQueue.currentIndex)
+     val pagerState = rememberPagerState(0)
 
     val adaptiveColor by adaptiveColor(
         nowPlaying.artwork,
@@ -131,7 +133,6 @@ internal fun PlaybackSheetContent(
             if (isWideLayout) {
 //                ResizablePlaybackQueue(
 //                    maxWidth = maxWidth,
-//                    playbackQueue = playbackQueue,
 //                    queueListState = queueListState,
 //                    scrollToTop = scrollToTop
 //                )
@@ -165,9 +166,9 @@ internal fun PlaybackSheetContent(
                         PlaybackArtworkPagerWithNowPlayingAndControls(
                             nowPlaying = nowPlaying,
                             playbackState = playbackState,
-                            //pagerState = pagerState,
+                            pagerState = pagerState,
                             contentColor = contentColor,
-                           // viewModel = viewModel,
+                            viewModel = viewModel,
                             modifier = Modifier.fillParentMaxHeight(0.8f),
                         )
                     }
@@ -353,6 +354,73 @@ private fun LazyListScope.playbackQueue(
 //            modifier = Modifier.animateItemPlacement()
 //        )
 //    }
+
+
+
 }
+
+@Composable
+private    fun RowScope.ResizablePlaybackQueue(
+    maxWidth: Dp,
+
+    //scrollToTop: Callback,
+    //queueListState: LazyListState,
+    // modifier: Modifier = Modifier,
+    //contentPadding: PaddingValues = PaddingValues(),
+    // resizableLayoutViewModel: ResizablePlaybackSheetLayoutViewModel = hiltViewModel(),
+    //dragOffset: State<Float> = rememberFlowWithLifecycle(0f),
+    // setDragOffset: (Float) -> Unit = resizableLayoutViewModel::setDragOffset,
+    // playbackConnection: PlaybackConnection = LocalPlaybackConnection.current,
+) {
+//        ResizableLayout(
+//            availableWidth = maxWidth,
+//            baseWeight = 0.6f,
+//            minWeight = 0.4f,
+//            maxWeight = 1.25f,
+//            dragOffset = dragOffset,
+//            setDragOffset = setDragOffset,
+//            analyticsPrefix = "playbackSheet.layout",
+//            modifier = modifier,
+//        ) { resizableModifier ->
+//            val labelMod = Modifier.padding(top = AppTheme.specs.padding)
+//            LazyColumn(
+//                state = queueListState,
+//                contentPadding = contentPadding,
+//                modifier = Modifier
+//                    .fillMaxHeight()
+//                    .background(MaterialTheme.colors.background)
+//            ) {
+//                playbackQueueLabel(resizableModifier.then(labelMod))
+//
+//               // if (playbackQueue.isLastAudio) {
+//                    item {
+//                        Text(
+//                            text = stringResource(R.string.app_id),
+//                            style = MaterialTheme.typography.body1,
+//                            textAlign = TextAlign.Center,
+//                            modifier = Modifier
+//                                .fillMaxWidth()
+//                                .padding(top = AppTheme.specs.padding)
+//                        )
+//                    }
+//              //  }
+//
+//                playbackQueue(
+//                   // playbackQueue = playbackQueue,
+//                    scrollToTop = scrollToTop,
+//                    playbackConnection = playbackConnection,
+//                )
+//            }
+//            Divider(
+//                modifier = Modifier
+//                    .width(1.dp)
+//                    .fillMaxHeight()
+//                    .align(Alignment.CenterEnd)
+//                    .then(resizableModifier)
+//            )
+//        }
+}
+
+
 
 

@@ -150,6 +150,8 @@ dependencies {
     implementation(platform("com.google.firebase:firebase-bom:30.2.0"))
     implementation("com.google.firebase:firebase-analytics-ktx")
 
+    implementation(libs.accompanist.pager)
+
     // androidx.test is forcing JUnit, 4.12. This forces it to use 4.13
     configurations.configureEach {
         resolutionStrategy {

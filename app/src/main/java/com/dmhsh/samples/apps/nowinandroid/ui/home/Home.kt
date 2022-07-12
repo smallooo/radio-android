@@ -60,7 +60,7 @@ internal fun Home(
                 backgroundColor = Color.Transparent,
                 contentColor = MaterialTheme.colorScheme.onBackground,
                 bottomBar = {
-                    if (windowSizeClass.widthSizeClass == WindowWidthSizeClass.Compact) {
+                    if (!isWideLayout) {
                         Column {
                             PlaybackMiniControls(
                                 modifier = Modifier.graphicsLayer(translationY = 16.dp.value).zIndex(2f),

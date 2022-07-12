@@ -37,14 +37,18 @@ import com.dmhsh.samples.apps.nowinandroid.core.navigation.Screens.LeafScreen
 import com.dmhsh.samples.apps.nowinandroid.core.navigation.Screens.RootScreen
 import com.dmhsh.samples.apps.nowinandroid.core.ui.theme.AppTheme
 import com.dmhsh.samples.apps.nowinandroid.playback.PlaybackConnection
+import com.google.accompanist.pager.ExperimentalPagerApi
 import com.hdmsh.common_compose.rememberFlowWithLifecycle
 import com.hdmsh.core_ui_playback.PlaybackMiniControls
+import com.hdmsh.core_ui_playback.components.PlaybackArtworkPagerWithNowPlayingAndControls
+
+import com.hdmsh.core_ui_playback.components.PlaybackNowPlayingDefaults
 
 
 private val NAVIGATION_RAIL_BIG_MODE_MIN_WIDTH = 200.dp
 private val NAVIGATION_RAIL_BIG_MODE_MIN_HEIGHT = 600.dp
 
-@OptIn(ExperimentalAnimationApi::class)
+@OptIn(ExperimentalAnimationApi::class, ExperimentalPagerApi::class)
 @Composable
 internal fun HomeNavigationRail(
     selectedTab: RootScreen,
@@ -97,22 +101,23 @@ internal fun HomeNavigationRail(
                     val playbackState by rememberFlowWithLifecycle(playbackConnection.playbackState)
                     val nowPlaying by rememberFlowWithLifecycle(playbackConnection.nowPlaying)
                     val visible = (playbackState to nowPlaying).isActive
+
                     AnimatedVisibility(
                         visible = visible,
                         modifier = Modifier.weight(bigPlaybackModeWeight),
                         enter = slideInVertically(initialOffsetY = { it / 2 }) + scaleIn()
                     ) {
-//                        PlaybackArtworkPagerWithNowPlayingAndControls(
-//                            nowPlaying = nowPlaying,
-//                            playbackState = playbackState,
-//                            onArtworkClick = { navigator.navigate(LeafScreen.PlaybackSheet().createRoute()) },
-//                            titleTextStyle = PlaybackNowPlayingDefaults.titleTextStyle.copy(fontSize = MaterialTheme.typography.body1.fontSize),
-//                            artistTextStyle = PlaybackNowPlayingDefaults.artistTextStyle.copy(fontSize = MaterialTheme.typography.subtitle2.fontSize),
-//                        )
+                        PlaybackArtworkPagerWithNowPlayingAndControls(
+                            nowPlaying = nowPlaying,
+                            playbackState = playbackState,
+                            onArtworkClick = { },
+                            titleTextStyle = PlaybackNowPlayingDefaults.titleTextStyle.copy(fontSize = MaterialTheme.typography.body1.fontSize),
+                            artistTextStyle = PlaybackNowPlayingDefaults.artistTextStyle.copy(fontSize = MaterialTheme.typography.subtitle2.fontSize),
+                        )
                     }
                 } else PlaybackMiniControls(
-                   // modifier = Modifier.padding(bottom = AppTheme.specs.paddingSmall),
-                   // contentPadding = PaddingValues(end = AppTheme.specs.padding),
+                    modifier = Modifier.padding(bottom = AppTheme.specs.paddingSmall),
+                    contentPadding = PaddingValues(end = AppTheme.specs.padding),
                 )
             }
         }
