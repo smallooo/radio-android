@@ -44,14 +44,14 @@ fun PlaybackArtworkPagerWithNowPlayingAndControls(
                 bottom.linkTo(nowPlayingControls.top)
                 height = Dimension.fillToConstraints
             }
-        ) { _ , _ ->
+        ) { _ , pagerMod ->
             val currentArtwork = nowPlaying.artworkUri
             PlaybackArtwork(
                 artwork = currentArtwork,
                 contentColor = contentColor,
                 nowPlaying = nowPlaying,
-                onClick = {  },
-                modifier = Modifier,
+                onClick = onArtworkClick,
+                modifier = pagerMod,
             )
         }
         PlaybackNowPlayingWithControls(

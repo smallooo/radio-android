@@ -5,10 +5,7 @@
 package com.hdmsh.core_ui_playback
 
 import android.annotation.SuppressLint
-import android.util.Log
-import androidx.compose.animation.ExperimentalAnimationApi
 import androidx.compose.animation.animateColorAsState
-import androidx.compose.foundation.ExperimentalFoundationApi
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
@@ -25,11 +22,9 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.vector.rememberVectorPainter
 import androidx.compose.ui.platform.LocalContext
-import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.text.style.TextOverflow
-import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.hilt.navigation.compose.hiltViewModel
@@ -38,10 +33,8 @@ import com.google.accompanist.pager.ExperimentalPagerApi
 import com.dmhsh.samples.app.nowinandroid.core.playback.NONE_PLAYBACK_STATE
 import com.dmhsh.samples.app.nowinandroid.core.playback.artwork
 import com.dmhsh.samples.app.nowinandroid.core.playback.isIdle
-import com.dmhsh.samples.app.nowinandroid.core.playback.models.PlaybackQueue
 import com.dmhsh.samples.apps.nowinandroid.common.compose.LocalPlaybackConnection
 import com.dmhsh.samples.apps.nowinandroid.common.compose.LocalScaffoldState
-import com.dmhsh.samples.apps.nowinandroid.core.model.data.Station
 import com.dmhsh.samples.apps.nowinandroid.core.navigation.LocalNavigator
 import com.dmhsh.samples.apps.nowinandroid.core.navigation.Navigator
 import com.dmhsh.samples.apps.nowinandroid.core.ui.ADAPTIVE_COLOR_ANIMATION
@@ -54,17 +47,14 @@ import com.dmhsh.samples.apps.nowinandroid.core.ui.media.radioStations.LocalAudi
 import com.dmhsh.samples.apps.nowinandroid.core.ui.media.radioStations.audioActionHandler
 import com.dmhsh.samples.apps.nowinandroid.core.ui.theme.*
 import com.dmhsh.samples.apps.nowinandroid.playback.PlaybackConnection
+import com.google.accompanist.insets.LocalWindowInsets
+import com.google.accompanist.insets.rememberInsetsPaddingValues
 import com.google.accompanist.pager.rememberPagerState
 import com.hdmsh.common_compose.rememberFlowWithLifecycle
 import com.hdmsh.core_ui_playback.components.PlaybackArtworkPagerWithNowPlayingAndControls
 import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.flow.filter
 import kotlinx.coroutines.launch
-
-private val RemoveFromPlaylist = R.string.nav_item_load_playlist
-private val AddQueueToPlaylist = R.string.nav_item_load_playlist
-private val SaveQueueAsPlaylist = R.string.nav_item_load_playlist
-
 
 @Composable
 fun PlaybackSheet(
@@ -84,7 +74,7 @@ fun PlaybackSheet(
 
     val audioActionHandler = audioActionHandler()
     CompositionLocalProvider(LocalAudioActionHandler provides audioActionHandler) {
-        RadioTheme( changeSystemBar = false) {
+        RadioTheme(theme = sheetTheme, changeSystemBar = false) {
             PlaybackSheetContent(
                 onClose = { navigator.goBack() },
                 scrollToTop = scrollToTop,
@@ -105,12 +95,11 @@ internal fun PlaybackSheetContent(
     queueListState: LazyListState,
     scaffoldState: ScaffoldState = rememberScaffoldState(snackbarHostState = LocalScaffoldState.current.snackbarHostState),
     playbackConnection: PlaybackConnection = LocalPlaybackConnection.current,
-   viewModel: PlaybackViewModel = hiltViewModel(),
+    viewModel: PlaybackViewModel = hiltViewModel(),
 ) {
     val playbackState by rememberFlowWithLifecycle(playbackConnection.playbackState)
-
     val nowPlaying by rememberFlowWithLifecycle(playbackConnection.nowPlaying)
-     val pagerState = rememberPagerState(0)
+    val pagerState = rememberPagerState(0)
 
     val adaptiveColor by adaptiveColor(
         nowPlaying.artwork,
@@ -124,19 +113,17 @@ internal fun PlaybackSheetContent(
             .collectLatest { if (it.isIdle) onClose() }
     }
 
+    val contentPadding = rememberInsetsPaddingValues(
+        insets = LocalWindowInsets.current.systemBars,
+        applyTop = true,
+        applyBottom = true,
+    )
 
-
-        BoxWithConstraints {
+    BoxWithConstraints {
         val isWideLayout = isWideLayout()
         val maxWidth = maxWidth
         Row(Modifier.fillMaxSize()) {
-            if (isWideLayout) {
-//                ResizablePlaybackQueue(
-//                    maxWidth = maxWidth,
-//                    queueListState = queueListState,
-//                    scrollToTop = scrollToTop
-//                )
-            }
+            if (isWideLayout) { }
 
             Scaffold(
                 backgroundColor = Color.Transparent,
@@ -148,17 +135,15 @@ internal fun PlaybackSheetContent(
             ) {
                 LazyColumn(
                     state = listState,
-                    contentPadding = PaddingValues(8.dp),
+                    contentPadding = contentPadding,
                 ) {
                     item {
                         PlaybackSheetTopBar(
-//                            playbackQueue = playbackQueue,
                             viewModel,
                             onClose = onClose,
                             onTitleClick = {},
-//                            onSaveQueueAsPlaylist = viewModel::saveQueueAsPlaylist
                         )
-                        Spacer(Modifier.height(4.dp))
+                        Spacer(Modifier.height(AppTheme.specs.paddingTiny))
                     }
 
 
@@ -173,19 +158,14 @@ internal fun PlaybackSheetContent(
                         )
                     }
 
-//                    if (viewModel.getPlayBackConnection().homepage.length > 0)
-//                        item {
-//                            PlaybackAudioInfo(viewModel.getPlayBackConnection().homepage)
-//                        }
+                    if (viewModel.getPlayBackConnection().homepage.length > 0)
+                        item {
+                            PlaybackAudioInfo(viewModel.getPlayBackConnection().homepage)
+                        }
 
-//                    if (!isWideLayout) {
-//                        playbackQueueLabel()
-//                        playbackQueue(
-//                           // playbackQueue = playbackQueue,
-//                            scrollToTop = scrollToTop,
-//                            playbackConnection = playbackConnection,
-//                        )
-//                    }
+                    if (!isWideLayout) {
+                        playbackQueueLabel()
+                    }
                 }
             }
         }
@@ -209,19 +189,18 @@ private fun PlaybackSheetTopBar(
     viewModel: PlaybackViewModel,
     onClose: Callback,
     onTitleClick: Callback,
-//    onSaveQueueAsPlaylist: Callback,
 ) {
     TopAppBar(
         elevation = 0.dp,
         backgroundColor = Color.Transparent,
         title = {
             PlaybackSheetTopBarTitle(viewModel)
-                },
+        },
         actions = {
             PlaybackSheetTopBarActions()
-                  },
+        },
         navigationIcon = {
-            IconButton(onClick = onClose ) {
+            IconButton(onClick = onClose) {
                 Icon(
                     rememberVectorPainter(Icons.Default.KeyboardArrowDown),
                     modifier = Modifier.size(36.dp),
@@ -271,43 +250,16 @@ private fun PlaybackSheetTopBarActions(
 ) {
     val (expanded, setExpanded) = remember { mutableStateOf(false) }
     CompositionLocalProvider(LocalContentAlpha provides ContentAlpha.high) {
-//        if (playbackQueue.isValid) {
-//            val (addToPlaylistVisible, setAddToPlaylistVisible) = remember { mutableStateOf(false) }
-//            val (addQueueToPlaylistVisible, setAddQueueToPlaylistVisible) = remember { mutableStateOf(false) }
-//
-//            AddToPlaylistMenu(playbackQueue.currentAudio, addToPlaylistVisible, setAddToPlaylistVisible)
-//            AddToPlaylistMenu(playbackQueue.audios, addQueueToPlaylistVisible, setAddQueueToPlaylistVisible)
-//
-//            AudioDropdownMenu(
-//                expanded = expanded,
-//                onExpandedChange = setExpanded,
-//                actionLabels = currentPlayingMenuActionLabels,
-//                extraActionLabels = listOf(AddQueueToPlaylist, SaveQueueAsPlaylist)
-//            ) { actionLabel ->
-//                val audio = playbackQueue.currentAudio
-//                when (val action = AudioItemAction.from(actionLabel, audio)) {
-//                    is AudioItemAction.AddToPlaylist -> setAddToPlaylistVisible(true)
-//                    else -> {
-//                        action.handleExtraActions(actionHandler) {
-//                            when (it.actionLabelRes) {
-//                                AddQueueToPlaylist -> setAddQueueToPlaylistVisible(true)
-//                                SaveQueueAsPlaylist -> onSaveQueueAsPlaylist()
-//                            }
-//                        }
-//                    }
-//                }
-//            }
-    MoreVerticalIcon()
+        MoreVerticalIcon()
     }
 }
-
 
 @Composable
 private fun PlaybackAudioInfo(homePage: String, modifier: Modifier = Modifier) {
     val context = LocalContext.current
     // val dlItem = audio.audioDownloadItem
     if (homePage != null) {
-       // val audiHeader = dlItem.audioHeader(context)
+        // val audiHeader = dlItem.audioHeader(context)
         Column(
             verticalArrangement = Arrangement.Center,
             horizontalAlignment = Alignment.CenterHorizontally,
@@ -321,104 +273,16 @@ private fun PlaybackAudioInfo(homePage: String, modifier: Modifier = Modifier) {
             ) {
                 Text(
                     text = homePage,
-                    style = MaterialTheme.typography.body2.copy(fontWeight = FontWeight.Bold, fontSize = 10.sp),
+                    style = MaterialTheme.typography.body2.copy(
+                        fontWeight = FontWeight.Bold,
+                        fontSize = 10.sp
+                    ),
                     textAlign = TextAlign.Center,
                     modifier = Modifier.padding(horizontal = 6.dp, vertical = 3.dp)
                 )
             }
         }
     }
-}
-
-@OptIn(ExperimentalAnimationApi::class, ExperimentalFoundationApi::class)
-private fun LazyListScope.playbackQueue(
-    //playbackQueue: PlaybackQueue,
-    scrollToTop: Callback,
-    playbackConnection: PlaybackConnection,
-) {
-//    val lastIndex = playbackQueue.audios.size
-//    val firstIndex = (playbackQueue.currentIndex + 1).coerceAtMost(lastIndex)
-//    val queue = playbackQueue.audios.subList(firstIndex, lastIndex)
-//    itemsIndexed(queue, key = { _, a -> a.primaryKey }) { index, audio ->
-//        val realPosition = firstIndex + index
-//        AudioRow(
-//            audio = audio,
-//            observeNowPlayingAudio = false,
-//            imageSize = 40.dp,
-//            onPlayAudio = {
-//                playbackConnection.transportControls?.skipToQueueItem(realPosition.toLong())
-//                scrollToTop()
-//            },
-//            extraActionLabels = listOf(RemoveFromPlaylist),
-//            onExtraAction = { playbackConnection.removeByPosition(realPosition) },
-//            modifier = Modifier.animateItemPlacement()
-//        )
-//    }
-
-
-
-}
-
-@Composable
-private    fun RowScope.ResizablePlaybackQueue(
-    maxWidth: Dp,
-
-    //scrollToTop: Callback,
-    //queueListState: LazyListState,
-    // modifier: Modifier = Modifier,
-    //contentPadding: PaddingValues = PaddingValues(),
-    // resizableLayoutViewModel: ResizablePlaybackSheetLayoutViewModel = hiltViewModel(),
-    //dragOffset: State<Float> = rememberFlowWithLifecycle(0f),
-    // setDragOffset: (Float) -> Unit = resizableLayoutViewModel::setDragOffset,
-    // playbackConnection: PlaybackConnection = LocalPlaybackConnection.current,
-) {
-//        ResizableLayout(
-//            availableWidth = maxWidth,
-//            baseWeight = 0.6f,
-//            minWeight = 0.4f,
-//            maxWeight = 1.25f,
-//            dragOffset = dragOffset,
-//            setDragOffset = setDragOffset,
-//            analyticsPrefix = "playbackSheet.layout",
-//            modifier = modifier,
-//        ) { resizableModifier ->
-//            val labelMod = Modifier.padding(top = AppTheme.specs.padding)
-//            LazyColumn(
-//                state = queueListState,
-//                contentPadding = contentPadding,
-//                modifier = Modifier
-//                    .fillMaxHeight()
-//                    .background(MaterialTheme.colors.background)
-//            ) {
-//                playbackQueueLabel(resizableModifier.then(labelMod))
-//
-//               // if (playbackQueue.isLastAudio) {
-//                    item {
-//                        Text(
-//                            text = stringResource(R.string.app_id),
-//                            style = MaterialTheme.typography.body1,
-//                            textAlign = TextAlign.Center,
-//                            modifier = Modifier
-//                                .fillMaxWidth()
-//                                .padding(top = AppTheme.specs.padding)
-//                        )
-//                    }
-//              //  }
-//
-//                playbackQueue(
-//                   // playbackQueue = playbackQueue,
-//                    scrollToTop = scrollToTop,
-//                    playbackConnection = playbackConnection,
-//                )
-//            }
-//            Divider(
-//                modifier = Modifier
-//                    .width(1.dp)
-//                    .fillMaxHeight()
-//                    .align(Alignment.CenterEnd)
-//                    .then(resizableModifier)
-//            )
-//        }
 }
 
 
