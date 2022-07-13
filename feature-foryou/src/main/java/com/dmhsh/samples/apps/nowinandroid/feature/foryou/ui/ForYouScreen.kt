@@ -126,7 +126,23 @@ fun AdvanceListContent(viewModel: SearchListViewModel = hiltViewModel()) {
                     LaunchSearchScreen(pagerState1, viewModel, "bycountry", Country.name) })
                 7 -> LanguageListScreen(onTagSelect = {
                     LaunchSearchScreen(pagerState1, viewModel, "bylanguage", it.name) })  //0
-                8 -> SearchStationsScreen()
+                8 -> SearchStationsScreen(
+                    onButtonSelect = { it ->
+                        if(it == 0){
+                            selectedIndex = 5
+                            pagerState1.currentPage = 5
+                        }
+                        if(it == 1){
+                            selectedIndex = 6
+                            pagerState1.currentPage = 6
+                        }
+                        if(it == 2){
+                            selectedIndex = 7
+                            pagerState1.currentPage = 7
+                        }
+
+                    }
+                )
             }
         }
     }
