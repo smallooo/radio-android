@@ -271,7 +271,7 @@ private fun PlaybackAudioInfo(tags:String, modifier: Modifier = Modifier) {
             horizontalAlignment = Alignment.CenterHorizontally,
             modifier = modifier
                 .fillMaxWidth()
-                .padding(bottom = AppTheme.specs.padding)
+                .padding(start = AppTheme.specs.padding, end = AppTheme.specs.padding, bottom = AppTheme.specs.padding)
         ) {
            // tags.forEach { tag ->
 

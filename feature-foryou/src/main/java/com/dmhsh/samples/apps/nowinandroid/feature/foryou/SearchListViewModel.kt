@@ -33,6 +33,7 @@ class  SearchListViewModel @Inject constructor(
     var state by mutableStateOf(
         LocalStationsContract.State(
             localStations = listOf(),
+            initStatus = true,
             isLoading = true
         )
     )
@@ -55,7 +56,7 @@ class  SearchListViewModel @Inject constructor(
         }
 
         viewModelScope.launch {
-            state = categories?.let { state.copy(localStations = it, isLoading = false) }!!
+            state = categories?.let { state.copy(localStations = it, initStatus = false, isLoading = false) }!!
             effects.send(com.dmhsh.samples.apps.nowinandroid.feature.foryou.CountryCategoriesContract.Effect.DataWasLoaded)
         }
     }
@@ -63,7 +64,7 @@ class  SearchListViewModel @Inject constructor(
     @OptIn(DelicateCoroutinesApi::class)
     fun upDateSearch(type: String, param: String){
         GlobalScope.launch(Dispatchers.IO) {
-            state =  state.copy(localStations = emptyList(), isLoading = true)
+            state =  state.copy(localStations = emptyList(), initStatus = false, isLoading = true)
             getSearchStationList(type, param)
         }
     }

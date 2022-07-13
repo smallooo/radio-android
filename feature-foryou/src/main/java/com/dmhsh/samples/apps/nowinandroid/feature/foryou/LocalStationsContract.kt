@@ -7,7 +7,9 @@ class LocalStationsContract {
 
     data class State(
         val localStations: List<Station> = listOf(),
+        var initStatus: Boolean = true,
         var isLoading: Boolean = false
+
     )
 
     sealed class Effect {

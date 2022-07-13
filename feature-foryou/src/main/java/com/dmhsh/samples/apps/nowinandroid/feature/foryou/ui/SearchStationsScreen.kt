@@ -24,9 +24,10 @@ fun SearchStationsScreen(
     onButtonSelect:(type: Int) -> Unit
 ) {
     val uiState = viewModel.state
+    val isInitStatus = uiState.initStatus
     val isLoading = uiState.isLoading
 
-    if (isLoading) {
+    if (isInitStatus) {
         Box(modifier = Modifier.fillMaxSize().padding(start = 100.dp, top = 80.dp)) {
             Column(
                 Modifier.fillMaxWidth()
@@ -50,6 +51,8 @@ fun SearchStationsScreen(
                 }
             }
         }
+    } else if(isLoading){
+      Text("Loading...")
     } else {
         RadioItemList(viewModel,
             listOf(uiState.localStations),
@@ -62,5 +65,7 @@ fun SearchStationsScreen(
                 viewModel.setPlayHistory(Station)
             }
         )
+
+        Spacer(Modifier.height(180.dp))
     }
 }
