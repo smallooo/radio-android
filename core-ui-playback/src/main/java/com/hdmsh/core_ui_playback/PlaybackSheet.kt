@@ -168,7 +168,7 @@ internal fun PlaybackSheetContent(
                             playbackState = playbackState,
                             pagerState = pagerState,
                             contentColor = contentColor,
-                            viewModel = viewModel,
+                            //viewModel = viewModel,
                             modifier = Modifier.fillParentMaxHeight(0.8f),
                         )
                     }

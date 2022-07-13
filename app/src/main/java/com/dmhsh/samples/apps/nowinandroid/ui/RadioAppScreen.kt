@@ -60,10 +60,9 @@ fun RadioApp(
             RadioCore(windowSizeClass) {
                 val bottomSheetNavigator = rememberBottomSheetNavigator()
                 navController.navigatorProvider += bottomSheetNavigator
-               // ModalBottomSheetLayout(bottomSheetNavigator) {
+                ModalBottomSheetLayout(bottomSheetNavigator) {
                     Home(windowSizeClass, currentDestination, navController)
-
-              //  }
+                }
             }
         }
     }

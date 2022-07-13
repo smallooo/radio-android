@@ -35,35 +35,35 @@ internal fun PlaybackPager(
     playbackConnection: PlaybackConnection = LocalPlaybackConnection.current,
     content: @Composable (Any?, Any?) -> Unit,
 ) {
-    val playbackQueue by rememberFlowWithLifecycle(playbackConnection.nowPlaying)
+    //val playbackQueue by rememberFlowWithLifecycle(playbackConnection.nowPlaying)
     val playbackCurrentIndex =  1 //playbackQueue.currentIndex
-    var lastRequestedPage by remember(playbackQueue, nowPlaying) {
-        mutableStateOf<Int?>(
-            playbackCurrentIndex
-        )
-    }
+//    var lastRequestedPage by remember(playbackQueue, nowPlaying) {
+//        mutableStateOf<Int?>(
+//            playbackCurrentIndex
+//        )
+//    }
 
 //    if (!playbackQueue.isValid) {
 //        content(nowPlaying.toAudio(), playbackCurrentIndex, modifier)
 //        return
 //    }
-    LaunchedEffect(Unit) {
-       // pagerState.scrollToPage(playbackCurrentIndex)
-    }
-    LaunchedEffect(playbackCurrentIndex, pagerState) {
-        if (playbackCurrentIndex != pagerState.currentPage) {
-            pagerState.animateScrollToPage(playbackCurrentIndex)
-        }
-        snapshotFlow { pagerState.isScrollInProgress }
-            .filter { !it }
-            .map { pagerState.currentPage }
-            .collectLatest { page ->
-                if (lastRequestedPage != page) {
-                    lastRequestedPage = page
-                    playbackConnection.transportControls?.skipToQueueItem(page.toLong())
-                }
-            }
-    }
+//    LaunchedEffect(Unit) {
+//       // pagerState.scrollToPage(playbackCurrentIndex)
+//    }
+//    LaunchedEffect(playbackCurrentIndex, pagerState) {
+//        if (playbackCurrentIndex != pagerState.currentPage) {
+//            pagerState.animateScrollToPage(playbackCurrentIndex)
+//        }
+//        snapshotFlow { pagerState.isScrollInProgress }
+//            .filter { !it }
+//            .map { pagerState.currentPage }
+//            .collectLatest { page ->
+//                if (lastRequestedPage != page) {
+//                    lastRequestedPage = page
+//                    playbackConnection.transportControls?.skipToQueueItem(page.toLong())
+//                }
+//            }
+//    }
 //
 //// Display 10 items
 //    HorizontalPager(count = 10) { page ->
@@ -75,12 +75,12 @@ internal fun PlaybackPager(
 //    }
 
     HorizontalPager(
-        count = 10,
+        count = 1,
         modifier = Modifier,
-        state = pagerState,
-        key = {   },//{ playbackQueue.audios.getOrNull(it) ?: it },
+       // state = pagerState,
+       // key = {   },//{ playbackQueue.audios.getOrNull(it) ?: it },
     ) { page ->
-        val currentStation = playbackConnection.playingStation
+       // val currentStation = playbackConnection.playingStation
 
         val pagerMod = Modifier.graphicsLayer {
             val pageOffset = calculateCurrentOffsetForPage(page).absoluteValue
