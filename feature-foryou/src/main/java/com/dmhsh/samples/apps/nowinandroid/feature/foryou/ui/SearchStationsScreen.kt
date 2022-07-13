@@ -1,17 +1,19 @@
 package com.dmhsh.samples.apps.nowinandroid.feature.foryou
 
 import android.annotation.SuppressLint
-import androidx.compose.foundation.layout.Box
-import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.*
 import androidx.compose.material.MaterialTheme
 import androidx.compose.material.RadioButton
 import androidx.compose.material.RadioButtonDefaults
 import androidx.compose.material3.Button
 import androidx.compose.material3.Text
 import androidx.compose.runtime.*
+import androidx.compose.ui.Alignment
+import androidx.compose.ui.Alignment.Companion.Center
+import androidx.compose.ui.Alignment.Companion.CenterHorizontally
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.testTag
+import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import com.dmhsh.samples.apps.nowinandroid.core.model.data.LanguageTag
 
@@ -25,15 +27,21 @@ fun SearchStationsScreen(
     val isLoading = uiState.isLoading
 
     if (isLoading) {
-        Box(modifier = Modifier.fillMaxSize()) {
-            Column() {
+        Box(modifier = Modifier.fillMaxSize().padding(start = 100.dp, top = 80.dp)) {
+            Column(
+                Modifier.fillMaxWidth()
+            ) {
                 Button(onClick = { onButtonSelect(0) }) {
                     Text(text = "Search by Tags")
                 }
 
+                Spacer(Modifier.height(20.dp))
+
                 Button(onClick = { onButtonSelect(1) }) {
                     Text(text = "Search by Countries")
                 }
+
+                Spacer(Modifier.height(20.dp))
 
                 Button(onClick = {
                     onButtonSelect(2)
@@ -41,8 +49,6 @@ fun SearchStationsScreen(
                     Text(text = "Search by Languages")
                 }
             }
-
-
         }
     } else {
         RadioItemList(viewModel,

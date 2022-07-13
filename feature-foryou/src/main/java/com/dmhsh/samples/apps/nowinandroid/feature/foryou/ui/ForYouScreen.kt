@@ -44,13 +44,9 @@ fun ForYouScreen(navigation: Navigator = LocalNavigator.current) {
             RadioTopAppBar(
                 titleRes = R.string.app_name,
                 navigationIcon = Icons.Filled.Search,
-                navigationIconContentDescription = stringResource(
-                    id = R.string.app_name
-                ),
+                navigationIconContentDescription = stringResource(id = R.string.app_name),
                 actionIcon = Icons.Outlined.Timer,
-                actionIconContentDescription = stringResource(
-                    id = R.string.app_name
-                ),
+                actionIconContentDescription = stringResource(id = R.string.app_name),
                 colors = TopAppBarDefaults.centerAlignedTopAppBarColors(
                     containerColor = MaterialTheme.colors.background,
                     titleContentColor = MaterialTheme.colors.onSurface,
@@ -59,9 +55,7 @@ fun ForYouScreen(navigation: Navigator = LocalNavigator.current) {
                     WindowInsets.safeDrawing.only(WindowInsetsSides.Top)
                 ),
                 onNavigationClick = {
-                   // navigation.navigate(LeafScreen.Search().createRoute())
-                    navigation.navigate(
-                        LeafScreen.SearchingSheet().createRoute())
+                    navigation.navigate(LeafScreen.SearchingSheet().createRoute())
                 }
             )
         },
@@ -128,18 +122,8 @@ fun AdvanceListContent(viewModel: SearchListViewModel = hiltViewModel()) {
                     LaunchSearchScreen(pagerState1, viewModel, "bylanguage", it.name) })  //0
                 8 -> SearchStationsScreen(
                     onButtonSelect = { it ->
-                        if(it == 0){
-                            selectedIndex = 5
-                            pagerState1.currentPage = 5
-                        }
-                        if(it == 1){
-                            selectedIndex = 6
-                            pagerState1.currentPage = 6
-                        }
-                        if(it == 2){
-                            selectedIndex = 7
-                            pagerState1.currentPage = 7
-                        }
+                        selectedIndex = it + 5
+                        pagerState1.currentPage = it + 5
 
                     }
                 )

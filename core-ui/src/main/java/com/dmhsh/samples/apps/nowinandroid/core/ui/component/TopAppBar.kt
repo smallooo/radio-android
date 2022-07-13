@@ -47,8 +47,7 @@ fun RadioTopAppBar(
         containerColor = MaterialTheme.colors.background,
         titleContentColor = MaterialTheme.colors.onSurface,
     ),
-    onNavigationClick: () -> Unit = {
-                                    },
+    onNavigationClick: () -> Unit = {},
     onActionClick: () -> Unit = {}
 ) {
     CenterAlignedTopAppBar(
