@@ -138,11 +138,14 @@ fun SocialRow(viewModel : ViewModel , station: Station, favorite: Boolean,  onIm
             if(station.homepage.isNotBlank()) {
                 IconButton(onClick = {
                     context.startActivity(Intent(Intent.ACTION_VIEW, Uri.parse(station.homepage)))
-                }) {
+                },
+
+                ) {
                     Icon(
                         imageVector = Icons.Default.Home,
                         contentDescription = null,
-                        tint = androidx.compose.material3.MaterialTheme.colorScheme.primary
+                        tint = MaterialTheme.colors.secondary,
+
                     )
                 }
             }
@@ -159,7 +162,7 @@ fun SocialRow(viewModel : ViewModel , station: Station, favorite: Boolean,  onIm
                 Icon(
                     imageVector = Icons.Default.Share,
                     contentDescription = null,
-                    tint = androidx.compose.material3.MaterialTheme.colorScheme.primary
+                    tint = MaterialTheme.colors.secondary,
                 )
             }
 
@@ -170,25 +173,25 @@ fun SocialRow(viewModel : ViewModel , station: Station, favorite: Boolean,  onIm
                 Icon(
                     imageVector = if (favorite1) Icons.Default.Star else Icons.Default.StarBorder,
                     contentDescription = null,
-                    tint = androidx.compose.material3.MaterialTheme.colorScheme.primary
+                    tint = MaterialTheme.colors.secondary,
                 )
             }
 
-            IconButton(onClick = { }) {
-                Icon(
-                    imageVector = Icons.Default.PunchClock,
-                    contentDescription = null,
-                    tint = androidx.compose.material3.MaterialTheme.colorScheme.primary
-                )
-            }
-
-            IconButton(onClick = { }) {
-                Icon(
-                    imageVector = Icons.Default.Add,
-                    contentDescription = null,
-                    tint = androidx.compose.material3.MaterialTheme.colorScheme.primary
-                )
-            }
+//            IconButton(onClick = { }) {
+//                Icon(
+//                    imageVector = Icons.Default.PunchClock,
+//                    contentDescription = null,
+//                    tint = MaterialTheme.colors.secondary,
+//                )
+//            }
+//
+//            IconButton(onClick = { }) {
+//                Icon(
+//                    imageVector = Icons.Default.Add,
+//                    contentDescription = null,
+//                    tint = MaterialTheme.colors.secondary,
+//                )
+//            }
         }
     }
 }

@@ -50,24 +50,33 @@ object TagDefaults {
     ): TagColors = DefaultTagColors(backgroundColor = backgroundColor, contentColor = contentColor)
 }
 
+
+object ItemTagDefaults {
+    @Composable
+    fun tagColors(
+        backgroundColor: Color = androidx.compose.material.MaterialTheme.colors.background,
+        contentColor: Color = androidx.compose.material.MaterialTheme.colors.onSurface
+    ): TagColors = DefaultTagColors(backgroundColor = backgroundColor, contentColor = contentColor)
+}
+
 @Composable
 fun InterestTag(
     text: String,
     modifier: Modifier = Modifier,
-    colors: TagColors = TagDefaults.tagColors(),
+    colors: TagColors = ItemTagDefaults.tagColors(),
     shape: Shape = RoundedCornerShape(4.dp),
-    style: TextStyle = typography.body2.copy(fontWeight = FontWeight.Bold),
+    style: TextStyle = typography.body1,
     onClick: () -> Unit = {}
 ) {
     val tagModifier = modifier
         .padding(4.dp)
         .clickable(onClick = onClick)
         .clip(shape = shape)
-        .background(MaterialTheme.colorScheme.background)
+        .background(androidx.compose.material.MaterialTheme.colors.background)
         .padding(horizontal = 8.dp, vertical = 4.dp)
     Text(
         text = text,
-        color = MaterialTheme.colorScheme.secondary,
+        color = androidx.compose.material.MaterialTheme.colors.onSurface,
         modifier = tagModifier,
         style = style
     )

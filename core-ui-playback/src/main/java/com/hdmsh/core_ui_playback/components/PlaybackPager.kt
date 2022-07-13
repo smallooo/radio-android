@@ -47,13 +47,13 @@ internal fun PlaybackPager(
 //        content(nowPlaying.toAudio(), playbackCurrentIndex, modifier)
 //        return
 //    }
-    LaunchedEffect(Unit) {
-        pagerState.scrollToPage(playbackCurrentIndex)
-    }
+//    LaunchedEffect(Unit) {
+//        pagerState.scrollToPage(playbackCurrentIndex)
+//    }
     LaunchedEffect(playbackCurrentIndex, pagerState) {
-        if (playbackCurrentIndex != pagerState.currentPage) {
-            pagerState.animateScrollToPage(playbackCurrentIndex)
-        }
+//        if (playbackCurrentIndex != pagerState.currentPage) {
+//            pagerState.animateScrollToPage(playbackCurrentIndex)
+//        }
         snapshotFlow { pagerState.isScrollInProgress }
             .filter { !it }
             .map { pagerState.currentPage }
@@ -65,18 +65,9 @@ internal fun PlaybackPager(
             }
     }
 
-//// Display 10 items
-//    HorizontalPager(count = 10) { page ->
-//        // Our page content
-//        Text(
-//            text = "Page: $page",
-//            modifier = Modifier.fillMaxWidth()
-//        )
-//    }
-
     HorizontalPager(
-        count = 10,
-        modifier = Modifier,
+        count = 1,
+        modifier = modifier,
        // state = pagerState,
        // key = {   },//{ playbackQueue.audios.getOrNull(it) ?: it },
     ) { page ->
@@ -103,8 +94,6 @@ internal fun PlaybackPager(
                 fraction = 1f - pageOffset.coerceIn(0f, 1f)
             )
         }
-
-
         content( page, pagerMod)
     }
 }

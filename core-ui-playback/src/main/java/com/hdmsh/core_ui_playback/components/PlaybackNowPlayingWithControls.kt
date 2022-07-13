@@ -93,23 +93,25 @@ internal fun PlaybackNowPlaying(
         horizontalAlignment = horizontalAlignment,
         modifier = modifier
     ) {
-        val title = nowPlaying.title
-        Text(
-            title.orNA(),
-            style = titleTextStyle,
-            overflow = TextOverflow.Ellipsis,
-            maxLines = 1,
-            modifier = Modifier.simpleClickable(onClick = onTitleClick)
-        )
-        CompositionLocalProvider(LocalContentAlpha provides ContentAlpha.medium) {
-            Text(
-                nowPlaying.artist.toString(),
-                style = artistTextStyle,
-                overflow = TextOverflow.Ellipsis,
-                maxLines = 1,
-                modifier = Modifier.simpleClickable(onClick = onArtistClick)
-            )
-        }
+//        val title = nowPlaying.title
+//        Text(
+//            title.orNA(),
+//            style = titleTextStyle,
+//            overflow = TextOverflow.Ellipsis,
+//            maxLines = 1,
+//            modifier = Modifier.simpleClickable(onClick = onTitleClick)
+//        )
+
+
+//        CompositionLocalProvider(LocalContentAlpha provides ContentAlpha.medium) {
+//            Text(
+//                nowPlaying.artist.toString(),
+//                style = artistTextStyle,
+//                overflow = TextOverflow.Ellipsis,
+//                maxLines = 1,
+//                modifier = Modifier.simpleClickable(onClick = onArtistClick)
+//            )
+//        }
     }
 }
 @Composable

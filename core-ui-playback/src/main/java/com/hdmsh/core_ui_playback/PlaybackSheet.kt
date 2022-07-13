@@ -123,7 +123,8 @@ internal fun PlaybackSheetContent(
         val isWideLayout = isWideLayout()
         val maxWidth = maxWidth
         Row(Modifier.fillMaxSize()) {
-            if (isWideLayout) { }
+            if (isWideLayout) {
+            }
 
             Scaffold(
                 backgroundColor = Color.Transparent,
@@ -131,7 +132,12 @@ internal fun PlaybackSheetContent(
                     .background(adaptiveColor.gradient)
                     .weight(1f),
                 scaffoldState = scaffoldState,
-                snackbarHost = { DismissableSnackbarHost(it, modifier = Modifier.navigationBarsPadding()) },
+                snackbarHost = {
+                    DismissableSnackbarHost(
+                        it,
+                        modifier = Modifier.navigationBarsPadding()
+                    )
+                },
             ) {
                 LazyColumn(
                     state = listState,
@@ -158,13 +164,13 @@ internal fun PlaybackSheetContent(
                         )
                     }
 
-                    if (viewModel.getPlayBackConnection().homepage.length > 0)
+                    if (viewModel.getPlayBackConnection().tags.length > 0)
                         item {
-                            PlaybackAudioInfo(viewModel.getPlayBackConnection().homepage)
+                            PlaybackAudioInfo(viewModel.getPlayBackConnection().tags)
                         }
 
                     if (!isWideLayout) {
-                        playbackQueueLabel()
+                        // playbackQueueLabel()
                     }
                 }
             }
@@ -255,10 +261,10 @@ private fun PlaybackSheetTopBarActions(
 }
 
 @Composable
-private fun PlaybackAudioInfo(homePage: String, modifier: Modifier = Modifier) {
+private fun PlaybackAudioInfo(tags:String, modifier: Modifier = Modifier) {
     val context = LocalContext.current
     // val dlItem = audio.audioDownloadItem
-    if (homePage != null) {
+    if (tags != null) {
         // val audiHeader = dlItem.audioHeader(context)
         Column(
             verticalArrangement = Arrangement.Center,
@@ -267,20 +273,20 @@ private fun PlaybackAudioInfo(homePage: String, modifier: Modifier = Modifier) {
                 .fillMaxWidth()
                 .padding(bottom = AppTheme.specs.padding)
         ) {
-            Surface(
-                color = MaterialTheme.colors.plainBackgroundColor().copy(alpha = 0.1f),
-                shape = CircleShape,
-            ) {
-                Text(
-                    text = homePage,
-                    style = MaterialTheme.typography.body2.copy(
-                        fontWeight = FontWeight.Bold,
-                        fontSize = 10.sp
-                    ),
-                    textAlign = TextAlign.Center,
-                    modifier = Modifier.padding(horizontal = 6.dp, vertical = 3.dp)
-                )
-            }
+           // tags.forEach { tag ->
+
+                Surface(
+                    color = MaterialTheme.colors.plainBackgroundColor().copy(alpha = 0.1f),
+                    shape = CircleShape,
+                ) {
+                    Text(
+                        text = tags,
+                        style = MaterialTheme.typography.body1,
+                        textAlign = TextAlign.Center,
+                        modifier = Modifier.padding(horizontal = 6.dp, vertical = 3.dp)
+                    )
+                }
+           // }
         }
     }
 }
