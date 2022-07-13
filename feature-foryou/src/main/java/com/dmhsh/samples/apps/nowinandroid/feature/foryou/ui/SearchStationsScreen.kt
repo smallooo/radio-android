@@ -1,21 +1,25 @@
 package com.dmhsh.samples.apps.nowinandroid.feature.foryou
 
 import android.annotation.SuppressLint
+import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.*
 import androidx.compose.material.MaterialTheme
 import androidx.compose.material.RadioButton
 import androidx.compose.material.RadioButtonDefaults
 import androidx.compose.material3.Button
+import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.Text
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Alignment.Companion.Center
 import androidx.compose.ui.Alignment.Companion.CenterHorizontally
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.testTag
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import com.dmhsh.samples.apps.nowinandroid.core.model.data.LanguageTag
+import com.dmhsh.samples.apps.nowinandroid.core.ui.component.FullScreenLoading
 
 @SuppressLint("StateFlowValueCalledInComposition")
 @Composable
@@ -28,31 +32,34 @@ fun SearchStationsScreen(
     val isLoading = uiState.isLoading
 
     if (isInitStatus) {
-        Box(modifier = Modifier.fillMaxSize().padding(start = 100.dp, top = 80.dp)) {
+        Box(modifier = Modifier.fillMaxSize()) {
             Column(
-                Modifier.fillMaxWidth()
+                Modifier.fillMaxWidth().padding(top = 100.dp)
             ) {
-                Button(onClick = { onButtonSelect(0) }) {
-                    Text(text = "Search by Tags")
+                Button(onClick = { onButtonSelect(0) },
+                    modifier = Modifier.fillMaxWidth().padding(32.dp),
+                    colors = ButtonDefaults.buttonColors(containerColor = Color.LightGray)
+                ) {
+                    Text(text = "Search by Tags", color = MaterialTheme.colors.secondary)
                 }
 
-                Spacer(Modifier.height(20.dp))
-
-                Button(onClick = { onButtonSelect(1) }) {
-                    Text(text = "Search by Countries")
+                Button(onClick = { onButtonSelect(1) },
+                    modifier = Modifier.fillMaxWidth().padding(32.dp),
+                    colors = ButtonDefaults.buttonColors(containerColor = Color.LightGray)
+                ) {
+                    Text(text = "Search by Countries", color = MaterialTheme.colors.secondary)
                 }
 
-                Spacer(Modifier.height(20.dp))
-
-                Button(onClick = {
-                    onButtonSelect(2)
-                }) {
-                    Text(text = "Search by Languages")
+                Button(onClick = { onButtonSelect(2) },
+                    modifier = Modifier.fillMaxWidth().padding(32.dp),
+                    colors = ButtonDefaults.buttonColors(containerColor = Color.LightGray)
+                    ) {
+                    Text(text = "Search by Languages", color = MaterialTheme.colors.secondary)
                 }
             }
         }
     } else if(isLoading){
-      Text("Loading...")
+        FullScreenLoading()
     } else {
         RadioItemList(viewModel,
             listOf(uiState.localStations),
@@ -66,6 +73,6 @@ fun SearchStationsScreen(
             }
         )
 
-        Spacer(Modifier.height(180.dp))
+
     }
 }

@@ -13,6 +13,7 @@ import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import com.dmhsh.samples.app.nowinandroid.core.playback.isActive
 import com.dmhsh.samples.apps.nowinandroid.common.compose.LocalPlaybackConnection
+import com.dmhsh.samples.apps.nowinandroid.core.ui.component.FullScreenLoading
 
 import com.dmhsh.samples.apps.nowinandroid.feature.foryou.ui.ShimmerAnimationType
 import com.dmhsh.samples.apps.nowinandroid.playback.PlaybackConnection
@@ -64,14 +65,9 @@ fun LateUpdateRadios(
 
     if (isLoading) {
       //  Text("Loading...")
+        // for (i in 1..5) ShimmerItem(list, dpValue.value, shimmerAnimationType == ShimmerAnimationType.VERTICAL)
 
-        //for (i in 1..5) ShimmerItem(list, dpValue.value, shimmerAnimationType == ShimmerAnimationType.VERTICAL)
-
-        Box(modifier = Modifier.fillMaxSize()) {
-            Text("Loading...")
-        }
-
-
+        FullScreenLoading()
     } else {
         RadioItemList(viewModel,
             listOf(uiState.localStations),

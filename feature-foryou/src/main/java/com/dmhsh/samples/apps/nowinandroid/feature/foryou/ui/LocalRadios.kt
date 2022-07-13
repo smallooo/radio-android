@@ -17,6 +17,7 @@ import androidx.hilt.navigation.compose.hiltViewModel
 import com.dmhsh.samples.app.nowinandroid.core.playback.isActive
 import com.dmhsh.samples.apps.nowinandroid.common.compose.LocalPlaybackConnection
 import com.dmhsh.samples.apps.nowinandroid.core.datastore.PreferencesStore
+import com.dmhsh.samples.apps.nowinandroid.core.ui.component.FullScreenLoading
 
 import com.dmhsh.samples.apps.nowinandroid.core.ui.component.RadioItem
 import com.dmhsh.samples.apps.nowinandroid.feature.foryou.ui.ShimmerAnimationType
@@ -34,9 +35,7 @@ fun LocalRadioList(
 
     when (uiState) {
         StationsUiState.Loading -> {
-            Box(modifier = Modifier.fillMaxSize()) {
-                Text("Loading...")
-            }
+            FullScreenLoading()
         }
         is StationsUiState.Stations -> {
             if (uiState is StationsUiState.Stations) (

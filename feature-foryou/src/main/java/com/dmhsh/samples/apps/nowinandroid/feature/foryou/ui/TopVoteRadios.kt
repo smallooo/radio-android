@@ -29,6 +29,7 @@ import com.dmhsh.samples.app.nowinandroid.core.playback.isActive
 import com.dmhsh.samples.apps.nowinandroid.common.compose.LocalPlaybackConnection
 import com.dmhsh.samples.apps.nowinandroid.core.model.data.FollowableStation
 import com.dmhsh.samples.apps.nowinandroid.core.model.data.Station
+import com.dmhsh.samples.apps.nowinandroid.core.ui.component.FullScreenLoading
 import com.dmhsh.samples.apps.nowinandroid.core.ui.component.RadioItem
 import com.dmhsh.samples.apps.nowinandroid.core.ui.theme.AppTheme.state
 
@@ -91,9 +92,7 @@ fun TopVoteRadios(
 //                Text(it.toString())
 //            }
 
-            Box(modifier = Modifier.fillMaxSize()) {
-                Text("Loading...")
-            }
+            FullScreenLoading()
 
         }
 

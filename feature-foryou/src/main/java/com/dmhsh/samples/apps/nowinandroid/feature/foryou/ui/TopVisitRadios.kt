@@ -23,6 +23,7 @@ import com.dmhsh.samples.apps.nowinandroid.common.compose.LocalPlaybackConnectio
 import com.dmhsh.samples.apps.nowinandroid.core.model.data.Station
 import com.dmhsh.samples.apps.nowinandroid.core.ui.component.AnimatedListItem
 import com.dmhsh.samples.apps.nowinandroid.core.ui.component.CoverImage
+import com.dmhsh.samples.apps.nowinandroid.core.ui.component.FullScreenLoading
 
 import com.dmhsh.samples.apps.nowinandroid.playback.PlaybackConnection
 
@@ -75,9 +76,7 @@ fun TopClickRadios(
       //  Log.e("aaa", "isLoading")
      //   Text("loading" + topVisitsState.isLoading + isLoading)
         //for (i in 1..5) ShimmerItem(list, dpValue.value, shimmerAnimationType == ShimmerAnimationType.VERTICAL)
-        Box(modifier = Modifier.fillMaxSize()) {
-            Text("Loading...")
-        }
+        FullScreenLoading()
     } else {
         RadioItemList(viewModel,
             listOf(topVisitsState.localStations),
@@ -104,7 +103,11 @@ fun RadioItemList(viewModel: ViewModel, stateCategories: List<List<Station>>, on
                 AnimatedListItem(viewModel, station = item, index, onImageClick = onImageClick, onPlayClick = onPlayClick)
             }
         )
+        item {
+            Spacer(Modifier.height(180.dp))
+        }
     }
+
 }
 
 

@@ -26,6 +26,7 @@ import androidx.hilt.navigation.compose.hiltViewModel
 import coil.compose.rememberImagePainter
 import com.dmhsh.samples.apps.nowinandroid.core.model.data.Country
 import com.dmhsh.samples.apps.nowinandroid.core.ui.component.CoverImage
+import com.dmhsh.samples.apps.nowinandroid.core.ui.component.FullScreenLoading
 import com.dmhsh.samples.apps.nowinandroid.feature.foryou.ui.ShimmerAnimationType
 
 @Composable
@@ -34,9 +35,7 @@ fun CountryList( viewModel: CountryViewModel = hiltViewModel(), onCountrySelect:
     val loading = state.isLoading
 
     if(loading) {
-        Box(modifier = Modifier.fillMaxSize()) {
-            Text("Loading...")
-        }
+        FullScreenLoading()
     }else{
         CountryItem(state.categories,onCountrySelect)
     }

@@ -27,10 +27,7 @@ import coil.compose.rememberImagePainter
 import com.dmhsh.samples.apps.nowinandroid.core.model.data.Country
 import com.dmhsh.samples.apps.nowinandroid.core.model.data.LanguageTag
 import com.dmhsh.samples.apps.nowinandroid.core.model.data.StationsTag
-import com.dmhsh.samples.apps.nowinandroid.core.ui.component.CoverImage
-import com.dmhsh.samples.apps.nowinandroid.core.ui.component.LanguageItems
-import com.dmhsh.samples.apps.nowinandroid.core.ui.component.RadioItem
-import com.dmhsh.samples.apps.nowinandroid.core.ui.component.TagItems
+import com.dmhsh.samples.apps.nowinandroid.core.ui.component.*
 
 import com.dmhsh.samples.apps.nowinandroid.feature.foryou.ui.ShimmerAnimationType
 
@@ -85,9 +82,7 @@ fun LanguageListScreen( viewModel: LanguageListViewModel = hiltViewModel(),onTag
 //                shimmerAnimationType == ShimmerAnimationType.VERTICAL
 //            )
 
-            Box(modifier = Modifier.fillMaxSize()) {
-                Text("Loading...",color = MaterialTheme.colors.onSurface)
-            }
+            FullScreenLoading()
         }
         is LanguageUiState.Tags -> {
             LanguageItems(
