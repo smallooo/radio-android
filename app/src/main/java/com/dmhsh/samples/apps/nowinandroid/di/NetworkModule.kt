@@ -109,6 +109,8 @@ class NetworkModule {
 //    @Singleton
 //    fun jsonConfigured() = DEFAULT_JSON_FORMAT
 //
+
+    //接口请求时所用的接口
     @Provides
     @Singleton
     @ExperimentalSerializationApi
@@ -119,6 +121,8 @@ class NetworkModule {
             .addCallAdapterFactory(RxJava2CallAdapterFactory.create())
             .client(
                 OkHttpClient.Builder()
+                    .connectTimeout(60, TimeUnit.SECONDS)
+                    .readTimeout(60, TimeUnit.SECONDS)
                     .addInterceptor(HttpLoggingInterceptor().apply {
                         setLevel(HttpLoggingInterceptor.Level.BASIC)
                     }).build()
