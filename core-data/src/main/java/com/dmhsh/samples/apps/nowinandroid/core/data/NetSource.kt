@@ -35,7 +35,7 @@ class NetSource @Inject constructor(private val stationDao: StationDao, private 
 
     //Local Stations
     suspend fun getSearch(type: String, param : String) = withContext(Dispatchers.IO){
-        if(_searchRadioList == null) _searchRadioList = radioListApi.searchByTypeList(type, param)
+        _searchRadioList = radioListApi.searchByTypeList(type, param)
         return@withContext _searchRadioList
     }
 

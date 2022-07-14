@@ -53,24 +53,23 @@ class SearchViewModel @Inject constructor(
     class LocalStationsContract {
 
         data class State(
-            val localStations: List<Station> = listOf(),
-            var isLoading: Boolean = false
+            var localStations: List<Station> = listOf(),
+            var isLoading: Boolean = false,
+            var isWaiting: Boolean = true
         )
 
-        sealed class Effect {
-            object DataWasLoaded : LocalStationsContract.Effect()
-        }
+
     }
 
     var stateS by mutableStateOf(
         LocalStationsContract.State(
             localStations = listOf(),
-            isLoading = true
+            isLoading = false,
+            isWaiting = true
         )
     )
 
-    var effects = Channel<LocalStationsContract.Effect>(Channel.UNLIMITED)
-        private set
+
 
     val searchQuery = searchQueryState.asStateFlow()
 
@@ -81,15 +80,21 @@ class SearchViewModel @Inject constructor(
                 when (action) {
                     is SearchAction.QueryChange -> {
                         searchQueryState.value = action.query
+                        Log.e("aaa searchQuery", action.query)
                         // trigger search while typing if minerva is the only backend selected
                         if (searchFilterState.value.hasMinervaOnly) {
                             searchTriggerState.value = SearchTrigger(searchQueryState.value)
                         }
                     }
-                    is SearchAction.Search -> searchTriggerState.value = SearchTrigger(searchQueryState.value)
+                    is SearchAction.Search -> {
+                        searchTriggerState.value = SearchTrigger(searchQueryState.value)
+                    }
                     is SearchAction.SelectBackendType -> selectBackendType(action)
-                    is SearchAction.SubmitCaptcha -> submitCaptcha(action)
-                    is SearchAction.SubmitCaptcha -> submitCaptcha(action)
+                    is SearchAction.SubmitCaptcha -> {
+                        Log.e("aaa submitCaptcha", searchQueryState.value)
+                        submitCaptcha(action)
+                    }
+                    //is SearchAction.SubmitCaptcha -> submitCaptcha(action)
                    // is SearchAction.AddError -> snackbarManager.addError(action.error)
                   //  is SearchAction.ClearError -> snackbarManager.removeCurrentError()
                    // is SearchAction.PlayRadio -> playbackConnection.playAudio(station)
@@ -101,13 +106,30 @@ class SearchViewModel @Inject constructor(
             combine(searchTriggerState, searchFilterState, ::SearchEvent)
                 .debounce(SEARCH_DEBOUNCE_MILLIS)
                 .collectLatest {
+                   // changeStatus(it)
                     search(it)
                     onSearchEventChannel.send(it)
                 }
         }
     }
 
+    fun changeStatus(searchEvent: SearchEvent) {
+        val (trigger, filter) = searchEvent
+        val query = trigger.query
+        val searchParams = DatmusicSearchParams(query, trigger.captchaSolution)
+        val backends = filter.backends.joinToString { it.type }
 
+        Log.e("aaa SearchEvent", searchQueryState.value)
+
+        if(query.isNotBlank()) {
+
+            val aaa = "it"
+            viewModelScope.launch {
+            stateS = aaa.let { stateS.copy(isWaiting = false, isLoading = true) }
+                }
+
+        }
+    }
 
 
     fun search(searchEvent: SearchEvent) {
@@ -116,18 +138,21 @@ class SearchViewModel @Inject constructor(
         val searchParams = DatmusicSearchParams(query, trigger.captchaSolution)
         val backends = filter.backends.joinToString { it.type }
 
+        Log.e("aaa SearchEvent", searchQueryState.value)
+
         if(query.isNotBlank()) {
+
+            val aaa = "it"
+            stateS = aaa.let { stateS.copy(isWaiting = false, isLoading = true) }
+
             viewModelScope.launch {
                 val categories = remoteSource.getSearch("byname", query)
                 if (categories != null) {
-                    Log.e("aaa", categories.toString() + "aaa")
                     stateS = categories.let { stateS.copy(localStations = it, isLoading = false) }
-                    stateS.isLoading = false
-                    effects.send(LocalStationsContract.Effect.DataWasLoaded)
+//                    stateS.isWaiting = false
+//                    stateS.isLoading = true
+                   // effects.send(LocalStationsContract.Effect.DataWasLoaded)
                 }
-//                state = categories?.let { state.copy(localStations = it, isLoading = false) }!!
-//                state.isLoading = false
-//                effects.send(LocalStationsContract.Effect.DataWasLoaded)
             }
         }
     }
@@ -146,7 +171,6 @@ class SearchViewModel @Inject constructor(
             )
         )
     }
-
 
     fun submitAction(action: SearchAction) {
         viewModelScope.launch {

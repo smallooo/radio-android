@@ -55,7 +55,7 @@ fun ForYouScreen(navigation: Navigator = LocalNavigator.current) {
                     WindowInsets.safeDrawing.only(WindowInsetsSides.Top)
                 ),
                 onNavigationClick = {
-                    //navigation.navigate(LeafScreen.SearchingSheet().createRoute())
+                    navigation.navigate(LeafScreen.SearchingSheet().createRoute())
                 }
             )
         },

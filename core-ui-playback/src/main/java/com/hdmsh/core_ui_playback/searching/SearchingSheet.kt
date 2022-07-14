@@ -184,14 +184,7 @@ fun RadioSearchScreen(
 
 
                 Spacer(modifier = Modifier.height(60.dp))
-
-                SearchList(
-                    viewModel = viewModel(),
-                    "1"
-                )
-
-
-
+                SearchList(viewModel = viewModel(),)
                 SpotifySearchGrid()
             }
             Spacer(modifier = Modifier.height(200.dp))
@@ -248,7 +241,6 @@ private fun ColumnScope.SearchInput(
         triggerSearch()
     }
 }
-
 
 @OptIn(ExperimentalAnimationApi::class)
 @Composable
