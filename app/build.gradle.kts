@@ -31,8 +31,8 @@ plugins {
 android {
     defaultConfig {
         applicationId = "com.dmhsh.samples.apps.nowinandroid"
-        versionCode = 8
-        versionName = "0.8.0" // X.Y.Z; X = Major, Y = minor, Z = Patch level
+        versionCode = 9
+        versionName = "0.9.0" // X.Y.Z; X = Major, Y = minor, Z = Patch level
 
         // Custom test runner to set up Hilt dependency graph
         testInstrumentationRunner = "com.dmhsh.samples.apps.nowinandroid.core.testing.NiaTestRunner"

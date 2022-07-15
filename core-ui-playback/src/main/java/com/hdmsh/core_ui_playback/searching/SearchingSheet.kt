@@ -72,7 +72,6 @@ import kotlinx.coroutines.launch
 fun SearchingSheet(
     navigator: Navigator = LocalNavigator.current,
     viewModel: SearchViewModel = hiltViewModel(),
-
 ) {
     val listState = rememberLazyListState()
     val queueListState = rememberLazyListState()
@@ -167,18 +166,16 @@ fun RadioSearchScreen(
             keyboardController?.hide();
             focusManager.clearFocus() }
 
-       // Spacer(modifier = Modifier.height(280.dp))
         if(scrollState.firstVisibleItemIndex < 2) {
             SearchTitle(typography, scrollState)
         }
-        //Column(modifier = Modifier.verticalScroll(scrollState)) {
+
         LazyColumn(state = scrollState) {
             item {
                 Spacer(modifier = Modifier.height(280.dp))
             }
 
             item {
-                    // SpotifySearchBar()
                 Column() {
                     SearchInput(
                         initialQuery,
@@ -215,12 +212,11 @@ fun RadioSearchScreen(
                             }
                         }
                     }
-                    //SpotifySearchGrid()
+
                 }
             }
         Spacer(modifier = Modifier.height(200.dp))
     }
-       // }
 
 @Composable
 private fun SearchTitle(
@@ -285,7 +281,7 @@ private fun ColumnScope.SearchFilterPanel(
         exit = shrinkOut(shrinkTowards = Alignment.BottomCenter) + fadeOut()
     ) {
         ChipsRow(
-            items = DatmusicSearchParams.BackendType.values().take(4).toList(),
+            items = DatmusicSearchParams.BackendType.values().take(0).toList(),
             selectedItems = selectedItems,
             onItemSelect = { selected, item ->
                 onBackendTypeSelect(SearchAction.SelectBackendType(selected, item))
@@ -344,6 +340,7 @@ fun AnimatedSearchListItem(
     val playbackConnection: PlaybackConnection = LocalPlaybackConnection.current
     var expanded by remember { mutableStateOf(false) }
     var favorite by remember { mutableStateOf(station.favorited) }
+    val playbackState by rememberFlowWithLifecycle(playbackConnection.playbackState)
     Row(
         verticalAlignment = Alignment.CenterVertically,
         modifier = Modifier
@@ -385,24 +382,15 @@ fun AnimatedSearchListItem(
                 overflow = TextOverflow.Ellipsis
             )
         }
-//        androidx.compose.material3.Icon(
-//            imageVector = Icons.Default.ArrowDropUp,
-//            contentDescription = null,
-//            tint = Color.LightGray,
-//            modifier = Modifier
-//                .padding(8.dp)
-//                .size(32.dp)
-//                .background(
-//                    if(playbackConnection.playingStation.value.stationuuid == station.stationuuid) Color.Red else Color.LightGray)
-//                .clickable {  }
-//        )
 
         if(station.stationuuid == playbackConnection.playingStation.value.stationuuid) {
-            PlaybackPlayPause(playbackConnection.playbackState.value, onPlayPause = {})
+            PlaybackPlayPause(playbackState, onPlayPause = {
+                playbackConnection.mediaController?.playPause()
+
+            })
         }
     }
 }
-
 
 @Composable
 private fun RowScope.PlaybackPlayPause(
