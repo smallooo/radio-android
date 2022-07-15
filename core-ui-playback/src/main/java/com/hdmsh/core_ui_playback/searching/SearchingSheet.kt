@@ -9,6 +9,7 @@ import android.util.Log
 import androidx.compose.animation.*
 import androidx.compose.foundation.*
 import androidx.compose.foundation.layout.*
+import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.LazyListState
 import androidx.compose.foundation.lazy.rememberLazyListState
 import androidx.compose.material.*
@@ -46,7 +47,9 @@ import com.dmhsh.samples.apps.nowinandroid.common.compose.LocalScaffoldState
 import com.dmhsh.samples.apps.nowinandroid.core.navigation.LocalNavigator
 import com.dmhsh.samples.apps.nowinandroid.core.navigation.Navigator
 import com.dmhsh.samples.apps.nowinandroid.core.ui.adaptiveColor
+import com.dmhsh.samples.apps.nowinandroid.core.ui.component.AnimatedListItem
 import com.dmhsh.samples.apps.nowinandroid.core.ui.component.DismissableSnackbarHost
+import com.dmhsh.samples.apps.nowinandroid.core.ui.component.FullScreenLoading
 
 import com.dmhsh.samples.apps.nowinandroid.core.ui.component.isWideLayout
 import com.dmhsh.samples.apps.nowinandroid.core.ui.extensions.Callback
@@ -122,6 +125,7 @@ internal fun SearchingSheetContent(
                 },
             ) {
                 RadioSearchScreen(
+                    viewModel = viewModel,
                     onQueryChange = {
                         Log.e("aaa", "onQueryChange")
                         actioner(SearchAction.QueryChange(it)) },
@@ -142,6 +146,7 @@ internal fun SearchingSheetContent(
 @OptIn(ExperimentalComposeUiApi::class)
 @Composable
 fun RadioSearchScreen(
+    viewModel: SearchViewModel,
     state: SearchViewState,
     onQueryChange: (String) -> Unit,
     onSearch: () -> Unit,
@@ -150,6 +155,7 @@ fun RadioSearchScreen(
     windowInfo: WindowInfo = LocalWindowInfo.current,
     windowInsets: WindowInsets = LocalWindowInsets.current,
 ) {
+    val viewState =viewModel.stateS
     val scrollState = rememberScrollState(0)
     val surfaceGradient = SpotifyDataProvider.spotifySurfaceGradient(isSystemInDarkTheme())
     val initialQuery = "".toString()
@@ -167,30 +173,63 @@ fun RadioSearchScreen(
             focusManager.clearFocus() }
 
         SearchTitle(typography, scrollState)
+        //Spacer(modifier = Modifier.height(180.dp))
+        //Column(modifier = Modifier.verticalScroll(scrollState)) {
+        LazyColumn() {
 
-        Column(modifier = Modifier.verticalScroll(scrollState)) {
-            Spacer(modifier = Modifier.height(180.dp))
-            Column(modifier = Modifier.horizontalGradientBackground(surfaceGradient)) {
-                // SpotifySearchBar()
-                SearchInput(
-                    initialQuery,
-                    onQueryChange,
-                    searchActive,
-                    focused,
-                    state,
-                    onBackendTypeSelect,
-                    triggerSearch
-                )
-
-
-                Spacer(modifier = Modifier.height(60.dp))
-                SearchList(viewModel = viewModel(),)
-                SpotifySearchGrid()
+            item {
+                Spacer(modifier = Modifier.height(180.dp))
             }
-            Spacer(modifier = Modifier.height(200.dp))
-        }
+
+            item {
+                Column(modifier = Modifier.horizontalGradientBackground(surfaceGradient)) {
+                    // SpotifySearchBar()
+                    SearchInput(
+                        initialQuery,
+                        onQueryChange,
+                        searchActive,
+                        focused,
+                        state,
+                        onBackendTypeSelect,
+                        triggerSearch
+                    )
+                }
+            }
+
+                item {
+                    Spacer(modifier = Modifier.height(60.dp).horizontalGradientBackground(surfaceGradient))
+                }
+
+                    if (!viewState.isWaiting) {
+                        if (viewState.isLoading) {
+                            item {
+                                FullScreenLoading()
+                            }
+                        } else {
+
+                            viewState.localStations.forEachIndexed { index, item ->
+                                item {
+                                    AnimatedListItem(
+                                            viewModel,
+                                            station = item,
+                                            index,
+                                            onImageClick = {},
+                                            onPlayClick = {})
+                                }
+                            }
+                        }
+                    }
+                    //SpotifySearchGrid()
+                }
+            }
+
+
+        Spacer(modifier = Modifier.height(200.dp).horizontalGradientBackground(surfaceGradient))
+
     }
-}
+
+       // }
+
 
 @Composable
 private fun SearchTitle(

@@ -28,22 +28,17 @@ internal fun SearchList(
 ) {
     val viewState =viewModel.stateS
     if (viewState.isWaiting) {
-        //Box(modifier = Modifier.fillMaxSize()) { Text("Waiting...") }
     }else if(viewState.isLoading){
         Box(modifier = Modifier.fillMaxSize()) { Text("Loading...") }
     } else {
-        LazyColumn {
             viewState.localStations.forEachIndexed { index, item ->
-                item {
                     AnimatedListItem(
                         viewModel,
                         station = item,
                         index,
                         onImageClick = {},
                         onPlayClick = {})
-                }
             }
-        }
     }
 }
 
