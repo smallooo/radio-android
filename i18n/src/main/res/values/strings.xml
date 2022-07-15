@@ -361,4 +361,6 @@
     <string name= "web_page">https://www.radio-browser.info</string>
     <string name="settings_theme_colorPalette">Color palette</string>
 
+    <string name="music">music</string>
+
 </resources>

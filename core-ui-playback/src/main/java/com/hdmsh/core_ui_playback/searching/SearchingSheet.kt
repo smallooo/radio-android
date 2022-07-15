@@ -14,6 +14,9 @@ import androidx.compose.foundation.lazy.LazyListState
 import androidx.compose.foundation.lazy.rememberLazyListState
 import androidx.compose.material.*
 import androidx.compose.material.MaterialTheme.typography
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.ArrowDropDown
+import androidx.compose.material.icons.filled.ArrowDropUp
 import androidx.compose.runtime.*
 import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.ui.Alignment
@@ -27,6 +30,7 @@ import androidx.compose.ui.focus.onFocusChanged
 import androidx.compose.ui.geometry.Size
 import androidx.compose.ui.graphics.Brush
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.platform.LocalFocusManager
 import androidx.compose.ui.platform.LocalSoftwareKeyboardController
 import androidx.compose.ui.platform.LocalWindowInfo
@@ -34,8 +38,10 @@ import androidx.compose.ui.platform.WindowInfo
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
+import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
+import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewmodel.compose.viewModel
 
 import com.google.accompanist.pager.ExperimentalPagerApi
@@ -44,14 +50,13 @@ import com.dmhsh.samples.app.nowinandroid.core.playback.artwork
 import com.dmhsh.samples.app.nowinandroid.core.playback.isIdle
 import com.dmhsh.samples.apps.nowinandroid.common.compose.LocalPlaybackConnection
 import com.dmhsh.samples.apps.nowinandroid.common.compose.LocalScaffoldState
+import com.dmhsh.samples.apps.nowinandroid.core.model.data.Station
 import com.dmhsh.samples.apps.nowinandroid.core.navigation.LocalNavigator
 import com.dmhsh.samples.apps.nowinandroid.core.navigation.Navigator
 import com.dmhsh.samples.apps.nowinandroid.core.ui.adaptiveColor
+import com.dmhsh.samples.apps.nowinandroid.core.ui.component.*
 import com.dmhsh.samples.apps.nowinandroid.core.ui.component.AnimatedListItem
-import com.dmhsh.samples.apps.nowinandroid.core.ui.component.DismissableSnackbarHost
-import com.dmhsh.samples.apps.nowinandroid.core.ui.component.FullScreenLoading
 
-import com.dmhsh.samples.apps.nowinandroid.core.ui.component.isWideLayout
 import com.dmhsh.samples.apps.nowinandroid.core.ui.extensions.Callback
 import com.dmhsh.samples.apps.nowinandroid.core.ui.theme.AppTheme
 import com.dmhsh.samples.apps.nowinandroid.core.ui.theme.RadioTheme
@@ -80,12 +85,9 @@ fun SearchingSheet(
             scrollToTop = scrollToTop,
             listState = listState,
             queueListState = queueListState,
-            viewModel = viewModel){
-                action -> viewModel.submitAction(action)
-        }
+            viewModel = viewModel){ action -> viewModel.submitAction(action) }
         }
     }
-
 
 @SuppressLint("UnusedMaterialScaffoldPaddingParameter")
 @OptIn(ExperimentalPagerApi::class)
@@ -126,22 +128,15 @@ internal fun SearchingSheetContent(
             ) {
                 RadioSearchScreen(
                     viewModel = viewModel,
-                    onQueryChange = {
-                        Log.e("aaa", "onQueryChange")
-                        actioner(SearchAction.QueryChange(it)) },
-                    onSearch = {
-                        Log.e("aaa", "onSearch")
-                        actioner(SearchAction.Search) },
-                    onBackendTypeSelect = {
-                        Log.e("aaa", "onBackendTypeSelect")
-                        actioner(it) },
+                    onQueryChange = { actioner(SearchAction.QueryChange(it)) },
+                    onSearch = { actioner(SearchAction.Search) },
+                    onBackendTypeSelect = { actioner(it) },
                     state = viewState,
                 )
             }
         }
     }
 }
-
 
 @OptIn(ExperimentalComposeUiApi::class)
 @Composable
@@ -156,8 +151,8 @@ fun RadioSearchScreen(
     windowInsets: WindowInsets = LocalWindowInsets.current,
 ) {
     val viewState =viewModel.stateS
-    val scrollState = rememberScrollState(0)
-    val surfaceGradient = SpotifyDataProvider.spotifySurfaceGradient(isSystemInDarkTheme())
+    val scrollState = rememberLazyListState(0)
+    val surfaceGradient = SpotifyDataProvider.spotifySurfaceGradient(false) //SpotifyDataProvider.spotifySurfaceGradient(isSystemInDarkTheme())
     val initialQuery = "".toString()
     Box(modifier = Modifier
         .fillMaxSize()
@@ -172,18 +167,19 @@ fun RadioSearchScreen(
             keyboardController?.hide();
             focusManager.clearFocus() }
 
-        SearchTitle(typography, scrollState)
-        //Spacer(modifier = Modifier.height(180.dp))
+       // Spacer(modifier = Modifier.height(280.dp))
+        if(scrollState.firstVisibleItemScrollOffset < 3) {
+            SearchTitle(typography, scrollState)
+        }
         //Column(modifier = Modifier.verticalScroll(scrollState)) {
-        LazyColumn() {
-
+        LazyColumn(state = scrollState) {
             item {
-                Spacer(modifier = Modifier.height(180.dp))
+                Spacer(modifier = Modifier.height(280.dp))
             }
 
             item {
-                Column(modifier = Modifier.horizontalGradientBackground(surfaceGradient)) {
                     // SpotifySearchBar()
+                Column() {
                     SearchInput(
                         initialQuery,
                         onQueryChange,
@@ -197,19 +193,17 @@ fun RadioSearchScreen(
             }
 
                 item {
-                    Spacer(modifier = Modifier.height(60.dp).horizontalGradientBackground(surfaceGradient))
+                    Spacer(modifier = Modifier.height(60.dp))
                 }
 
                     if (!viewState.isWaiting) {
                         if (viewState.isLoading) {
-                            item {
-                                FullScreenLoading()
-                            }
+                            item { FullScreenLoading() }
                         } else {
-
                             viewState.localStations.forEachIndexed { index, item ->
                                 item {
-                                    AnimatedListItem(
+                                    AnimatedSearchListItem(
+                                        surfaceGradient,
                                             viewModel,
                                             station = item,
                                             index,
@@ -222,29 +216,24 @@ fun RadioSearchScreen(
                     //SpotifySearchGrid()
                 }
             }
-
-
-        Spacer(modifier = Modifier.height(200.dp).horizontalGradientBackground(surfaceGradient))
-
+        Spacer(modifier = Modifier.height(200.dp))
     }
-
        // }
-
 
 @Composable
 private fun SearchTitle(
     typography: Typography,
-    scrollState: ScrollState
+    scrollState: LazyListState
 ) {
-    Text(
-        text = "Search",
-        style = typography.h3.copy(fontWeight = FontWeight.ExtraBold),
-        textAlign = TextAlign.Center,
-        modifier = Modifier
-            .padding(top = 80.dp, bottom = 40.dp)
-            .fillMaxSize()
-            .alpha(1f - scrollState.value / 200)
-    )
+        Text(
+            text = "Search",
+            style = typography.h3.copy(fontWeight = FontWeight.ExtraBold),
+            textAlign = TextAlign.Center,
+            modifier = Modifier
+                .padding(top = 180.dp, bottom = 40.dp)
+                .fillMaxSize()
+                .alpha(1f - scrollState.firstVisibleItemScrollOffset)
+        )
 }
 
 @Composable
@@ -264,7 +253,7 @@ private fun ColumnScope.SearchInput(
         onQueryChange(value)
     },
         onSearch = { triggerSearch() },
-        hint = if (!searchActive) stringResource(R.string.app_id) else stringResource(R.string.action_search),
+        hint = if (!searchActive) stringResource(R.string.searchpreference_search) else stringResource(R.string.action_search),
         analyticsPrefix = "search",
         modifier = Modifier
             .padding(horizontal = AppTheme.specs.padding)
@@ -314,7 +303,6 @@ private fun ColumnScope.SearchFilterPanel(
     }
 }
 
-
 fun Modifier.gradientBackground(
     colors: List<Color>,
     brushProvider: (List<Color>, Size) -> Brush
@@ -336,6 +324,63 @@ fun Modifier.horizontalGradientBackground(
         startX = 0f,
         endX = size.width
     )
+}
+
+@Composable
+fun AnimatedSearchListItem(surfaceGradient:  List<Color> ,viewModel: ViewModel, station: Station, itemIndex: Int, onImageClick: (station: Station) -> Unit, onPlayClick: (station: Station) -> Unit) {
+    val playbackConnection: PlaybackConnection = LocalPlaybackConnection.current
+    var expanded by remember { mutableStateOf(false) }
+    var favorite by remember { mutableStateOf(station.favorited) }
+    Row(
+        verticalAlignment = Alignment.CenterVertically,
+        modifier = Modifier
+            .padding(top = 8.dp)
+            .clickable {
+                playbackConnection.playAudio(station)
+                onPlayClick(station)
+            },
+    ) {
+        CoverImage(
+            data = station.favicon,
+            contentDescription = null,
+            contentScale = ContentScale.Crop,
+            modifier = Modifier
+                .size(55.dp)
+                .padding(4.dp)
+                .clickable {
+                    // onImageClick(station)
+                    // favorite = !favorite
+                }
+        )
+        Column(
+            modifier = Modifier
+                .padding(horizontal = 4.dp)
+                .weight(1f)
+        ) {
+            androidx.compose.material3.Text(
+                text = station.name,
+                style = typography.body1,
+                color = MaterialTheme.colors.onSurface
+            )
+
+            androidx.compose.material3.Text(
+                text = station.bitrate + "kbps",
+                style = typography.body1,
+                maxLines = 1,
+                color = MaterialTheme.colors.onSurface,
+                overflow = TextOverflow.Ellipsis
+            )
+        }
+        androidx.compose.material3.Icon(
+            imageVector = if (expanded) Icons.Default.ArrowDropUp else Icons.Default.ArrowDropDown,
+            contentDescription = null,
+            tint = Color.LightGray,
+            modifier = Modifier
+                .padding(8.dp)
+                .size(32.dp)
+                .clickable { expanded = !expanded }
+        )
+    }
 }
 
 
