@@ -208,7 +208,9 @@ fun RadioSearchScreen(
                                             station = item,
                                             index,
                                             onImageClick = {},
-                                            onPlayClick = {})
+                                            onPlayClick = {
+                                                viewModel.setPlayHistory(station = it)
+                                            })
                                 }
                             }
                         }
@@ -396,9 +398,6 @@ fun AnimatedSearchListItem(
 //        )
 
         if(station.stationuuid == playbackConnection.playingStation.value.stationuuid) {
-            if(!playbackConnection.isConnected.value){
-                FullScreenLoading()
-            }
             PlaybackPlayPause(playbackConnection.playbackState.value, onPlayPause = {})
         }
     }
@@ -414,7 +413,7 @@ private fun RowScope.PlaybackPlayPause(
     IconButton(
         onClick = onPlayPause,
         rippleColor = LocalContentColor.current,
-        modifier = Modifier.weight(1f)
+        modifier = Modifier.weight(0.15f)
     ) {
         Icon(
             imageVector = when {

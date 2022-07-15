@@ -12,6 +12,9 @@ import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.dmhsh.samples.apps.nowinandroid.core.data.NetSource
+import com.dmhsh.samples.apps.nowinandroid.core.database.dao.StationDao
+import com.dmhsh.samples.apps.nowinandroid.core.database.model.StationEntity
+import com.dmhsh.samples.apps.nowinandroid.core.database.model.asExternalModel
 import com.dmhsh.samples.apps.nowinandroid.core.model.data.Station
 import com.dmhsh.samples.apps.nowinandroid.core.navigation.Screens.QUERY_KEY
 import com.dmhsh.samples.apps.nowinandroid.core.navigation.Screens.SEARCH_BACKENDS_KEY
@@ -35,6 +38,7 @@ class SearchViewModel @Inject constructor(
     //private val snackbarManager: SnackbarManager,
     private val remoteSource: NetSource,
     private val playbackConnection: PlaybackConnection,
+    private val stationDao: StationDao
 ) : ViewModel() {
     private val initialQuery = handle.get(QUERY_KEY) ?: ""
     private val searchQueryState = handle.getStateFlow(initialQuery, viewModelScope, initialQuery)
@@ -154,6 +158,14 @@ class SearchViewModel @Inject constructor(
                    // effects.send(LocalStationsContract.Effect.DataWasLoaded)
                 }
             }
+        }
+    }
+
+    fun setPlayHistory(station: Station){
+        viewModelScope.launch {
+            val station1 = station
+            station.lastPlayedTime = System.currentTimeMillis().toString()
+            stationDao.insertOrIgnoreStation(station.asExternalModel())
         }
     }
 

@@ -31,6 +31,7 @@ dependencies {
     implementation(project(":common-compose"))
     implementation(project(":core-ui"))
     implementation(project(":core-data"))
+    implementation(project(":core-database"))
     implementation(project(":core-navigation"))
     testImplementation(project(":core-testing"))
 

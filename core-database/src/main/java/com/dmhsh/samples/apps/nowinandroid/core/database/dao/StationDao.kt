@@ -51,6 +51,9 @@ interface StationDao {
     @Insert(onConflict = OnConflictStrategy.IGNORE)
     suspend fun insertOrIgnoreStations(stationEntities: List<StationEntity>): List<Long>
 
+    @Insert(onConflict = OnConflictStrategy.IGNORE)
+    suspend fun insertOrIgnoreStation(stationEntities: StationEntity): Long
+
     /**
      * Updates [entities] in the db that match the primary key, and no-ops if they don't
      */
