@@ -5,6 +5,7 @@
 package com.hdmsh.core_ui_playback.searching
 
 import android.annotation.SuppressLint
+import android.support.v4.media.session.PlaybackStateCompat
 import android.util.Log
 import androidx.compose.animation.*
 import androidx.compose.foundation.*
@@ -15,8 +16,7 @@ import androidx.compose.foundation.lazy.rememberLazyListState
 import androidx.compose.material.*
 import androidx.compose.material.MaterialTheme.typography
 import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.filled.ArrowDropDown
-import androidx.compose.material.icons.filled.ArrowDropUp
+import androidx.compose.material.icons.filled.*
 import androidx.compose.runtime.*
 import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.ui.Alignment
@@ -39,15 +39,14 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.text.style.TextOverflow
+import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewmodel.compose.viewModel
+import com.dmhsh.samples.app.nowinandroid.core.playback.*
 
 import com.google.accompanist.pager.ExperimentalPagerApi
-import com.dmhsh.samples.app.nowinandroid.core.playback.NONE_PLAYBACK_STATE
-import com.dmhsh.samples.app.nowinandroid.core.playback.artwork
-import com.dmhsh.samples.app.nowinandroid.core.playback.isIdle
 import com.dmhsh.samples.apps.nowinandroid.common.compose.LocalPlaybackConnection
 import com.dmhsh.samples.apps.nowinandroid.common.compose.LocalScaffoldState
 import com.dmhsh.samples.apps.nowinandroid.core.model.data.Station
@@ -73,6 +72,7 @@ import kotlinx.coroutines.launch
 fun SearchingSheet(
     navigator: Navigator = LocalNavigator.current,
     viewModel: SearchViewModel = hiltViewModel(),
+
 ) {
     val listState = rememberLazyListState()
     val queueListState = rememberLazyListState()
@@ -168,7 +168,7 @@ fun RadioSearchScreen(
             focusManager.clearFocus() }
 
        // Spacer(modifier = Modifier.height(280.dp))
-        if(scrollState.firstVisibleItemScrollOffset < 3) {
+        if(scrollState.firstVisibleItemIndex < 2) {
             SearchTitle(typography, scrollState)
         }
         //Column(modifier = Modifier.verticalScroll(scrollState)) {
@@ -230,7 +230,7 @@ private fun SearchTitle(
             style = typography.h3.copy(fontWeight = FontWeight.ExtraBold),
             textAlign = TextAlign.Center,
             modifier = Modifier
-                .padding(top = 180.dp, bottom = 40.dp)
+                .padding(top = 160.dp, bottom = 40.dp)
                 .fillMaxSize()
                 .alpha(1f - scrollState.firstVisibleItemScrollOffset)
         )
@@ -283,7 +283,7 @@ private fun ColumnScope.SearchFilterPanel(
         exit = shrinkOut(shrinkTowards = Alignment.BottomCenter) + fadeOut()
     ) {
         ChipsRow(
-            items = DatmusicSearchParams.BackendType.values().toList(),
+            items = DatmusicSearchParams.BackendType.values().take(4).toList(),
             selectedItems = selectedItems,
             onItemSelect = { selected, item ->
                 onBackendTypeSelect(SearchAction.SelectBackendType(selected, item))
@@ -291,10 +291,13 @@ private fun ColumnScope.SearchFilterPanel(
             labelMapper = {
                 stringResource(
                     when (it) {
-                        DatmusicSearchParams.BackendType.AUDIOS -> R.string.action_search
+                        DatmusicSearchParams.BackendType.Stations -> R.string.nav_item_stations
+                        DatmusicSearchParams.BackendType.Country -> R.string.detail_country
+                        DatmusicSearchParams.BackendType.Languages -> R.string.action_languages
+                        DatmusicSearchParams.BackendType.Tags -> R.string.detail_tags
                         DatmusicSearchParams.BackendType.FLACS -> R.string.app_id
                         else -> {
-                            R.string.app_id
+                            R.string.action_search
                         }
                     }
                 )
@@ -326,8 +329,16 @@ fun Modifier.horizontalGradientBackground(
     )
 }
 
+@SuppressLint("StateFlowValueCalledInComposition")
 @Composable
-fun AnimatedSearchListItem(surfaceGradient:  List<Color> ,viewModel: ViewModel, station: Station, itemIndex: Int, onImageClick: (station: Station) -> Unit, onPlayClick: (station: Station) -> Unit) {
+fun AnimatedSearchListItem(
+    surfaceGradient:  List<Color> ,
+    viewModel: ViewModel,
+    station: Station,
+    itemIndex: Int,
+    onImageClick: (station: Station) -> Unit,
+    onPlayClick: (station: Station) -> Unit)
+{
     val playbackConnection: PlaybackConnection = LocalPlaybackConnection.current
     var expanded by remember { mutableStateOf(false) }
     var favorite by remember { mutableStateOf(station.favorited) }
@@ -338,6 +349,7 @@ fun AnimatedSearchListItem(surfaceGradient:  List<Color> ,viewModel: ViewModel, 
             .clickable {
                 playbackConnection.playAudio(station)
                 onPlayClick(station)
+
             },
     ) {
         CoverImage(
@@ -371,14 +383,48 @@ fun AnimatedSearchListItem(surfaceGradient:  List<Color> ,viewModel: ViewModel, 
                 overflow = TextOverflow.Ellipsis
             )
         }
-        androidx.compose.material3.Icon(
-            imageVector = if (expanded) Icons.Default.ArrowDropUp else Icons.Default.ArrowDropDown,
-            contentDescription = null,
-            tint = Color.LightGray,
-            modifier = Modifier
-                .padding(8.dp)
-                .size(32.dp)
-                .clickable { expanded = !expanded }
+//        androidx.compose.material3.Icon(
+//            imageVector = Icons.Default.ArrowDropUp,
+//            contentDescription = null,
+//            tint = Color.LightGray,
+//            modifier = Modifier
+//                .padding(8.dp)
+//                .size(32.dp)
+//                .background(
+//                    if(playbackConnection.playingStation.value.stationuuid == station.stationuuid) Color.Red else Color.LightGray)
+//                .clickable {  }
+//        )
+
+        if(station.stationuuid == playbackConnection.playingStation.value.stationuuid) {
+            if(!playbackConnection.isConnected.value){
+                FullScreenLoading()
+            }
+            PlaybackPlayPause(playbackConnection.playbackState.value, onPlayPause = {})
+        }
+    }
+}
+
+
+@Composable
+private fun RowScope.PlaybackPlayPause(
+    playbackState: PlaybackStateCompat,
+    size: Dp = 36.dp,
+    onPlayPause: () -> Unit
+) {
+    IconButton(
+        onClick = onPlayPause,
+        rippleColor = LocalContentColor.current,
+        modifier = Modifier.weight(1f)
+    ) {
+        Icon(
+            imageVector = when {
+                playbackState.isError -> Icons.Filled.ErrorOutline
+                playbackState.isPlaying -> Icons.Filled.Pause
+                playbackState.isPlayEnabled -> Icons.Filled.PlayArrow
+                else -> Icons.Filled.HourglassBottom
+            },
+            modifier = Modifier.size(size),
+            contentDescription = null
         )
     }
 }

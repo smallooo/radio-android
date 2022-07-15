@@ -39,6 +39,8 @@ data class DatmusicSearchParams(
     }
 
     enum class BackendType(val type: String) {
+
+        Stations("stations"), Tags("tags"), Country("country"), Languages("languages"),
         AUDIOS("audios"), ARTISTS("artists"), ALBUMS("albums"), MINERVA("minerva"), FLACS("flacs");
 
         override fun toString() = type
