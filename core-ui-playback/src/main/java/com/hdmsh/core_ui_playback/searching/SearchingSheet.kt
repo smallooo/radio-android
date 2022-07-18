@@ -9,6 +9,7 @@ import android.support.v4.media.session.PlaybackStateCompat
 import android.util.Log
 import androidx.compose.animation.*
 import androidx.compose.foundation.*
+import androidx.compose.foundation.gestures.scrollBy
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.LazyListState
@@ -77,7 +78,10 @@ fun SearchingSheet(
     val queueListState = rememberLazyListState()
     val coroutine = rememberCoroutineScope()
     val scrollToTop: Callback = {
-        coroutine.launch { listState }
+        coroutine.launch {
+           // listState.animateScrollToItem(0)
+            listState.scrollBy(-999f)
+        }
     }
 
     RadioTheme(changeSystemBar = false) {
@@ -226,10 +230,9 @@ fun RadioSearchScreen(
                 }
             }
             item {
-                SpotifySearchGrid(onSearchSelect = { content ->
-                    Log.e("aaa", content)
-                    onRecommend(content)
-                })
+                if(!viewState.isLoading) {
+                    SpotifySearchGrid(onSearchSelect = { content -> onRecommend(content) })
+                }
             }
         }
     }
