@@ -177,9 +177,9 @@ fun LazyListScope.settingsAboutSection() {
 //                linkRes = R.string.web_page
 //            )
             SettingsLinkItem(
-                label = stringResource(R.string.about_version, "pre-release"),
+                label = stringResource(R.string.about_version, ""),
                 text = LocalAppVersion.current,
-                link = "https://m.thebeastshop.com"
+                link = ""
             )
         }
 

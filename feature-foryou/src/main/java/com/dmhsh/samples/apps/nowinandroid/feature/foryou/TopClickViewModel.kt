@@ -45,12 +45,6 @@ class TopClickViewModel @Inject constructor(
     private suspend fun getTopClickStationList() {
         val categories = remoteSource.getTopClickList()
         if (categories != null) {
-//            val stations = ArrayList<StationEntity>()
-//            for(item in categories){
-//                stations.add(item.asExternalModel())
-//            }
-//            stationDao.upsertStations(entities = stations)
-
             viewModelScope.launch {
                 state = categories?.let { state.copy(localStations = it, isLoading = false) }!!
                 state.isLoading = false

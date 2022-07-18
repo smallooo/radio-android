@@ -48,7 +48,7 @@ class RadioListApi @Inject constructor(private val service: Service) {
         @GET("/json/tags")
         suspend fun getTags(): ArrayList<StationsTag>
 
-        @GET("/json/countrycodes")
+        @GET("/json/countries")
         suspend fun getCountries(): ArrayList<Country>
 
         @GET("/json/languages")

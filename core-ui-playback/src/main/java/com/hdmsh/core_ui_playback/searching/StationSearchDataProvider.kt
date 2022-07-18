@@ -28,7 +28,7 @@ object StationSearchDataProvider {
             artist = "Ed Sheeran",
             song = "music",
             descriptions = "Album by Ed Sheeran-2016",
-            imageId = R.drawable.ed2,
+            imageId = R.drawable.music,
             genre = "Pop"
         ),
         Album(
@@ -36,7 +36,7 @@ object StationSearchDataProvider {
             artist = "Camelia Cabello",
             song = "news",
             descriptions = "Album by Camelia Cabello-2016",
-            imageId = R.drawable.ed2,
+            imageId = R.drawable.news,
             genre = "R&B"
         ),
         Album(
@@ -44,7 +44,7 @@ object StationSearchDataProvider {
             artist = "BlackPink",
             song = "pop",
             descriptions = "Album by BlackPink-2016",
-            imageId = R.drawable.ed2,
+            imageId = R.drawable.pop,
             genre = "K-pop"
         ),
         Album(
@@ -52,7 +52,7 @@ object StationSearchDataProvider {
             artist = "Ed Sheeran",
             song = "rock",
             descriptions = "Album by Ed Sheeran-2016",
-            imageId = R.drawable.ed2,
+            imageId = R.drawable.rock,
             genre = "Acoustic"
         ),
         Album(
@@ -60,7 +60,7 @@ object StationSearchDataProvider {
             artist = "Lana del rey",
             song = "country",
             descriptions = "Album by Lana del ray-2014",
-            imageId = R.drawable.ed2,
+            imageId = R.drawable.country,
             genre = "Jazz"
         ),
         Album(
@@ -68,7 +68,7 @@ object StationSearchDataProvider {
             artist = "Khalid",
             song = "japan",
             descriptions = "Album by Khalid-2019",
-            imageId = R.drawable.ed2,
+            imageId = R.drawable.japan,
             genre = "RnB"
         ),
         Album(
@@ -76,7 +76,7 @@ object StationSearchDataProvider {
             artist = "Adele",
             song = "talking",
             descriptions = "Album by Adele-2019",
-            imageId = R.drawable.ed2,
+            imageId = R.drawable.talking,
             genre = "Pop"
         ),
         Album(
@@ -84,7 +84,7 @@ object StationSearchDataProvider {
             artist = "Sam Smith",
             song = "US",
             descriptions = "Album by Ed Sheeran-2016",
-            imageId = R.drawable.ed2,
+            imageId = R.drawable.us,
             genre = "Pop"
         ),
         Album(
@@ -92,7 +92,7 @@ object StationSearchDataProvider {
             artist = "Billie Eilish",
             song = "UK",
             descriptions = "Album by Billie Eilish-2016",
-            imageId = R.drawable.ed2,
+            imageId = R.drawable.uk,
             genre = "Pop"
         ),
         Album(
@@ -100,7 +100,7 @@ object StationSearchDataProvider {
             artist = "Dua Lipa",
             song = "france",
             descriptions = "Album by Dua Lipa-2016",
-            imageId = R.drawable.ed2,
+            imageId = R.drawable.france,
             genre = "Music"
         ),
         Album(
@@ -108,7 +108,7 @@ object StationSearchDataProvider {
             artist = "Tones & I",
             song = "germany",
             descriptions = "Album by Tones & I-2019",
-            imageId = R.drawable.ed2,
+            imageId = R.drawable.germany,
             genre = "Party"
         ),
         Album(
@@ -116,7 +116,7 @@ object StationSearchDataProvider {
             artist = "Marshmello",
             song = "korean",
             descriptions = "Album by Marshmello-2016",
-            imageId = R.drawable.ed2,
+            imageId = R.drawable.korean,
             genre = "DJ"
         ),
         Album(
@@ -124,7 +124,7 @@ object StationSearchDataProvider {
             artist = "Eminem",
             song = "hongkong",
             descriptions = "Album by Eminem-2019",
-            imageId = R.drawable.ed2,
+            imageId = R.drawable.hongkong,
             genre = "Rap"
         ),
         Album(
@@ -132,7 +132,7 @@ object StationSearchDataProvider {
             artist = "The Weekend",
             song = "star",
             descriptions = "Album by The Weekend-2016",
-            imageId = R.drawable.ed2,
+            imageId = R.drawable.star,
             genre = "Mood"
         ),
         Album(
@@ -140,7 +140,7 @@ object StationSearchDataProvider {
             artist = "Katy Perry",
             song = "中文",
             descriptions = "Album by Katy Perry-2016",
-            imageId = R.drawable.ed2,
+            imageId = R.drawable.chinese,
             genre = "Chill"
         ),
         Album(

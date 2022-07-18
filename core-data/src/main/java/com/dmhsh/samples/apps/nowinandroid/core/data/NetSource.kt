@@ -42,49 +42,67 @@ class NetSource @Inject constructor(private val stationDao: StationDao, private 
     suspend fun getTopClickList() = withContext(Dispatchers.IO){
         if(_topVisitRadioList == null) {
             try {
-
                 _topVisitRadioList = radioListApi.getTopClick()
             }catch (e : Exception){
-                Log.e("aaa Network", e.toString())
             }
         }
         return@withContext _topVisitRadioList
     }
 
     suspend fun gettopVotedList() = withContext(Dispatchers.IO){
-        Log.e("aaa topvode", "start to request")
-        if(_topVotedRadioList == null) _topVotedRadioList = radioListApi.getTopVote()
-        Log.e("aaa topvode", _topVotedRadioList?.size.toString())
+        try {
+            if(_topVotedRadioList == null) _topVotedRadioList = radioListApi.getTopVote()
+        } catch (e: Exception) {
+
+        }
         return@withContext _topVotedRadioList
     }
 
     suspend fun getLateUpdateStationsList() = withContext(Dispatchers.IO){
-        if(_lateUpdateRadioList == null) _lateUpdateRadioList = radioListApi.getLateUpdated() 
+        try {
+            if(_lateUpdateRadioList == null) _lateUpdateRadioList = radioListApi.getLateUpdated()
+        } catch (e: Exception) {
+        }
         return@withContext _lateUpdateRadioList
     }
 
     suspend fun getLastClickList() = withContext(Dispatchers.IO){
-        if(_lastClickRadioList == null) _lastClickRadioList = radioListApi.getLastClick() 
+        try {
+            if(_lastClickRadioList == null) _lastClickRadioList = radioListApi.getLastClick()
+        } catch (e: Exception) {
+        }
         return@withContext _lastClickRadioList
     }
 
     suspend fun getTagList() = withContext(Dispatchers.IO){
-        if(_stationsTagList == null) _stationsTagList = radioListApi.getTags()
+        try {
+            if(_stationsTagList == null) _stationsTagList = radioListApi.getTags()
+        } catch (e: Exception) {
+        }
         return@withContext _stationsTagList
     }
 
     suspend fun getCountryList() = withContext(Dispatchers.IO){
-        if(_countryList == null) _countryList = radioListApi.getCountries() 
+        try {
+            if(_countryList == null) _countryList = radioListApi.getCountries()
+        } catch (e: Exception) {
+        }
         return@withContext _countryList
     }
 
     suspend fun getLanguageList() = withContext(Dispatchers.IO){
-        if(_languageList == null) _languageList = radioListApi.getLanguages() 
+        try {
+            if(_languageList == null) _languageList = radioListApi.getLanguages()
+        } catch (e: Exception) {
+        }
         return@withContext _languageList
     }
 
     suspend fun searchByTypeList(type: String, param: String) = withContext(Dispatchers.IO){
-        _searchList = radioListApi.searchByTypeList(type, param.substring(1))
+        try {
+            _searchList = radioListApi.searchByTypeList(type, param.substring(1))
+        } catch (e: Exception) {
+        }
         return@withContext _searchList
     }
 }

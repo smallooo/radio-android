@@ -5,7 +5,7 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.setValue
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.dmhsh.samples.apps.nowinandroid.core.data.CountrySource
+import com.dmhsh.samples.apps.nowinandroid.core.data.NetSource
 
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.channels.Channel
@@ -14,7 +14,7 @@ import kotlinx.coroutines.launch
 import javax.inject.Inject
 
 @HiltViewModel
-class CountryViewModel @Inject constructor(private val remoteSource: CountrySource) :
+class CountryViewModel @Inject constructor(private val netSource: NetSource) :
     ViewModel() {
 
     var state by mutableStateOf(
@@ -34,7 +34,7 @@ class CountryViewModel @Inject constructor(private val remoteSource: CountrySour
     }
 
     private suspend fun getCountriesList() {
-        val categories = remoteSource.getCountryList()
+        val categories = netSource.getCountryList()
         viewModelScope.launch {
             state = categories?.let { state.copy(categories = it, isLoading = false) }!!
             effects.send(CountryCategoriesContract.Effect.DataWasLoaded)
