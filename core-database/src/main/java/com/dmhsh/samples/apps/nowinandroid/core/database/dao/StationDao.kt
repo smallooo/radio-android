@@ -51,7 +51,7 @@ interface StationDao {
     @Insert(onConflict = OnConflictStrategy.IGNORE)
     suspend fun insertOrIgnoreStations(stationEntities: List<StationEntity>): List<Long>
 
-    @Insert(onConflict = OnConflictStrategy.IGNORE)
+    @Insert(onConflict = OnConflictStrategy.REPLACE)
     suspend fun insertOrIgnoreStation(stationEntities: StationEntity): Long
 
     /**

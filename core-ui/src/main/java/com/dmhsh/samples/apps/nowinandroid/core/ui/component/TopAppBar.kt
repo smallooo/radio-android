@@ -33,6 +33,10 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
+
+import com.dmhsh.samples.apps.nowinandroid.core.navigation.LocalNavigator
+import com.dmhsh.samples.apps.nowinandroid.core.navigation.Navigator
+import com.dmhsh.samples.apps.nowinandroid.core.navigation.Screens.LeafScreen
 import tm.alashow.i18n.R
 
 @Composable
@@ -47,8 +51,9 @@ fun RadioTopAppBar(
         containerColor = MaterialTheme.colors.background,
         titleContentColor = MaterialTheme.colors.onSurface,
     ),
-    onNavigationClick: () -> Unit = {},
-    onActionClick: () -> Unit = {}
+    navigation: Navigator = LocalNavigator.current,
+    onNavigationClick: () -> Unit = { navigation.navigate(LeafScreen.SearchingSheet().createRoute())  },
+    onActionClick: () -> Unit = { }
 ) {
     CenterAlignedTopAppBar(
         title = { Text(text = stringResource(id = titleRes)) },

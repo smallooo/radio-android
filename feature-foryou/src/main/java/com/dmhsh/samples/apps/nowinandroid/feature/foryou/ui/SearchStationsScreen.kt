@@ -34,24 +34,24 @@ fun SearchStationsScreen(
     if (isInitStatus) {
         Box(modifier = Modifier.fillMaxSize()) {
             Column(
-                Modifier.fillMaxWidth().padding(top = 100.dp)
+                Modifier.fillMaxWidth().padding(top = 60.dp)
             ) {
                 Button(onClick = { onButtonSelect(0) },
-                    modifier = Modifier.fillMaxWidth().padding(32.dp),
+                    modifier = Modifier.fillMaxWidth().padding(28.dp),
                     colors = ButtonDefaults.buttonColors(containerColor = Color.LightGray)
                 ) {
                     Text(text = "Search by Tags", color = MaterialTheme.colors.secondary)
                 }
 
                 Button(onClick = { onButtonSelect(1) },
-                    modifier = Modifier.fillMaxWidth().padding(32.dp),
+                    modifier = Modifier.fillMaxWidth().padding(28.dp),
                     colors = ButtonDefaults.buttonColors(containerColor = Color.LightGray)
                 ) {
                     Text(text = "Search by Countries", color = MaterialTheme.colors.secondary)
                 }
 
                 Button(onClick = { onButtonSelect(2) },
-                    modifier = Modifier.fillMaxWidth().padding(32.dp),
+                    modifier = Modifier.fillMaxWidth().padding(28.dp),
                     colors = ButtonDefaults.buttonColors(containerColor = Color.LightGray)
                     ) {
                     Text(text = "Search by Languages", color = MaterialTheme.colors.secondary)

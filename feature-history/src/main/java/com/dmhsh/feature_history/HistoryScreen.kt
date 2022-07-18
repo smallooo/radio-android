@@ -24,6 +24,7 @@ fun HistoryRoute(
 ) {
     val playHistory = viewModel.playHistoryStationsState.collectAsState()
         HistoryScreen(
+            viewModel,
             playHistory = playHistory.value,
             modifier = modifier,
             // onBackClick = onBackClick
@@ -34,6 +35,7 @@ fun HistoryRoute(
 @VisibleForTesting
 @Composable
 internal fun HistoryScreen(
+    viewModel: HistoryViewModel,
     playHistory: StationsUiState,
     modifier: Modifier = Modifier,
 ) {
@@ -64,23 +66,6 @@ internal fun HistoryScreen(
                 WindowInsets.safeDrawing.only(WindowInsetsSides.Top)
             )
             )
-
-//            TopAppBar(
-//                elevation = 0.dp,
-//                backgroundColor = Color.Transparent,
-//                title = { R.string.top_app_bar_preview_title },
-//                actions = {  },
-//                navigationIcon = {
-//                    IconButton(onClick = {}) {
-//                        Icon(
-//                            rememberVectorPainter(Icons.Default.KeyboardArrowDown),
-//                            modifier = Modifier.size(AppTheme.specs.iconSize),
-//                            contentDescription = null,
-//                        )
-//                    }
-//                },
-//            )
-
         }
     ) { padding ->
         val pad = padding
@@ -104,7 +89,7 @@ internal fun HistoryScreen(
 //                    Text(text = "hello9",color = MaterialTheme.colors.primary)
 //                    Text(text = "hello10",color = MaterialTheme.colors.primaryVariant)
 //                    Text(text = "hello11",color = MaterialTheme.colors.secondaryVariant)
-                    RadioItemFavorite(listOf(playHistory.stations), onImageClick = {})
+                    RadioItemFavorite(viewModel, listOf(playHistory.stations), onImageClick = {})
  //               }
             is StationsUiState.Empty -> Text("hello")
         }

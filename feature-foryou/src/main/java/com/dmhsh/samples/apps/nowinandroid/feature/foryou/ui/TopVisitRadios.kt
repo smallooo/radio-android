@@ -31,64 +31,22 @@ import com.dmhsh.samples.apps.nowinandroid.playback.PlaybackConnection
 @Composable
 fun TopClickRadios(
     viewModel: TopClickViewModel = hiltViewModel(),
-   // playbackConnection: PlaybackConnection = LocalPlaybackConnection.current,
 ) {
     val topVisitsState = viewModel.state
-    //val isLoa = remember{  mutableStateOf(viewModel.state) }
     val isLoading  = topVisitsState.isLoading
-  //  val shimmerAnimationType by remember { mutableStateOf(ShimmerAnimationType.FADE) }
-  //  val transition = rememberInfiniteTransition()
-   // val playbackState by rememberFlowWithLifecycle(playbackConnection.playbackState)
-   // val nowPlaying by rememberFlowWithLifecycle(playbackConnection.nowPlaying)
-   // val isPlayerActive = (playbackState to nowPlaying).isActive
-
-//    val translateAnim by transition.animateFloat(
-//        initialValue = 100f,
-//        targetValue = 600f,
-//        animationSpec = infiniteRepeatable(
-//            tween(durationMillis = 1200, easing = LinearEasing),
-//            RepeatMode.Restart
-//        )
-//    )
-//
-//    val colorAnim by transition.animateColor(
-//        initialValue = Color.LightGray.copy(alpha = 0.6f),
-//        targetValue = Color.LightGray,
-//        animationSpec = infiniteRepeatable(
-//            tween(durationMillis = 1200, easing = FastOutSlowInEasing),
-//            RepeatMode.Restart
-//        )
-//    )
-
-//    val list = if (shimmerAnimationType != ShimmerAnimationType.TRANSLATE) {
-//        listOf(colorAnim, colorAnim.copy(alpha = 0.5f))
-//    } else {
-//        listOf(Color.LightGray.copy(alpha = 0.6f), Color.LightGray)
-//    }
-//
-//    val dpValue = if (shimmerAnimationType != ShimmerAnimationType.FADE) {
-//        translateAnim.dp
-//    } else {
-//        2000.dp
-//    }
-
     if (topVisitsState.isLoading) {
-      //  Log.e("aaa", "isLoading")
-     //   Text("loading" + topVisitsState.isLoading + isLoading)
-        //for (i in 1..5) ShimmerItem(list, dpValue.value, shimmerAnimationType == ShimmerAnimationType.VERTICAL)
         FullScreenLoading()
     } else {
         RadioItemList(viewModel,
             listOf(topVisitsState.localStations),
             onImageClick = { Station ->
-
                 Station.favorited = !Station.favorited
-                //viewModel.setFavoritedStation(Station)
+                viewModel.setFavoritedStation(Station)
             },
             onPlayClick = { Station ->
                 Station.lastPlayedTime = System.currentTimeMillis().toString()
-               // viewModel.setPlayHistory(Station)
 
+                viewModel.setPlayHistory(Station)
             }
         )
     }
@@ -107,56 +65,7 @@ fun RadioItemList(viewModel: ViewModel, stateCategories: List<List<Station>>, on
             Spacer(Modifier.height(180.dp))
         }
     }
-
 }
-
-
-//@Composable
-//fun AnimatedListItem1(station: Station, itemIndex: Int, playbackConnection: PlaybackConnection = LocalPlaybackConnection.current, onImageClick: (station: Station) -> Unit, onPlayClick: (station: Station) -> Unit) {
-//    Row(
-//        verticalAlignment = Alignment.CenterVertically,
-//        modifier = Modifier.clickable {
-//            playbackConnection.playAudio(station)
-//            onPlayClick(station)
-//        }
-//    ) {
-//        CoverImage(
-//            data = station.favicon,
-//            contentDescription = null,
-//            contentScale = ContentScale.Crop,
-//            modifier = Modifier
-//                .size(55.dp)
-//                .padding(4.dp).clickable {
-//                    onImageClick(station)
-//
-//                }
-//        )
-//        Column(
-//            modifier = Modifier
-//                .padding(horizontal = 4.dp)
-//                .weight(1f)
-//        ) {
-//            Text(
-//                text = station.name,
-//                style = MaterialTheme.typography.body1,
-//                color = MaterialTheme.colors.onSurface
-//            )
-//            Text(
-//                text = station.bitrate + "kbps",
-//                style = MaterialTheme.typography.body1,
-//                maxLines = 1,
-//                color = MaterialTheme.colors.onSurface,
-//                overflow = TextOverflow.Ellipsis
-//            )
-//        }
-//        Icon(
-//            imageVector = Icons.Default.MoreVert,
-//            contentDescription = null,
-//            tint = Color.LightGray,
-//            modifier = Modifier.padding(4.dp)
-//        )
-//    }
-//}
 
 
 

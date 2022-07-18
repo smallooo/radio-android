@@ -63,6 +63,9 @@ class OffFirstStationsRepo @Inject constructor(
         sationDao.getStationbyIdsEntitiesStream(HashSet(entities)).map{ it.map(StationEntity::asExternalModel)}
 
     override fun getFollowedIdsStream(): Flow<Set<String>> = niaPreferences.followedAuthorIds
+    override fun insertOrIgnoreStation(entitie: Station) {
+        GlobalScope.launch(Dispatchers.IO) { sationDao.insertOrIgnoreStation(entitie.asExternalModel())}
+    }
 
     override suspend fun syncWith(synchronizer: Synchronizer): Boolean =
         synchronizer.changeStationSync(

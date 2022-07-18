@@ -6,6 +6,7 @@ import androidx.lifecycle.viewModelScope
 import com.dmhsh.samples.apps.nowinandroid.core.data.repository.StationsRepo
 import com.dmhsh.samples.apps.nowinandroid.core.datastore.PreferencesStore
 import com.dmhsh.samples.apps.nowinandroid.core.model.data.FollowableStation
+import com.dmhsh.samples.apps.nowinandroid.core.model.data.Station
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.*
 import javax.inject.Inject
@@ -33,6 +34,11 @@ class FavoriteStationstViewModel @Inject constructor(
         started = SharingStarted.WhileSubscribed(5_000),
         initialValue = StationsUiState.Loading
     )
+
+
+    fun setFavoritedStation(station: Station) = stationsRepo.setFavorite(station)
+
+    fun setPlayHistory(station: Station) = stationsRepo.insertOrIgnoreStation(station)
 }
 
 sealed interface StationsUiState {

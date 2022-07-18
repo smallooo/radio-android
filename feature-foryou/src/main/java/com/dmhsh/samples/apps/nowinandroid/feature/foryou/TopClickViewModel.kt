@@ -22,7 +22,7 @@ import javax.inject.Inject
 @HiltViewModel
 class TopClickViewModel @Inject constructor(
     private val remoteSource: NetSource,
-    //private val stationsRepo: StationsRepo,
+    private val stationsRepo: StationsRepo,
     private val stationDao: StationDao,
     ) : ViewModel() {
 
@@ -51,9 +51,7 @@ class TopClickViewModel @Inject constructor(
 //            }
 //            stationDao.upsertStations(entities = stations)
 
-            Log.e("aaa cate0", categories?.size.toString())
             viewModelScope.launch {
-                Log.e("aaa cate1", categories?.size.toString())
                 state = categories?.let { state.copy(localStations = it, isLoading = false) }!!
                 state.isLoading = false
                 effects.send(LocalStationsContract.Effect.DataWasLoaded)
@@ -62,9 +60,9 @@ class TopClickViewModel @Inject constructor(
     }
 
 
-//    fun setFavoritedStation(station: Station) = stationsRepo.setFavorite(station)
-//
-//    fun setPlayHistory(station: Station) = stationsRepo.setPlayHistory(station)
+    fun setFavoritedStation(station: Station) = stationsRepo.setFavorite(station)
+
+    fun setPlayHistory(station: Station) = stationsRepo.insertOrIgnoreStation(station)
 }
 
 

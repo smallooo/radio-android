@@ -57,4 +57,6 @@ interface StationsRepo : Syncable {
 //    suspend fun toggleFollowedStationId(followedTopicId: String, followed: Boolean)
 
     fun getFollowedIdsStream(): Flow<Set<String>>
+
+    fun insertOrIgnoreStation(entitie: Station)
 }

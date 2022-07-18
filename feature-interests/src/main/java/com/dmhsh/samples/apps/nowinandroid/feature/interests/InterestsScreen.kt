@@ -60,6 +60,7 @@ fun InterestsRoute(
     val uiState1 by favoriteStationstViewModel.favoriteStationsState.collectAsState()
 
     InterestsScreen(
+        favoriteStationstViewModel = favoriteStationstViewModel,
         uiState1 = uiState1,
         navigateToAuthor = navigateToAuthor,
         navigateToTopic = navigateToTopic,
@@ -69,20 +70,12 @@ fun InterestsRoute(
 
 @Composable
 fun InterestsScreen(
+    favoriteStationstViewModel: FavoriteStationstViewModel,
     uiState1: StationsUiState,
     navigateToAuthor: (String) -> Unit,
     navigateToTopic: (String) -> Unit,
     //modifier: Modifier = Modifier,
 ) {
-
-//    Spacer(
-//        // TODO: Replace with windowInsetsTopHeight after
-//        //       https://issuetracker.google.com/issues/230383055
-//        Modifier.windowInsetsPadding(
-//            WindowInsets.safeDrawing.only(WindowInsetsSides.Top)
-//        )
-//    )
-
     Scaffold(
        // modifier = modifier,
         topBar = {
@@ -92,14 +85,15 @@ fun InterestsScreen(
                 navigationIconContentDescription = stringResource(id = R.string.top_app_bar_navigation_button_content_desc),
                 actionIcon = Icons.Filled.MoreVert,
                 actionIconContentDescription = stringResource(id = R.string.top_app_bar_navigation_button_content_desc),
-
                 modifier = Modifier.windowInsetsPadding(WindowInsets.safeDrawing.only(WindowInsetsSides.Top)))
         }
     ) { padding ->
         val pad = padding
         when (uiState1) {
             is StationsUiState.Loading -> LoadingWheel(modifier = Modifier, contentDesc = stringResource(id = R.string.interests_loading),)
-            is StationsUiState.Stations -> RadioItemFavorite(listOf(uiState1.stations), onImageClick = {})
+            is StationsUiState.Stations -> RadioItemFavorite(favoriteStationstViewModel, listOf(uiState1.stations), onImageClick = {
+                favoriteStationstViewModel.setFavoritedStation(it)
+            })
             is StationsUiState.Empty -> InterestsEmptyScreen()
         }
     }
