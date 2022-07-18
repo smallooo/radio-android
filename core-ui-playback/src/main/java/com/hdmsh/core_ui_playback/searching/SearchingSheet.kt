@@ -73,10 +73,12 @@ fun SearchingSheet(
     navigator: Navigator = LocalNavigator.current,
     viewModel: SearchViewModel = hiltViewModel(),
 ) {
-    val listState = rememberLazyListState()
+    val listState = rememberLazyListState(0)
     val queueListState = rememberLazyListState()
     val coroutine = rememberCoroutineScope()
-    val scrollToTop: Callback = { coroutine.launch { listState.animateScrollToItem(0) } }
+    val scrollToTop: Callback = {
+        coroutine.launch { listState }
+    }
 
     RadioTheme(changeSystemBar = false) {
         SearchingSheetContent(
@@ -84,9 +86,10 @@ fun SearchingSheet(
             scrollToTop = scrollToTop,
             listState = listState,
             queueListState = queueListState,
-            viewModel = viewModel){ action -> viewModel.submitAction(action) }
-        }
+            viewModel = viewModel
+        ) { action -> viewModel.submitAction(action) }
     }
+}
 
 @SuppressLint("UnusedMaterialScaffoldPaddingParameter")
 @OptIn(ExperimentalPagerApi::class)
@@ -104,6 +107,8 @@ internal fun SearchingSheetContent(
     val nowPlaying by rememberFlowWithLifecycle(playbackConnection.nowPlaying)
     val adaptiveColor by adaptiveColor(nowPlaying.artwork, initial = MaterialTheme.colors.onBackground)
     val viewState by rememberFlowWithLifecycle(viewModel.state)
+    val initialQuery = "".toString()
+    var query by rememberSaveable { mutableStateOf(initialQuery) }
 
     LaunchedEffect(playbackConnection) {
         playbackConnection.playbackState
@@ -126,11 +131,22 @@ internal fun SearchingSheetContent(
                 },
             ) {
                 RadioSearchScreen(
+                    query = query,
                     viewModel = viewModel,
-                    onQueryChange = { actioner(SearchAction.QueryChange(it)) },
+                    listState = listState,
+                    onQueryChange = {
+                         query = it
+                        actioner(SearchAction.QueryChange(it))
+                                    },
                     onSearch = { actioner(SearchAction.Search) },
                     onBackendTypeSelect = { actioner(it) },
                     state = viewState,
+                    onRecommend = {
+                        scrollToTop
+                        query = it
+                        actioner(SearchAction.QueryChange(it))
+                        actioner(SearchAction.Search)
+                    }
                 )
             }
         }
@@ -140,22 +156,27 @@ internal fun SearchingSheetContent(
 @OptIn(ExperimentalComposeUiApi::class)
 @Composable
 fun RadioSearchScreen(
+    query:String,
     viewModel: SearchViewModel,
+    listState : LazyListState,
     state: SearchViewState,
     onQueryChange: (String) -> Unit,
+    onRecommend: (String) -> Unit,
     onSearch: () -> Unit,
     onBackendTypeSelect: (SearchAction.SelectBackendType) -> Unit = {},
     focusManager: FocusManager = LocalFocusManager.current,
     windowInfo: WindowInfo = LocalWindowInfo.current,
     windowInsets: WindowInsets = LocalWindowInsets.current,
 ) {
-    val viewState =viewModel.stateS
-    val scrollState = rememberLazyListState(0)
-    val surfaceGradient = SpotifyDataProvider.spotifySurfaceGradient(false) //SpotifyDataProvider.spotifySurfaceGradient(isSystemInDarkTheme())
-    val initialQuery = "".toString()
-    Box(modifier = Modifier
-        .fillMaxSize()
-        .horizontalGradientBackground(surfaceGradient)) {
+    val viewState = viewModel.stateS
+    val surfaceGradient =
+        SpotifyDataProvider.spotifySurfaceGradient(isSystemInDarkTheme()) //SpotifyDataProvider.spotifySurfaceGradient(isSystemInDarkTheme())
+
+    Box(
+        modifier = Modifier
+            .fillMaxSize()
+            .horizontalGradientBackground(surfaceGradient)
+    ) {
         val keyboardController = LocalSoftwareKeyboardController.current
         val hasWindowFocus = windowInfo.isWindowFocused
         val keyboardVisible = windowInsets.ime.isVisible
@@ -164,79 +185,76 @@ fun RadioSearchScreen(
         val triggerSearch = {
             onSearch();
             keyboardController?.hide();
-            focusManager.clearFocus() }
-
-        if(scrollState.firstVisibleItemIndex < 2) {
-            SearchTitle(typography, scrollState)
+            focusManager.clearFocus()
         }
 
-        LazyColumn(state = scrollState) {
+        if(listState.firstVisibleItemIndex < 1) {
+            Log.e("aaa",listState.firstVisibleItemIndex.toString())
+            SearchTitle(typography, listState)
+        }
+
+        LazyColumn(state = listState) {
             item {
-                Spacer(modifier = Modifier.height(280.dp))
+                Spacer(modifier = Modifier.height(260.dp))
             }
 
             item {
-                Column() {
-                    SearchInput(
-                        initialQuery,
-                        onQueryChange,
-                        searchActive,
-                        focused,
-                        state,
-                        onBackendTypeSelect,
-                        triggerSearch
-                    )
-                }
+                Column { SearchInput(query,onQueryChange, searchActive, focused, state, onBackendTypeSelect, triggerSearch) }
             }
 
-                item {
-                    Spacer(modifier = Modifier.height(60.dp))
-                }
+            item {
+                Spacer(modifier = Modifier.height(60.dp))
+            }
 
-                    if (!viewState.isWaiting) {
-                        if (viewState.isLoading) {
-                            item { FullScreenLoading() }
-                        } else {
-                            viewState.localStations.forEachIndexed { index, item ->
-                                item {
-                                    AnimatedSearchListItem(
-                                        surfaceGradient,
-                                            viewModel,
-                                            station = item,
-                                            index,
-                                            onImageClick = {},
-                                            onPlayClick = {
-                                                viewModel.setPlayHistory(station = it)
-                                            })
-                                }
-                            }
+            if (!viewState.isWaiting) {
+                if (viewState.isLoading) {
+                    item { FullScreenLoading() }
+                } else {
+                    viewState.localStations.forEachIndexed { index, item ->
+                        item {
+                            AnimatedSearchListItem(
+                                surfaceGradient,
+                                viewModel,
+                                station = item,
+                                index,
+                                onImageClick = {},
+                                onPlayClick = {
+                                    viewModel.setPlayHistory(station = it)
+                                })
                         }
                     }
-
                 }
             }
-        Spacer(modifier = Modifier.height(200.dp))
+            item {
+                SpotifySearchGrid(onSearchSelect = { content ->
+                    Log.e("aaa", content)
+                    onRecommend(content)
+                })
+            }
+        }
     }
+    Spacer(modifier = Modifier.height(200.dp))
+}
 
 @Composable
 private fun SearchTitle(
     typography: Typography,
     scrollState: LazyListState
 ) {
-        Text(
-            text = "Search",
-            style = typography.h3.copy(fontWeight = FontWeight.ExtraBold),
-            textAlign = TextAlign.Center,
-            modifier = Modifier
-                .padding(top = 160.dp, bottom = 40.dp)
-                .fillMaxSize()
-                .alpha(1f - scrollState.firstVisibleItemScrollOffset)
-        )
+    Text(
+        text = "Search",
+        style = typography.h3.copy(fontWeight = FontWeight.ExtraBold),
+        textAlign = TextAlign.Center,
+        modifier = Modifier
+            .padding(top = 130.dp, bottom = 40.dp)
+            .fillMaxSize()
+            .alpha(1f - scrollState.firstVisibleItemScrollOffset / 200)
+    )
 }
 
 @Composable
 private fun ColumnScope.SearchInput(
-    initialQuery: String,
+    query: String,
     onQueryChange: (String) -> Unit,
     searchActive: Boolean,
     focused: Boolean,
@@ -245,13 +263,14 @@ private fun ColumnScope.SearchInput(
     triggerSearch: () -> Unit
 ) {
     var focused1 = focused
-    var query by rememberSaveable { mutableStateOf(initialQuery) }
+
     SearchTextField(value = query, onValueChange = { value ->
-        query = value
         onQueryChange(value)
     },
         onSearch = { triggerSearch() },
-        hint = if (!searchActive) stringResource(R.string.searchpreference_search) else stringResource(R.string.action_search),
+        hint = if (!searchActive) stringResource(R.string.searchpreference_search) else stringResource(
+            R.string.action_search
+        ),
         analyticsPrefix = "search",
         modifier = Modifier
             .padding(horizontal = AppTheme.specs.padding)
@@ -330,13 +349,13 @@ fun Modifier.horizontalGradientBackground(
 @SuppressLint("StateFlowValueCalledInComposition")
 @Composable
 fun AnimatedSearchListItem(
-    surfaceGradient:  List<Color> ,
+    surfaceGradient: List<Color>,
     viewModel: ViewModel,
     station: Station,
     itemIndex: Int,
     onImageClick: (station: Station) -> Unit,
-    onPlayClick: (station: Station) -> Unit)
-{
+    onPlayClick: (station: Station) -> Unit
+) {
     val playbackConnection: PlaybackConnection = LocalPlaybackConnection.current
     var expanded by remember { mutableStateOf(false) }
     var favorite by remember { mutableStateOf(station.favorited) }
@@ -383,7 +402,7 @@ fun AnimatedSearchListItem(
             )
         }
 
-        if(station.stationuuid == playbackConnection.playingStation.value.stationuuid) {
+        if (station.stationuuid == playbackConnection.playingStation.value.stationuuid) {
             PlaybackPlayPause(playbackState, onPlayPause = {
                 playbackConnection.mediaController?.playPause()
 

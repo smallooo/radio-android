@@ -24,19 +24,19 @@ import androidx.compose.ui.unit.sp
 
 
 @Composable
-fun SpotifySearchGrid() {
-    val items = remember { AlbumsDataProvider.albums }
+fun SpotifySearchGrid( onSearchSelect: (content: String) -> Unit) {
+    val items = remember { StationSearchDataProvider.content }
     //This is not Lazy at the moment Soon we will have LazyLayout coming then will
     //Update it so we have better performance
     VerticalGrid {
         items.forEach {
-            SpotifySearchGridItem(it)
+            SpotifySearchGridItem(it,onSearchSelect)
         }
     }
 }
 
 @Composable
-fun SpotifySearchGridItem(album: Album) {
+fun SpotifySearchGridItem(album: Album, onSearchSelect: (content: String) -> Unit) {
     val context = LocalContext.current
     val imageBitmap = ImageBitmap.imageResource(context.resources, album.imageId).asAndroidBitmap()
     val swatch = remember(album.id) { imageBitmap.generateDominantColorState() }
@@ -46,6 +46,7 @@ fun SpotifySearchGridItem(album: Album) {
         modifier = Modifier
             .padding(8.dp)
             .clickable(onClick = {
+                onSearchSelect(album.song)
                 //Disclaimer: We should pass event top level and there should startActivity
                // context.startActivity(SpotifyDetailActivity.newIntent(context, album))
             })

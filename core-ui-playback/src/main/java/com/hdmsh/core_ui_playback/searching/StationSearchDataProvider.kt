@@ -3,7 +3,7 @@ package com.hdmsh.core_ui_playback.searching
 import com.hdmsh.core_ui_playback.R
 
 
-object AlbumsDataProvider {
+object StationSearchDataProvider {
 
     val listOfSpotifyHomeLanes = listOf(
         "Continue listening",
@@ -22,11 +22,11 @@ object AlbumsDataProvider {
         imageId = R.drawable.ed2
     )
 
-    val albums = mutableListOf(
+    val content = mutableListOf(
         Album(
             id = 1,
             artist = "Ed Sheeran",
-            song = "Perfect",
+            song = "music",
             descriptions = "Album by Ed Sheeran-2016",
             imageId = R.drawable.ed2,
             genre = "Pop"
@@ -34,7 +34,7 @@ object AlbumsDataProvider {
         Album(
             id = 2,
             artist = "Camelia Cabello",
-            song = "Havana",
+            song = "news",
             descriptions = "Album by Camelia Cabello-2016",
             imageId = R.drawable.ed2,
             genre = "R&B"
@@ -42,7 +42,7 @@ object AlbumsDataProvider {
         Album(
             id = 3,
             artist = "BlackPink",
-            song = "Kill this love",
+            song = "pop",
             descriptions = "Album by BlackPink-2016",
             imageId = R.drawable.ed2,
             genre = "K-pop"
@@ -50,7 +50,7 @@ object AlbumsDataProvider {
         Album(
             id = 4,
             artist = "Ed Sheeran",
-            song = "Photograph",
+            song = "rock",
             descriptions = "Album by Ed Sheeran-2016",
             imageId = R.drawable.ed2,
             genre = "Acoustic"
@@ -58,7 +58,7 @@ object AlbumsDataProvider {
         Album(
             id = 5,
             artist = "Lana del rey",
-            song = "Born to die",
+            song = "country",
             descriptions = "Album by Lana del ray-2014",
             imageId = R.drawable.ed2,
             genre = "Jazz"
@@ -66,7 +66,7 @@ object AlbumsDataProvider {
         Album(
             id = 6,
             artist = "Khalid",
-            song = "Location",
+            song = "japan",
             descriptions = "Album by Khalid-2019",
             imageId = R.drawable.ed2,
             genre = "RnB"
@@ -74,7 +74,7 @@ object AlbumsDataProvider {
         Album(
             id = 7,
             artist = "Adele",
-            song = "Hello",
+            song = "talking",
             descriptions = "Album by Adele-2019",
             imageId = R.drawable.ed2,
             genre = "Pop"
@@ -82,7 +82,7 @@ object AlbumsDataProvider {
         Album(
             id = 8,
             artist = "Sam Smith",
-            song = "Stay With Me",
+            song = "US",
             descriptions = "Album by Ed Sheeran-2016",
             imageId = R.drawable.ed2,
             genre = "Pop"
@@ -90,7 +90,7 @@ object AlbumsDataProvider {
         Album(
             id = 9,
             artist = "Billie Eilish",
-            song = "Bad Guy",
+            song = "UK",
             descriptions = "Album by Billie Eilish-2016",
             imageId = R.drawable.ed2,
             genre = "Pop"
@@ -98,7 +98,7 @@ object AlbumsDataProvider {
         Album(
             id = 10,
             artist = "Dua Lipa",
-            song = "Break My Heart",
+            song = "france",
             descriptions = "Album by Dua Lipa-2016",
             imageId = R.drawable.ed2,
             genre = "Music"
@@ -106,7 +106,7 @@ object AlbumsDataProvider {
         Album(
             id = 11,
             artist = "Tones & I",
-            song = "Dance Monkey",
+            song = "germany",
             descriptions = "Album by Tones & I-2019",
             imageId = R.drawable.ed2,
             genre = "Party"
@@ -114,7 +114,7 @@ object AlbumsDataProvider {
         Album(
             id = 12,
             artist = "Marshmello",
-            song = "Happier",
+            song = "korean",
             descriptions = "Album by Marshmello-2016",
             imageId = R.drawable.ed2,
             genre = "DJ"
@@ -122,7 +122,7 @@ object AlbumsDataProvider {
         Album(
             id = 13,
             artist = "Eminem",
-            song = "The Eminem Show",
+            song = "hongkong",
             descriptions = "Album by Eminem-2019",
             imageId = R.drawable.ed2,
             genre = "Rap"
@@ -130,7 +130,7 @@ object AlbumsDataProvider {
         Album(
             id = 14,
             artist = "The Weekend",
-            song = "Starboy",
+            song = "star",
             descriptions = "Album by The Weekend-2016",
             imageId = R.drawable.ed2,
             genre = "Mood"
@@ -138,7 +138,7 @@ object AlbumsDataProvider {
         Album(
             id = 15,
             artist = "Katy Perry",
-            song = "Smile",
+            song = "中文",
             descriptions = "Album by Katy Perry-2016",
             imageId = R.drawable.ed2,
             genre = "Chill"
@@ -146,7 +146,7 @@ object AlbumsDataProvider {
         Album(
             id = 16,
             artist = "Shawn Mendes",
-            song = "Senorita",
+            song = "BBC",
             descriptions = "Album by Shawn Mendes-2016",
             imageId = R.drawable.ed2,
             genre = "Latin"
@@ -154,7 +154,7 @@ object AlbumsDataProvider {
         Album(
             id = 17,
             artist = "Selena Gomez",
-            song = "Wolves",
+            song = "africa",
             descriptions = "Album by Selena Gomez-2016",
             imageId = R.drawable.ed2,
             genre = "Rock"
@@ -162,7 +162,7 @@ object AlbumsDataProvider {
         Album(
             id = 18,
             artist = "Adele",
-            song = "Someone Like You",
+            song = "00",
             descriptions = "Album by Adele 21-2016",
             imageId = R.drawable.ed2,
             genre = "Solo"
@@ -170,7 +170,7 @@ object AlbumsDataProvider {
         Album(
             id = 19,
             artist = "Imagine Dragon",
-            song = "Believer",
+            song = "90",
             descriptions = "Album by Imagine Dragon-2017",
             imageId = R.drawable.ed2,
             genre = "Pop"
@@ -178,7 +178,7 @@ object AlbumsDataProvider {
         Album(
             id = 20,
             artist = "James Arthur",
-            song = "Impossible",
+            song = "80",
             descriptions = "Album by James Arthur-2016",
             imageId = R.drawable.ed2,
             genre = "Pop"
