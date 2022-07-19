@@ -148,7 +148,7 @@ object StationSearchDataProvider {
             artist = "Shawn Mendes",
             song = "BBC",
             descriptions = "Album by Shawn Mendes-2016",
-            imageId = R.drawable.ed2,
+            imageId = R.drawable.bbc,
             genre = "Latin"
         ),
         Album(
@@ -156,7 +156,7 @@ object StationSearchDataProvider {
             artist = "Selena Gomez",
             song = "africa",
             descriptions = "Album by Selena Gomez-2016",
-            imageId = R.drawable.ed2,
+            imageId = R.drawable.africa,
             genre = "Rock"
         ),
         Album(
@@ -164,7 +164,7 @@ object StationSearchDataProvider {
             artist = "Adele",
             song = "00",
             descriptions = "Album by Adele 21-2016",
-            imageId = R.drawable.ed2,
+            imageId = R.drawable.s00,
             genre = "Solo"
         ),
         Album(
@@ -172,7 +172,7 @@ object StationSearchDataProvider {
             artist = "Imagine Dragon",
             song = "90",
             descriptions = "Album by Imagine Dragon-2017",
-            imageId = R.drawable.ed2,
+            imageId = R.drawable.s90,
             genre = "Pop"
         ),
         Album(
@@ -180,7 +180,7 @@ object StationSearchDataProvider {
             artist = "James Arthur",
             song = "80",
             descriptions = "Album by James Arthur-2016",
-            imageId = R.drawable.ed2,
+            imageId = R.drawable.s80,
             genre = "Pop"
         ),
     )
