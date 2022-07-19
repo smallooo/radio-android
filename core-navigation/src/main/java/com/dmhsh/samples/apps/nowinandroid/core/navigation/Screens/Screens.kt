@@ -61,7 +61,7 @@ sealed class LeafScreen(
         }
 
     data class Search(
-        override val route: String = "search_root1",
+        override val route: String = "search/?$QUERY_KEY={$QUERY_KEY}&$SEARCH_BACKENDS_KEY={$SEARCH_BACKENDS_KEY}",
         override val rootRoute: String = "search_root",
     ) : LeafScreen(
         route, rootRoute,
@@ -83,7 +83,7 @@ sealed class LeafScreen(
     ) {
         companion object {
             fun buildRoute(query: String) =
-                "${RootScreen.Search.route}/search/?$QUERY_KEY=$query&$SEARCH_BACKENDS_KEY=#minerva"
+                "${RootScreen.Search.route}/search/?$QUERY_KEY=$query&$SEARCH_BACKENDS_KEY=#tags"
 
             fun buildUri(query: String) = "${"Config.BASE_URL"}search?q=$query".toUri()
         }

@@ -232,6 +232,7 @@ fun RadioSearchScreen(
             item {
                 if(!viewState.isLoading) {
                     SpotifySearchGrid(onSearchSelect = { content -> onRecommend(content) })
+                    Spacer(modifier = Modifier.height(120.dp))
                 }
             }
         }

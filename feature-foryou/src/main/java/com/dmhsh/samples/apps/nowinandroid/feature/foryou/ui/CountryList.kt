@@ -77,13 +77,13 @@ fun AnimatedCountryListItem(tweet: Country, itemIndex: Int, onCountrySelect: (co
                 .weight(1f)
         ) {
             Text(
-                text = tweet.name?:"",
+                text = tweet.name,
                 style = typography.h6.copy(fontSize = 16.sp),
                 color = MaterialTheme.colors.onSurface
             )
 
             Text(
-                text = tweet.stationcount?:"",
+                text = tweet.stationcount,
                 style = typography.subtitle2,
                 maxLines = 1,
                 color = MaterialTheme.colors.onSurface,
@@ -91,12 +91,12 @@ fun AnimatedCountryListItem(tweet: Country, itemIndex: Int, onCountrySelect: (co
                 //overflow = TextOverflow.Ellipsis
             )
         }
-        Icon(
-            imageVector = Icons.Default.MoreVert,
-            contentDescription = null,
-            tint = Color.LightGray,
-            modifier = Modifier.padding(4.dp)
-        )
+//        Icon(
+//            imageVector = Icons.Default.MoreVert,
+//            contentDescription = null,
+//            tint = Color.LightGray,
+//            modifier = Modifier.padding(4.dp)
+//        )
     }
 
 

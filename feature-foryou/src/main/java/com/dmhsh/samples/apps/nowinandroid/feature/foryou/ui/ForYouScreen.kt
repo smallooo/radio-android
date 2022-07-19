@@ -1,5 +1,6 @@
 package com.dmhsh.samples.apps.nowinandroid.feature.foryou
 
+import android.util.Log
 import androidx.compose.foundation.layout.*
 import androidx.compose.material.MaterialTheme
 import androidx.compose.material.Scaffold
@@ -13,17 +14,22 @@ import androidx.compose.material3.ScrollableTabRow
 import androidx.compose.material3.Text
 import androidx.compose.material3.TopAppBarDefaults
 import androidx.compose.runtime.*
+import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
+import androidx.lifecycle.viewmodel.compose.LocalViewModelStoreOwner
+import androidx.navigation.NavBackStackEntry
 import com.dmhsh.samples.apps.nowinandroid.components.Pager
 import com.dmhsh.samples.apps.nowinandroid.components.PagerState
 import com.dmhsh.samples.apps.nowinandroid.core.navigation.LocalNavigator
 import com.dmhsh.samples.apps.nowinandroid.core.navigation.Navigator
 import com.dmhsh.samples.apps.nowinandroid.core.navigation.Screens.LeafScreen
+import com.dmhsh.samples.apps.nowinandroid.core.navigation.Screens.QUERY_KEY
 import com.dmhsh.samples.apps.nowinandroid.core.ui.component.RadioTab
 import com.dmhsh.samples.apps.nowinandroid.core.ui.component.RadioTopAppBar
+import com.dmhsh.samples.apps.nowinandroid.core.ui.extensions.isNotNullandNotBlank
 import kotlinx.coroutines.DelicateCoroutinesApi
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.GlobalScope
@@ -66,8 +72,23 @@ fun ForYouScreen(navigation: Navigator = LocalNavigator.current) {
 }
 
 @Composable
+fun getNavArgument(key: String): Any? {
+    val owner = LocalViewModelStoreOwner.current
+    return if (owner is NavBackStackEntry) owner.arguments?.get(key)
+    else null
+}
+
+@Composable
 fun AdvanceListContent(viewModel: SearchListViewModel = hiltViewModel()) {
     var selectedIndex by remember { mutableStateOf(0) }
+    var initialQuery = (getNavArgument(QUERY_KEY) ?: "").toString()
+    var query by rememberSaveable { mutableStateOf(initialQuery) }
+   // var initialQuery1 = initialQuery
+
+//    Log.e("aaa initialQuery1", query)
+//    query = ""
+//    Log.e("aaa initialQuery2", query)
+
     val tabs = listOf(
         stringResource(R.string.action_local),
         stringResource(R.string.action_top_click),
@@ -79,7 +100,14 @@ fun AdvanceListContent(viewModel: SearchListViewModel = hiltViewModel()) {
         stringResource(R.string.action_languages),
         stringResource(R.string.action_search)
     )
+
     val pagerState1: PagerState = run { remember { PagerState(0, 0, tabs.size - 1) } }
+
+    if(query.isNotNullandNotBlank()){
+
+        selectedIndex = tabs.lastIndex
+        pagerState1.currentPage = tabs.lastIndex
+    }
 
     Column {
         ScrollableTabRow(
@@ -121,15 +149,26 @@ fun AdvanceListContent(viewModel: SearchListViewModel = hiltViewModel()) {
                 7 -> LanguageListScreen(onTagSelect = {
                     LaunchSearchScreen(pagerState1, viewModel, "bylanguage", it.name) })  //0
                 8 -> SearchStationsScreen(
+                    query,
                     onButtonSelect = { it ->
                         selectedIndex = it + 5
                         pagerState1.currentPage = it + 5
-
+                        query = ""
+                       // Log.e("aaa initialQuery 0", initialQuery)
                     }
                 )
             }
         }
     }
+
+
+
+//    if(query.isNotNullandNotBlank()){
+//        selectedIndex = tabs.indexOf(stringResource(R.string.action_search))
+//        pagerState1.currentPage = tabs.indexOf(stringResource(R.string.action_search))
+//        LaunchSearchScreen(pagerState1, viewModel, "bytag", query)
+//        query = ""
+//    }
 }
 
 @OptIn(DelicateCoroutinesApi::class)

@@ -1,5 +1,6 @@
 package com.dmhsh.samples.apps.nowinandroid.feature.foryou
 
+import android.util.Log
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.setValue
@@ -27,9 +28,6 @@ class  SearchListViewModel @Inject constructor(
     private val stationDao: StationDao,
     ) : ViewModel() {
 
-    var type: String = "bytag"
-    var param: String = "1012"
-
     var state by mutableStateOf(
         LocalStationsContract.State(
             localStations = listOf(),
@@ -38,7 +36,7 @@ class  SearchListViewModel @Inject constructor(
         )
     )
 
-    var effects = Channel<com.dmhsh.samples.apps.nowinandroid.feature.foryou.CountryCategoriesContract.Effect>(Channel.UNLIMITED)
+    var effects = Channel<CountryCategoriesContract.Effect>(Channel.UNLIMITED)
         private set
 
     init {
@@ -47,7 +45,14 @@ class  SearchListViewModel @Inject constructor(
         }
     }
 
-    private suspend fun getSearchStationList(type: String, param: String) {
+    fun getTagearch(type: String, param: String) {
+        viewModelScope.launch {
+            state = state.copy(localStations = emptyList(), initStatus = false, isLoading = true)
+            getSearchStationList(type, "#$param")
+        }
+    }
+
+    suspend fun getSearchStationList(type: String, param: String) {
         val categories = remoteSource.searchByTypeList(type, param)
         if (categories != null) {
             val stations = ArrayList<StationEntity>()
@@ -56,8 +61,13 @@ class  SearchListViewModel @Inject constructor(
         }
 
         viewModelScope.launch {
-            state = categories?.let { state.copy(localStations = it, initStatus = false, isLoading = false) }!!
-            effects.send(com.dmhsh.samples.apps.nowinandroid.feature.foryou.CountryCategoriesContract.Effect.DataWasLoaded)
+            if(categories == null) {
+                state = state.copy(localStations = emptyList(), initStatus = false, isLoading = false)
+            }else{
+                state = categories.let { state.copy(localStations = it, initStatus = false, isLoading = false) }!!
+            }
+            Log.e("aaa categories", categories?.size.toString()?:"")
+            effects.send(CountryCategoriesContract.Effect.DataWasLoaded)
         }
     }
 

@@ -20,10 +20,15 @@ import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import com.dmhsh.samples.apps.nowinandroid.core.model.data.LanguageTag
 import com.dmhsh.samples.apps.nowinandroid.core.ui.component.FullScreenLoading
+import com.dmhsh.samples.apps.nowinandroid.core.ui.extensions.isNotNullandNotBlank
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.GlobalScope
+import kotlinx.coroutines.launch
 
-@SuppressLint("StateFlowValueCalledInComposition")
+@SuppressLint("StateFlowValueCalledInComposition", "CoroutineCreationDuringComposition")
 @Composable
 fun SearchStationsScreen(
+    query: String,
     viewModel: SearchListViewModel = hiltViewModel(),
     onButtonSelect:(type: Int) -> Unit
 ) {
@@ -32,6 +37,12 @@ fun SearchStationsScreen(
     val isLoading = uiState.isLoading
 
     if (isInitStatus) {
+        if(query.isNotNullandNotBlank()) {
+            viewModel.getTagearch("bytag", query)
+            onButtonSelect(3)
+
+        }
+
         Box(modifier = Modifier.fillMaxSize()) {
             Column(
                 Modifier.fillMaxWidth().padding(top = 60.dp)
@@ -57,6 +68,8 @@ fun SearchStationsScreen(
                     Text(text = "Search by Languages", color = MaterialTheme.colors.secondary)
                 }
             }
+
+
         }
     } else if(isLoading){
         FullScreenLoading()

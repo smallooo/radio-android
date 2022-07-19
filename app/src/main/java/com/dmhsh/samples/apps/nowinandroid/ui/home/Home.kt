@@ -9,7 +9,6 @@ import androidx.compose.foundation.layout.*
 import androidx.compose.material.Scaffold
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.windowsizeclass.WindowSizeClass
-import androidx.compose.material3.windowsizeclass.WindowWidthSizeClass
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Modifier
@@ -27,7 +26,6 @@ import com.dmhsh.samples.app.nowinandroid.core.playback.isActive
 import com.dmhsh.samples.apps.nowinandroid.common.compose.LocalPlaybackConnection
 import com.dmhsh.samples.apps.nowinandroid.core.navigation.Screens.RootScreen
 import com.dmhsh.samples.apps.nowinandroid.core.ui.component.isWideLayout
-import com.dmhsh.samples.apps.nowinandroid.core.ui.theme.AppTheme
 import com.dmhsh.samples.apps.nowinandroid.playback.PlaybackConnection
 import com.hdmsh.common_compose.rememberFlowWithLifecycle
 import com.hdmsh.core_ui_playback.PlaybackMiniControls

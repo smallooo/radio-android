@@ -7,6 +7,7 @@ package com.hdmsh.core_ui_playback
 import android.annotation.SuppressLint
 import androidx.compose.animation.animateColorAsState
 import androidx.compose.foundation.background
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.LazyListScope
@@ -35,8 +36,10 @@ import com.dmhsh.samples.app.nowinandroid.core.playback.artwork
 import com.dmhsh.samples.app.nowinandroid.core.playback.isIdle
 import com.dmhsh.samples.apps.nowinandroid.common.compose.LocalPlaybackConnection
 import com.dmhsh.samples.apps.nowinandroid.common.compose.LocalScaffoldState
+import com.dmhsh.samples.apps.nowinandroid.core.model.data.StationsTag
 import com.dmhsh.samples.apps.nowinandroid.core.navigation.LocalNavigator
 import com.dmhsh.samples.apps.nowinandroid.core.navigation.Navigator
+import com.dmhsh.samples.apps.nowinandroid.core.navigation.Screens.LeafScreen
 import com.dmhsh.samples.apps.nowinandroid.core.ui.ADAPTIVE_COLOR_ANIMATION
 import com.dmhsh.samples.apps.nowinandroid.core.ui.adaptiveColor
 import com.dmhsh.samples.apps.nowinandroid.core.ui.component.*
@@ -61,6 +64,7 @@ fun PlaybackSheet(
     // override local theme color palette because we want simple colors for menus n' stuff
     sheetTheme: ThemeState = LocalThemeState.current.copy(colorPalettePreference = ColorPalettePreference.Black),
     navigator: Navigator = LocalNavigator.current,
+
 ) {
     val listState = rememberLazyListState()
     val queueListState = rememberLazyListState()
@@ -80,6 +84,9 @@ fun PlaybackSheet(
                 scrollToTop = scrollToTop,
                 listState = listState,
                 queueListState = queueListState,
+                onTagSelect = {
+                     navigator.navigate(LeafScreen.Search.buildRoute(it))
+                }
             )
         }
     }
@@ -96,6 +103,7 @@ internal fun PlaybackSheetContent(
     scaffoldState: ScaffoldState = rememberScaffoldState(snackbarHostState = LocalScaffoldState.current.snackbarHostState),
     playbackConnection: PlaybackConnection = LocalPlaybackConnection.current,
     viewModel: PlaybackViewModel = hiltViewModel(),
+    onTagSelect:(stationsTag: String) -> Unit
 ) {
     val playbackState by rememberFlowWithLifecycle(playbackConnection.playbackState)
     val nowPlaying by rememberFlowWithLifecycle(playbackConnection.nowPlaying)
@@ -165,8 +173,13 @@ internal fun PlaybackSheetContent(
                     }
 
                     if (viewModel.getPlayBackConnection().tags.length > 0)
-                        item {
-                            PlaybackAudioInfo(viewModel.getPlayBackConnection().tags)
+                        viewModel.getPlayBackConnection().tags.split(",").forEach {
+                            item {
+                                PlaybackAudioInfo(
+                                    it,
+                                    onTagSelect = onTagSelect
+                                )
+                            }
                         }
 
                     if (!isWideLayout) {
@@ -261,33 +274,34 @@ private fun PlaybackSheetTopBarActions(
 }
 
 @Composable
-private fun PlaybackAudioInfo(tags:String, modifier: Modifier = Modifier) {
+private fun PlaybackAudioInfo(tags:String, modifier: Modifier = Modifier, onTagSelect:(stationsTag: String) -> Unit) {
     val context = LocalContext.current
     // val dlItem = audio.audioDownloadItem
-    if (tags != null) {
-        // val audiHeader = dlItem.audioHeader(context)
-        Column(
-            verticalArrangement = Arrangement.Center,
-            horizontalAlignment = Alignment.CenterHorizontally,
-            modifier = modifier
-                .fillMaxWidth()
-                .padding(start = AppTheme.specs.padding, end = AppTheme.specs.padding, bottom = AppTheme.specs.padding)
-        ) {
-           // tags.forEach { tag ->
-
-                Surface(
-                    color = MaterialTheme.colors.plainBackgroundColor().copy(alpha = 0.1f),
-                    shape = CircleShape,
-                ) {
-                    Text(
-                        text = tags,
-                        style = MaterialTheme.typography.body1,
-                        textAlign = TextAlign.Center,
-                        modifier = Modifier.padding(horizontal = 6.dp, vertical = 3.dp)
-                    )
-                }
-           // }
-        }
+    Column(
+        verticalArrangement = Arrangement.Center,
+        horizontalAlignment = Alignment.CenterHorizontally,
+        modifier = modifier
+            .padding(
+                start = AppTheme.specs.padding,
+                end = AppTheme.specs.padding,
+                bottom = AppTheme.specs.padding
+            )
+    ) {
+            Surface(
+                color = MaterialTheme.colors.plainBackgroundColor().copy(alpha = 0.1f),
+                shape = CircleShape,
+            ) {
+                Text(
+                    text = tags,
+                    style = MaterialTheme.typography.body1,
+                    textAlign = TextAlign.Center,
+                    modifier = Modifier
+                        .padding(horizontal = 6.dp, vertical = 3.dp)
+                        .clickable {
+                            onTagSelect(tags)
+                        }
+                )
+            }
     }
 }
 
