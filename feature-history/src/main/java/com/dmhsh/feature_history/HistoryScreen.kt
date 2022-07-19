@@ -77,20 +77,20 @@ internal fun HistoryScreen(
                     contentDesc = stringResource(id = R.string.top_app_bar_preview_title),
                 )
             is StationsUiState.Stations ->
-//                Column{
-//                    Text(text = "hello1",color = MaterialTheme.colors.secondary)
-//                    Text(text = "hello2",color = MaterialTheme.colors.onBackground)
-//                    Text(text = "hello3",color = MaterialTheme.colors.background)
-//                    Text(text = "hello4",color = MaterialTheme.colors.surface)
-//                    Text(text = "hello5",color = MaterialTheme.colors.onSurface)
-//                    Text(text = "hello6",color = MaterialTheme.colors.error)
-//                    Text(text = "hello7",color = MaterialTheme.colors.onError)
-//                    Text(text = "hello8",color = MaterialTheme.colors.onPrimary)
-//                    Text(text = "hello9",color = MaterialTheme.colors.primary)
-//                    Text(text = "hello10",color = MaterialTheme.colors.primaryVariant)
-//                    Text(text = "hello11",color = MaterialTheme.colors.secondaryVariant)
+                Column{
+                    Text(text = "hello1",color = MaterialTheme.colors.secondary)
+                    Text(text = "hello2",color = MaterialTheme.colors.onBackground)
+                    Text(text = "hello3",color = MaterialTheme.colors.background)
+                    Text(text = "hello4",color = MaterialTheme.colors.surface)
+                    Text(text = "hello5",color = MaterialTheme.colors.onSurface)
+                    Text(text = "hello6",color = MaterialTheme.colors.error)
+                    Text(text = "hello7",color = MaterialTheme.colors.onError)
+                    Text(text = "hello8",color = MaterialTheme.colors.onPrimary)
+                    Text(text = "hello9",color = MaterialTheme.colors.primary)
+                    Text(text = "hello10",color = MaterialTheme.colors.primaryVariant)
+                    Text(text = "hello11",color = MaterialTheme.colors.secondaryVariant)
                     RadioItemFavorite(viewModel, listOf(playHistory.stations), onImageClick = {})
- //               }
+                }
             is StationsUiState.Empty -> Text("hello")
         }
     }

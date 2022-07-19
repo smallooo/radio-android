@@ -43,6 +43,7 @@ import kotlin.math.sqrt
 import kotlin.time.ExperimentalTime
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.delay
+import kotlin.random.Random
 
 
 val ADAPTIVE_COLOR_ANIMATION: AnimationSpec<Color> = tween(easing = FastOutSlowInEasing)
@@ -254,3 +255,5 @@ private fun Pair<Color, Color>.mergeColors(): Color {
     r = r.copy(blue = b.blue * b.alpha / r.alpha + a.blue * a.alpha * (1 - b.alpha) / r.alpha)
     return r
 }
+
+fun randomColor() = Color(Random.nextInt(255), Random.nextInt(255), Random.nextInt(255), Random.nextInt(255))

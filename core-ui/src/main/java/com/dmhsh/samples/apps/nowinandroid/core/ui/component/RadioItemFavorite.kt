@@ -16,6 +16,7 @@ import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.graphics.vector.rememberVectorPainter
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.stringResource
@@ -25,6 +26,8 @@ import androidx.lifecycle.ViewModel
 import com.dmhsh.samples.apps.nowinandroid.common.compose.LocalPlaybackConnection
 import com.dmhsh.samples.apps.nowinandroid.core.model.data.FollowableStation
 import com.dmhsh.samples.apps.nowinandroid.core.model.data.Station
+import com.dmhsh.samples.apps.nowinandroid.core.ui.extensions.isNotNullandNotBlank
+import com.dmhsh.samples.apps.nowinandroid.core.ui.theme.randomColor
 import com.dmhsh.samples.apps.nowinandroid.core.util.IntentUtils
 import com.dmhsh.samples.apps.nowinandroid.playback.PlaybackConnection
 import tm.alashow.i18n.R
@@ -32,9 +35,10 @@ import tm.alashow.i18n.R
 @Composable
 fun RadioItemFavorite(
     viewModel: ViewModel,
-    stateCategories : List<List<FollowableStation>>,
+    stateCategories: List<List<FollowableStation>>,
     listState: LazyListState = rememberLazyListState(),
-    onImageClick: (station: Station) -> Unit){
+    onImageClick: (station: Station) -> Unit
+) {
 
     LazyColumn(
         state = listState,
@@ -60,10 +64,10 @@ private fun LazyListScope.interestsList(
                 )
             }
         }
-    }else {
+    } else {
         itemsIndexed(stateCategories.get(0), { _, it -> it.station }) { index, item ->
             Column {
-                AnimatedListFavoriteItem(viewModel,station = item.station, index, onImageClick)
+                AnimatedListFavoriteItem(viewModel, station = item.station, index, onImageClick)
             }
         }
 
@@ -74,9 +78,13 @@ private fun LazyListScope.interestsList(
 }
 
 
-
 @Composable
-fun AnimatedListFavoriteItem(viewModel: ViewModel, station: Station, itemIndex: Int, onImageClick: (station: Station) -> Unit) {
+fun AnimatedListFavoriteItem(
+    viewModel: ViewModel,
+    station: Station,
+    itemIndex: Int,
+    onImageClick: (station: Station) -> Unit
+) {
     val playbackConnection: PlaybackConnection = LocalPlaybackConnection.current
     var expanded by remember { mutableStateOf(false) }
     var favorite by remember { mutableStateOf(station.favorited) }
@@ -88,20 +96,7 @@ fun AnimatedListFavoriteItem(viewModel: ViewModel, station: Station, itemIndex: 
                 playbackConnection.playAudio(station)
             }
     ) {
-        CoverImage(
-            data =  station.favicon,
-            contentDescription = null,
-            contentScale = ContentScale.Crop,
-            modifier = Modifier
-                .size(55.dp)
-                .padding(4.dp)
-                .clickable {
-                    val station1 = station
-                    station1.favorited = ! station1.favorited
-                     onImageClick(station1)
-                     favorite = !favorite
-                }
-        )
+        StationImage(station, onImageClick, favorite)
         Column(
             modifier = Modifier
                 .padding(horizontal = 4.dp)
@@ -122,7 +117,7 @@ fun AnimatedListFavoriteItem(viewModel: ViewModel, station: Station, itemIndex: 
             )
         }
         Icon(
-            imageVector = if(expanded) Icons.Default.ArrowDropUp else Icons.Default.ArrowDropDown,
+            imageVector = if (expanded) Icons.Default.ArrowDropUp else Icons.Default.ArrowDropDown,
             contentDescription = null,
             tint = Color.LightGray,
             modifier = Modifier
@@ -136,21 +131,27 @@ fun AnimatedListFavoriteItem(viewModel: ViewModel, station: Station, itemIndex: 
         Column(
             horizontalAlignment = Alignment.Start
         ) {
-            if(station.tags.isNotBlank()) {
+            if (station.tags.isNotBlank()) {
                 Row(modifier = Modifier.padding(start = 8.dp, top = 0.dp)) {
                     listOf(station.tags).forEach { tag ->
                         InterestTag(text = tag)
                     }
                 }
             }
-            SocialRow( station, favorite , onImageClick)
+            SocialRow(station, favorite, onImageClick)
         }
     }
 }
 
+
+
 @Composable
-fun SocialRow( station: Station, favorite: Boolean, onImageClick: (station: Station) -> Unit) {
-    Material3Card(elevation = 1.dp, modifier = Modifier.padding(0.dp), backgroundColor = MaterialTheme.colors.surface) {
+fun SocialRow(station: Station, favorite: Boolean, onImageClick: (station: Station) -> Unit) {
+    Material3Card(
+        elevation = 1.dp,
+        modifier = Modifier.padding(0.dp),
+        backgroundColor = MaterialTheme.colors.surface
+    ) {
         val context = LocalContext.current
         val shareTitle = stringResource(R.string.share_action)
         var favorite1 by remember { mutableStateOf(favorite) }
@@ -161,12 +162,22 @@ fun SocialRow( station: Station, favorite: Boolean, onImageClick: (station: Stat
                 .fillMaxWidth()
                 .padding(horizontal = 16.dp, vertical = 8.dp)
         ) {
-            if(station.homepage.isNotBlank()) {
-                IconButton(onClick = { context.startActivity(Intent(Intent.ACTION_VIEW, Uri.parse(station.homepage))) },) {
+            if (station.homepage.isNotBlank()) {
+                IconButton(
+                    onClick = {
+                        context.startActivity(
+                            Intent(
+                                Intent.ACTION_VIEW,
+                                Uri.parse(station.homepage)
+                            )
+                        )
+                    },
+                ) {
                     Icon(
                         imageVector = Icons.Default.Home,
                         contentDescription = null,
-                        tint = MaterialTheme.colors.secondary)
+                        tint = MaterialTheme.colors.secondary
+                    )
                 }
             }
 
@@ -174,7 +185,7 @@ fun SocialRow( station: Station, favorite: Boolean, onImageClick: (station: Stat
                 val share = Intent(Intent.ACTION_SEND)
                 share.type = "text/plain"
                 share.putExtra(Intent.EXTRA_SUBJECT, station.name)
-                share.putExtra(Intent.EXTRA_TEXT, station.name + "        " +  station.url_resolved)
+                share.putExtra(Intent.EXTRA_TEXT, station.name + "        " + station.url_resolved)
                 val title: String = shareTitle
                 val chooser = Intent.createChooser(share, title)
                 IntentUtils.startActivity(context, chooser)

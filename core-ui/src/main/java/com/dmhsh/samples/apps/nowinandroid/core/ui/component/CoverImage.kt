@@ -18,6 +18,7 @@ import androidx.compose.material.MaterialTheme
 import androidx.compose.material.Surface
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.MusicNote
+import androidx.compose.material.icons.filled.Radio
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.setValue
@@ -54,7 +55,7 @@ fun CoverImage(
     contentColor: Color = MaterialTheme.colors.secondary,
     contentScale: ContentScale = ContentScale.Crop,
     shape: Shape = MaterialTheme.shapes.small,
-    icon: VectorPainter = rememberVectorPainter(Icons.Default.MusicNote),
+    icon: VectorPainter = rememberVectorPainter(Icons.Default.Radio),
     iconPadding: Dp = if (size != Dp.Unspecified) size * 0.25f else 24.dp,
     bitmapPlaceholder: Bitmap? = null,
     contentDescription: String? = null,

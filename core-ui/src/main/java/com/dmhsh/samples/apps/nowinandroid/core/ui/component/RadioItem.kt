@@ -18,15 +18,17 @@ import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.graphics.vector.rememberVectorPainter
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.ViewModel
-import com.dmhsh.samples.app.nowinandroid.core.playback.artwork
 import com.dmhsh.samples.apps.nowinandroid.common.compose.LocalPlaybackConnection
 import com.dmhsh.samples.apps.nowinandroid.core.model.data.Station
+import com.dmhsh.samples.apps.nowinandroid.core.ui.extensions.isNotNullandNotBlank
+import com.dmhsh.samples.apps.nowinandroid.core.ui.theme.randomColor
 import com.dmhsh.samples.apps.nowinandroid.core.util.IntentUtils.startActivity
 import com.dmhsh.samples.apps.nowinandroid.playback.PlaybackConnection
 import tm.alashow.i18n.R
@@ -65,18 +67,8 @@ fun AnimatedListItem(viewModel: ViewModel, station: Station, itemIndex: Int, onI
                 playbackConnection.playAudio(station)
                 onPlayClick(station) },
     ) {
-        CoverImage(
-            data =  station.favicon,
-            contentDescription = null,
-            contentScale = ContentScale.Crop,
-            modifier = Modifier
-                .size(55.dp)
-                .padding(4.dp)
-                .clickable {
-                   // onImageClick(station)
-                    // favorite = !favorite
-                }
-        )
+        StationImage(station, onImageClick, favorite)
+
         Column(
             modifier = Modifier
                 .padding(horizontal = 4.dp)
