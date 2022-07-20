@@ -9,10 +9,7 @@ import androidx.compose.animation.animateColorAsState
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
-import androidx.compose.foundation.lazy.LazyColumn
-import androidx.compose.foundation.lazy.LazyListScope
-import androidx.compose.foundation.lazy.LazyListState
-import androidx.compose.foundation.lazy.rememberLazyListState
+import androidx.compose.foundation.lazy.*
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.material.*
 import androidx.compose.material.icons.Icons
@@ -173,14 +170,20 @@ internal fun PlaybackSheetContent(
                     }
 
                     if (viewModel.getPlayBackConnection().tags.length > 0)
-                        viewModel.getPlayBackConnection().tags.split(",").forEach {
-                            item {
-                                PlaybackAudioInfo(
-                                    it,
-                                    onTagSelect = onTagSelect
-                                )
+//                        viewModel.getPlayBackConnection().tags.split(",").forEach {
+//                            item {
+                        item {
+                            LazyRow() {
+                                items(viewModel.getPlayBackConnection().tags.split(",")) {
+                                    PlaybackAudioInfo(
+                                        it,
+                                        onTagSelect = onTagSelect
+                                    )
+                                }
                             }
                         }
+//                            }
+//                        }
 
                     if (!isWideLayout) {
                         // playbackQueueLabel()
@@ -282,8 +285,8 @@ private fun PlaybackAudioInfo(tags:String, modifier: Modifier = Modifier, onTagS
         horizontalAlignment = Alignment.CenterHorizontally,
         modifier = modifier
             .padding(
-                start = AppTheme.specs.padding,
-                end = AppTheme.specs.padding,
+                start = AppTheme.specs.paddingSmall,
+                end = AppTheme.specs.paddingSmall,
                 bottom = AppTheme.specs.padding
             )
     ) {
@@ -296,7 +299,7 @@ private fun PlaybackAudioInfo(tags:String, modifier: Modifier = Modifier, onTagS
                     style = MaterialTheme.typography.body1,
                     textAlign = TextAlign.Center,
                     modifier = Modifier
-                        .padding(horizontal = 6.dp, vertical = 3.dp)
+                        .padding(horizontal = 16.dp, vertical = 3.dp)
                         .clickable {
                             onTagSelect(tags)
                         }

@@ -1,6 +1,7 @@
 package com.dmhsh.samples.apps.nowinandroid.feature.foryou
 
 import android.annotation.SuppressLint
+import android.util.Log
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.*
 import androidx.compose.material.MaterialTheme
@@ -33,36 +34,60 @@ fun SearchStationsScreen(
     onButtonSelect:(type: Int) -> Unit
 ) {
     val uiState = viewModel.state
-    val isInitStatus = uiState.initStatus
-    val isLoading = uiState.isLoading
+    var isInitStatus = uiState.initStatus
+    var isLoading = uiState.isLoading
 
-    if (isInitStatus) {
-        if(query.isNotNullandNotBlank()) {
-            viewModel.getTagearch("bytag", query)
-            onButtonSelect(3)
+    val uiState1 = viewModel.searchRadiosState.collectAsState()
 
-        }
+//    Log.e("aaa uiState1", uiState1.toString())
+//
+    if(query.isNotNullandNotBlank() && isInitStatus) {
+        viewModel.getTagearch("bytag", query)
+        onButtonSelect(3)
+        //isInitStatus = false
+        //viewModel.state.initStatus = false
+        //isLoading = true
+       // viewModel.state.isLoading = true
+    }
+
+    if (isInitStatus && query.isNullOrEmpty()) {
+//        if(query.isNotNullandNotBlank()) {
+//            viewModel.getTagearch("bytag", query)
+//            onButtonSelect(3)
+//            //isInitStatus = false
+//            viewModel.state.initStatus = false
+//            //isLoading = true
+//            viewModel.state.isLoading = true
+//        }
 
         Box(modifier = Modifier.fillMaxSize()) {
             Column(
-                Modifier.fillMaxWidth().padding(top = 60.dp)
+                Modifier
+                    .fillMaxWidth()
+                    .padding(top = 60.dp)
             ) {
                 Button(onClick = { onButtonSelect(0) },
-                    modifier = Modifier.fillMaxWidth().padding(28.dp),
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .padding(28.dp),
                     colors = ButtonDefaults.buttonColors(containerColor = Color.LightGray)
                 ) {
                     Text(text = "Search by Tags", color = MaterialTheme.colors.secondary)
                 }
 
                 Button(onClick = { onButtonSelect(1) },
-                    modifier = Modifier.fillMaxWidth().padding(28.dp),
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .padding(28.dp),
                     colors = ButtonDefaults.buttonColors(containerColor = Color.LightGray)
                 ) {
                     Text(text = "Search by Countries", color = MaterialTheme.colors.secondary)
                 }
 
                 Button(onClick = { onButtonSelect(2) },
-                    modifier = Modifier.fillMaxWidth().padding(28.dp),
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .padding(28.dp),
                     colors = ButtonDefaults.buttonColors(containerColor = Color.LightGray)
                     ) {
                     Text(text = "Search by Languages", color = MaterialTheme.colors.secondary)
@@ -71,7 +96,7 @@ fun SearchStationsScreen(
 
 
         }
-    } else if(isLoading){
+    } else if( isLoading ){
         FullScreenLoading()
     } else {
         RadioItemList(viewModel,

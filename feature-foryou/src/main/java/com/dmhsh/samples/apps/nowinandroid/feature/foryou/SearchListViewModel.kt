@@ -18,6 +18,10 @@ import kotlinx.coroutines.DelicateCoroutinesApi
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.channels.Channel
+import kotlinx.coroutines.flow.SharingStarted
+import kotlinx.coroutines.flow.StateFlow
+import kotlinx.coroutines.flow.combine
+import kotlinx.coroutines.flow.stateIn
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 
@@ -36,6 +40,18 @@ class  SearchListViewModel @Inject constructor(
         )
     )
 
+    val searchRadiosState: StateFlow<StationsUiState> = combine(
+        stationsRepo.getAllStream(),
+    ) { availableStations ->
+        StationsUiState.Stations(stations = availableStations.get(0) )
+    }.stateIn(
+        scope = viewModelScope,
+        started = SharingStarted.WhileSubscribed(5_000),
+        initialValue = StationsUiState.Empty
+    )
+
+
+
     var effects = Channel<CountryCategoriesContract.Effect>(Channel.UNLIMITED)
         private set
 
@@ -48,8 +64,10 @@ class  SearchListViewModel @Inject constructor(
     fun getTagearch(type: String, param: String) {
         viewModelScope.launch {
             state = state.copy(localStations = emptyList(), initStatus = false, isLoading = true)
+            effects.send(CountryCategoriesContract.Effect.DataWasLoaded)
             getSearchStationList(type, "#$param")
         }
+
     }
 
     suspend fun getSearchStationList(type: String, param: String) {
