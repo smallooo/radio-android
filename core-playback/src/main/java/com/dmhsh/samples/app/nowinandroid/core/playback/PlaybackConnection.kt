@@ -12,6 +12,7 @@ import android.support.v4.media.MediaMetadataCompat
 import android.support.v4.media.session.MediaControllerCompat
 import android.support.v4.media.session.MediaSessionCompat
 import android.support.v4.media.session.PlaybackStateCompat
+import android.util.Log
 import androidx.core.net.toUri
 import androidx.lifecycle.ProcessLifecycleOwner
 import androidx.lifecycle.lifecycleScope
@@ -41,6 +42,10 @@ interface PlaybackConnection {
     val playbackProgress: StateFlow<PlaybackProgressState>
 
     fun playAudio(station : Station)
+
+    fun stopPlayInSeconds(seconds: Long)
+
+    val timeRemained: Int
 }
 
 class PlaybackConnectionImpl(
@@ -59,6 +64,8 @@ class PlaybackConnectionImpl(
     override val transportControls get() = mediaController?.transportControls
     override val playbackProgress  = MutableStateFlow(PlaybackProgressState())
 
+    var localTimeRemained = 0
+
     init { startPlaybackProgress() }
 
     override fun playAudio(station : Station) {
@@ -75,6 +82,16 @@ class PlaybackConnectionImpl(
         
         launch { radioPlayer.playRadio(station) }
     }
+
+    override fun stopPlayInSeconds(seconds: Long) {
+        localTimeRemained = (seconds / 60).toInt()
+        Log.e("aaa localTimeRemained" , (seconds / 60).toString())
+        radioPlayer.stopInSeconds(true, seconds)
+    }
+
+    override val timeRemained: Int
+        get() = localTimeRemained
+
     private val mediaBrowserConnectionCallback = MediaBrowserConnectionCallback(context)
 
     private val mediaBrowser = MediaBrowserCompat(context, serviceComponent,

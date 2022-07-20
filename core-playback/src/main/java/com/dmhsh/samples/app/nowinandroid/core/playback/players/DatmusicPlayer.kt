@@ -7,9 +7,11 @@ import android.content.Intent
 import android.media.session.PlaybackState
 import android.net.Uri
 import android.os.Bundle
+import android.os.CountDownTimer
 import android.support.v4.media.MediaMetadataCompat
 import android.support.v4.media.session.MediaSessionCompat
 import android.support.v4.media.session.PlaybackStateCompat
+import android.util.Log
 import androidx.core.net.toUri
 import androidx.core.os.bundleOf
 import com.dmhsh.samples.app.nowinandroid.core.playback.*
@@ -65,6 +67,7 @@ interface DatmusicPlayer {
     //fun removeFromQueue(id: String)
    // fun swapQueueAudios(from: Int, to: Int)
     fun stop(byUser: Boolean)
+    fun stopInSeconds(byUser: Boolean, seconds: Long)
     fun release()
     fun onPlayingState(playing: OnIsPlaying<DatmusicPlayer>)
     fun onPrepared(prepared: OnPrepared<DatmusicPlayer>)
@@ -114,6 +117,10 @@ class DatmusicPlayerImpl @Inject constructor(
         setSessionActivity(sessionActivityPendingIntent)
         isActive = true
     }
+
+    private var secondsRemained: Long = 0
+
+    private var timer: CountDownTimer? = null
 
     init {
         queueManager.setMediaSession(mediaSession)
@@ -222,6 +229,28 @@ class DatmusicPlayerImpl @Inject constructor(
         queueManager.clear()
         //launch { saveQueueState() }
     }
+
+    override fun stopInSeconds(byUser: Boolean, seconds: Long) {
+        secondsRemained = seconds
+        if(timer != null){
+            timer!!.cancel()
+        }
+
+            timer = object : CountDownTimer(secondsRemained * 1000, 1000) {
+                override fun onTick(millisUntilFinished: Long) {
+                    secondsRemained = millisUntilFinished / 1000
+                    Log.d("aaa seaaae", "" + secondsRemained)
+                    //sendBroadCast(PlayerService.PLAYER_SERVICE_TIMER_UPDATE)
+                }
+
+                override fun onFinish() {
+                    Log.d("aaa fffefa", "stopping playback.")
+                    stop(byUser)
+                }
+            }.start()
+
+    }
+
 
     override fun release() {
         mediaSession.apply {

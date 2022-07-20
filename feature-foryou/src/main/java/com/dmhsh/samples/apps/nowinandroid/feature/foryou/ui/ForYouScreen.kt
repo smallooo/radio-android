@@ -1,26 +1,32 @@
 package com.dmhsh.samples.apps.nowinandroid.feature.foryou
 
 import android.util.Log
+import android.widget.Toast
+import androidx.compose.animation.animateContentSize
+import androidx.compose.foundation.background
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
+import androidx.compose.material.ExperimentalMaterialApi
 import androidx.compose.material.MaterialTheme
 import androidx.compose.material.Scaffold
 import androidx.compose.material.TabRowDefaults
 import androidx.compose.material3.TabRowDefaults.tabIndicatorOffset
 import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.FiberManualRecord
 import androidx.compose.material.icons.filled.Search
 import androidx.compose.material.icons.outlined.Timer
-import androidx.compose.material3.ExperimentalMaterial3Api
-import androidx.compose.material3.ScrollableTabRow
-import androidx.compose.material3.Text
-import androidx.compose.material3.TopAppBarDefaults
+import androidx.compose.material3.*
 import androidx.compose.runtime.*
 import androidx.compose.runtime.saveable.rememberSaveable
+import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.viewmodel.compose.LocalViewModelStoreOwner
 import androidx.navigation.NavBackStackEntry
+import com.dmhsh.samples.apps.nowinandroid.common.compose.LocalPlaybackConnection
 import com.dmhsh.samples.apps.nowinandroid.components.Pager
 import com.dmhsh.samples.apps.nowinandroid.components.PagerState
 import com.dmhsh.samples.apps.nowinandroid.core.navigation.LocalNavigator
@@ -30,6 +36,7 @@ import com.dmhsh.samples.apps.nowinandroid.core.navigation.Screens.QUERY_KEY
 import com.dmhsh.samples.apps.nowinandroid.core.ui.component.RadioTab
 import com.dmhsh.samples.apps.nowinandroid.core.ui.component.RadioTopAppBar
 import com.dmhsh.samples.apps.nowinandroid.core.ui.extensions.isNotNullandNotBlank
+import com.dmhsh.samples.apps.nowinandroid.playback.PlaybackConnection
 import kotlinx.coroutines.DelicateCoroutinesApi
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.GlobalScope
@@ -43,7 +50,8 @@ fun ForYouRoute() {
 
 @OptIn(ExperimentalMaterial3Api::class, ExperimentalLayoutApi::class)
 @Composable
-fun ForYouScreen(navigation: Navigator = LocalNavigator.current) {
+fun ForYouScreen(navigation: Navigator = LocalNavigator.current,
+                 showMenu: MutableState<Boolean>  = remember { mutableStateOf(false) }) {
     Scaffold(
         modifier = Modifier.fillMaxSize(),
         topBar = {
@@ -62,12 +70,73 @@ fun ForYouScreen(navigation: Navigator = LocalNavigator.current) {
                 ),
                 onNavigationClick = {
                     navigation.navigate(LeafScreen.SearchingSheet().createRoute())
+                },
+                onActionClick = {
+                    showMenu.value = !showMenu.value
                 }
             )
         },
     ) { innerPadding ->
         val padding = innerPadding
-        AdvanceListContent()
+        AdvanceListContent(showMenu)
+    }
+}
+
+@OptIn(ExperimentalMaterialApi::class, androidx.compose.animation.ExperimentalAnimationApi::class)
+@Composable
+fun PalletMenu(
+    timeRemained: Int,
+    modifier: Modifier,
+    onTimerSet: (Long) -> Unit
+) {
+    Box(modifier = Modifier.fillMaxWidth()) {
+        Column(
+            horizontalAlignment = Alignment.Start,
+            modifier = modifier
+                .background(androidx.compose.material3.MaterialTheme.colorScheme.background)
+                .padding(top = 68.dp)
+                .animateContentSize(),
+        ) {
+            var sliderState by remember { mutableStateOf(timeRemained.toFloat()) }
+            //sliderState = timeRemained.toFloat()
+
+            Text(modifier = Modifier.align(Alignment.CenterHorizontally),
+                style = MaterialTheme.typography.body1,
+                text = "close after" + timeRemained + "mins")
+
+            Text(modifier = Modifier.align(Alignment.CenterHorizontally),
+                style = MaterialTheme.typography.body1,
+                text = stringResource(R.string.sleep_timer_title))
+
+            Slider(value = sliderState, valueRange = 0f.. 600f,modifier = Modifier
+                .fillMaxWidth()
+                .padding(8.dp),
+                onValueChange = { newValue ->
+                    sliderState = newValue
+                    Log.e("aaa sliderState", sliderState.toInt().toString())
+                }
+            )
+
+            Text(modifier = Modifier.align(Alignment.CenterHorizontally),
+                style = MaterialTheme.typography.h5,
+                text = sliderState.toInt().toString())
+
+            Row( modifier = Modifier.align(Alignment.End)) {
+                Button(onClick = {
+                    onTimerSet(0.toLong())
+                }) {
+                    Text(stringResource(R.string.action_cancel))
+                }
+
+                Button( modifier = Modifier.padding(horizontal = 8.dp),
+                    onClick = {
+                    onTimerSet(sliderState.toInt().toLong())
+                }) {
+                    Text(stringResource(R.string.action_ok))
+                }
+            }
+
+        }
     }
 }
 
@@ -79,10 +148,13 @@ fun getNavArgument(key: String): Any? {
 }
 
 @Composable
-fun AdvanceListContent(viewModel: SearchListViewModel = hiltViewModel()) {
+fun AdvanceListContent(showMenu: MutableState<Boolean>,
+                       viewModel: SearchListViewModel = hiltViewModel(),
+                       playbackConnection: PlaybackConnection = LocalPlaybackConnection.current) {
     var selectedIndex by remember { mutableStateOf(0) }
     var initialQuery = (getNavArgument(QUERY_KEY) ?: "").toString()
     var query by rememberSaveable { mutableStateOf(initialQuery) }
+    val context = LocalContext.current
    // var initialQuery1 = initialQuery
 
 //    Log.e("aaa initialQuery1", query)
@@ -109,66 +181,81 @@ fun AdvanceListContent(viewModel: SearchListViewModel = hiltViewModel()) {
         pagerState1.currentPage = tabs.lastIndex
     }
 
-    Column {
-        ScrollableTabRow(
-            selectedTabIndex = selectedIndex,
-            edgePadding = 0.dp,
-            indicator = { tabPositions ->
-                TabRowDefaults.Indicator(
-                    color = MaterialTheme.colors.secondary,
-                    height = 3.dp,
-                    modifier = Modifier
-                        .tabIndicatorOffset(tabPositions[selectedIndex])
-                )
+    Box(modifier = Modifier.fillMaxSize()) {
+
+        Column {
+            ScrollableTabRow(
+                selectedTabIndex = selectedIndex,
+                edgePadding = 0.dp,
+                indicator = { tabPositions ->
+                    TabRowDefaults.Indicator(
+                        color = MaterialTheme.colors.secondary,
+                        height = 3.dp,
+                        modifier = Modifier
+                            .tabIndicatorOffset(tabPositions[selectedIndex])
+                    )
+                }
+            ) {
+                tabs.forEachIndexed { index, title ->
+                    RadioTab(
+                        selected = index == selectedIndex,
+                        onClick = {
+                            selectedIndex = tabs.indexOf(title)
+                            pagerState1.currentPage = tabs.indexOf(title)
+                        },
+                        text = { Text(text = title) }
+                    )
+                }
             }
-        ) {
-            tabs.forEachIndexed { index, title ->
-                RadioTab(
-                    selected = index == selectedIndex,
-                    onClick = {
-                        selectedIndex = tabs.indexOf(title)
-                        pagerState1.currentPage = tabs.indexOf(title)
-                    },
-                    text = { Text(text = title) }
-                )
+
+            Pager(state = pagerState1, modifier = Modifier.weight(1f)) {
+                selectedIndex = pagerState1.currentPage
+                when (commingPage) {
+                    0 -> LocalRadioList()  //0
+                    1 -> TopClickRadios()
+                    2 -> TopVoteRadios()
+                    3 -> LateUpdateRadios()
+                    4 -> NowPlayingRadios()
+                    5 -> TagListScreen(onTagSelect = { stationTag ->
+                        LaunchSearchScreen(pagerState1, viewModel, "bytag", stationTag.name)
+                    }) //0
+                    6 -> CountryList(onCountrySelect = { Country ->
+                        LaunchSearchScreen(pagerState1, viewModel, "bycountry", Country.name)
+                    })
+                    7 -> LanguageListScreen(onTagSelect = {
+                        LaunchSearchScreen(pagerState1, viewModel, "bylanguage", it.name)
+                    })  //0
+                    8 -> SearchStationsScreen(
+                        query,
+                        onButtonSelect = { it ->
+                            selectedIndex = it + 5
+                            pagerState1.currentPage = it + 5
+                            query = ""
+                        }
+                    )
+                }
             }
         }
 
-        Pager(state = pagerState1, modifier = Modifier.weight(1f)) {
-            selectedIndex = pagerState1.currentPage
-            when (commingPage) {
-                0 -> LocalRadioList()  //0
-                1 -> TopClickRadios()
-                2 -> TopVoteRadios()
-                3 -> LateUpdateRadios()
-                4 -> NowPlayingRadios()
-                5 -> TagListScreen(onTagSelect = { stationTag ->
-                    LaunchSearchScreen(pagerState1, viewModel, "bytag", stationTag.name) }) //0
-                6 -> CountryList(onCountrySelect = { Country ->
-                    LaunchSearchScreen(pagerState1, viewModel, "bycountry", Country.name) })
-                7 -> LanguageListScreen(onTagSelect = {
-                    LaunchSearchScreen(pagerState1, viewModel, "bylanguage", it.name) })  //0
-                8 -> SearchStationsScreen(
-                    query,
-                    onButtonSelect = { it ->
-                        selectedIndex = it + 5
-                        pagerState1.currentPage = it + 5
-                        query = ""
-                       // Log.e("aaa initialQuery 0", initialQuery)
+
+
+        if (showMenu.value) {
+            PalletMenu(
+                playbackConnection.timeRemained,
+                modifier = Modifier.align(Alignment.TopEnd),
+                onTimerSet = {
+                    if(it > 1) {
+                        playbackConnection.stopPlayInSeconds(it * 60)
+                        showMenu.value = false
+//                        Toast.makeText(context, "成功", Toast.LENGTH_SHORT)
+                    }else{
+                        showMenu.value = false
                     }
-                )
-            }
+                }
+            )
         }
     }
 
-
-
-//    if(query.isNotNullandNotBlank()){
-//        selectedIndex = tabs.indexOf(stringResource(R.string.action_search))
-//        pagerState1.currentPage = tabs.indexOf(stringResource(R.string.action_search))
-//        LaunchSearchScreen(pagerState1, viewModel, "bytag", query)
-//        query = ""
-//    }
 }
 
 @OptIn(DelicateCoroutinesApi::class)

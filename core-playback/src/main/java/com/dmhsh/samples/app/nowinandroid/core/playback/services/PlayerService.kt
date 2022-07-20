@@ -6,14 +6,11 @@ package com.dmhsh.samples.app.nowinandroid.core.playback.services
 
 import android.content.Intent
 import android.os.Bundle
+import android.os.CountDownTimer
 import android.support.v4.media.MediaBrowserCompat
-import dagger.hilt.android.AndroidEntryPoint
-import javax.inject.Inject
-import kotlinx.coroutines.CoroutineScope
-import kotlinx.coroutines.MainScope
+import android.util.Log
 import androidx.media.MediaBrowserServiceCompat
 import androidx.media.session.MediaButtonReceiver
-import com.dmhsh.samples.app.nowinandroid.core.playback.*
 import com.dmhsh.samples.app.nowinandroid.core.playback.*
 import com.dmhsh.samples.app.nowinandroid.core.playback.models.MediaId
 import com.dmhsh.samples.app.nowinandroid.core.playback.models.MediaId.Companion.CALLER_OTHER
@@ -21,10 +18,15 @@ import com.dmhsh.samples.app.nowinandroid.core.playback.models.MediaId.Companion
 import com.dmhsh.samples.app.nowinandroid.core.playback.models.toMediaId
 import com.dmhsh.samples.app.nowinandroid.core.playback.players.DatmusicPlayerImpl
 import com.dmhsh.samples.app.nowinandroid.core.playback.receivers.BecomingNoisyReceiver
+import com.dmhsh.samples.apps.nowinandroid.core.playback.BuildConfig
 import com.dmhsh.samples.apps.nowinandroid.core.util.CoroutineDispatchers
+import dagger.hilt.android.AndroidEntryPoint
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.MainScope
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 import timber.log.Timber
+import javax.inject.Inject
 
 
 @AndroidEntryPoint
@@ -48,6 +50,8 @@ class PlayerService : MediaBrowserServiceCompat(), CoroutineScope by MainScope()
 
     private lateinit var becomingNoisyReceiver: BecomingNoisyReceiver
 
+    var seconds = 10L
+
     override fun onCreate() {
         super.onCreate()
 
@@ -69,6 +73,8 @@ class PlayerService : MediaBrowserServiceCompat(), CoroutineScope by MainScope()
         datmusicPlayer.onMetaDataChanged {
             mediaNotifications.updateNotification(getSession())
         }
+
+
     }
 
     private fun startForeground() {
