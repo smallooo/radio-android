@@ -37,29 +37,17 @@ fun SearchStationsScreen(
     var isInitStatus = uiState.initStatus
     var isLoading = uiState.isLoading
 
-    val uiState1 = viewModel.searchRadiosState.collectAsState()
+//    val uiState1 = viewModel.searchRadiosState.collectAsState()
 
 //    Log.e("aaa uiState1", uiState1.toString())
 //
     if(query.isNotNullandNotBlank() && isInitStatus) {
         viewModel.getTagearch("bytag", query)
         onButtonSelect(3)
-        //isInitStatus = false
-        //viewModel.state.initStatus = false
-        //isLoading = true
-       // viewModel.state.isLoading = true
+
     }
 
     if (isInitStatus && query.isNullOrEmpty()) {
-//        if(query.isNotNullandNotBlank()) {
-//            viewModel.getTagearch("bytag", query)
-//            onButtonSelect(3)
-//            //isInitStatus = false
-//            viewModel.state.initStatus = false
-//            //isLoading = true
-//            viewModel.state.isLoading = true
-//        }
-
         Box(modifier = Modifier.fillMaxSize()) {
             Column(
                 Modifier

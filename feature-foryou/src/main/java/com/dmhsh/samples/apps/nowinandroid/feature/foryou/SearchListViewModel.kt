@@ -40,15 +40,15 @@ class  SearchListViewModel @Inject constructor(
         )
     )
 
-    val searchRadiosState: StateFlow<StationsUiState> = combine(
-        stationsRepo.getAllStream(),
-    ) { availableStations ->
-        StationsUiState.Stations(stations = availableStations.get(0) )
-    }.stateIn(
-        scope = viewModelScope,
-        started = SharingStarted.WhileSubscribed(5_000),
-        initialValue = StationsUiState.Empty
-    )
+//    val searchRadiosState: StateFlow<StationsUiState> = combine(
+//        stationsRepo.getAllStream(),
+//    ) { availableStations ->
+//        StationsUiState.Stations(stations = availableStations.get(0) )
+//    }.stateIn(
+//        scope = viewModelScope,
+//        started = SharingStarted.WhileSubscribed(5_000),
+//        initialValue = StationsUiState.Empty
+//    )
 
 
 
