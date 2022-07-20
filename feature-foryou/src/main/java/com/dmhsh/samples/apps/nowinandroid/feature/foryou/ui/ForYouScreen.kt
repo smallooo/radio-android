@@ -33,6 +33,7 @@ import com.dmhsh.samples.apps.nowinandroid.core.navigation.LocalNavigator
 import com.dmhsh.samples.apps.nowinandroid.core.navigation.Navigator
 import com.dmhsh.samples.apps.nowinandroid.core.navigation.Screens.LeafScreen
 import com.dmhsh.samples.apps.nowinandroid.core.navigation.Screens.QUERY_KEY
+import com.dmhsh.samples.apps.nowinandroid.core.ui.component.PalletMenu
 import com.dmhsh.samples.apps.nowinandroid.core.ui.component.RadioTab
 import com.dmhsh.samples.apps.nowinandroid.core.ui.component.RadioTopAppBar
 import com.dmhsh.samples.apps.nowinandroid.core.ui.extensions.isNotNullandNotBlank
@@ -82,63 +83,7 @@ fun ForYouScreen(navigation: Navigator = LocalNavigator.current,
     }
 }
 
-@OptIn(ExperimentalMaterialApi::class, androidx.compose.animation.ExperimentalAnimationApi::class)
-@Composable
-fun PalletMenu(
-    timeRemained: Int,
-    modifier: Modifier,
-    onTimerSet: (Long) -> Unit
-) {
-    Box(modifier = Modifier.fillMaxWidth()) {
-        Column(
-            horizontalAlignment = Alignment.Start,
-            modifier = modifier
-                .background(androidx.compose.material3.MaterialTheme.colorScheme.background)
-                .padding(top = 68.dp)
-                .animateContentSize(),
-        ) {
-            var sliderState by remember { mutableStateOf(timeRemained.toFloat()) }
-            //sliderState = timeRemained.toFloat()
 
-            Text(modifier = Modifier.align(Alignment.CenterHorizontally),
-                style = MaterialTheme.typography.body1,
-                text = "close after" + timeRemained + "mins")
-
-            Text(modifier = Modifier.align(Alignment.CenterHorizontally),
-                style = MaterialTheme.typography.body1,
-                text = stringResource(R.string.sleep_timer_title))
-
-            Slider(value = sliderState, valueRange = 0f.. 600f,modifier = Modifier
-                .fillMaxWidth()
-                .padding(8.dp),
-                onValueChange = { newValue ->
-                    sliderState = newValue
-                    Log.e("aaa sliderState", sliderState.toInt().toString())
-                }
-            )
-
-            Text(modifier = Modifier.align(Alignment.CenterHorizontally),
-                style = MaterialTheme.typography.h5,
-                text = sliderState.toInt().toString())
-
-            Row( modifier = Modifier.align(Alignment.End)) {
-                Button(onClick = {
-                    onTimerSet(0.toLong())
-                }) {
-                    Text(stringResource(R.string.action_cancel))
-                }
-
-                Button( modifier = Modifier.padding(horizontal = 8.dp),
-                    onClick = {
-                    onTimerSet(sliderState.toInt().toLong())
-                }) {
-                    Text(stringResource(R.string.action_ok))
-                }
-            }
-
-        }
-    }
-}
 
 @Composable
 fun getNavArgument(key: String): Any? {
@@ -237,8 +182,6 @@ fun AdvanceListContent(showMenu: MutableState<Boolean>,
             }
         }
 
-
-
         if (showMenu.value) {
             PalletMenu(
                 playbackConnection.timeRemained,
@@ -255,7 +198,6 @@ fun AdvanceListContent(showMenu: MutableState<Boolean>,
             )
         }
     }
-
 }
 
 @OptIn(DelicateCoroutinesApi::class)
