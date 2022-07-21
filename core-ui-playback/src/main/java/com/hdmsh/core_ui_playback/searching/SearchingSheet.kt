@@ -248,6 +248,7 @@ private fun SearchTitle(
     Text(
         text = "Search",
         style = typography.h3.copy(fontWeight = FontWeight.ExtraBold),
+        color = MaterialTheme.colors.onSurface,
         textAlign = TextAlign.Center,
         modifier = Modifier
             .padding(top = 130.dp, bottom = 40.dp)

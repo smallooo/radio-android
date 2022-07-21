@@ -45,17 +45,19 @@ class LateUpdateViewModel @Inject constructor(private val remoteSource: NetSourc
 
     private suspend fun getTopClickStationList() {
         val categories = remoteSource.getLateUpdateStationsList()
-        viewModelScope.launch {
-            state = categories?.let { state.copy(localStations = it, isLoading = false) }!!
-            effects.send(com.dmhsh.samples.apps.nowinandroid.feature.foryou.CountryCategoriesContract.Effect.DataWasLoaded)
 
-            Log.e("aaav", categories.size.toString())
-            val stations = ArrayList<StationEntity>()
-            for(item in categories){
-                stations.add(item.asExternalModel())
+        if(!categories.isNullOrEmpty()) {
+            viewModelScope.launch {
+                state = categories?.let { state.copy(localStations = it, isLoading = false) }!!
+                effects.send(CountryCategoriesContract.Effect.DataWasLoaded)
+
+                val stations = ArrayList<StationEntity>()
+                for (item in categories) {
+                    stations.add(item.asExternalModel())
+                }
+                stationDao.upsertStations(stations)
+
             }
-            stationDao.upsertStations(stations)
-
         }
     }
 

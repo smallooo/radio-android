@@ -6,6 +6,8 @@ import androidx.compose.animation.animateColor
 import androidx.compose.animation.core.*
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.lazy.LazyRow
 import androidx.compose.material3.*
 import androidx.compose.runtime.*
 import androidx.compose.runtime.saveable.rememberSaveable
@@ -18,6 +20,7 @@ import com.dmhsh.samples.app.nowinandroid.core.playback.isActive
 import com.dmhsh.samples.apps.nowinandroid.common.compose.LocalPlaybackConnection
 import com.dmhsh.samples.apps.nowinandroid.core.datastore.PreferencesStore
 import com.dmhsh.samples.apps.nowinandroid.core.ui.component.FullScreenLoading
+import com.dmhsh.samples.apps.nowinandroid.core.ui.component.HorizontalListItem
 
 import com.dmhsh.samples.apps.nowinandroid.core.ui.component.RadioItem
 import com.dmhsh.samples.apps.nowinandroid.feature.foryou.ui.ShimmerAnimationType

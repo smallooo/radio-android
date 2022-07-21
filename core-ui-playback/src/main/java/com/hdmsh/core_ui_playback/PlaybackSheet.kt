@@ -24,7 +24,6 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
-import androidx.compose.ui.unit.sp
 import androidx.hilt.navigation.compose.hiltViewModel
 
 import com.google.accompanist.pager.ExperimentalPagerApi
@@ -33,7 +32,6 @@ import com.dmhsh.samples.app.nowinandroid.core.playback.artwork
 import com.dmhsh.samples.app.nowinandroid.core.playback.isIdle
 import com.dmhsh.samples.apps.nowinandroid.common.compose.LocalPlaybackConnection
 import com.dmhsh.samples.apps.nowinandroid.common.compose.LocalScaffoldState
-import com.dmhsh.samples.apps.nowinandroid.core.model.data.StationsTag
 import com.dmhsh.samples.apps.nowinandroid.core.navigation.LocalNavigator
 import com.dmhsh.samples.apps.nowinandroid.core.navigation.Navigator
 import com.dmhsh.samples.apps.nowinandroid.core.navigation.Screens.LeafScreen
@@ -160,6 +158,7 @@ internal fun PlaybackSheetContent(
 
                     item {
                         PlaybackArtworkPagerWithNowPlayingAndControls(
+                            playbackConnection = playbackConnection,
                             nowPlaying = nowPlaying,
                             playbackState = playbackState,
                             pagerState = pagerState,
@@ -272,12 +271,12 @@ private fun PlaybackSheetTopBarActions(
 ) {
     val (expanded, setExpanded) = remember { mutableStateOf(false) }
     CompositionLocalProvider(LocalContentAlpha provides ContentAlpha.high) {
-        MoreVerticalIcon()
+       // MoreVerticalIcon()
     }
 }
 
 @Composable
-private fun PlaybackAudioInfo(tags:String, modifier: Modifier = Modifier, onTagSelect:(stationsTag: String) -> Unit) {
+private fun PlaybackAudioInfo(tag:String, modifier: Modifier = Modifier, onTagSelect:(stationsTag: String) -> Unit) {
     val context = LocalContext.current
     // val dlItem = audio.audioDownloadItem
     Column(
@@ -295,13 +294,13 @@ private fun PlaybackAudioInfo(tags:String, modifier: Modifier = Modifier, onTagS
                 shape = CircleShape,
             ) {
                 Text(
-                    text = tags,
+                    text = tag,
                     style = MaterialTheme.typography.body1,
                     textAlign = TextAlign.Center,
                     modifier = Modifier
                         .padding(horizontal = 16.dp, vertical = 3.dp)
                         .clickable {
-                            onTagSelect(tags)
+                            onTagSelect(tag)
                         }
                 )
             }

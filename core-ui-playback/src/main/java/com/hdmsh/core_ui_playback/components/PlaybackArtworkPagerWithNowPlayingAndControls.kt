@@ -14,7 +14,9 @@ import androidx.compose.ui.text.TextStyle
 import androidx.constraintlayout.compose.ConstraintLayout
 import androidx.constraintlayout.compose.Dimension
 import com.dmhsh.samples.app.nowinandroid.core.playback.artworkUri
+import com.dmhsh.samples.apps.nowinandroid.common.compose.LocalPlaybackConnection
 import com.dmhsh.samples.apps.nowinandroid.core.ui.extensions.Callback
+import com.dmhsh.samples.apps.nowinandroid.playback.PlaybackConnection
 
 import com.google.accompanist.pager.ExperimentalPagerApi
 import com.google.accompanist.pager.PagerState
@@ -23,6 +25,7 @@ import com.google.accompanist.pager.rememberPagerState
 @OptIn(ExperimentalPagerApi::class)
 @Composable
 fun PlaybackArtworkPagerWithNowPlayingAndControls(
+    playbackConnection: PlaybackConnection,
     nowPlaying: MediaMetadataCompat,
     playbackState: PlaybackStateCompat,
     modifier: Modifier = Modifier,
@@ -55,6 +58,7 @@ fun PlaybackArtworkPagerWithNowPlayingAndControls(
             )
         }
         PlaybackNowPlayingWithControls(
+            playbackConnection = playbackConnection,
             nowPlaying = nowPlaying,
             playbackState = playbackState,
             contentColor = contentColor,

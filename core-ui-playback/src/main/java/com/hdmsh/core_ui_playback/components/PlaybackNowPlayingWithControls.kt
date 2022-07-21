@@ -5,6 +5,7 @@
 package com.hdmsh.core_ui_playback.components
 
 
+import android.annotation.SuppressLint
 import android.support.v4.media.MediaMetadataCompat
 import android.support.v4.media.session.PlaybackStateCompat
 import androidx.compose.foundation.layout.*
@@ -45,6 +46,7 @@ object PlaybackNowPlayingDefaults {
 
 @Composable
 internal fun PlaybackNowPlayingWithControls(
+    playbackConnection: PlaybackConnection,
     nowPlaying: MediaMetadataCompat,
     playbackState: PlaybackStateCompat,
     contentColor: Color,
@@ -114,6 +116,7 @@ internal fun PlaybackNowPlaying(
 //        }
     }
 }
+@SuppressLint("StateFlowValueCalledInComposition")
 @Composable
 internal fun PlaybackControls(
     playbackState: PlaybackStateCompat,
@@ -217,13 +220,7 @@ internal fun PlaybackControls(
             rippleRadius = smallRippleRadius,
         ) {
             Icon(
-                painter = rememberVectorPainter(
-                    when (PlaybackStateCompat.REPEAT_MODE_ONE ) {
-                        PlaybackStateCompat.REPEAT_MODE_ONE -> Icons.Default.RepeatOneOn
-                        PlaybackStateCompat.REPEAT_MODE_ALL -> Icons.Default.RepeatOn
-                        else -> Icons.Default.Repeat
-                    }
-                ),
+                imageVector = if (playbackConnection.playingStation.value.favorited) Icons.Default.Favorite else Icons.Default.FavoriteBorder,
                 tint = contentColor,
                 modifier = Modifier.fillMaxSize(),
                 contentDescription = null

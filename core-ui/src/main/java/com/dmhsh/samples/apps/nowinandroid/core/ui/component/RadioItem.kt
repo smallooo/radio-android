@@ -8,6 +8,7 @@ import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
+import androidx.compose.foundation.lazy.LazyRow
 import androidx.compose.foundation.lazy.itemsIndexed
 import androidx.compose.material.MaterialTheme
 import androidx.compose.material.icons.Icons
@@ -39,19 +40,40 @@ fun RadioItem(viewModel: ViewModel,
               stateCategories : List<Station>,
               onImageClick: (station: Station) -> Unit,
               onPlayClick: (station: Station) -> Unit){
-    LazyColumn {
-        itemsIndexed(
-            items = stateCategories,
-            itemContent = {index, item ->
-                AnimatedListItem(
-                    viewModel,
-                    station = item,
-                    index,
-                    onImageClick = onImageClick,
-                    onPlayClick = onPlayClick)
+    val playbackConnection: PlaybackConnection = LocalPlaybackConnection.current
+
+        LazyColumn {
+            item{
+                LazyRow(
+                    modifier = Modifier.padding(top = 3.dp)
+                ) {
+                    stateCategories.take(10).forEach() {
+                        item {
+                            HorizontalListItem(station = it, Modifier.padding(start = 16.dp), recommendedClick = { it ->
+                                playbackConnection.playAudio(station = it)
+                            })
+                        }
+                    }
+                }
             }
-        )
-    }
+
+            itemsIndexed(
+                items = stateCategories,
+                itemContent = { index, item ->
+
+                    if(index > 9) {
+                        AnimatedListItem(
+                            viewModel,
+                            station = item,
+                            index,
+                            onImageClick = onImageClick,
+                            onPlayClick = onPlayClick
+                        )
+                    }
+                }
+            )
+        }
+
 }
 
 @Composable
@@ -59,6 +81,8 @@ fun AnimatedListItem(viewModel: ViewModel, station: Station, itemIndex: Int, onI
     val playbackConnection: PlaybackConnection = LocalPlaybackConnection.current
     var expanded by remember { mutableStateOf(false) }
     var favorite by remember { mutableStateOf(station.favorited) }
+
+
     Row(
         verticalAlignment = Alignment.CenterVertically,
         modifier = Modifier
@@ -118,7 +142,7 @@ fun AnimatedListItem(viewModel: ViewModel, station: Station, itemIndex: Int, onI
 
 @Composable
 fun SocialRow(viewModel : ViewModel , station: Station, favorite: Boolean,  onImageClick: (station: Station) -> Unit) {
-    Material3Card(elevation = 1.dp, modifier = Modifier.padding(0.dp), backgroundColor = MaterialTheme.colors.surface) {
+    Material3Card(elevation = 0.8.dp, modifier = Modifier.padding(0.dp), backgroundColor = MaterialTheme.colors.surface) {
         val context = LocalContext.current
         val shareTitle = stringResource(R.string.share_action)
         var favorite1 by remember { mutableStateOf(favorite) }
@@ -165,7 +189,7 @@ fun SocialRow(viewModel : ViewModel , station: Station, favorite: Boolean,  onIm
                 favorite1 = !favorite1
             }) {
                 Icon(
-                    imageVector = if (favorite1) Icons.Default.Star else Icons.Default.StarBorder,
+                    imageVector = if (favorite1) Icons.Default.Favorite else Icons.Default.FavoriteBorder,
                     contentDescription = null,
                     tint = MaterialTheme.colors.secondary,
                 )

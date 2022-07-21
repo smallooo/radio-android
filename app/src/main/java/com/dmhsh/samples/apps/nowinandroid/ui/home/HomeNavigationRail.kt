@@ -108,6 +108,7 @@ internal fun HomeNavigationRail(
                         enter = slideInVertically(initialOffsetY = { it / 2 }) + scaleIn()
                     ) {
                         PlaybackArtworkPagerWithNowPlayingAndControls(
+                            playbackConnection = playbackConnection,
                             nowPlaying = nowPlaying,
                             playbackState = playbackState,
                             onArtworkClick = { },

@@ -204,7 +204,7 @@ fun SocialRow(station: Station, favorite: Boolean, onImageClick: (station: Stati
                 favorite1 = !favorite1
             }) {
                 Icon(
-                    imageVector = if (favorite1) Icons.Default.Star else Icons.Default.StarBorder,
+                    imageVector = if (favorite1) Icons.Default.Favorite else Icons.Default.FavoriteBorder,
                     contentDescription = null,
                     tint = MaterialTheme.colors.secondary,
                 )

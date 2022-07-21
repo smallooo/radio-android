@@ -191,7 +191,6 @@ fun PlaybackProgress(
     }
 }
 
-
 @Composable
 private fun RowScope.PlaybackPlayPause(
     playbackState: PlaybackStateCompat,
@@ -215,7 +214,6 @@ private fun RowScope.PlaybackPlayPause(
         )
     }
 }
-
 
 @OptIn(ExperimentalPagerApi::class)
 @Composable
