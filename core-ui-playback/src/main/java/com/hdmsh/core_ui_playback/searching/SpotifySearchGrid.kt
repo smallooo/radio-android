@@ -57,7 +57,7 @@ fun SpotifySearchGridItem(album: Album, onSearchSelect: (content: String) -> Uni
     ) {
         Text(
             text = album.song,
-            style = typography.h6.copy(fontSize = 14.sp),
+            style = typography.h6.copy(fontSize = 18.sp),
             modifier = Modifier.padding(8.dp)
         )
         Image(

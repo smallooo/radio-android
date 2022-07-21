@@ -55,7 +55,7 @@ fun CoverImage(
     contentColor: Color = MaterialTheme.colors.secondary,
     contentScale: ContentScale = ContentScale.Crop,
     shape: Shape = MaterialTheme.shapes.small,
-    icon: VectorPainter = rememberVectorPainter(Icons.Default.Radio),
+    icon: VectorPainter = rememberVectorPainter(Icons.Default.MusicNote),
     iconPadding: Dp = if (size != Dp.Unspecified) size * 0.25f else 24.dp,
     bitmapPlaceholder: Bitmap? = null,
     contentDescription: String? = null,

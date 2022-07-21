@@ -7,15 +7,16 @@ import androidx.compose.material.MaterialTheme
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Radio
 import androidx.compose.material3.Icon
-import androidx.compose.runtime.Composable
-import androidx.compose.runtime.remember
+import androidx.compose.runtime.*
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.vector.rememberVectorPainter
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.unit.dp
 import com.dmhsh.samples.apps.nowinandroid.core.model.data.Station
 import com.dmhsh.samples.apps.nowinandroid.core.ui.extensions.isNotNullandNotBlank
 import com.dmhsh.samples.apps.nowinandroid.core.ui.theme.randomColor
+import kotlin.random.Random
 
 @Composable
 fun StationImage(
@@ -24,6 +25,7 @@ fun StationImage(
     favorite: Boolean
 ) {
     var favorite1 = favorite
+    val color by remember { mutableStateOf(randomColor()) }
 
     if (station.favicon.isNotNullandNotBlank()) {
         CoverImage(
@@ -43,7 +45,7 @@ fun StationImage(
     } else {
         Icon(
             painter = rememberVectorPainter(Icons.Filled.Radio),
-            tint = MaterialTheme.colors.secondary,
+            tint = color,
             contentDescription = null,
             modifier = Modifier
                 .size(55.dp)
@@ -55,3 +57,4 @@ fun StationImage(
         )
     }
 }
+

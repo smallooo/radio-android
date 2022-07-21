@@ -1,18 +1,14 @@
 package com.dmhsh.samples.apps.nowinandroid.feature.foryou
 
+import android.content.Context
 import android.util.Log
 import android.widget.Toast
-import androidx.compose.animation.animateContentSize
-import androidx.compose.foundation.background
-import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
-import androidx.compose.material.ExperimentalMaterialApi
 import androidx.compose.material.MaterialTheme
 import androidx.compose.material.Scaffold
 import androidx.compose.material.TabRowDefaults
 import androidx.compose.material3.TabRowDefaults.tabIndicatorOffset
 import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.filled.FiberManualRecord
 import androidx.compose.material.icons.filled.Search
 import androidx.compose.material.icons.outlined.Timer
 import androidx.compose.material3.*
@@ -33,7 +29,7 @@ import com.dmhsh.samples.apps.nowinandroid.core.navigation.LocalNavigator
 import com.dmhsh.samples.apps.nowinandroid.core.navigation.Navigator
 import com.dmhsh.samples.apps.nowinandroid.core.navigation.Screens.LeafScreen
 import com.dmhsh.samples.apps.nowinandroid.core.navigation.Screens.QUERY_KEY
-import com.dmhsh.samples.apps.nowinandroid.core.ui.component.PalletMenu
+import com.dmhsh.samples.apps.nowinandroid.core.ui.component.SettingMenu
 import com.dmhsh.samples.apps.nowinandroid.core.ui.component.RadioTab
 import com.dmhsh.samples.apps.nowinandroid.core.ui.component.RadioTopAppBar
 import com.dmhsh.samples.apps.nowinandroid.core.ui.extensions.isNotNullandNotBlank
@@ -83,8 +79,6 @@ fun ForYouScreen(navigation: Navigator = LocalNavigator.current,
     }
 }
 
-
-
 @Composable
 fun getNavArgument(key: String): Any? {
     val owner = LocalViewModelStoreOwner.current
@@ -94,29 +88,18 @@ fun getNavArgument(key: String): Any? {
 
 @Composable
 fun AdvanceListContent(showMenu: MutableState<Boolean>,
+                       context: Context = LocalContext.current,
                        viewModel: SearchListViewModel = hiltViewModel(),
                        playbackConnection: PlaybackConnection = LocalPlaybackConnection.current) {
     var selectedIndex by remember { mutableStateOf(0) }
     var initialQuery = (getNavArgument(QUERY_KEY) ?: "").toString()
     var query by rememberSaveable { mutableStateOf(initialQuery) }
-    val context = LocalContext.current
-   // var initialQuery1 = initialQuery
 
-//    Log.e("aaa initialQuery1", query)
-//    query = ""
-//    Log.e("aaa initialQuery2", query)
+    var settingString = stringResource(id = R.string.action_ok)
 
-    val tabs = listOf(
-        stringResource(R.string.action_local),
-        stringResource(R.string.action_top_click),
-        stringResource(R.string.action_top_vote),
-        stringResource(R.string.action_changed_lately),
-        stringResource(R.string.action_currently_playing),
-        stringResource(R.string.action_tags),
-        stringResource(R.string.action_countries),
-        stringResource(R.string.action_languages),
-        stringResource(R.string.action_search)
-    )
+
+    val tabs = listOf(stringResource(R.string.action_local), stringResource(R.string.action_top_click), stringResource(R.string.action_top_vote), stringResource(R.string.action_changed_lately),
+        stringResource(R.string.action_currently_playing), stringResource(R.string.action_tags), stringResource(R.string.action_countries), stringResource(R.string.action_languages), stringResource(R.string.action_search))
 
     val pagerState1: PagerState = run { remember { PagerState(0, 0, tabs.size - 1) } }
 
@@ -127,7 +110,6 @@ fun AdvanceListContent(showMenu: MutableState<Boolean>,
     }
 
     Box(modifier = Modifier.fillMaxSize()) {
-
         Column {
             ScrollableTabRow(
                 selectedTabIndex = selectedIndex,
@@ -183,14 +165,14 @@ fun AdvanceListContent(showMenu: MutableState<Boolean>,
         }
 
         if (showMenu.value) {
-            PalletMenu(
+            SettingMenu(
                 playbackConnection.timeRemained,
                 modifier = Modifier.align(Alignment.TopEnd),
                 onTimerSet = {
                     if(it > 1) {
+                        Toast.makeText(context, settingString, Toast.LENGTH_SHORT).show()
                         playbackConnection.stopPlayInSeconds(it * 60)
                         showMenu.value = false
-//                        Toast.makeText(context, "成功", Toast.LENGTH_SHORT)
                     }else{
                         showMenu.value = false
                     }
