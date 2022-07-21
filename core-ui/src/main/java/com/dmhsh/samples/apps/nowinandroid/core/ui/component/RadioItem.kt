@@ -43,25 +43,25 @@ fun RadioItem(viewModel: ViewModel,
     val playbackConnection: PlaybackConnection = LocalPlaybackConnection.current
 
         LazyColumn {
-            item{
-                LazyRow(
-                    modifier = Modifier.padding(top = 3.dp)
-                ) {
-                    stateCategories.take(10).forEach() {
-                        item {
-                            HorizontalListItem(station = it, Modifier.padding(start = 16.dp), recommendedClick = { it ->
-                                playbackConnection.playAudio(station = it)
-                            })
-                        }
-                    }
-                }
-            }
+//            item{
+//                LazyRow(
+//                    modifier = Modifier.padding(top = 3.dp)
+//                ) {
+//                    stateCategories.take(10).forEach() {
+//                        item {
+//                            HorizontalListItem(station = it, Modifier.padding(start = 16.dp), recommendedClick = { it ->
+//                                playbackConnection.playAudio(station = it)
+//                            })
+//                        }
+//                    }
+//                }
+//            }
 
             itemsIndexed(
                 items = stateCategories,
                 itemContent = { index, item ->
 
-                    if(index > 9) {
+                   // if(index > 9) {
                         AnimatedListItem(
                             viewModel,
                             station = item,
@@ -69,7 +69,7 @@ fun RadioItem(viewModel: ViewModel,
                             onImageClick = onImageClick,
                             onPlayClick = onPlayClick
                         )
-                    }
+                  //  }
                 }
             )
         }
