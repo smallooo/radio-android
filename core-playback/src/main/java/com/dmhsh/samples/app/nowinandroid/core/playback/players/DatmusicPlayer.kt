@@ -79,6 +79,8 @@ interface DatmusicPlayer {
 //    fun setShuffleMode(shuffleMode: Int)
 //    fun updateData(list: List<String> = emptyList(), title: String? = null)
     fun setData(list: List<String> = emptyList(), title: String? = null)
+
+    fun getTimeRemained(): Long
   //  suspend fun setDataFromMediaId(_mediaId: String, extras: Bundle = bundleOf())
   //  suspend fun saveQueueState()
   //  suspend fun restoreQueueState()
@@ -311,6 +313,10 @@ class DatmusicPlayerImpl @Inject constructor(
         queueManager.queueTitle = title ?: ""
     }
 
+    override fun getTimeRemained(): Long {
+        return secondsRemained
+    }
+
 
     private fun setMetaData(station : Station) {
         val player = this
@@ -335,6 +341,9 @@ class DatmusicPlayerImpl @Inject constructor(
             metaDataChangedCallback(player)
         }
     }
+
+
+
 
    // private fun logEvent(event: String, mediaId: String = queueManager.currentAudioId) = analytics.event("player.$event", mapOf("mediaId" to mediaId))
 }

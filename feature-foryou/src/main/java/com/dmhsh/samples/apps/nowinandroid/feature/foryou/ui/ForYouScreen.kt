@@ -48,7 +48,9 @@ fun ForYouRoute() {
 @OptIn(ExperimentalMaterial3Api::class, ExperimentalLayoutApi::class)
 @Composable
 fun ForYouScreen(navigation: Navigator = LocalNavigator.current,
-                 showMenu: MutableState<Boolean>  = remember { mutableStateOf(false) }) {
+                 showMenu: MutableState<Boolean>  = remember { mutableStateOf(false) },
+                 playbackConnection: PlaybackConnection = LocalPlaybackConnection.current) {
+    var sliderState by remember { mutableStateOf(playbackConnection.timeRemained.toFloat()) }
     Scaffold(
         modifier = Modifier.fillMaxSize(),
         topBar = {
@@ -70,12 +72,16 @@ fun ForYouScreen(navigation: Navigator = LocalNavigator.current,
                 },
                 onActionClick = {
                     showMenu.value = !showMenu.value
+                   // Log.e("aaa, timeRe", playbackConnection.timeRemained.toInt().toString())
+                    sliderState = playbackConnection.timeRemained.toFloat()
                 }
             )
         },
     ) { innerPadding ->
         val padding = innerPadding
-        AdvanceListContent(showMenu)
+        AdvanceListContent(showMenu, playbackConnection, sliderState, onValueChange = {
+            sliderState = it
+        })
     }
 }
 
@@ -88,14 +94,19 @@ fun getNavArgument(key: String): Any? {
 
 @Composable
 fun AdvanceListContent(showMenu: MutableState<Boolean>,
+                       playbackConnection: PlaybackConnection,
+                       sliderState: Float,
                        context: Context = LocalContext.current,
                        viewModel: SearchListViewModel = hiltViewModel(),
-                       playbackConnection: PlaybackConnection = LocalPlaybackConnection.current) {
+                       onValueChange:(Float) -> Unit,
+                       ) {
     var selectedIndex by remember { mutableStateOf(0) }
     var initialQuery = (getNavArgument(QUERY_KEY) ?: "").toString()
     var query by rememberSaveable { mutableStateOf(initialQuery) }
 
-    var settingString = stringResource(id = R.string.action_ok)
+
+
+   // var settingString = stringResource(id = R.string.action_ok)
 
 
     val tabs = listOf(stringResource(R.string.action_local), stringResource(R.string.action_top_click), stringResource(R.string.action_top_vote), stringResource(R.string.action_changed_lately),
@@ -165,12 +176,15 @@ fun AdvanceListContent(showMenu: MutableState<Boolean>,
         }
 
         if (showMenu.value) {
+
             SettingMenu(
+                sliderState,
                 playbackConnection.timeRemained,
                 modifier = Modifier.align(Alignment.TopEnd),
+                onValueChange = onValueChange,
                 onTimerSet = {
                     if(it > 1) {
-                        Toast.makeText(context, settingString, Toast.LENGTH_SHORT).show()
+                       // Toast.makeText(context, settingString, Toast.LENGTH_SHORT).show()
                         playbackConnection.stopPlayInSeconds(it * 60)
                         showMenu.value = false
                     }else{

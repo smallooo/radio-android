@@ -89,7 +89,7 @@ class PlaybackConnectionImpl(
     }
 
     override val timeRemained: Int
-        get() = localTimeRemained
+        get() = (radioPlayer.getTimeRemained() / 60).toInt()
 
     private val mediaBrowserConnectionCallback = MediaBrowserConnectionCallback(context)
 

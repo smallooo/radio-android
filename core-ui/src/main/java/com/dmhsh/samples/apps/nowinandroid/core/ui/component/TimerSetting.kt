@@ -19,10 +19,19 @@ import tm.alashow.i18n.R
 @OptIn(ExperimentalMaterialApi::class, androidx.compose.animation.ExperimentalAnimationApi::class)
 @Composable
 fun SettingMenu(
+    sliderState : Float,
     timeRemained: Int,
     modifier: Modifier,
+    onValueChange: (Float) -> Unit,
     onTimerSet: (Long) -> Unit
 ) {
+
+
+
+    //var settingValue by remember { mutableStateOf(0.toFloat()) }
+
+
+
     Box(modifier = Modifier.fillMaxWidth()) {
         Column(
             horizontalAlignment = Alignment.Start,
@@ -31,7 +40,7 @@ fun SettingMenu(
                 .padding(top = 68.dp)
                 .animateContentSize(),
         ) {
-            var sliderState by remember { mutableStateOf(timeRemained.toFloat()) }
+
             Text(modifier = Modifier.align(Alignment.CenterHorizontally),
                 style = androidx.compose.material.MaterialTheme.typography.body1,
                 text = stringResource(R.string.sleep_timer_title)
@@ -47,7 +56,9 @@ fun SettingMenu(
                     .fillMaxWidth()
                     .padding(8.dp),
                 onValueChange = { newValue ->
-                    sliderState = newValue
+                    onValueChange(newValue)
+//                    settingValue = newValue
+//                    sliderState = newValue
                 },
                 colors = SliderDefaults.colors(
                     activeTickColor = Color.Transparent,
