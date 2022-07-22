@@ -4,6 +4,7 @@
  */
 package com.dmhsh.samples.apps.nowinandroid.ui.home
 
+import android.util.Log
 import androidx.compose.animation.AnimatedVisibility
 import androidx.compose.animation.ExperimentalAnimationApi
 import androidx.compose.animation.scaleIn
@@ -114,7 +115,10 @@ internal fun HomeNavigationRail(
                             onArtworkClick = { },
                             titleTextStyle = PlaybackNowPlayingDefaults.titleTextStyle.copy(fontSize = MaterialTheme.typography.body1.fontSize),
                             artistTextStyle = PlaybackNowPlayingDefaults.artistTextStyle.copy(fontSize = MaterialTheme.typography.subtitle2.fontSize),
-                        )
+                            onFavoriteClick = {
+                                Log.e("aaa onFavo", "aaa")
+                            }
+                            )
                     }
                 } else PlaybackMiniControls(
                     modifier = Modifier.padding(bottom = AppTheme.specs.paddingSmall),

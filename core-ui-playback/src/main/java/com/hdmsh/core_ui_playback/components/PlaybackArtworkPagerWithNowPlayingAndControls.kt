@@ -35,6 +35,7 @@ fun PlaybackArtworkPagerWithNowPlayingAndControls(
     pagerState: PagerState = rememberPagerState(),
     onArtworkClick: Callback? = null,
    // viewModel: PlaybackViewModel = hiltViewModel(),
+    onFavoriteClick: () -> Unit
 ) {
     ConstraintLayout(modifier = modifier) {
         val (pager, nowPlayingControls) = createRefs()
@@ -70,7 +71,8 @@ fun PlaybackArtworkPagerWithNowPlayingAndControls(
                 centerHorizontallyTo(parent)
                 bottom.linkTo(parent.bottom)
                 height = Dimension.fillToConstraints
-            }
+            },
+            onFavoriteClick = onFavoriteClick,
         )
     }
 }

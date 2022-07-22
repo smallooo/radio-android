@@ -5,6 +5,7 @@
 package com.hdmsh.core_ui_playback
 
 import android.annotation.SuppressLint
+import android.util.Log
 import androidx.compose.animation.animateColorAsState
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
@@ -165,6 +166,12 @@ internal fun PlaybackSheetContent(
                             contentColor = contentColor,
                             //viewModel = viewModel,
                             modifier = Modifier.fillParentMaxHeight(0.8f),
+                            onFavoriteClick = {
+                                Log.e("aaa onF 1", "aaa")
+                                val station = playbackConnection.playingStation.value
+                                station.favorited = !playbackConnection.playingStation.value.favorited
+                                viewModel.setFavoritedStation(station)
+                            }
                         )
                     }
 

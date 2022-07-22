@@ -85,7 +85,6 @@ class PlaybackConnectionImpl(
 
     override fun stopPlayInSeconds(seconds: Long) {
         localTimeRemained = (seconds / 60).toInt()
-        Log.e("aaa localTimeRemained" , (seconds / 60).toString())
         radioPlayer.stopInSeconds(true, seconds)
     }
 

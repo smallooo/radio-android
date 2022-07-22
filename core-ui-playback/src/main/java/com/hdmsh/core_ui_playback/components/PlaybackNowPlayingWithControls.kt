@@ -12,9 +12,7 @@ import androidx.compose.foundation.layout.*
 import androidx.compose.material.*
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.*
-import androidx.compose.runtime.Composable
-import androidx.compose.runtime.CompositionLocalProvider
-import androidx.compose.runtime.getValue
+import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
@@ -36,6 +34,7 @@ import com.hdmsh.common_compose.rememberFlowWithLifecycle
 import com.hdmsh.core_ui_playback.components.PlaybackNowPlayingDefaults.artistTextStyle
 import com.hdmsh.core_ui_playback.components.PlaybackNowPlayingDefaults.titleTextStyle
 import androidx.compose.ui.text.TextStyle
+import com.dmhsh.samples.apps.nowinandroid.core.model.data.Station
 import com.dmhsh.samples.apps.nowinandroid.core.ui.extensions.orNA
 
 
@@ -56,6 +55,7 @@ internal fun PlaybackNowPlayingWithControls(
     titleTextStyle: TextStyle = PlaybackNowPlayingDefaults.titleTextStyle,
     artistTextStyle: TextStyle = PlaybackNowPlayingDefaults.artistTextStyle,
     onlyControls: Boolean = false,
+    onFavoriteClick: () -> Unit
 ) {
     Column(
         horizontalAlignment = Alignment.CenterHorizontally,
@@ -78,6 +78,7 @@ internal fun PlaybackNowPlayingWithControls(
         PlaybackControls(
             playbackState = playbackState,
             contentColor = contentColor,
+            onFavoriteClick = onFavoriteClick
         )
     }
 }
@@ -123,19 +124,21 @@ internal fun PlaybackControls(
     contentColor: Color,
     modifier: Modifier = Modifier,
     smallRippleRadius: Dp = 30.dp,
-    playbackConnection: PlaybackConnection = LocalPlaybackConnection.current
+    playbackConnection: PlaybackConnection = LocalPlaybackConnection.current,
+    onFavoriteClick: () -> Unit
 ) {
-   // val playbackMode by rememberFlowWithLifecycle(playbackConnection.playbackMode)
+    var favorited by remember { mutableStateOf(playbackConnection.playingStation.value.favorited)}
+
     Row(
         modifier = modifier.width(288.dp),
         horizontalArrangement = Arrangement.Center,
         verticalAlignment = Alignment.CenterVertically,
     ) {
         IconButton(
-            onClick = { playbackConnection.mediaController?.toggleShuffleMode() },
+            onClick = {  },
             modifier = Modifier
-                .size(20.dp)
-                .weight(2f),
+                .size(39.dp)
+                .weight(5f),
             rippleRadius = smallRippleRadius,
         ) {
             Icon(
@@ -152,24 +155,24 @@ internal fun PlaybackControls(
             )
         }
 
-        Spacer(Modifier.width(AppTheme.specs.paddingLarge))
+       // Spacer(Modifier.width(AppTheme.specs.paddingLarge))
 
-        IconButton(
-            onClick = { playbackConnection.transportControls?.skipToPrevious() },
-            modifier = Modifier
-                .size(40.dp)
-                .weight(4f),
-            rippleRadius = smallRippleRadius,
-        ) {
-            Icon(
-                painter = rememberVectorPainter(Icons.Default.SkipPrevious),
-                tint = contentColor.disabledAlpha(playbackState.hasPrevious),
-                modifier = Modifier.fillMaxSize(),
-                contentDescription = null
-            )
-        }
+//        IconButton(
+//            onClick = { playbackConnection.transportControls?.skipToPrevious() },
+//            modifier = Modifier
+//                .size(40.dp)
+//                .weight(4f),
+//            rippleRadius = smallRippleRadius,
+//        ) {
+//            Icon(
+//                painter = rememberVectorPainter(Icons.Default.SkipPrevious),
+//                tint = contentColor.disabledAlpha(playbackState.hasPrevious),
+//                modifier = Modifier.fillMaxSize(),
+//                contentDescription = null
+//            )
+//        }
 
-       Spacer(Modifier.width(AppTheme.specs.padding))
+    //   Spacer(Modifier.width(AppTheme.specs.padding))
 
         IconButton(
             onClick = { playbackConnection.mediaController?.playPause() },
@@ -195,32 +198,35 @@ internal fun PlaybackControls(
 
         Spacer(Modifier.width(AppTheme.specs.padding))
 
+//        IconButton(
+//            onClick = { playbackConnection.transportControls?.skipToNext() },
+//            modifier = Modifier
+//                .size(40.dp)
+//                .weight(4f),
+//            rippleRadius = smallRippleRadius,
+//        ) {
+//            Icon(
+//                painter = rememberVectorPainter(Icons.Default.SkipNext),
+//                tint = contentColor.disabledAlpha(playbackState.hasNext),
+//                modifier = Modifier.fillMaxSize(),
+//                contentDescription = null
+//            )
+//        }
+
+       // Spacer(Modifier.width(AppTheme.specs.paddingLarge))
+
         IconButton(
-            onClick = { playbackConnection.transportControls?.skipToNext() },
+            onClick = {
+                favorited = !favorited
+                onFavoriteClick()
+                      },
             modifier = Modifier
-                .size(40.dp)
-                .weight(4f),
+                .size(39.dp)
+                .weight(5f),
             rippleRadius = smallRippleRadius,
         ) {
             Icon(
-                painter = rememberVectorPainter(Icons.Default.SkipNext),
-                tint = contentColor.disabledAlpha(playbackState.hasNext),
-                modifier = Modifier.fillMaxSize(),
-                contentDescription = null
-            )
-        }
-
-        Spacer(Modifier.width(AppTheme.specs.paddingLarge))
-
-        IconButton(
-            onClick = { playbackConnection.mediaController?.toggleRepeatMode() },
-            modifier = Modifier
-                .size(20.dp)
-                .weight(2f),
-            rippleRadius = smallRippleRadius,
-        ) {
-            Icon(
-                imageVector = if (playbackConnection.playingStation.value.favorited) Icons.Default.Favorite else Icons.Default.FavoriteBorder,
+                imageVector = if (favorited) Icons.Default.Favorite else Icons.Default.FavoriteBorder,
                 tint = contentColor,
                 modifier = Modifier.fillMaxSize(),
                 contentDescription = null

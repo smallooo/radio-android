@@ -7,6 +7,7 @@ package com.hdmsh.core_ui_playback
 import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.dmhsh.samples.apps.nowinandroid.core.data.repository.StationsRepo
 import com.dmhsh.samples.apps.nowinandroid.core.model.data.Station
 import com.dmhsh.samples.apps.nowinandroid.playback.PlaybackConnection
 
@@ -28,6 +29,7 @@ import kotlinx.coroutines.launch
 class PlaybackViewModel @Inject constructor(
     handle: SavedStateHandle,
     private val playbackConnection: PlaybackConnection,
+    private val stationsRepo: StationsRepo,
     //private val createPlaylist: CreatePlaylist,
     //private val snackbarManager: SnackbarManager,
     //private val navigator: Navigator,
@@ -38,6 +40,11 @@ class PlaybackViewModel @Inject constructor(
     fun getPlayBackConnection(): Station {
         return playbackConnection.playingStation.value
     }
+
+
+    fun setFavoritedStation(station: Station) = stationsRepo.setFavorite(station)
+
+    fun setPlayHistory(station: Station) = stationsRepo.insertOrIgnoreStation(station)
 
 //    fun saveQueueAsPlaylist() = viewModelScope.launch {
 //        val queue = playbackConnection.playbackQueue.first()
