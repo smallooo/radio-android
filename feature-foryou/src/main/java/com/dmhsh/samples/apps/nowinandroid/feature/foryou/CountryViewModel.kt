@@ -35,9 +35,11 @@ class CountryViewModel @Inject constructor(private val netSource: NetSource) :
 
     private suspend fun getCountriesList() {
         val categories = netSource.getCountryList()
-        viewModelScope.launch {
-            state = categories?.let { state.copy(categories = it, isLoading = false) }!!
-            effects.send(CountryCategoriesContract.Effect.DataWasLoaded)
+        if(!categories.isNullOrEmpty()) {
+            viewModelScope.launch {
+                state = categories?.let { state.copy(categories = it, isLoading = false) }!!
+                effects.send(CountryCategoriesContract.Effect.DataWasLoaded)
+            }
         }
     }
 }

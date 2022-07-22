@@ -1,12 +1,11 @@
 package com.dmhsh.samples.apps.nowinandroid.feature.foryou
 
 import android.content.Context
-import android.util.Log
-import android.widget.Toast
 import androidx.compose.foundation.layout.*
 import androidx.compose.material.MaterialTheme
 import androidx.compose.material.Scaffold
 import androidx.compose.material.TabRowDefaults
+
 import androidx.compose.material3.TabRowDefaults.tabIndicatorOffset
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Search
@@ -31,7 +30,7 @@ import com.dmhsh.samples.apps.nowinandroid.core.navigation.Screens.LeafScreen
 import com.dmhsh.samples.apps.nowinandroid.core.navigation.Screens.QUERY_KEY
 import com.dmhsh.samples.apps.nowinandroid.core.ui.component.SettingMenu
 import com.dmhsh.samples.apps.nowinandroid.core.ui.component.RadioTab
-import com.dmhsh.samples.apps.nowinandroid.core.ui.component.RadioTopAppBar
+import com.dmhsh.samples.apps.nowinandroid.core.ui.component.TopAppBar
 import com.dmhsh.samples.apps.nowinandroid.core.ui.extensions.isNotNullandNotBlank
 import com.dmhsh.samples.apps.nowinandroid.playback.PlaybackConnection
 import kotlinx.coroutines.DelicateCoroutinesApi
@@ -54,7 +53,7 @@ fun ForYouScreen(navigation: Navigator = LocalNavigator.current,
     Scaffold(
         modifier = Modifier.fillMaxSize(),
         topBar = {
-            RadioTopAppBar(
+            TopAppBar(
                 titleRes = R.string.app_name,
                 navigationIcon = Icons.Filled.Search,
                 navigationIconContentDescription = stringResource(id = R.string.app_name),

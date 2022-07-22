@@ -16,7 +16,6 @@
 
 package com.dmhsh.samples.apps.nowinandroid.feature.interests
 
-import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.WindowInsets
 import androidx.compose.foundation.layout.WindowInsetsSides
 import androidx.compose.foundation.layout.only
@@ -79,7 +78,7 @@ fun InterestsScreen(
     Scaffold(
        // modifier = modifier,
         topBar = {
-            RadioTopAppBar(
+            SimpleTopAppBar(
                 titleRes = R.string.interests,
                 navigationIcon = Icons.Filled.Search,
                 navigationIconContentDescription = stringResource(id = R.string.top_app_bar_navigation_button_content_desc),

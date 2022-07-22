@@ -13,7 +13,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
 import androidx.hilt.navigation.compose.hiltViewModel
 import com.dmhsh.samples.apps.nowinandroid.core.ui.LoadingWheel
-import com.dmhsh.samples.apps.nowinandroid.core.ui.component.RadioTopAppBar
+import com.dmhsh.samples.apps.nowinandroid.core.ui.component.SimpleTopAppBar
 import com.dmhsh.samples.apps.nowinandroid.core.ui.component.RadioItemFavorite
 
 @Composable
@@ -30,7 +30,6 @@ fun HistoryRoute(
             // onBackClick = onBackClick
         )
 }
-
 
 @VisibleForTesting
 @Composable
@@ -51,7 +50,7 @@ internal fun HistoryScreen(
     Scaffold(
         modifier = modifier,
         topBar = {
-            RadioTopAppBar(
+            SimpleTopAppBar(
                 titleRes = R.string.top_app_bar_preview_title,
                 navigationIcon = Icons.Filled.Search,
                 navigationIconContentDescription = stringResource(

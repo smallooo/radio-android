@@ -29,6 +29,7 @@ import androidx.compose.material3.TopAppBarColors
 import androidx.compose.material3.TopAppBarDefaults
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
@@ -39,7 +40,7 @@ import com.dmhsh.samples.apps.nowinandroid.core.navigation.Screens.LeafScreen
 import tm.alashow.i18n.R
 
 @Composable
-fun TopAppBar(
+fun SimpleTopAppBar(
     @StringRes titleRes: Int,
     navigationIcon: ImageVector,
     navigationIconContentDescription: String?,
@@ -56,27 +57,26 @@ fun TopAppBar(
 ) {
     CenterAlignedTopAppBar(
         title = { Text(text = stringResource(id = titleRes)) },
-        navigationIcon = {
-            IconButton(onClick = onNavigationClick) {
-                Icon(
-                    imageVector = navigationIcon,
-                    contentDescription = navigationIconContentDescription,
-                    tint = MaterialTheme.colors.onSurface
-                )
-            }
-        },
-        actions = {
-            IconButton(onClick = onActionClick) {
-                Icon(
-                    imageVector = actionIcon,
-                    contentDescription = actionIconContentDescription,
-                    tint = MaterialTheme.colors.onSurface
-                )
-            }
-        },
+//        navigationIcon = {
+//            IconButton(onClick = onNavigationClick) {
+//                Icon(
+//                    imageVector = navigationIcon,
+//                    contentDescription = navigationIconContentDescription,
+//                    tint = MaterialTheme.colors.onSurface
+//                )
+//            }
+//        },
+//        actions = {
+//            IconButton(onClick = onActionClick) {
+//                Icon(
+//                    imageVector = actionIcon,
+//                    contentDescription = actionIconContentDescription,
+//                    tint = MaterialTheme.colors.onSurface
+//                )
+//            }
+//        },
         colors = colors,
         modifier = modifier
     )
 }
-
 

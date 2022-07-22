@@ -35,13 +35,13 @@ internal val HomeNavigationItems = listOf(
         iconImageVector = Icons.Outlined.UTurnLeft,
         selectedImageVector = Icons.Filled.UTurnLeft,
     ),
-    HomeNavigationItem.ImageVectorIcon(
-        screen = RootScreen.Alarm,
-        labelResId = com.dmhsh.samples.apps.nowinandroid.feature.foryou.R.string.nav_item_alarm,
-        contentDescriptionResId = com.dmhsh.samples.apps.nowinandroid.feature.foryou.R.string.nav_item_alarm,
-        iconImageVector = Icons.Outlined.PunchClock,
-        selectedImageVector = Icons.Filled.PunchClock,
-    ),
+//    HomeNavigationItem.ImageVectorIcon(
+//        screen = RootScreen.Alarm,
+//        labelResId = com.dmhsh.samples.apps.nowinandroid.feature.foryou.R.string.nav_item_alarm,
+//        contentDescriptionResId = com.dmhsh.samples.apps.nowinandroid.feature.foryou.R.string.nav_item_alarm,
+//        iconImageVector = Icons.Outlined.PunchClock,
+//        selectedImageVector = Icons.Filled.PunchClock,
+//    ),
     HomeNavigationItem.ImageVectorIcon(
         screen = RootScreen.Settings,
         labelResId = com.dmhsh.samples.apps.nowinandroid.feature.foryou.R.string.nav_item_settings,
