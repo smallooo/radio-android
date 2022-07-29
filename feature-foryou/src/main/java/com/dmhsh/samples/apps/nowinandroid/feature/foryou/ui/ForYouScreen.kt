@@ -99,7 +99,7 @@ fun AdvanceListContent(showMenu: MutableState<Boolean>,
                        viewModel: SearchListViewModel = hiltViewModel(),
                        onValueChange:(Float) -> Unit,
                        ) {
-    var selectedIndex by remember { mutableStateOf(0) }
+    var selectedIndex by rememberSaveable { mutableStateOf(0) }
     var initialQuery = (getNavArgument(QUERY_KEY) ?: "").toString()
     var query by rememberSaveable { mutableStateOf(initialQuery) }
 
@@ -114,9 +114,10 @@ fun AdvanceListContent(showMenu: MutableState<Boolean>,
     val pagerState1: PagerState = run { remember { PagerState(0, 0, tabs.size - 1) } }
 
     if(query.isNotNullandNotBlank()){
-
         selectedIndex = tabs.lastIndex
         pagerState1.currentPage = tabs.lastIndex
+    }else{
+        pagerState1.currentPage = selectedIndex
     }
 
     Box(modifier = Modifier.fillMaxSize()) {

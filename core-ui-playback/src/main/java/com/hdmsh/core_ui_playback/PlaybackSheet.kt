@@ -241,8 +241,6 @@ private fun PlaybackSheetTopBar(
 
 @Composable
 private fun PlaybackSheetTopBarTitle(
-    //playbackQueue: PlaybackQueue,
-    //onTitleClick: Callback,
     viewModel: PlaybackViewModel,
     modifier: Modifier = Modifier
 ) {
@@ -250,7 +248,7 @@ private fun PlaybackSheetTopBarTitle(
         horizontalAlignment = Alignment.CenterHorizontally,
         modifier = modifier
             .fillMaxWidth()
-            .offset(x = -8.dp) // idk why this is needed for centering
+            .offset(x = -8.dp)
             .simpleClickable(onClick = {})
     ) {
         val context = LocalContext.current

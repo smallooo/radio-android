@@ -193,7 +193,6 @@ fun RadioSearchScreen(
         }
 
         if(listState.firstVisibleItemIndex < 1) {
-            Log.e("aaa",listState.firstVisibleItemIndex.toString())
             SearchTitle(typography, listState)
         }
 
@@ -427,16 +426,22 @@ private fun RowScope.PlaybackPlayPause(
         rippleColor = LocalContentColor.current,
         modifier = Modifier.weight(0.15f)
     ) {
-        Icon(
-            imageVector = when {
-                playbackState.isError -> Icons.Filled.ErrorOutline
-                playbackState.isPlaying -> Icons.Filled.Pause
-                playbackState.isPlayEnabled -> Icons.Filled.PlayArrow
-                else -> Icons.Filled.HourglassBottom
-            },
-            modifier = Modifier.size(size),
-            contentDescription = null
-        )
+
+        if(playbackState.isBuffering){
+            ProgressIndicator()
+        }else {
+            Icon(
+                imageVector = when {
+                    playbackState.isError -> Icons.Filled.ErrorOutline
+                    playbackState.isBuffering -> Icons.Filled.AcUnit
+                    playbackState.isPlaying -> Icons.Filled.Pause
+                    playbackState.isPlayEnabled -> Icons.Filled.PlayArrow
+                    else -> Icons.Filled.HourglassBottom
+                },
+                modifier = Modifier.size(size),
+                contentDescription = null
+            )
+        }
     }
 }
 

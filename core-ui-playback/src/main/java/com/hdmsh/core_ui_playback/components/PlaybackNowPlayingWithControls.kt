@@ -141,18 +141,18 @@ internal fun PlaybackControls(
                 .weight(5f),
             rippleRadius = smallRippleRadius,
         ) {
-            Icon(
-                painter = rememberVectorPainter(
-                    when (PlaybackStateCompat.SHUFFLE_MODE_NONE ) {
-                        PlaybackStateCompat.SHUFFLE_MODE_NONE -> Icons.Default.Shuffle
-                        PlaybackStateCompat.SHUFFLE_MODE_ALL -> Icons.Default.ShuffleOn
-                        else -> Icons.Default.Shuffle
-                    }
-                ),
-                tint = contentColor,
-                modifier = Modifier.fillMaxSize(),
-                contentDescription = null
-            )
+//            Icon(
+//                painter = rememberVectorPainter(
+//                    when (PlaybackStateCompat.SHUFFLE_MODE_NONE ) {
+//                        PlaybackStateCompat.SHUFFLE_MODE_NONE -> Icons.Default.Shuffle
+//                        PlaybackStateCompat.SHUFFLE_MODE_ALL -> Icons.Default.ShuffleOn
+//                        else -> Icons.Default.Shuffle
+//                    }
+//                ),
+//                tint = contentColor,
+//                modifier = Modifier.fillMaxSize(),
+//                contentDescription = null
+//            )
         }
 
        // Spacer(Modifier.width(AppTheme.specs.paddingLarge))

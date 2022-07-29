@@ -88,7 +88,9 @@ internal fun HistoryScreen(
 //                    Text(text = "hello9",color = MaterialTheme.colors.primary)
 //                    Text(text = "hello10",color = MaterialTheme.colors.primaryVariant)
 //                    Text(text = "hello11",color = MaterialTheme.colors.secondaryVariant)
-                    RadioItemFavorite(viewModel, listOf(playHistory.stations), onImageClick = {})
+                    RadioItemFavorite(viewModel, listOf(playHistory.stations), onImageClick = {
+                        viewModel.setFavoritedStation(it)
+                    })
 //                }
             is StationsUiState.Empty -> Text("hello")
         }
