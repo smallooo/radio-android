@@ -33,6 +33,7 @@ import androidx.compose.ui.res.stringResource
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.flowWithLifecycle
+import com.dmhsh.samples.apps.nowinandroid.core.model.data.Station
 import com.dmhsh.samples.apps.nowinandroid.core.ui.LoadingWheel
 import com.dmhsh.samples.apps.nowinandroid.core.ui.component.*
 import kotlinx.coroutines.flow.Flow
@@ -51,19 +52,16 @@ fun <T> rememberFlowWithLifecycle(
 
 @Composable
 fun InterestsRoute(
-    modifier: Modifier = Modifier,
-    navigateToAuthor: (String) -> Unit = {},
-    navigateToTopic: (String) -> Unit = {},
     favoriteStationstViewModel: FavoriteStationstViewModel = hiltViewModel()
 ) {
     val uiState1 by favoriteStationstViewModel.favoriteStationsState.collectAsState()
 
+    val localStations: LocalStationsUiState by favoriteStationstViewModel.localStationState.collectAsState()
+
     InterestsScreen(
         favoriteStationstViewModel = favoriteStationstViewModel,
         uiState1 = uiState1,
-        navigateToAuthor = navigateToAuthor,
-        navigateToTopic = navigateToTopic,
-        //modifier = modifier
+        localStations
     )
 }
 
@@ -71,12 +69,9 @@ fun InterestsRoute(
 fun InterestsScreen(
     favoriteStationstViewModel: FavoriteStationstViewModel,
     uiState1: StationsUiState,
-    navigateToAuthor: (String) -> Unit,
-    navigateToTopic: (String) -> Unit,
-    //modifier: Modifier = Modifier,
+    localStations :LocalStationsUiState
 ) {
     Scaffold(
-       // modifier = modifier,
         topBar = {
             SimpleTopAppBar(
                 titleRes = R.string.interests,
@@ -95,11 +90,17 @@ fun InterestsScreen(
 
 
             is StationsUiState.Stations ->
-                RadioItemFavorite(favoriteStationstViewModel, listOf(uiState1.stations),
-                    onImageClick = {
-                        favoriteStationstViewModel.setFavoritedStation(it)
-                    })
+                if(uiState1.stations.isEmpty()){ if( localStations is LocalStationsUiState.Stations){
+                    Text((localStations as LocalStationsUiState.Stations).stations1.first().name)
+                }
+                }else {
+                    RadioItemFavorite(favoriteStationstViewModel, listOf(uiState1.stations),
+                        onImageClick = {
+                            favoriteStationstViewModel.setFavoritedStation(it)
+                        })
+                }
             is StationsUiState.Empty -> InterestsEmptyScreen()
+
         }
     }
 }

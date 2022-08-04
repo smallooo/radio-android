@@ -25,15 +25,10 @@ class TopVoteViewModel @Inject constructor(private val remoteSource: NetSource,
                                            private val stationsRepo: StationsRepo,
                                            private val stationDao: StationDao,) : ViewModel() {
 
-
     var topVoteState: StateFlow<StationsUiState1> =
-        stationsRepo.gettopVotedStream.map {
-                availableStations ->
-            Log.e("aaav", availableStations.size.toString())
+        stationsRepo.gettopVotedStream.map { availableStations ->
             val stations = ArrayList<StationEntity>()
-            for(item in availableStations){
-                stations.add(item.asExternalModel())
-            }
+            for(item in availableStations) stations.add(item.asExternalModel())
             stationDao.upsertStations(stations)
             StationsUiState1.Stations(stations1 = availableStations as ArrayList<Station>)
     }.stateIn(
@@ -42,47 +37,17 @@ class TopVoteViewModel @Inject constructor(private val remoteSource: NetSource,
         initialValue = StationsUiState1.Loading
     )
 
-
-//    var state by mutableStateOf(
-//        LocalStationsContract.State(
-//             localStations = listOf(),
-//            isLoading = true
-//        )
-//    )
-//
-//    var effects = Channel<LocalStationsContract.Effect>(UNLIMITED)
-//        private set
-//
-//    init {
-//        viewModelScope.launch {
-//            getTopClickStationList()
-//        }
-//    }
-//
-//    private suspend fun getTopClickStationList() {
-//        val categories = remoteSource.gettopVotedList()
-//        viewModelScope.launch {
-//            state = categories?.let { state.copy(localStations = it, isLoading = false) }!!
-//            effects.send(LocalStationsContract.Effect.DataWasLoaded)
-//        }
-//    }
-
-
-
     fun setFavoritedStation(station: Station) = stationsRepo.setFavorite(station)
 
     fun setPlayHistory(station: Station) = stationsRepo.setPlayHistory(station)
 }
-
 
 sealed interface StationsUiState1 {
     object Loading : StationsUiState1
 
     data class Stations(
         val stations1: ArrayList<Station>,
-    ) : StationsUiState1 {
-
-    }
+    ) : StationsUiState1 {}
 
     object Empty : StationsUiState1
 }

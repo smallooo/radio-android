@@ -22,7 +22,7 @@ class FavoriteStationstViewModel @Inject constructor(
     val favoriteStationsState: StateFlow<StationsUiState> = combine(
         stationsRepo.getFavorite(),
         stationsRepo.getFollowedIdsStream(),
-    ) { availableStations, followedStationsIdsState ->
+    ) { availableStations,  followedStationsIdsState ->
         StationsUiState.Stations(stations = availableStations.map { station ->
             FollowableStation(
                 station = station,
@@ -35,8 +35,22 @@ class FavoriteStationstViewModel @Inject constructor(
         initialValue = StationsUiState.Loading
     )
 
+    fun getLocalStation() =
+        suspend {
+            stationsRepo.getLocalStations()
+        }
 
-    fun getLocalStation() = stationsRepo.getLocalStations()
+
+    var localStationState: StateFlow<LocalStationsUiState> =
+        stationsRepo.getLocalStations().map { availableStations ->
+            val stations = ArrayList<Station>()
+            for(item in availableStations) stations.add(item)
+            LocalStationsUiState.Stations(stations1 = availableStations as ArrayList<Station>)
+        }.stateIn(
+            scope = viewModelScope,
+            started = SharingStarted.WhileSubscribed(5_000),
+            initialValue = LocalStationsUiState.Loading
+        )
 
     fun setFavoritedStation(station: Station) = stationsRepo.setFavorite(station)
 
@@ -51,6 +65,16 @@ sealed interface StationsUiState {
     ) : StationsUiState
 
     object Empty : StationsUiState
+}
+
+sealed interface LocalStationsUiState {
+    object Loading : LocalStationsUiState
+
+    data class Stations(
+        val stations1: ArrayList<Station>,
+    ) : LocalStationsUiState {}
+
+    object Empty : LocalStationsUiState
 }
 
 

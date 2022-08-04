@@ -32,8 +32,8 @@ fun NavGraphBuilder.interestsGraph(
 ) {
     composable(route = InterestsDestination.route) {
         InterestsRoute(
-            navigateToTopic = navigateToTopic,
-            navigateToAuthor = navigateToAuthor,
+//            navigateToTopic = navigateToTopic,
+//            navigateToAuthor = navigateToAuthor,
         )
     }
 }
