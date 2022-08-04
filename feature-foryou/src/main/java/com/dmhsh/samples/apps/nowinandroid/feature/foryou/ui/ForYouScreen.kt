@@ -1,11 +1,9 @@
 package com.dmhsh.samples.apps.nowinandroid.feature.foryou
 
-import android.content.Context
 import androidx.compose.foundation.layout.*
 import androidx.compose.material.MaterialTheme
 import androidx.compose.material.Scaffold
 import androidx.compose.material.TabRowDefaults
-
 import androidx.compose.material3.TabRowDefaults.tabIndicatorOffset
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Search
@@ -15,7 +13,6 @@ import androidx.compose.runtime.*
 import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
@@ -71,7 +68,6 @@ fun ForYouScreen(navigation: Navigator = LocalNavigator.current,
                 },
                 onActionClick = {
                     showMenu.value = !showMenu.value
-                   // Log.e("aaa, timeRe", playbackConnection.timeRemained.toInt().toString())
                     sliderState = playbackConnection.timeRemained.toFloat()
                 }
             )
@@ -95,18 +91,12 @@ fun getNavArgument(key: String): Any? {
 fun AdvanceListContent(showMenu: MutableState<Boolean>,
                        playbackConnection: PlaybackConnection,
                        sliderState: Float,
-                       context: Context = LocalContext.current,
                        viewModel: SearchListViewModel = hiltViewModel(),
                        onValueChange:(Float) -> Unit,
                        ) {
     var selectedIndex by rememberSaveable { mutableStateOf(0) }
-    var initialQuery = (getNavArgument(QUERY_KEY) ?: "").toString()
+    val initialQuery = (getNavArgument(QUERY_KEY) ?: "").toString()
     var query by rememberSaveable { mutableStateOf(initialQuery) }
-
-
-
-   // var settingString = stringResource(id = R.string.action_ok)
-
 
     val tabs = listOf(stringResource(R.string.action_local), stringResource(R.string.action_top_click), stringResource(R.string.action_top_vote), stringResource(R.string.action_changed_lately),
         stringResource(R.string.action_currently_playing), stringResource(R.string.action_tags), stringResource(R.string.action_countries), stringResource(R.string.action_languages), stringResource(R.string.action_search))
@@ -149,23 +139,15 @@ fun AdvanceListContent(showMenu: MutableState<Boolean>,
             Pager(state = pagerState1, modifier = Modifier.weight(1f)) {
                 selectedIndex = pagerState1.currentPage
                 when (commingPage) {
-                    0 -> LocalRadioList()  //0
+                    0 -> LocalRadioList()
                     1 -> TopClickRadios()
                     2 -> TopVoteRadios()
                     3 -> LateUpdateRadios()
                     4 -> NowPlayingRadios()
-                    5 -> TagListScreen(onTagSelect = { stationTag ->
-                        LaunchSearchScreen(pagerState1, viewModel, "bytag", stationTag.name)
-                    }) //0
-                    6 -> CountryList(onCountrySelect = { Country ->
-                        LaunchSearchScreen(pagerState1, viewModel, "bycountry", Country.name)
-                    })
-                    7 -> LanguageListScreen(onTagSelect = {
-                        LaunchSearchScreen(pagerState1, viewModel, "bylanguage", it.name)
-                    })  //0
-                    8 -> SearchStationsScreen(
-                        query,
-                        onButtonSelect = { it ->
+                    5 -> TagListScreen(onTagSelect = { stationTag -> LaunchSearchScreen(pagerState1, viewModel, "bytag", stationTag.name) })
+                    6 -> CountryList(onCountrySelect = { Country -> LaunchSearchScreen(pagerState1, viewModel, "bycountry", Country.name) })
+                    7 -> LanguageListScreen(onTagSelect = { LaunchSearchScreen(pagerState1, viewModel, "bylanguage", it.name) })
+                    8 -> SearchStationsScreen(query, onButtonSelect = { it ->
                             selectedIndex = it + 5
                             pagerState1.currentPage = it + 5
                             query = ""
@@ -176,7 +158,6 @@ fun AdvanceListContent(showMenu: MutableState<Boolean>,
         }
 
         if (showMenu.value) {
-
             SettingMenu(
                 sliderState,
                 playbackConnection.timeRemained,
@@ -208,6 +189,3 @@ private fun LaunchSearchScreen(
         viewModel.upDateSearch(searchType, param)
     }
 }
-
-
-

@@ -18,7 +18,6 @@ class FavoriteStationstViewModel @Inject constructor(
     val preferences: PreferencesStore
 ) : ViewModel() {
     data class ForyouTabState(val titles: List<String>, val currentIndex: Int)
-
     val favoriteStationsState: StateFlow<StationsUiState> = combine(
         stationsRepo.getFavorite(),
         stationsRepo.getFollowedIdsStream(),
@@ -39,7 +38,6 @@ class FavoriteStationstViewModel @Inject constructor(
         suspend {
             stationsRepo.getLocalStations()
         }
-
 
     var localStationState: StateFlow<LocalStationsUiState> =
         stationsRepo.getLocalStations().map { availableStations ->

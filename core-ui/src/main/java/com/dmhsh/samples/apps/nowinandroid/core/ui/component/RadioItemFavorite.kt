@@ -39,7 +39,6 @@ fun RadioItemFavorite(
     listState: LazyListState = rememberLazyListState(),
     onImageClick: (station: Station) -> Unit
 ) {
-
     LazyColumn(
         state = listState,
         contentPadding = PaddingValues(8.dp),
@@ -66,17 +65,12 @@ private fun LazyListScope.interestsList(
         }
     } else {
         itemsIndexed(stateCategories.get(0), { _, it -> it.station }) { index, item ->
-            Column {
-                AnimatedListFavoriteItem(viewModel, station = item.station, index, onImageClick)
-            }
+            Column { AnimatedListFavoriteItem(viewModel, station = item.station, index, onImageClick) }
         }
 
-        item {
-            Spacer(modifier = Modifier.height(160.dp))
-        }
+        item { Spacer(modifier = Modifier.height(160.dp)) }
     }
 }
-
 
 @Composable
 fun AnimatedListFavoriteItem(
@@ -87,7 +81,7 @@ fun AnimatedListFavoriteItem(
 ) {
     val playbackConnection: PlaybackConnection = LocalPlaybackConnection.current
     var expanded by remember { mutableStateOf(false) }
-    var favorite by remember { mutableStateOf(station.favorited) }
+    val favorite by remember { mutableStateOf(station.favorited) }
     Row(
         verticalAlignment = Alignment.CenterVertically,
         modifier = Modifier
@@ -143,8 +137,6 @@ fun AnimatedListFavoriteItem(
     }
 }
 
-
-
 @Composable
 fun SocialRow(station: Station, favorite: Boolean, onImageClick: (station: Station) -> Unit) {
     Material3Card(
@@ -163,16 +155,7 @@ fun SocialRow(station: Station, favorite: Boolean, onImageClick: (station: Stati
                 .padding(horizontal = 16.dp, vertical = 8.dp)
         ) {
             if (station.homepage.isNotBlank()) {
-                IconButton(
-                    onClick = {
-                        context.startActivity(
-                            Intent(
-                                Intent.ACTION_VIEW,
-                                Uri.parse(station.homepage)
-                            )
-                        )
-                    },
-                ) {
+                IconButton(onClick = { context.startActivity(Intent( Intent.ACTION_VIEW, Uri.parse(station.homepage))) },) {
                     Icon(
                         imageVector = Icons.Default.Home,
                         contentDescription = null,

@@ -33,7 +33,6 @@ import androidx.compose.ui.res.stringResource
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.flowWithLifecycle
-import com.dmhsh.samples.apps.nowinandroid.core.model.data.Station
 import com.dmhsh.samples.apps.nowinandroid.core.ui.LoadingWheel
 import com.dmhsh.samples.apps.nowinandroid.core.ui.component.*
 import kotlinx.coroutines.flow.Flow
@@ -55,12 +54,11 @@ fun InterestsRoute(
     favoriteStationstViewModel: FavoriteStationstViewModel = hiltViewModel()
 ) {
     val uiState1 by favoriteStationstViewModel.favoriteStationsState.collectAsState()
-
     val localStations: LocalStationsUiState by favoriteStationstViewModel.localStationState.collectAsState()
 
     InterestsScreen(
         favoriteStationstViewModel = favoriteStationstViewModel,
-        uiState1 = uiState1,
+        localStationsState = uiState1,
         localStations
     )
 }
@@ -68,7 +66,7 @@ fun InterestsRoute(
 @Composable
 fun InterestsScreen(
     favoriteStationstViewModel: FavoriteStationstViewModel,
-    uiState1: StationsUiState,
+    localStationsState: StationsUiState,
     localStations :LocalStationsUiState
 ) {
     Scaffold(
@@ -83,18 +81,17 @@ fun InterestsScreen(
         }
     ) { padding ->
         val pad = padding
-        when (uiState1) {
+        when (localStationsState) {
             is StationsUiState.Loading ->
-
                 LoadingWheel(modifier = Modifier, contentDesc = stringResource(id = R.string.interests_loading))
-
-
             is StationsUiState.Stations ->
-                if(uiState1.stations.isEmpty()){ if( localStations is LocalStationsUiState.Stations){
-                    Text((localStations as LocalStationsUiState.Stations).stations1.first().name)
-                }
+                if(localStationsState.stations.isEmpty()){
+                    if( localStations is LocalStationsUiState.Stations){
+                        DatingHomeScreen(localStations .stations1)
+
+                    }
                 }else {
-                    RadioItemFavorite(favoriteStationstViewModel, listOf(uiState1.stations),
+                    RadioItemFavorite(favoriteStationstViewModel, listOf(localStationsState.stations),
                         onImageClick = {
                             favoriteStationstViewModel.setFavoritedStation(it)
                         })

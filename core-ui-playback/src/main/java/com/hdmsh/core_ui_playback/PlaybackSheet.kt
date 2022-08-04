@@ -125,10 +125,8 @@ internal fun PlaybackSheetContent(
 
     BoxWithConstraints {
         val isWideLayout = isWideLayout()
-        val maxWidth = maxWidth
         Row(Modifier.fillMaxSize()) {
-            if (isWideLayout) {
-            }
+            if (isWideLayout) { }
 
             Scaffold(
                 backgroundColor = Color.Transparent,
@@ -167,7 +165,6 @@ internal fun PlaybackSheetContent(
                             //viewModel = viewModel,
                             modifier = Modifier.fillParentMaxHeight(0.8f),
                             onFavoriteClick = {
-                                Log.e("aaa onF 1", "aaa")
                                 val station = playbackConnection.playingStation.value
                                 station.favorited = !playbackConnection.playingStation.value.favorited
                                 viewModel.setFavoritedStation(station)
@@ -176,8 +173,6 @@ internal fun PlaybackSheetContent(
                     }
 
                     if (viewModel.getPlayBackConnection().tags.length > 0)
-//                        viewModel.getPlayBackConnection().tags.split(",").forEach {
-//                            item {
                         item {
                             LazyRow() {
                                 items(viewModel.getPlayBackConnection().tags.split(",")) {
@@ -188,12 +183,8 @@ internal fun PlaybackSheetContent(
                                 }
                             }
                         }
-//                            }
-//                        }
 
-                    if (!isWideLayout) {
-                        // playbackQueueLabel()
-                    }
+                    if (!isWideLayout) { }// playbackQueueLabel() }
                 }
             }
         }
@@ -304,9 +295,7 @@ private fun PlaybackAudioInfo(tag:String, modifier: Modifier = Modifier, onTagSe
                     textAlign = TextAlign.Center,
                     modifier = Modifier
                         .padding(horizontal = 16.dp, vertical = 3.dp)
-                        .clickable {
-                            onTagSelect(tag)
-                        }
+                        .clickable { onTagSelect(tag) }
                 )
             }
     }
