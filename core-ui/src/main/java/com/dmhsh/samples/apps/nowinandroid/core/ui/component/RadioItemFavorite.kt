@@ -16,8 +16,6 @@ import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.graphics.vector.rememberVectorPainter
-import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.style.TextOverflow
@@ -26,8 +24,6 @@ import androidx.lifecycle.ViewModel
 import com.dmhsh.samples.apps.nowinandroid.common.compose.LocalPlaybackConnection
 import com.dmhsh.samples.apps.nowinandroid.core.model.data.FollowableStation
 import com.dmhsh.samples.apps.nowinandroid.core.model.data.Station
-import com.dmhsh.samples.apps.nowinandroid.core.ui.extensions.isNotNullandNotBlank
-import com.dmhsh.samples.apps.nowinandroid.core.ui.theme.randomColor
 import com.dmhsh.samples.apps.nowinandroid.core.util.IntentUtils
 import com.dmhsh.samples.apps.nowinandroid.playback.PlaybackConnection
 import tm.alashow.i18n.R

@@ -8,14 +8,14 @@ import androidx.compose.material.MaterialTheme.typography
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.outlined.Place
 import androidx.compose.material3.*
-
-import androidx.compose.runtime.Composable
-import androidx.compose.runtime.mutableStateOf
-import androidx.compose.runtime.remember
+import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.composed
 import androidx.compose.ui.draw.alpha
 import androidx.compose.ui.draw.clip
+import androidx.compose.ui.draw.drawWithContent
+import androidx.compose.ui.geometry.Size
 import androidx.compose.ui.graphics.Brush
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.layout.ContentScale
@@ -25,38 +25,50 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import com.dmhsh.samples.apps.nowinandroid.core.model.data.Station
 import com.dmhsh.samples.apps.nowinandroid.core.ui.component.CoverImage
-import com.dmhsh.samples.apps.nowinandroid.core.ui.gradientBackground
+import com.dmhsh.samples.apps.nowinandroid.core.ui.component.localStationControl
 import kotlin.random.Random
 
+fun Modifier.gradientBackground(
+    colors: List<Color>,
+    brushProvider: (List<Color>, Size) -> Brush
+): Modifier = composed {
+    var size by remember { mutableStateOf(Size.Zero) }
+    val gradient = remember(colors, size) { brushProvider(colors, size) }
+    drawWithContent {
+        size = this.size
+        drawRect(brush = gradient)
+        drawContent()
+    }
+}
 
-//fun Modifier.verticalGradientBackground(
-//    colors: List<Color>
-//) = gradientBackground(colors) { gradientColors, size ->
-//    Brush.verticalGradient(
-//        colors = gradientColors as List<Color>,
-//        startY = 0f,
-//        endY = 30f
-//    )
-//}
 
+fun Modifier.verticalGradientBackground(
+    colors: List<Color>
+) = gradientBackground(colors) { gradientColors, size ->
+    Brush.verticalGradient(
+        colors = gradientColors,
+        startY = 0f,
+        endY = 30f
+    )
+}
 
 @Composable
-fun DatingHomeScreen(stations: ArrayList<Station>) {
-   // val viewModel: DatingHomeViewModel = viewModel()
-    //val persons = viewModel.albumLiveData.observeAsState()
+fun DatingHomeScreen(
+    stations: ArrayList<Station>,
+) {
     val configuration = LocalConfiguration.current
     val screenHeight = configuration.screenHeightDp.dp
-    val cardHeight = screenHeight - 200.dp
+    val cardHeight = screenHeight - 260.dp
 
     Surface(modifier = Modifier.fillMaxSize()) {
         val boxModifier = Modifier
         Box(
-//            modifier = boxModifier.verticalGradientBackground(
-//                listOf(
-//                    Color.White,
-//                    Color.Yellow.copy(alpha = 0.2f)
-//                )
-//            )
+            modifier = boxModifier.verticalGradientBackground(
+                listOf(
+                    Color.White,
+                    Color.Yellow.copy(alpha = 0.2f)
+                )
+            )
         ) {
             val listEmpty = remember { mutableStateOf(false) }
             DatingLoader(modifier = boxModifier)
@@ -67,7 +79,7 @@ fun DatingHomeScreen(stations: ArrayList<Station>) {
                         .fillMaxWidth()
                         .height(cardHeight)
                         .padding(
-                            top = 16.dp + (index + 2).dp,
+                            //top = 16.dp + (index + 2).dp,
                             bottom = 16.dp,
                             start = 16.dp,
                             end = 16.dp
@@ -81,6 +93,8 @@ fun DatingHomeScreen(stations: ArrayList<Station>) {
                         }
                     }
                 ) { CardContent(station) }
+
+                localStationControl(station, cardHeight)
             }
             Row(
                 horizontalArrangement = Arrangement.Center,
@@ -94,6 +108,8 @@ fun DatingHomeScreen(stations: ArrayList<Station>) {
         }
     }
 }
+
+
 
 @Composable
 fun CardContent(station: Station) {

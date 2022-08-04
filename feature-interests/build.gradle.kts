@@ -29,9 +29,11 @@ android {
 }
 
 dependencies {
+    implementation(project(":common-compose"))
     implementation(project(":core-model"))
     implementation(project(":core-ui"))
     implementation(project(":core-data"))
+    implementation(project(":core-playback"))
     implementation(project(":core-datastore"))
     implementation(project(":core-navigation"))
 

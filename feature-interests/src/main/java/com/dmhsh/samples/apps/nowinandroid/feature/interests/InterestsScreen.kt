@@ -33,8 +33,10 @@ import androidx.compose.ui.res.stringResource
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.flowWithLifecycle
+import com.dmhsh.samples.apps.nowinandroid.common.compose.LocalPlaybackConnection
 import com.dmhsh.samples.apps.nowinandroid.core.ui.LoadingWheel
 import com.dmhsh.samples.apps.nowinandroid.core.ui.component.*
+import com.dmhsh.samples.apps.nowinandroid.playback.PlaybackConnection
 import kotlinx.coroutines.flow.Flow
 
 @Composable
@@ -51,8 +53,9 @@ fun <T> rememberFlowWithLifecycle(
 
 @Composable
 fun InterestsRoute(
-    favoriteStationstViewModel: FavoriteStationstViewModel = hiltViewModel()
-) {
+    favoriteStationstViewModel: FavoriteStationstViewModel = hiltViewModel(),
+    playbackConnection: PlaybackConnection = LocalPlaybackConnection.current,
+    ) {
     val uiState1 by favoriteStationstViewModel.favoriteStationsState.collectAsState()
     val localStations: LocalStationsUiState by favoriteStationstViewModel.localStationState.collectAsState()
 
