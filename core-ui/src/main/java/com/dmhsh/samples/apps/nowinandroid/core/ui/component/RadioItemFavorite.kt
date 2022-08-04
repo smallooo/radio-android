@@ -54,7 +54,7 @@ private fun LazyListScope.interestsList(
     stateCategories: List<List<FollowableStation>>,
     onImageClick: (station: Station) -> Unit
 ) {
-    if (stateCategories.get(0).isNullOrEmpty()) {
+    if (stateCategories.get(0).isEmpty()) {
         item {
             Delayed {
                 EmptyErrorBox(

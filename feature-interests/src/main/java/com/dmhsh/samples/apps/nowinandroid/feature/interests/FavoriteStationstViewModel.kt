@@ -36,6 +36,8 @@ class FavoriteStationstViewModel @Inject constructor(
     )
 
 
+    fun getLocalStation() = stationsRepo.getLocalStations()
+
     fun setFavoritedStation(station: Station) = stationsRepo.setFavorite(station)
 
     fun setPlayHistory(station: Station) = stationsRepo.insertOrIgnoreStation(station)

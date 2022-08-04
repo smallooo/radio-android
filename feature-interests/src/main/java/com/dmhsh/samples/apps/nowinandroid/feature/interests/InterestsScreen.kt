@@ -89,15 +89,20 @@ fun InterestsScreen(
     ) { padding ->
         val pad = padding
         when (uiState1) {
-            is StationsUiState.Loading -> LoadingWheel(modifier = Modifier, contentDesc = stringResource(id = R.string.interests_loading),)
-            is StationsUiState.Stations -> RadioItemFavorite(favoriteStationstViewModel, listOf(uiState1.stations), onImageClick = {
-                favoriteStationstViewModel.setFavoritedStation(it)
-            })
+            is StationsUiState.Loading ->
+
+                LoadingWheel(modifier = Modifier, contentDesc = stringResource(id = R.string.interests_loading))
+
+
+            is StationsUiState.Stations ->
+                RadioItemFavorite(favoriteStationstViewModel, listOf(uiState1.stations),
+                    onImageClick = {
+                        favoriteStationstViewModel.setFavoritedStation(it)
+                    })
             is StationsUiState.Empty -> InterestsEmptyScreen()
         }
     }
 }
-
 
 @Composable
 private fun InterestsEmptyScreen() {

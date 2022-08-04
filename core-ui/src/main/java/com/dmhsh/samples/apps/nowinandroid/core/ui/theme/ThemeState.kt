@@ -26,7 +26,7 @@ data class ThemeState(
     @SerialName("darkMode")
     var darkModePreference: DarkModePreference = DarkModePreference.AUTO,
     @SerialName("colorPalette")
-    var colorPalettePreference: ColorPalettePreference = ColorPalettePreference.Default
+    var colorPalettePreference: ColorPalettePreference = ColorPalettePreference.Black_Yellow
 ) : Parcelable {
     val isDarkMode get() = darkModePreference == DarkModePreference.ON
 }

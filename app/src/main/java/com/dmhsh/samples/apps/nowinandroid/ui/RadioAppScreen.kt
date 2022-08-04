@@ -38,7 +38,6 @@ import com.google.firebase.analytics.FirebaseAnalytics
 import com.hdmsh.core_ui_playback.PlaybackConnectionViewModel
 import kotlinx.coroutines.InternalCoroutinesApi
 
-
 @OptIn(ExperimentalMaterialNavigationApi::class, InternalCoroutinesApi::class,
     ExperimentalAnimationApi::class)
 @Composable
@@ -106,9 +105,7 @@ fun PlaybackHost(
 @Composable
 private fun RadioActionHandlers(content: @Composable () -> Unit) {
     val audioActionHandler = audioActionHandler()
-    CompositionLocalProvider(
-        LocalAudioActionHandler provides audioActionHandler,
-    ) {
+    CompositionLocalProvider(LocalAudioActionHandler provides audioActionHandler,) {
         content()
     }
 }

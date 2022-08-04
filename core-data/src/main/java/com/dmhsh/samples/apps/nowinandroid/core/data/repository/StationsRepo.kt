@@ -59,4 +59,6 @@ interface StationsRepo : Syncable {
     fun getFollowedIdsStream(): Flow<Set<String>>
 
     fun insertOrIgnoreStation(entitie: Station)
+
+    fun getLocalStations(): Flow<List<Station>>
 }
