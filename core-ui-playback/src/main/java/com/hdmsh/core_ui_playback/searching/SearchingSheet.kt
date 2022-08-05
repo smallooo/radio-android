@@ -6,7 +6,6 @@ package com.hdmsh.core_ui_playback.searching
 
 import android.annotation.SuppressLint
 import android.support.v4.media.session.PlaybackStateCompat
-import android.util.Log
 import androidx.compose.animation.*
 import androidx.compose.foundation.*
 import androidx.compose.foundation.gestures.scrollBy
@@ -43,11 +42,7 @@ import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
-import androidx.lifecycle.ViewModel
-import androidx.lifecycle.viewmodel.compose.viewModel
 import com.dmhsh.samples.app.nowinandroid.core.playback.*
-
-import com.google.accompanist.pager.ExperimentalPagerApi
 import com.dmhsh.samples.apps.nowinandroid.common.compose.LocalPlaybackConnection
 import com.dmhsh.samples.apps.nowinandroid.common.compose.LocalScaffoldState
 import com.dmhsh.samples.apps.nowinandroid.core.model.data.Station
@@ -55,8 +50,6 @@ import com.dmhsh.samples.apps.nowinandroid.core.navigation.LocalNavigator
 import com.dmhsh.samples.apps.nowinandroid.core.navigation.Navigator
 import com.dmhsh.samples.apps.nowinandroid.core.ui.adaptiveColor
 import com.dmhsh.samples.apps.nowinandroid.core.ui.component.*
-import com.dmhsh.samples.apps.nowinandroid.core.ui.component.AnimatedListItem
-
 import com.dmhsh.samples.apps.nowinandroid.core.ui.extensions.Callback
 import com.dmhsh.samples.apps.nowinandroid.core.ui.theme.AppTheme
 import com.dmhsh.samples.apps.nowinandroid.core.ui.theme.RadioTheme
@@ -96,7 +89,6 @@ fun SearchingSheet(
 }
 
 @SuppressLint("UnusedMaterialScaffoldPaddingParameter")
-@OptIn(ExperimentalPagerApi::class)
 @Composable
 internal fun SearchingSheetContent(
     onClose: Callback,
@@ -111,7 +103,7 @@ internal fun SearchingSheetContent(
     val nowPlaying by rememberFlowWithLifecycle(playbackConnection.nowPlaying)
     val adaptiveColor by adaptiveColor(nowPlaying.artwork, initial = MaterialTheme.colors.onBackground)
     val viewState by rememberFlowWithLifecycle(viewModel.state)
-    val initialQuery = "".toString()
+    val initialQuery = ""
     var query by rememberSaveable { mutableStateOf(initialQuery) }
 
     LaunchedEffect(playbackConnection) {
@@ -140,8 +132,7 @@ internal fun SearchingSheetContent(
                     listState = listState,
                     onQueryChange = {
                          query = it
-                        actioner(SearchAction.QueryChange(it))
-                                    },
+                        actioner(SearchAction.QueryChange(it)) },
                     onSearch = { actioner(SearchAction.Search) },
                     onBackendTypeSelect = { actioner(it) },
                     state = viewState,
@@ -197,37 +188,22 @@ fun RadioSearchScreen(
         }
 
         LazyColumn(state = listState) {
-            item {
-                Spacer(modifier = Modifier.height(260.dp))
-            }
+            item { Spacer(modifier = Modifier.height(260.dp)) }
 
-            item {
-                Column { SearchInput(query,onQueryChange, searchActive, focused, state, onBackendTypeSelect, triggerSearch) }
-            }
+            item { Column { SearchInput(query,onQueryChange, searchActive, focused, state, onBackendTypeSelect, triggerSearch) } }
 
-            item {
-                Spacer(modifier = Modifier.height(60.dp))
-            }
+            item { Spacer(modifier = Modifier.height(60.dp)) }
 
             if (!viewState.isWaiting) {
                 if (viewState.isLoading) {
                     item { FullScreenLoading() }
                 } else {
                     viewState.localStations.forEachIndexed { index, item ->
-                        item {
-                            AnimatedSearchListItem(
-                                surfaceGradient,
-                                viewModel,
-                                station = item,
-                                index,
-                                onImageClick = {},
-                                onPlayClick = {
-                                    viewModel.setPlayHistory(station = it)
-                                })
-                        }
+                        item { AnimatedSearchListItem(station = item, onPlayClick = { viewModel.setPlayHistory(station = it) }) }
                     }
                 }
             }
+
             item {
                 if(!viewState.isLoading) {
                     SpotifySearchGrid(onSearchSelect = { content -> onRecommend(content) })
@@ -266,7 +242,7 @@ private fun ColumnScope.SearchInput(
     onBackendTypeSelect: (SearchAction.SelectBackendType) -> Unit,
     triggerSearch: () -> Unit
 ) {
-    var focused1 = focused
+    var focused1 by remember { mutableStateOf(focused)}
 
     SearchTextField(value = query, onValueChange = { value ->
         onQueryChange(value)
@@ -281,8 +257,7 @@ private fun ColumnScope.SearchInput(
             .onFocusChanged { focused1 = it.isFocused })
 
     var backends = state.filter.backends
-    if (backends == SearchFilter.DefaultBackends)
-        backends = emptySet()
+    if (backends == SearchFilter.DefaultBackends) backends = emptySet()
 
     val filterVisible = searchActive || query.isNotBlank() || backends.isNotEmpty()
     SearchFilterPanel(visible = filterVisible, backends) { selectAction ->
@@ -291,7 +266,6 @@ private fun ColumnScope.SearchInput(
     }
 }
 
-@OptIn(ExperimentalAnimationApi::class)
 @Composable
 private fun ColumnScope.SearchFilterPanel(
     visible: Boolean,
@@ -317,9 +291,7 @@ private fun ColumnScope.SearchFilterPanel(
                         DatmusicSearchParams.BackendType.Languages -> R.string.action_languages
                         DatmusicSearchParams.BackendType.Tags -> R.string.detail_tags
                         DatmusicSearchParams.BackendType.FLACS -> R.string.app_id
-                        else -> {
-                            R.string.action_search
-                        }
+                        else -> { R.string.action_search }
                     }
                 )
             }
@@ -353,16 +325,10 @@ fun Modifier.horizontalGradientBackground(
 @SuppressLint("StateFlowValueCalledInComposition")
 @Composable
 fun AnimatedSearchListItem(
-    surfaceGradient: List<Color>,
-    viewModel: ViewModel,
     station: Station,
-    itemIndex: Int,
-    onImageClick: (station: Station) -> Unit,
     onPlayClick: (station: Station) -> Unit
 ) {
     val playbackConnection: PlaybackConnection = LocalPlaybackConnection.current
-    var expanded by remember { mutableStateOf(false) }
-    var favorite by remember { mutableStateOf(station.favorited) }
     val playbackState by rememberFlowWithLifecycle(playbackConnection.playbackState)
     Row(
         verticalAlignment = Alignment.CenterVertically,
@@ -381,10 +347,7 @@ fun AnimatedSearchListItem(
             modifier = Modifier
                 .size(55.dp)
                 .padding(4.dp)
-                .clickable {
-                    // onImageClick(station)
-                    // favorite = !favorite
-                }
+                .clickable {}
         )
         Column(
             modifier = Modifier
@@ -409,7 +372,6 @@ fun AnimatedSearchListItem(
         if (station.stationuuid == playbackConnection.playingStation.value.stationuuid) {
             PlaybackPlayPause(playbackState, onPlayPause = {
                 playbackConnection.mediaController?.playPause()
-
             })
         }
     }

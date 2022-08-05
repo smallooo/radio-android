@@ -63,7 +63,6 @@ private fun LazyListScope.interestsList(
         itemsIndexed(stateCategories.get(0), { _, it -> it.station }) { index, item ->
             Column { AnimatedListFavoriteItem(viewModel, station = item.station, index, onImageClick) }
         }
-
         item { Spacer(modifier = Modifier.height(160.dp)) }
     }
 }

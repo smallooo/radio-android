@@ -28,6 +28,7 @@ import com.dmhsh.samples.apps.nowinandroid.playback.PlaybackConnection
     station: Station,
     cardHeight: Dp,
     playbackConnection: PlaybackConnection = LocalPlaybackConnection.current,
+    onFavoriteClick: (station: Station) -> Unit,
 ) {
 
     Row(
@@ -76,18 +77,18 @@ import com.dmhsh.samples.apps.nowinandroid.playback.PlaybackConnection
         Spacer(Modifier.width(AppTheme.specs.padding))
 
 
-        androidx.compose.material3.IconButton(
+        IconButton(
             onClick = {
-                //   favorited = !favorited
-                //   onFavoriteClick()
+                   //favorited = !favorited
+                   onFavoriteClick(station)
             },
             modifier = Modifier
                 .size(39.dp)
                 .weight(5f),
-            //  rippleRadius = smallRippleRadius,
+              rippleRadius = 30.dp,
         ) {
             Icon(
-                imageVector =  Icons.Default.FavoriteBorder,
+                imageVector = if (false) Icons.Default.Favorite else Icons.Default.FavoriteBorder,
                 //tint = contentColor,
                 modifier = Modifier.fillMaxSize(),
                 contentDescription = null

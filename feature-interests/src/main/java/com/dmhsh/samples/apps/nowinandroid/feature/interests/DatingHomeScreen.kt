@@ -55,6 +55,7 @@ fun Modifier.verticalGradientBackground(
 @Composable
 fun DatingHomeScreen(
     stations: ArrayList<Station>,
+    favoriteStationstViewModel: FavoriteStationstViewModel
 ) {
     val configuration = LocalConfiguration.current
     val screenHeight = configuration.screenHeightDp.dp
@@ -94,7 +95,11 @@ fun DatingHomeScreen(
                     }
                 ) { CardContent(station) }
 
-                localStationControl(station, cardHeight)
+                localStationControl(station, cardHeight, onFavoriteClick = { station ->
+                    val _station = station
+                    _station.favorited = !station.favorited
+                    favoriteStationstViewModel.setFavoritedStation(_station)
+                })
             }
             Row(
                 horizontalArrangement = Arrangement.Center,

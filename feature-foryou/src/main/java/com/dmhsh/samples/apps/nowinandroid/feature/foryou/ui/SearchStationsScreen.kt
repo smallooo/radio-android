@@ -47,7 +47,7 @@ fun SearchStationsScreen(
 
     }
 
-    if (isInitStatus && query.isNullOrEmpty()) {
+    if (isInitStatus && query.isEmpty()) {
         Box(modifier = Modifier.fillMaxSize()) {
             Column(
                 Modifier

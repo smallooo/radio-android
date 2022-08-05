@@ -54,7 +54,6 @@ fun <T> rememberFlowWithLifecycle(
 @Composable
 fun InterestsRoute(
     favoriteStationstViewModel: FavoriteStationstViewModel = hiltViewModel(),
-    playbackConnection: PlaybackConnection = LocalPlaybackConnection.current,
     ) {
     val uiState1 by favoriteStationstViewModel.favoriteStationsState.collectAsState()
     val localStations: LocalStationsUiState by favoriteStationstViewModel.localStationState.collectAsState()
@@ -88,17 +87,16 @@ fun InterestsScreen(
             is StationsUiState.Loading ->
                 LoadingWheel(modifier = Modifier, contentDesc = stringResource(id = R.string.interests_loading))
             is StationsUiState.Stations ->
-                if(localStationsState.stations.isEmpty()){
-                    if( localStations is LocalStationsUiState.Stations){
-                        DatingHomeScreen(localStations .stations1)
-
-                    }
-                }else {
+//                if(localStationsState.stations.isEmpty()){
+//                    if( localStations is LocalStationsUiState.Stations){
+//                        DatingHomeScreen(localStations .stations1, favoriteStationstViewModel)
+//                    }
+//                }else {
                     RadioItemFavorite(favoriteStationstViewModel, listOf(localStationsState.stations),
                         onImageClick = {
                             favoriteStationstViewModel.setFavoritedStation(it)
                         })
-                }
+               // }
             is StationsUiState.Empty -> InterestsEmptyScreen()
 
         }
