@@ -87,7 +87,6 @@ internal fun SearchingSheetContent(
     onClose: Callback,
     scrollToTop: Callback,
     listState: LazyListState,
-    //queueListState: LazyListState,
     scaffoldState: ScaffoldState = rememberScaffoldState(snackbarHostState = LocalScaffoldState.current.snackbarHostState),
     playbackConnection: PlaybackConnection = LocalPlaybackConnection.current,
     viewModel: SearchViewModel = hiltViewModel(),
@@ -105,9 +104,7 @@ internal fun SearchingSheetContent(
     }
 
     BoxWithConstraints {
-        val isWideLayout = isWideLayout()
         Row(Modifier.fillMaxSize()) {
-            //if (isWideLayout) { }
             Scaffold(
                 backgroundColor = Color.Transparent,
                 modifier = Modifier
@@ -154,10 +151,11 @@ fun RadioSearchScreen(
     focusManager: FocusManager = LocalFocusManager.current,
     windowInfo: WindowInfo = LocalWindowInfo.current,
     windowInsets: WindowInsets = LocalWindowInsets.current,
+
 ) {
-    val viewState = viewModel.stateS
-    val surfaceGradient =
-        SpotifyDataProvider.spotifySurfaceGradient(isSystemInDarkTheme()) //SpotifyDataProvider.spotifySurfaceGradient(isSystemInDarkTheme())
+    val viewState by remember { mutableStateOf(viewModel.stateS)}
+
+    val surfaceGradient by rememberSaveable {mutableStateOf(SpotifyDataProvider.spotifySurfaceGradient(false))}
 
     Box(
         modifier = Modifier
@@ -165,10 +163,10 @@ fun RadioSearchScreen(
             .horizontalGradientBackground(surfaceGradient)
     ) {
         val keyboardController = LocalSoftwareKeyboardController.current
-        val hasWindowFocus = windowInfo.isWindowFocused
-        val keyboardVisible = windowInsets.ime.isVisible
+        val hasWindowFocus by rememberSaveable{ mutableStateOf(windowInfo.isWindowFocused)}
+        val keyboardVisible by rememberSaveable{ mutableStateOf( windowInsets.ime.isVisible )}
         val focused by remember { mutableStateOf(false) }
-        val searchActive = focused && hasWindowFocus && keyboardVisible
+        val searchActive by rememberSaveable{ mutableStateOf( focused && hasWindowFocus && keyboardVisible)}
         val triggerSearch = {
             onSearch();
             keyboardController?.hide();
@@ -234,7 +232,7 @@ private fun ColumnScope.SearchInput(
     onBackendTypeSelect: (SearchAction.SelectBackendType) -> Unit,
     triggerSearch: () -> Unit
 ) {
-    var focused1 by remember { mutableStateOf(focused)}
+   // var focused1 by remember { mutableStateOf(focused)}
 
     SearchTextField(value = query, onValueChange = { value ->
         onQueryChange(value)
@@ -246,7 +244,9 @@ private fun ColumnScope.SearchInput(
         analyticsPrefix = "search",
         modifier = Modifier
             .padding(horizontal = AppTheme.specs.padding)
-            .onFocusChanged { focused1 = it.isFocused })
+            .onFocusChanged {
+           //     focused1 = it.isFocused
+            })
 
     var backends = state.filter.backends
     if (backends == SearchFilter.DefaultBackends) backends = emptySet()

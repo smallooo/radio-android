@@ -1,5 +1,6 @@
 package com.dmhsh.samples.apps.nowinandroid.feature.foryou
 
+import android.annotation.SuppressLint
 import androidx.compose.foundation.layout.*
 import androidx.compose.material.MaterialTheme
 import androidx.compose.material.Scaffold
@@ -41,7 +42,7 @@ fun ForYouRoute() {
     ForYouScreen()
 }
 
-@OptIn(ExperimentalMaterial3Api::class, ExperimentalLayoutApi::class)
+@SuppressLint("UnusedMaterialScaffoldPaddingParameter")
 @Composable
 fun ForYouScreen(navigation: Navigator = LocalNavigator.current,
                  showMenu: MutableState<Boolean>  = remember { mutableStateOf(false) },
@@ -72,8 +73,7 @@ fun ForYouScreen(navigation: Navigator = LocalNavigator.current,
                 }
             )
         },
-    ) { innerPadding ->
-        val padding = innerPadding
+    ) {
         AdvanceListContent(showMenu, playbackConnection, sliderState, onValueChange = {
             sliderState = it
         })
@@ -96,13 +96,13 @@ fun AdvanceListContent(showMenu: MutableState<Boolean>,
                        ) {
     var selectedIndex by rememberSaveable { mutableStateOf(0) }
     val initialQuery = (getNavArgument(QUERY_KEY) ?: "").toString()
-    var query by rememberSaveable { mutableStateOf(initialQuery) }
 
     val tabs = listOf(stringResource(R.string.action_local), stringResource(R.string.action_top_click), stringResource(R.string.action_top_vote), stringResource(R.string.action_changed_lately),
         stringResource(R.string.action_currently_playing), stringResource(R.string.action_tags), stringResource(R.string.action_countries), stringResource(R.string.action_languages), stringResource(R.string.action_search))
 
     val pagerState1: PagerState = run { remember { PagerState(0, 0, tabs.size - 1) } }
 
+    var query by rememberSaveable { mutableStateOf(initialQuery) }
     if(query.isNotNullandNotBlank()){
         selectedIndex = tabs.lastIndex
         pagerState1.currentPage = tabs.lastIndex
@@ -147,10 +147,10 @@ fun AdvanceListContent(showMenu: MutableState<Boolean>,
                     5 -> TagListScreen(onTagSelect = { stationTag -> LaunchSearchScreen(pagerState1, viewModel, "bytag", stationTag.name) })
                     6 -> CountryList(onCountrySelect = { Country -> LaunchSearchScreen(pagerState1, viewModel, "bycountry", Country.name) })
                     7 -> LanguageListScreen(onTagSelect = { LaunchSearchScreen(pagerState1, viewModel, "bylanguage", it.name) })
-                    8 -> SearchStationsScreen(query, onButtonSelect = { it ->
-                            selectedIndex = it + 5
-                            pagerState1.currentPage = it + 5
-                            query = ""
+                    8 -> SearchStationsScreen(query, onButtonSelect = {
+                        selectedIndex = it + 5
+                        pagerState1.currentPage = it + 5
+                        query = ""
                         }
                     )
                 }
@@ -165,7 +165,6 @@ fun AdvanceListContent(showMenu: MutableState<Boolean>,
                 onValueChange = onValueChange,
                 onTimerSet = {
                     if(it > 1) {
-                       // Toast.makeText(context, settingString, Toast.LENGTH_SHORT).show()
                         playbackConnection.stopPlayInSeconds(it * 60)
                         showMenu.value = false
                     }else{
