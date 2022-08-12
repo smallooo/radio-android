@@ -112,7 +112,12 @@ private fun NavGraphBuilder.addAlarmRoot() {
     navigation(
         route = RootScreen.Alarm.route,
         startDestination = LeafScreen.Alarm().createRoute()
-    ) { addAlarm() } }
+    ) {
+        addAlarm()
+        addSearch()
+        addSearchingSheet()
+
+    } }
 
 @ExperimentalAnimationApi
 private fun NavGraphBuilder.addSettingsRoot() {
@@ -125,7 +130,10 @@ private fun NavGraphBuilder.addSearch() {
     composableScreen(LeafScreen.Search()) { ForYouRoute() } }
 
 private fun NavGraphBuilder.addAlarm() {
-    composableScreen(LeafScreen.Alarm()){ AlarmRoute(onBackClick = { /*TODO*/ }) } }
+    composableScreen(LeafScreen.Alarm()){
+        SearchingSheet(
+           // onBackClick = {/*TODO*/ }
+        ) } }
 
 private fun NavGraphBuilder.addSettings() {
     composableScreen(LeafScreen.Settings()){ SettingRoute(onBackClick = { /*TODO*/ }) } }

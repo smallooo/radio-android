@@ -68,21 +68,14 @@ fun SearchingSheet(
     viewModel: SearchViewModel = hiltViewModel(),
 ) {
     val listState = rememberLazyListState(0)
-    val queueListState = rememberLazyListState()
     val coroutine = rememberCoroutineScope()
-    val scrollToTop: Callback = {
-        coroutine.launch {
-           // listState.animateScrollToItem(0)
-            listState.scrollBy(-999f)
-        }
-    }
+    val scrollToTop: Callback = { coroutine.launch { listState.scrollBy(-999f) } }
 
     RadioTheme(changeSystemBar = false) {
         SearchingSheetContent(
             onClose = { navigator.goBack() },
             scrollToTop = scrollToTop,
             listState = listState,
-            queueListState = queueListState,
             viewModel = viewModel
         ) { action -> viewModel.submitAction(action) }
     }
@@ -94,7 +87,7 @@ internal fun SearchingSheetContent(
     onClose: Callback,
     scrollToTop: Callback,
     listState: LazyListState,
-    queueListState: LazyListState,
+    //queueListState: LazyListState,
     scaffoldState: ScaffoldState = rememberScaffoldState(snackbarHostState = LocalScaffoldState.current.snackbarHostState),
     playbackConnection: PlaybackConnection = LocalPlaybackConnection.current,
     viewModel: SearchViewModel = hiltViewModel(),
@@ -103,8 +96,7 @@ internal fun SearchingSheetContent(
     val nowPlaying by rememberFlowWithLifecycle(playbackConnection.nowPlaying)
     val adaptiveColor by adaptiveColor(nowPlaying.artwork, initial = MaterialTheme.colors.onBackground)
     val viewState by rememberFlowWithLifecycle(viewModel.state)
-    val initialQuery = ""
-    var query by rememberSaveable { mutableStateOf(initialQuery) }
+    var query by rememberSaveable { mutableStateOf("") }
 
     LaunchedEffect(playbackConnection) {
         playbackConnection.playbackState
@@ -115,7 +107,7 @@ internal fun SearchingSheetContent(
     BoxWithConstraints {
         val isWideLayout = isWideLayout()
         Row(Modifier.fillMaxSize()) {
-            if (isWideLayout) { }
+            //if (isWideLayout) { }
             Scaffold(
                 backgroundColor = Color.Transparent,
                 modifier = Modifier

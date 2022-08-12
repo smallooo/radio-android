@@ -37,7 +37,7 @@ class SearchViewModel @Inject constructor(
     handle: SavedStateHandle,
     //private val snackbarManager: SnackbarManager,
     private val remoteSource: NetSource,
-    private val playbackConnection: PlaybackConnection,
+    // private val playbackConnection: PlaybackConnection,
     private val stationDao: StationDao
 ) : ViewModel() {
     private val initialQuery = handle.get(QUERY_KEY) ?: ""
@@ -49,20 +49,15 @@ class SearchViewModel @Inject constructor(
     private val onSearchEventChannel = Channel<SearchEvent>(Channel.CONFLATED)
     val onSearchEvent = onSearchEventChannel.receiveAsFlow()
 
-
-
     val state = combine(searchFilterState, captchaError, ::SearchViewState)
         .stateInDefault(viewModelScope, SearchViewState.Empty)
 
     class LocalStationsContract {
-
         data class State(
             var localStations: List<Station> = listOf(),
             var isLoading: Boolean = false,
             var isWaiting: Boolean = true
         )
-
-
     }
 
     var stateS by mutableStateOf(
@@ -73,9 +68,7 @@ class SearchViewModel @Inject constructor(
         )
     )
 
-
-
-    val searchQuery = searchQueryState.asStateFlow()
+   // val searchQuery = searchQueryState.asStateFlow()
 
 
     init {
@@ -120,18 +113,15 @@ class SearchViewModel @Inject constructor(
     fun changeStatus(searchEvent: SearchEvent) {
         val (trigger, filter) = searchEvent
         val query = trigger.query
-        val searchParams = DatmusicSearchParams(query, trigger.captchaSolution)
-        val backends = filter.backends.joinToString { it.type }
-
-        Log.e("aaa SearchEvent", searchQueryState.value)
+        //val searchParams = DatmusicSearchParams(query, trigger.captchaSolution)
+       //val backends = filter.backends.joinToString { it.type }
+        //Log.e("aaa SearchEvent", searchQueryState.value)
 
         if(query.isNotBlank()) {
-
             val aaa = "it"
             viewModelScope.launch {
-            stateS = aaa.let { stateS.copy(isWaiting = false, isLoading = true) }
-                }
-
+                stateS = aaa.let { stateS.copy(isWaiting = false, isLoading = true) }
+            }
         }
     }
 
@@ -139,10 +129,10 @@ class SearchViewModel @Inject constructor(
     fun search(searchEvent: SearchEvent) {
         val (trigger, filter) = searchEvent
         val query = trigger.query
-        val searchParams = DatmusicSearchParams(query, trigger.captchaSolution)
-        val backends = filter.backends.joinToString { it.type }
+       // val searchParams = DatmusicSearchParams(query, trigger.captchaSolution)
+       // val backends = filter.backends.joinToString { it.type }
 
-        Log.e("aaa SearchEvent", searchQueryState.value)
+       // Log.e("aaa SearchEvent", searchQueryState.value)
 
         if(query.isNotBlank()) {
 
@@ -163,7 +153,7 @@ class SearchViewModel @Inject constructor(
 
     fun setPlayHistory(station: Station){
         viewModelScope.launch {
-            val station1 = station
+           // val station1 = station
             station.lastPlayedTime = System.currentTimeMillis().toString()
             stationDao.insertOrIgnoreStation(station.asExternalModel())
         }

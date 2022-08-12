@@ -35,8 +35,8 @@ val HomeBottomNavigationHeight = 56.dp
 @SuppressLint("UnusedMaterialScaffoldPaddingParameter")
 @Composable
 internal fun Home(
-    windowSizeClass: WindowSizeClass,
-    currentDestination: NavDestination?,
+//    windowSizeClass: WindowSizeClass,
+//    currentDestination: NavDestination?,
     navController: NavHostController,
     playbackConnection: PlaybackConnection = LocalPlaybackConnection.current,
 ) {
