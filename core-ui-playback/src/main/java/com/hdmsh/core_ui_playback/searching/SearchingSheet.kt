@@ -69,7 +69,11 @@ fun SearchingSheet(
 ) {
     val listState = rememberLazyListState(0)
     val coroutine = rememberCoroutineScope()
-    val scrollToTop: Callback = { coroutine.launch { listState.scrollBy(-999f) } }
+    val scrollToTop: Callback = {
+        coroutine.launch {
+            listState.scrollBy(-6999f)
+        }
+    }
 
     RadioTheme(changeSystemBar = false) {
         SearchingSheetContent(
@@ -85,7 +89,7 @@ fun SearchingSheet(
 @Composable
 internal fun SearchingSheetContent(
     onClose: Callback,
-    scrollToTop: Callback,
+    scrollToTop: () -> Unit,
     listState: LazyListState,
     scaffoldState: ScaffoldState = rememberScaffoldState(snackbarHostState = LocalScaffoldState.current.snackbarHostState),
     playbackConnection: PlaybackConnection = LocalPlaybackConnection.current,
@@ -126,7 +130,7 @@ internal fun SearchingSheetContent(
                     onBackendTypeSelect = { actioner(it) },
                     state = viewState,
                     onRecommend = {
-                        scrollToTop
+                        scrollToTop()
                         query = it
                         actioner(SearchAction.QueryChange(it))
                         actioner(SearchAction.Search)
@@ -232,7 +236,7 @@ private fun ColumnScope.SearchInput(
     onBackendTypeSelect: (SearchAction.SelectBackendType) -> Unit,
     triggerSearch: () -> Unit
 ) {
-   // var focused1 by remember { mutableStateOf(focused)}
+    // var focused1 by remember { mutableStateOf(focused)}
 
     SearchTextField(value = query, onValueChange = { value ->
         onQueryChange(value)
