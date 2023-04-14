@@ -34,11 +34,12 @@ class RadioAppInit : Application() {
         // Initialize Sync; the system responsible for keeping data in the app up to date.
         Sync.initialize(context = this)
 
-//        MobileAds.initialize(
-//            this
-//        ) { }
+        MobileAds.initialize(
+            this
+        ) { }
+        
 
-       // appOpenManager = AppOpenManager(this);
+        // appOpenManager = AppOpenManager(this);
 
     }
 

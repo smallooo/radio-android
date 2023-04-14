@@ -31,8 +31,8 @@ plugins {
 android {
     defaultConfig {
         applicationId = "com.dmhsh.samples.apps.nowinandroid"
-        versionCode = 17
-        versionName = "1.2.2" // X.Y.Z; X = Major, Y = minor, Z = Patch level
+        versionCode = 21
+        versionName = "1.3.2" // X.Y.Z; X = Major, Y = minor, Z = Patch level
 
         // Custom test runner to set up Hilt dependency graph
         testInstrumentationRunner = "com.dmhsh.samples.apps.nowinandroid.core.testing.NiaTestRunner"
@@ -160,6 +160,8 @@ dependencies {
             force("org.objenesis:objenesis:2.6")
         }
     }
+
+    implementation ("com.google.android.gms:play-services-ads:22.0.0")
 }
 
 
